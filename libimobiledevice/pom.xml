@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.robovm</groupId>
     <artifactId>bugvm-parent</artifactId>
-    <version>1.6.0</version>
+    <version>1.8.1</version>
   </parent>
 
   <artifactId>bugvm-libimobiledevice</artifactId>

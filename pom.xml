@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>org.robovm</groupId>
-  <version>1.6.0</version>
+  <version>1.8.1</version>
   <artifactId>bugvm-parent</artifactId>
   <name>BugVM</name>
   <packaging>pom</packaging>
@@ -119,7 +119,6 @@
           <target>1.7</target>
           <debug>true</debug>
           <optimize>true</optimize>
-          <showDeprecations>true</showDeprecations>
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
