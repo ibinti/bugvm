@@ -10,44 +10,44 @@
   </parent>
 
   <groupId>org.robovm</groupId>
-  <version>1.6.1-SNAPSHOT</version>
-  <artifactId>robovm-parent</artifactId>
-  <name>RoboVM</name>
+  <version>1.6.0</version>
+  <artifactId>bugvm-parent</artifactId>
+  <name>BugVM</name>
   <packaging>pom</packaging>
-  <url>http://www.robovm.com</url>
+  <url>http://www.ibinti.com</url>
   <description>
-    The RoboVM compiler translates Java bytecode into native ARM or x86 code. Apps run directly on the CPU.
+    The BugVM compiler translates Java bytecode into native ARM or x86 code. Apps run directly on the CPU.
     No interpreter or virtual machine involved.
   </description>
   <inceptionYear>2012</inceptionYear>
 
   <organization>
-    <name>RoboVM AB</name>
-    <url>http://www.robovm.com</url>
+    <name>BugVM CD</name>
+    <url>http://www.ibinti.com</url>
   </organization>
 
   <developers>
     <developer>
-      <id>ntherning</id>
-      <name>Niklas Therning</name>
-      <email>niklas@therning.org</email>
+      <id>bugvm</id>
+      <name>The Bug</name>
+      <email>bugvm@ibinti.com</email>
       <roles>
-        <role>Project Lead</role>
+        <role>Trouble Maker</role>
       </roles>
     </developer>
   </developers>
 
 
   <scm>
-    <url>https://github.com/robovm/robovm</url>
-    <connection>scm:git:git://github.com/robovm/robovm.git</connection>
-    <developerConnection>scm:git:git@github.com:robovm/robovm.git</developerConnection>
+    <url>https://github.com/bugvm/robovm</url>
+    <connection>scm:git:git://github.com/bugvm/robovm.git</connection>
+    <developerConnection>scm:git:git@github.com:bugvm/robovm.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/robovm/robovm/issues</url>
+    <url>https://github.com/bugvm/robovm/issues</url>
   </issueManagement>
 
   <dependencies>
@@ -199,4 +199,3 @@
     <module>cocoatouch</module>
   </modules>
 </project>
-

@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.robovm</groupId>
-    <artifactId>robovm-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>bugvm-parent</artifactId>
+    <version>1.6.0</version>
   </parent>
 
-  <artifactId>robovm-compiler</artifactId>
-  <name>RoboVM Compiler</name>
+  <artifactId>bugvm-compiler</artifactId>
+  <name>BugVM Compiler</name>
   <packaging>jar</packaging>
 
   <licenses>
@@ -79,22 +79,24 @@
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-llvm</artifactId>
+      <artifactId>bugvm-llvm</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-libimobiledevice</artifactId>
+      <artifactId>bugvm-libimobiledevice</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-soot</artifactId>
+      <artifactId>bugvm-soot</artifactId>
       <version>2.5.0-1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/libs/bugvm-soot-2.5.0-1.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-rt</artifactId>
+      <artifactId>bugvm-rt</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -135,4 +137,3 @@
   </build>
 
 </project>
-

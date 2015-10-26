@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.robovm</groupId>
-    <artifactId>robovm-cacerts-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>bugvm-cacerts-parent</artifactId>
+    <version>1.6.0</version>
   </parent>
 
-  <artifactId>robovm-cacerts-full</artifactId>
-  <name>RoboVM cacerts full</name>
+  <artifactId>bugvm-cacerts-full</artifactId>
+  <name>BugVM cacerts full</name>
   <packaging>jar</packaging>
 
 </project>

@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.robovm</groupId>
-    <artifactId>robovm-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>bugvm-parent</artifactId>
+    <version>1.6.0</version>
   </parent>
 
-  <artifactId>robovm-cocoatouch</artifactId>
-  <name>RoboVM Cocoa Touch Bindings</name>
+  <artifactId>bugvm-cocoatouch</artifactId>
+  <name>BugVM Cocoa Touch Bindings</name>
   <packaging>jar</packaging>
 
   <licenses>
@@ -23,13 +23,13 @@
   <dependencies>
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-rt</artifactId>
+      <artifactId>bugvm-rt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>  
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-objc</artifactId>
+      <artifactId>bugvm-objc</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
