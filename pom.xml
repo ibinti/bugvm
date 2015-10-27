@@ -9,12 +9,12 @@
     <version>7</version>
   </parent>
 
-  <groupId>org.robovm</groupId>
+  <groupId>com.bugvm</groupId>
   <version>1.8.1</version>
   <artifactId>bugvm-parent</artifactId>
   <name>BugVM</name>
   <packaging>pom</packaging>
-  <url>http://www.ibinti.com</url>
+  <url>http://www.bugvm.com</url>
   <description>
     The BugVM compiler translates Java bytecode into native ARM or x86 code. Apps run directly on the CPU.
     No interpreter or virtual machine involved.
@@ -23,14 +23,14 @@
 
   <organization>
     <name>BugVM CD</name>
-    <url>http://www.ibinti.com</url>
+    <url>http://www.bugvm.com</url>
   </organization>
 
   <developers>
     <developer>
       <id>bugvm</id>
       <name>The Bug</name>
-      <email>bugvm@ibinti.com</email>
+      <email>bug@bugvm.com</email>
       <roles>
         <role>Trouble Maker</role>
       </roles>
