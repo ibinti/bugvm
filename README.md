@@ -1,3 +1,5 @@
 # BugVM
 
-Please see [bugvm.com](http://bugvm.com) for more information.
+We are the Bug.
+Resistance is futile.
+You will be assimilated.
