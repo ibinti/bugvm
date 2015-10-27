@@ -1,6 +1,6 @@
 # BugVM
 
-We are the Bug.
+We are the BugVM.
 
 Resistance is futile.
 
