@@ -1,3 +1,3 @@
-# RoboVM
+# BugVM
 
-Please see [robovm.com](http://robovm.com) for more information.
+Please see [bugvm.com](http://bugvm.com) for more information.
