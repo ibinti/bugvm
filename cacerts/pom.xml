@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.robovm</groupId>
-    <artifactId>robovm-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>bugvm-parent</artifactId>
+    <version>1.8.1</version>
   </parent>
 
-  <artifactId>robovm-cacerts-parent</artifactId>
-  <name>RoboVM cacerts parent</name>
+  <artifactId>bugvm-cacerts-parent</artifactId>
+  <name>BugVM cacerts parent</name>
   <packaging>pom</packaging>
 
   <modules>

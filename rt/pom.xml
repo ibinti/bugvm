@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.robovm</groupId>
-    <artifactId>robovm-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>bugvm-parent</artifactId>
+    <version>1.8.1</version>
   </parent>
 
-  <artifactId>robovm-rt</artifactId>
-  <name>RoboVM Runtime Library</name>
+  <artifactId>bugvm-rt</artifactId>
+  <name>BugVM Runtime Library</name>
   <packaging>jar</packaging>
 
   <licenses>

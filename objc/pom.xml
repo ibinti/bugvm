@@ -4,12 +4,12 @@
 
   <parent>
     <groupId>org.robovm</groupId>
-    <artifactId>robovm-parent</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <artifactId>bugvm-parent</artifactId>
+    <version>1.8.1</version>
   </parent>
 
-  <artifactId>robovm-objc</artifactId>
-  <name>RoboVM Objective-C Bridge</name>
+  <artifactId>bugvm-objc</artifactId>
+  <name>BugVM Objective-C Bridge</name>
   <packaging>jar</packaging>
 
   <licenses>
@@ -23,7 +23,7 @@
   <dependencies>
     <dependency>
       <groupId>org.robovm</groupId>
-      <artifactId>robovm-rt</artifactId>
+      <artifactId>bugvm-rt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
