@@ -432,7 +432,7 @@ public class Java8Test {
     assertEquals(99, new DefaultInterfaceImplVirtualUpRef().method2());
     assertEquals(99, new DefaultInterfaceImplVirtualUpRefTwoInterfaces().method2());
     // RoboVM Note: this crashes appearently due a big in the Eclipse compiler
-    // assertEquals("SimpleB", new org.robovm.rt.lambdas.package3.SimpleC().m());
+    // assertEquals("SimpleB", new org.bugvm.rt.lambdas.package3.SimpleC().m());
     assertEquals("SimpleASimpleB", new org.robovm.rt.lambdas.package1.SimpleD().m());
   }
 

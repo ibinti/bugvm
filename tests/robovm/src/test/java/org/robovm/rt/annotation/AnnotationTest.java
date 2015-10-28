@@ -201,7 +201,7 @@ public class AnnotationTest {
         assertSame(Anno3.class, anno.annotationType());
         assertEquals(0, anno.hashCode());
         assertTrue(anno.equals(anno));
-        assertEquals("@org.robovm.rt.annotation.AnnotationTest$Anno3()", anno.toString());
+        assertEquals("@org.bugvm.rt.annotation.AnnotationTest$Anno3()", anno.toString());
     }
 
     @Test
