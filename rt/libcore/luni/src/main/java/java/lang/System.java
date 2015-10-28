@@ -71,7 +71,7 @@ import libcore.io.Libcore;
 import libcore.io.StructPasswd;
 import libcore.io.StructUtsname;
 
-import org.robovm.rt.VM;
+import com.bugvm.rt.VM;
 
 import dalvik.system.VMRuntime;
 import dalvik.system.VMStack;

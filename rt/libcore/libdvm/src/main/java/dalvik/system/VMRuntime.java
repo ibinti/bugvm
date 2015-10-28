@@ -20,7 +20,7 @@ import java.lang.reflect.Array;
 
 import libcore.util.EmptyArray;
 
-import org.robovm.rt.VM;
+import com.bugvm.rt.VM;
 
 /**
  * Provides an interface to VM-global, Dalvik-specific features.

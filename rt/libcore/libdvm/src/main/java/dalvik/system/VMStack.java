@@ -18,7 +18,7 @@ package dalvik.system;
 
 import java.util.Arrays;
 
-import org.robovm.rt.VM;
+import com.bugvm.rt.VM;
 
 /**
  * Provides a limited interface to the Dalvik VM stack. This class is mostly

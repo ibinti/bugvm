@@ -54,7 +54,7 @@ import libcore.util.EmptyArray;
 import libcore.reflect.GenericSignatureParser;
 import libcore.reflect.ListOfTypes;
 import libcore.reflect.Types;
-import org.robovm.rt.VM;
+import com.bugvm.rt.VM;
 
 /**
  * This class represents a method. Information about the method can be accessed,

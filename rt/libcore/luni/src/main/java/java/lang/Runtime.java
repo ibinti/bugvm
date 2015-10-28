@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.robovm.rt.VM;
+import com.bugvm.rt.VM;
 
 import libcore.io.IoUtils;
 import libcore.io.Libcore;

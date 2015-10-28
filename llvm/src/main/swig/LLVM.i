@@ -279,6 +279,6 @@ typedef jlong uint64_t;
 
 %pragma(java) jniclasscode=%{
   static {
-    org.robovm.llvm.NativeLibrary.load();
+    NativeLibrary.load();
   }
 %}
