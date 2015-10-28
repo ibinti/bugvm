@@ -1,4 +1,4 @@
-package: org.robovm.apple.accounts
+package: com.bugvm.apple.accounts
 include: [foundation.yaml]
 library: Accounts
 framework: Accounts

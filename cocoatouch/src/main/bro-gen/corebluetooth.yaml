@@ -1,4 +1,4 @@
-package: org.robovm.apple.corebluetooth
+package: com.bugvm.apple.corebluetooth
 include: [foundation.yaml, corefoundation.yaml, dispatch.yaml]
 library: CoreBluetooth
 framework: CoreBluetooth

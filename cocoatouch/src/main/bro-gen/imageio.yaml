@@ -1,4 +1,4 @@
-package: org.robovm.apple.imageio
+package: com.bugvm.apple.imageio
 include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml]
 library: ImageIO
 framework: ImageIO
@@ -150,7 +150,7 @@ functions:
     CGImageSourceCopy(TypeIdentifiers):
         class: CGImageSource
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: '@com.bugvm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
     CGImageSourceCopy(Properties).*:
         class: CGImageSource
         name: 'get#{g[0]}'

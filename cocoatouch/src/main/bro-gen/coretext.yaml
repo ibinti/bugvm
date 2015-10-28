@@ -1,4 +1,4 @@
-package: org.robovm.apple.coretext
+package: com.bugvm.apple.coretext
 include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, coremedia.yaml, uikit.yaml]
 library: CoreText
 framework: CoreText

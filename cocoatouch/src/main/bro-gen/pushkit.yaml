@@ -1,4 +1,4 @@
-package: org.robovm.apple.pushkit
+package: com.bugvm.apple.pushkit
 include: [foundation.yaml, dispatch.yaml]
 library: PushKit
 framework: PushKit

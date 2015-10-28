@@ -1,4 +1,4 @@
-package: org.robovm.apple.avfoundation
+package: com.bugvm.apple.avfoundation
 include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreanimation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, mediatoolbox.yaml, audiotoolbox.yaml, audiounit.yaml ]
 library: AVFoundation
 framework: AVFoundation
@@ -107,11 +107,11 @@ classes:
             'hasProtectedContent':
                 omit_prefix: true
             'availableMetadataFormats':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
             'availableChapterLocales':
                 type: NSArray<NSLocale>
             'availableMediaCharacteristicsWithMediaSelectionOptions':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
         methods:
             '+assetWithURL:':
                 name: create
@@ -141,13 +141,13 @@ classes:
                 return_type: NSArray<AVTimedMetadataGroup>
                 parameters:
                     commonKeys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
             '-chapterMetadataGroupsBestMatchingPreferredLanguages:':
                 name: getChapterMetadataGroupsBestMatchingPreferredLanguages
                 return_type: NSArray<AVTimedMetadataGroup>
                 parameters:
                     preferredLanguages:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-mediaSelectionGroupForMediaCharacteristic:':
                 name: getMediaSelectionGroup
                 parameters:
@@ -162,7 +162,7 @@ classes:
             'outputFileType':
                 type: String
             'supportedFileTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'metadata':
                 type: NSArray<AVMetadataItem>
             'audioTimePitchAlgorithm':
@@ -182,10 +182,10 @@ classes:
                 name: exportAsynchronously
             '+allExportPresets':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(AVAssetExportPreset.AsListMarshaler.class) List<AVAssetExportPreset>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(AVAssetExportPreset.AsListMarshaler.class) List<AVAssetExportPreset>'
             '+exportPresetsCompatibleWithAsset:':
                 name: getCompatibleExportPresets
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(AVAssetExportPreset.AsListMarshaler.class) List<AVAssetExportPreset>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(AVAssetExportPreset.AsListMarshaler.class) List<AVAssetExportPreset>'
             '+determineCompatibilityOfExportPreset:withAsset:outputFileType:completionHandler:':
                 name: determineCompatibilityOfExportPreset
                 parameters:
@@ -212,7 +212,7 @@ classes:
                 name: generateCGImagesAsynchronously
                 parameters:
                     requestedTimes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime>'
                     handler: 
                         type: '@Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError>'
             '+assetImageGeneratorWithAsset:':
@@ -268,7 +268,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     timeRanges:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
     AVAssetReaderOutputMetadataAdaptor: # DONE
         methods:
             '-init.*':
@@ -343,15 +343,15 @@ classes:
     AVAssetTrack: # DONE
         properties:
             'formatDescriptions':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CMFormatDescription>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CMFormatDescription>'
             'segments':
                 type: NSArray<AVAssetTrackSegment>
             'commonMetadata':
                 type: NSArray<AVMetadataItem>
             'availableMetadataFormats':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
             'availableTrackAssociationTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVTrackAssociationType.AsListMarshaler.class) List<AVTrackAssociationType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVTrackAssociationType.AsListMarshaler.class) List<AVTrackAssociationType>'
             'metadata':
                 type: NSArray<AVMetadataItem>
         methods:
@@ -384,7 +384,7 @@ classes:
     AVAssetWriter: # DONE
         properties:
             'availableMediaTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaType.AsListMarshaler.class) List<AVMediaType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMediaType.AsListMarshaler.class) List<AVMediaType>'
             'metadata':
                 type: NSArray<AVMetadataItem>
             'inputs':
@@ -497,7 +497,7 @@ classes:
     AVAssetWriterInputPassDescription: # DONE
         properties:
             'sourceTimeRanges':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
     AVAssetWriterInputPixelBufferAdaptor: # DONE
         properties:
             'sourcePixelBufferAttributes':
@@ -524,7 +524,7 @@ classes:
     AVAsynchronousVideoCompositionRequest: # DONE
         properties:
             'sourceTrackIDs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-sourceFrameByTrackID:':
                 name: getSourceFrame
@@ -589,7 +589,7 @@ classes:
         methods:
             '-applicableRenderingAlgorithms':
                 name: getApplicableRenderingAlgorithms
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(AVAudio3DMixingRenderingAlgorithm.AsListMarshaler.class) List<AVAudio3DMixingRenderingAlgorithm>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(AVAudio3DMixingRenderingAlgorithm.AsListMarshaler.class) List<AVAudio3DMixingRenderingAlgorithm>'
     AVAudioEnvironmentReverbParameters: # DONE
         methods:
             '-loadFactoryReverbPreset:':
@@ -817,7 +817,7 @@ classes:
             'orientation':
                 type: AVAudioSessionOrientation
             'supportedPolarPatterns':
-                type:  '@org.robovm.rt.bro.annotation.Marshaler(AVAudioSessionPolarPattern.AsListMarshaler.class) List<AVAudioSessionPolarPattern>'
+                type:  '@com.bugvm.rt.bro.annotation.Marshaler(AVAudioSessionPolarPattern.AsListMarshaler.class) List<AVAudioSessionPolarPattern>'
             '(selectedPolarPattern|preferredPolarPattern)':
                 type: AVAudioSessionPolarPattern
         methods:
@@ -1102,9 +1102,9 @@ classes:
     AVCaptureMetadataOutput: # DONE
         properties:
             'availableMetadataObjectTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType>'
             'metadataObjectTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType>'
             'metadataObjectsCallbackQueue':
                 annotations: ['@WeaklyLinked']
         methods:
@@ -1173,9 +1173,9 @@ classes:
                 name: outputSettings0
                 visibility: protected
             'availableImageDataCVPixelFormatTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType>'
             'availableImageDataCodecTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType>'
         methods:
             '-captureStillImageAsynchronouslyFromConnection:completionHandler:':
                 name: captureStillImageAsynchronously
@@ -1201,7 +1201,7 @@ classes:
                 marshaler: CVPixelFormatType.AsListMarshaler
                 annotations: ['@WeaklyLinked']
             'availableVideoCodecTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType>'
             'sampleBufferCallbackQueue':
                 annotations: ['@WeaklyLinked']
         methods:
@@ -1281,7 +1281,7 @@ classes:
                     mediaSelectionOptions:
                         type: NSArray<AVMediaSelectionOption>
                     preferredLanguages:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+mediaSelectionOptionsFromArray:withLocale:':
                 name: filterMediaSelectionOptionsByLocale
                 return_type: NSArray<AVMediaSelectionOption>
@@ -1295,7 +1295,7 @@ classes:
                     mediaSelectionOptions:
                         type: NSArray<AVMediaSelectionOption>
                     mediaCharacteristics:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
             '+mediaSelectionOptionsFromArray:withoutMediaCharacteristics:':
                 name: filterMediaSelectionOptionsWithoutMediaCharacteristics
                 return_type: NSArray<AVMediaSelectionOption>
@@ -1303,7 +1303,7 @@ classes:
                     mediaSelectionOptions:
                         type: NSArray<AVMediaSelectionOption>
                     mediaCharacteristics:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
     AVMediaSelectionOption: # DONE
         properties:
             'mediaType':
@@ -1313,7 +1313,7 @@ classes:
             'commonMetadata':
                 type: NSArray<AVMetadataItem>
             'availableMetadataFormats':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
         methods:
             '-hasMediaCharacteristic:':
                 trim_after_first_colon: true
@@ -1361,7 +1361,7 @@ classes:
                 name: loadValuesAsynchronously
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
             '+metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:':
                 name: filterMetadataItemsByPreferredLanguages
                 return_type: NSArray<AVMetadataItem>
@@ -1369,7 +1369,7 @@ classes:
                     metadataItems:
                         type: NSArray<AVMetadataItem>
                     preferredLanguages:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+metadataItemsFromArray:withLocale:':
                 name: filterMetadataItemsByLocale
                 return_type: NSArray<AVMetadataItem>
@@ -1499,7 +1499,7 @@ classes:
                 throws: NSErrorException
                 parameters:
                     timeRanges:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
                     tracks:
                         type: NSArray<AVAssetTrack>
             '-insertEmptyTimeRange:':
@@ -1582,7 +1582,7 @@ classes:
         methods:
             '+availableOutputSettingsPresets':
                 name: getAvailableOutputSettingsPresets
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(AVOutputSettingsPreset.AsListMarshaler.class) List<AVOutputSettingsPreset>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(AVOutputSettingsPreset.AsListMarshaler.class) List<AVOutputSettingsPreset>'
             '+outputSettingsAssistantWithPreset:':
                 name: create
                 parameters:
@@ -1625,7 +1625,7 @@ classes:
                 annotations: ['@WeaklyLinked']
                 parameters:
                     times:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime>'
             '-removeTimeObserver:':
                 trim_after_first_colon: true
             '-setMediaSelectionCriteria:forMediaCharacteristic:':
@@ -1639,13 +1639,13 @@ classes:
             'timedMetadata':
                 type: NSArray<AVMetadataItem>
             'automaticallyLoadedAssetKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'seekableTimeRanges':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
             'textStyleRules':
                 type: NSArray<AVTextStyleRule>
             'loadedTimeRanges':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
             'outputs':
                 type: NSArray<AVPlayerItemOutput>
             'seekingWaitsForVideoCompositionRendering':
@@ -1659,7 +1659,7 @@ classes:
                 name: init
                 parameters:
                     automaticallyLoadedAssetKeys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+playerItemWithURL:':
                 name: create
             '+playerItemWithAsset:':
@@ -1668,7 +1668,7 @@ classes:
                 name: create
                 parameters:
                     automaticallyLoadedAssetKeys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-currentTime':
                 property: true
             '-seekToTime.*':
@@ -1733,7 +1733,7 @@ classes:
                 name: init
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataIdentifier.AsListMarshaler.class) List<AVMetadataIdentifier>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataIdentifier.AsListMarshaler.class) List<AVMetadataIdentifier>'
             '-setDelegate:queue:':
                 trim_after_first_colon: true
                 annotations: ['@WeaklyLinked']
@@ -1777,17 +1777,17 @@ classes:
     AVPlayerMediaSelectionCriteria: # DONE
         properties:
             'preferredLanguages':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'preferredMediaCharacteristics':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
         methods:
             '-initWithPreferredLanguages:preferredMediaCharacteristics:':
                 name: init
                 parameters:
                     preferredLanguages:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     preferredMediaCharacteristics:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
     AVQueuePlayer: # DONE
         methods:
             '-initWithItems:':
@@ -1906,10 +1906,10 @@ classes:
                         type: AVURLAssetOptions
             '+audiovisualTypes':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+audiovisualMIMETypes':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+isPlayableExtendedMIMEType:':
                 trim_after_first_colon: true
             '+URLAssetWithURL:options:':
@@ -1951,7 +1951,7 @@ classes:
             'layerInstructions':
                 type: NSArray<AVVideoCompositionLayerInstruction>
             'requiredSourceTrackIDs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>'
     AVVideoCompositionLayerInstruction: # DONE
         methods:
             '-getTransformRampForTime:startTransform:endTransform:timeRange:':
@@ -2005,7 +2005,7 @@ protocols:
                 name: loadValuesAsynchronously
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
             '-statusOfValueForKey:error:':
                 name: getStatusOfValue
                 parameters:
@@ -2088,7 +2088,7 @@ protocols:
                     strings:
                         type: NSArray<NSAttributedString>
                     nativeSamples:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CMSampleBuffer>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CMSampleBuffer>'
     AVPlayerItemMetadataOutputPushDelegate: # DONE
         methods:
             '-metadataOutput:didOutputTimedMetadataGroups:fromPlayerItemTrack:':

@@ -1,4 +1,4 @@
-package: org.robovm.apple.coredata
+package: com.bugvm.apple.coredata
 include: [foundation.yaml]
 library: CoreData
 framework: CoreData
@@ -87,7 +87,7 @@ classes:
     NSAtomicStoreCacheNode: # DONE
         properties:
             'propertyCache':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
         methods:
             '-initWithObjectID:':
                 name: init
@@ -100,7 +100,7 @@ classes:
     NSBatchUpdateRequest: # DONE
         properties:
             'propertiesToUpdate':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression>'
         methods:
             '-init.*':
                 name: init
@@ -110,17 +110,17 @@ classes:
     NSEntityDescription: # DONE
         properties:
             'subentitiesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
             'subentities':
                 type: NSArray<NSEntityDescription>
             'propertiesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPropertyDescription>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPropertyDescription>'
             'properties':
                 type: NSArray<NSPropertyDescription>
             'attributesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription>'
             'relationshipsByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription>'
         methods:
             '-relationshipsWithDestinationEntity:':
                 name: getRelationshipsWithDestination
@@ -166,9 +166,9 @@ classes:
     NSFetchedResultsController: # DONE
         properties:
             'sectionIndexTitles':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'sections':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFetchedResultsSectionInfo>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFetchedResultsSectionInfo>'
             'fetchedObjects':
                 type: NSArray<NSManagedObject>
         methods:
@@ -192,9 +192,9 @@ classes:
             'sortDescriptors':
                 type: NSArray<NSSortDescriptor>
             'affectedStores':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'relationshipKeyPathsForPrefetching':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'propertiesToFetch':
                 type: NSArray<NSPropertyDescription>
             'propertiesToGroupBy':
@@ -255,12 +255,12 @@ classes:
                 name: init
                 parameters:
                     values:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-updateWithValues:version:':
                 name: update
                 parameters:
                     values:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-valueForPropertyDescription:':
                 name: getValue
     NSManagedObject: # DONE
@@ -295,13 +295,13 @@ classes:
                 visibility: private # switched arguments
             '-committedValuesForKeys:':
                 name: getCommittedValues
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-changedValues':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-changedValuesForCurrentEvent':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-validateValue:forKey:error:':
                 name: validateValue
                 throws: NSErrorException
@@ -371,15 +371,15 @@ classes:
     NSManagedObjectModel: # DONE
         properties:
             'entitiesByName':    
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
             'entities':
                 type: NSArray<NSEntityDescription>
             'configurations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'localizationDictionary':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             'fetchRequestTemplatesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFetchRequest>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFetchRequest>'
         methods:
             '-init':
                 exclude: true
@@ -401,7 +401,7 @@ classes:
                 name: getFetchRequestTemplate
                 parameters:
                     variables:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-isConfiguration:compatibleWithStoreMetadata:':
                 name: isConfigurationCompatibleWithStoreMetadata
                 parameters:
@@ -436,7 +436,7 @@ classes:
             'entityMappings':
                 type: NSArray<NSEntityMapping>
             'entityMappingsByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityMapping>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityMapping>'
         methods:
             '-initWithContentsOfURL:':
                 name: init
@@ -451,15 +451,15 @@ classes:
     NSMergeConflict: # DONE
         properties:
             '.*Snapshot':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
         methods:
             '-initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:':
                 name: init
                 parameters:
                     cachesnap:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
                     persnap:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
     NSMergePolicy: # DONE
         methods:
             '-init.*':
@@ -581,7 +581,7 @@ classes:
                 trim_after_first_colon: true
             '+registeredStoreTypes':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore>'
             '+registerStoreClass:forStoreType:':
                 name: registerStoreClassForType
                 parameters:
@@ -606,14 +606,14 @@ classes:
     NSPersistentStoreRequest: # DONE
         properties:
             'affectedStores':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     NSPersistentStoreResult: {} # DONE
     NSPropertyDescription: # DONE
         properties:
             'validationPredicates':
                 type: NSArray<NSPredicate>
             'validationWarnings':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-setValidationPredicates:withValidationWarnings:':
                 name: setValidationPredicatesAndWarnings
@@ -621,7 +621,7 @@ classes:
                     validationPredicates:
                         type: NSArray<NSPredicate>
                     validationWarnings:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     NSPropertyMapping: {} # DONE
     NSRelationshipDescription: {} # DONE
     NSSaveChangesRequest: # DONE

@@ -1,4 +1,4 @@
-package: org.robovm.apple.externalaccessory
+package: com.bugvm.apple.externalaccessory
 include: [foundation.yaml, dispatch.yaml, uikit.yaml]
 library: ExternalAccessory
 framework: ExternalAccessory

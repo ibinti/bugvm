@@ -1,4 +1,4 @@
-package: org.robovm.apple.networkextension
+package: com.bugvm.apple.networkextension
 include: [foundation.yaml]
 library: NetworkExtension
 framework: NetworkExtension
@@ -28,7 +28,7 @@ classes:
     NEOnDemandRule: # DONE
         properties:
             '(DNSSearchDomainMatch|DNSServerAddressMatch|SSIDMatch)':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     NEOnDemandRuleConnect: {} # DONE
     NEOnDemandRuleDisconnect: {} # DONE
     NEOnDemandRuleIgnore: {} # DONE
@@ -39,16 +39,16 @@ classes:
     NEEvaluateConnectionRule: # DONE
         properties:
             'matchDomains':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'useDNSServers':
                 name: DNSServers
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-init.*':
                 name: init
                 parameters:
                     domains:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     NEVPNConnection: # DONE
         methods:
             '-startVPNTunnelAndReturnError:':

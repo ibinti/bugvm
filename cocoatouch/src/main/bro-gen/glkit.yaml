@@ -1,4 +1,4 @@
-package: org.robovm.apple.glkit
+package: com.bugvm.apple.glkit
 include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, uikit.yaml, dispatch.yaml]
 library: GLKit
 framework: GLKit

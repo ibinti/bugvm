@@ -1,4 +1,4 @@
-package: org.robovm.apple.systemconfiguration
+package: com.bugvm.apple.systemconfiguration
 include: [foundation.yaml, corefoundation.yaml, dispatch.yaml]
 library: SystemConfiguration
 framework: SystemConfiguration

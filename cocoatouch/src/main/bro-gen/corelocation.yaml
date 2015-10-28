@@ -1,4 +1,4 @@
-package: org.robovm.apple.corelocation
+package: com.bugvm.apple.corelocation
 include: [foundation.yaml, addressbook.yaml, corebluetooth.yaml]
 library: CoreLocation
 framework: CoreLocation
@@ -120,7 +120,7 @@ classes:
         skip_def_constructor: true
         properties:
             'areasOfInterest':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'addressDictionary':
                 name: address
                 type: ABPersonAddress

@@ -1,4 +1,4 @@
-package: org.robovm.apple.twitter
+package: com.bugvm.apple.twitter
 include: [foundation.yaml, uikit.yaml, social.yaml, accounts.yaml]
 library: Twitter
 framework: Twitter

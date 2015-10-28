@@ -1,4 +1,4 @@
-package: org.robovm.apple.coremidi
+package: com.bugvm.apple.coremidi
 include: [foundation.yaml, corefoundation.yaml]
 library: CoreMIDI
 framework: CoreMIDI

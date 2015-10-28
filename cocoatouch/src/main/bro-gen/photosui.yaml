@@ -1,4 +1,4 @@
-package: org.robovm.apple.photosui
+package: com.bugvm.apple.photosui
 include: [foundation.yaml, photos.yaml, uikit.yaml]
 library: PhotosUI
 framework: PhotosUI

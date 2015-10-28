@@ -1,4 +1,4 @@
-package: org.robovm.apple.multipeerconnectivity
+package: com.bugvm.apple.multipeerconnectivity
 include: [foundation.yaml, uikit.yaml, security.yaml]
 library: MultipeerConnectivity
 framework: MultipeerConnectivity

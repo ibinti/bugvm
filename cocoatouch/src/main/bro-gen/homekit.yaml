@@ -1,4 +1,4 @@
-package: org.robovm.apple.homekit
+package: com.bugvm.apple.homekit
 include: [foundation.yaml]
 library: HomeKit
 framework: HomeKit

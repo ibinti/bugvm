@@ -1,4 +1,4 @@
-package: org.robovm.apple.opengles
+package: com.bugvm.apple.opengles
 include: [foundation.yaml]
 library: OpenGLES
 framework: OpenGLES

@@ -1,4 +1,4 @@
-package: org.robovm.apple.dispatch
+package: com.bugvm.apple.dispatch
 library: System
 default_class: Dispatch
 header: /usr/include/dispatch/dispatch.h

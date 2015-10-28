@@ -1,4 +1,4 @@
-package: org.robovm.apple.quicklook
+package: com.bugvm.apple.quicklook
 include: [foundation.yaml, coregraphics.yaml, uikit.yaml]
 library: QuickLook
 framework: QuickLook

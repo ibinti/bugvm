@@ -1,4 +1,4 @@
-package: org.robovm.apple.mobilecoreservices
+package: com.bugvm.apple.mobilecoreservices
 include: [foundation.yaml, corefoundation.yaml]
 library: MobileCoreServices
 framework: MobileCoreServices
@@ -30,7 +30,7 @@ functions:
     UTType(CreateAllIdentifiersForTag):
         class: UTType
         name: '#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: '@com.bugvm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
         parameters:
             inTagClass:
                 type: UTTagClass
@@ -43,7 +43,7 @@ functions:
     UTTypeCopy(AllTagsWithClass):
         class: UTType
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: '@com.bugvm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
         parameters:
             inTagClass:
                 type: UTTagClass

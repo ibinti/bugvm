@@ -1,4 +1,4 @@
-package: org.robovm.apple.coregraphics
+package: com.bugvm.apple.coregraphics
 include: [corefoundation.yaml, foundation.yaml, uikit.yaml]
 library: CoreGraphics
 framework: CoreGraphics

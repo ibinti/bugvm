@@ -1,4 +1,4 @@
-package: org.robovm.apple.coreaudio
+package: com.bugvm.apple.coreaudio
 include: [foundation.yaml, corefoundation.yaml]
 library: CoreAudio
 framework: CoreAudio

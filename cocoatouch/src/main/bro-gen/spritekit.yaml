@@ -1,4 +1,4 @@
-package: org.robovm.apple.spritekit
+package: com.bugvm.apple.spritekit
 include: [foundation.yaml, uikit.yaml, coregraphics.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml, glkit.yaml, scenekit.yaml]
 library: SpriteKit
 framework: SpriteKit
@@ -536,7 +536,7 @@ classes:
     SKTextureAtlas: # DONE
         properties:
             'textureNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-textureNamed:':
                 name: getTexture

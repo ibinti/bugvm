@@ -1,4 +1,4 @@
-package: org.robovm.apple.coretelephony
+package: com.bugvm.apple.coretelephony
 include: [foundation.yaml, corefoundation.yaml]
 library: CoreTelephony
 framework: CoreTelephony

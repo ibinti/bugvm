@@ -1,4 +1,4 @@
-package: org.robovm.apple.localauthentication
+package: com.bugvm.apple.localauthentication
 include: [foundation.yaml]
 library: LocalAuthentication
 framework: LocalAuthentication

@@ -1,4 +1,4 @@
-package: org.robovm.apple.storekit
+package: com.bugvm.apple.storekit
 include: [foundation.yaml, uikit.yaml]
 library: StoreKit
 framework: StoreKit
@@ -77,13 +77,13 @@ classes:
                 name: init
                 parameters:
                     productIdentifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>'
     SKProductsResponse: # DONE
         properties:
             'products':
                 type: NSArray<SKProduct>
             'invalidProductIdentifiers':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     SKReceiptRefreshRequest: # DONE
         properties:
             'receiptProperties':

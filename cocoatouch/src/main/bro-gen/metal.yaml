@@ -1,4 +1,4 @@
-package: org.robovm.apple.metal
+package: com.bugvm.apple.metal
 include: [foundation.yaml, dispatch.yaml]
 library: Metal
 framework: Metal
@@ -360,7 +360,7 @@ protocols:
         visibility: 'public final'
         properties:
             'functionNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-newFunctionWithName:':
                 name: newFunction

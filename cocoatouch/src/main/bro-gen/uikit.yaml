@@ -1,4 +1,4 @@
-package: org.robovm.apple.uikit
+package: com.bugvm.apple.uikit
 include: [foundation.yaml, coreanimation.yaml, coregraphics.yaml, coredata.yaml, coreimage.yaml, coretext.yaml, corelocation.yaml]
 library: UIKit
 framework: UIKit
@@ -353,9 +353,9 @@ classes:
                 return_type: NSArray<NSLayoutConstraint>
                 parameters:
                     metrics:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringNumberMapMarshaler.class) Map<String, Number>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringNumberMapMarshaler.class) Map<String, Number>'
                     views:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObjectProtocol>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObjectProtocol>'
             '+activateConstraints:':
                 trim_after_first_colon: true
                 parameters:
@@ -638,7 +638,7 @@ classes:
             'completionHandler':
                 type: '@Block VoidBlock2<String, Boolean>'
             'excludedActivityTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'completionWithItemsHandler':
                 type: '@Block VoidBlock4<String, Boolean, NSArray<NSObject>, NSError>'
         methods:
@@ -720,7 +720,7 @@ classes:
     UIBarButtonItem: # DONE
         properties:
             'possibleTitles':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String>'
         methods:
             '-initWithImage:style:target:action:':
                 name: init
@@ -1145,7 +1145,7 @@ classes:
         methods:
             '-actionsForTarget:forControlEvent:':
                 name: getActions
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-allControlEvents':
                 property: true
             '-allTargets':
@@ -1177,7 +1177,7 @@ classes:
     UIDictationPhrase: # DONE
         properties:
             'alternativeInterpretations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     UIDocument: # DONE
         methods:
             '-init.*':
@@ -1242,7 +1242,7 @@ classes:
                 name: init
                 parameters:
                     allowedUTIs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-init.*':
                 name: init
             '-addOptionWithTitle:image:order:handler:':
@@ -1273,7 +1273,7 @@ classes:
     UIDocumentPickerExtensionViewController: # DONE
         properties:
             'validTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-dismissGrantingAccessToURL:':
                 trim_after_first_colon: true
@@ -1285,7 +1285,7 @@ classes:
                 name: init
                 parameters:
                     allowedUTIs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-init.*':
                 name: init
     UIDynamicAnimator: # DONE
@@ -1366,12 +1366,12 @@ classes:
                 name: getBoldSystemFont
             '+fontNamesForFamilyName:':
                 name: getFontNamesForFamilyName
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+buttonFontSize':
                 name: getButtonFontSize
             '+familyNames':
                 name: getFamilyNames
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+italicSystemFontOfSize:':
                 name: getItalicSystemFont
             '+labelFontSize':
@@ -1570,14 +1570,14 @@ classes:
             'delegate':
                 type: UIImagePickerControllerDelegate
             'mediaTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+availableCaptureModesForCameraDevice:':
                 name: getAvailableCaptureModes
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(UIImagePickerControllerCameraCaptureMode.AsListMarshaler.class) List<UIImagePickerControllerCameraCaptureMode>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(UIImagePickerControllerCameraCaptureMode.AsListMarshaler.class) List<UIImagePickerControllerCameraCaptureMode>'
             '+availableMediaTypesForSourceType:':
                 name: getAvailableMediaTypes
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+isSourceTypeAvailable:':
                 trim_after_first_colon: true
             '+isCameraDeviceAvailable:':
@@ -1628,9 +1628,9 @@ classes:
     UILocalizedIndexedCollation: # DONE
         properties:
             'sectionTitles':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'sectionIndexTitles':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+currentCollation':
                 name: getCurrentCollation
@@ -1852,7 +1852,7 @@ classes:
             'colors':
                 type: NSArray<UIColor>
             'strings':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+generalPasteboard':
                 name: getGeneralPasteboard
@@ -1864,17 +1864,17 @@ classes:
                 name: removePasteboard
             '-pasteboardTypes':
                 name: getTypes
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-containsPasteboardTypes:':
                 name: contains
                 parameters:
                     pasteboardTypes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-containsPasteboardTypes:inItemSet:':
                 name: contains
                 parameters:
                     pasteboardTypes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-dataForPasteboardType:':
                 name: getData
             '-dataForPasteboardType:inItemSet:':
@@ -1884,7 +1884,7 @@ classes:
                 name: getItemsWithTypes
                 parameters:
                     pasteboardTypes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-pasteboardTypesForItemSet:':
                 name: getTypes0
                 visibility: private
@@ -2001,7 +2001,7 @@ classes:
                 name: canPrint
             '+printableUTIs':
                 name: getPrintableUTIs
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+sharedPrintController':
                 name: getSharedPrintController
             '-dismissAnimated:':
@@ -2185,7 +2185,7 @@ classes:
     UISearchBar: # DONE
         properties:
             'scopeButtonTitles':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-imageForSearchBarIcon:state:':
                 name: getImageForSearchBarIcon
@@ -2543,20 +2543,20 @@ classes:
                 name: getRangeOfMisspelledWordInString
             '-guessesForWordRange:inString:language:':
                 name: getGuessesForWord
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-completionsForPartialWordRange:inString:language:':
                 name: getCompletionsForPartialWord
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-ignoreWord:':
                 trim_after_first_colon: true
             '-ignoredWords':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-setIgnoredWords:':
                 trim_after_first_colon: true
                 parameters:
                     words:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+learnWord:':
                 trim_after_first_colon: true
             '+hasLearnedWord:':
@@ -2565,7 +2565,7 @@ classes:
                 trim_after_first_colon: true
             '+availableLanguages':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     UITextField: # DONE
         properties:
             'defaultTextAttributes':
@@ -3183,7 +3183,7 @@ protocols:
                 name: getViewController
                 parameters:
                     identifierComponents:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-application:willEncodeRestorableStateWithCoder:':
                 name: willEncodeRestorableState
             '-application:willFinishLaunchingWithOptions:':
@@ -3380,7 +3380,7 @@ protocols:
         methods:
             '-guidedAccessRestrictionIdentifiers':
                 name: getIdentifiers
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-guidedAccessRestrictionWithIdentifier:didChangeState:':
                 name: didChangeState
             '-textForGuidedAccessRestrictionWithIdentifier:':
@@ -3736,7 +3736,7 @@ protocols:
                 name: getNumberOfSections
             '-sectionIndexTitlesForTableView:':
                 name: getSectionIndexTitles
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-tableView:commitEditingStyle:forRowAtIndexPath:':
                 name: commitEditingStyleForRow
             '-tableView:canMoveRowAtIndexPath:':

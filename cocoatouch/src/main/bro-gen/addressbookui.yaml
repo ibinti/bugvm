@@ -1,4 +1,4 @@
-package: org.robovm.apple.addressbookui
+package: com.bugvm.apple.addressbookui
 include: [foundation.yaml, uikit.yaml, addressbook.yaml]
 library: AddressBookUI
 framework: AddressBookUI
@@ -22,13 +22,13 @@ classes:
     ABPeoplePickerNavigationController: # DONE
         properties:
             'displayedProperties':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty>'
     ABPersonViewController: # DONE
         properties:
             'displayedPerson':
                 type: ABPerson
             'displayedProperties':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty>'
         methods:
             '-setHighlightedItemForProperty:withIdentifier:':
                 name: setHighlightedItem

@@ -1,4 +1,4 @@
-package: org.robovm.apple.newsstandkit
+package: com.bugvm.apple.newsstandkit
 include: [foundation.yaml]
 library: NewsstandKit
 framework: NewsstandKit

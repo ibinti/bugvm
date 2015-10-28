@@ -1,4 +1,4 @@
-package: org.robovm.apple.coreanimation
+package: com.bugvm.apple.coreanimation
 include: [foundation.yaml, coregraphics.yaml, coreimage.yaml, coretext.yaml, opengles.yaml, metal.yaml]
 library: QuartzCore
 framework: QuartzCore
@@ -82,7 +82,7 @@ classes:
     CAGradientLayer: # DONE
         properties:
             'colors':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CGColor.AsListMarshaler.class) List<CGColor>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(CGColor.AsListMarshaler.class) List<CGColor>'
             'locations':
                 type: NSArray<NSNumber>
             'type':
@@ -123,7 +123,7 @@ classes:
                 type: NSArray<CIFilter>
                 annotations: ['@WeaklyLinked']
             'actions':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, CAAction>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, CAAction>'
             'minificationFilter':
                 type: CAFilter
             'magnificationFilter':
@@ -192,7 +192,7 @@ classes:
                 name: removeAnimation
             '-animationKeys':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-animationForKey:':
                 name: getAnimation
             '+layer':
@@ -326,7 +326,7 @@ protocols:
                     key:
                         type: NSString
                     dict:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
     CAMediaTiming: # DONE
         properties:
             'fillMode':

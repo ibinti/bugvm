@@ -1,4 +1,4 @@
-package: org.robovm.apple.coremotion
+package: com.bugvm.apple.coremotion
 include: [foundation.yaml]
 library: CoreMotion
 framework: CoreMotion

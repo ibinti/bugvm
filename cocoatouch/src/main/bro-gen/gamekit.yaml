@@ -1,4 +1,4 @@
-package: org.robovm.apple.gamekit
+package: com.bugvm.apple.gamekit
 include: [foundation.yaml, uikit.yaml]
 library: GameKit
 framework: GameKit
@@ -93,7 +93,7 @@ classes:
                 name: getChallengeComposeController
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     completionHandler:
                         type: '@Block VoidBlock3<UIViewController, Boolean, NSArray<NSString>>' # TODO asStringListMarshaler
             '-selectChallengeablePlayers:withCompletionHandler:':
@@ -107,7 +107,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     completionHandler:
                         type: '@Block VoidBlock2<NSArray<NSString>, NSError>' # TODO asStringListMarshaler
             '+reportAchievements:withEligibleChallenges:withCompletionHandler:':
@@ -121,7 +121,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     GKAchievementChallenge: {} # DONE
     GKAchievementDescription: # DONE
          methods:
@@ -159,12 +159,12 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-addRecipientsWithEmailAddresses:':
                 trim_after_first_colon: true
                 parameters:
                     emailAddresses:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+maxNumberOfRecipients':
                 name: getMaxNumberOfRecipients
     GKGameCenterViewController: {} # DONE
@@ -180,7 +180,7 @@ classes:
                 name: init
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-initWithPlayers:':
                 name: init
                 parameters:
@@ -220,7 +220,7 @@ classes:
     GKLocalPlayer: # DONE
         properties:
             'friends':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-loadFriendPlayersWithCompletionHandler:':
                 name: loadFriendPlayers
@@ -271,7 +271,7 @@ classes:
             'players':
                 type: NSArray<GKPlayer>
             'playerIDs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-sendData:toPlayers:dataMode:error:':
                 name: sendDataToPlayers
@@ -284,7 +284,7 @@ classes:
                 throws: NSErrorException
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-sendDataToAllPlayers:withDataMode:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
@@ -345,7 +345,7 @@ classes:
             'recipients':
                 type: NSArray<GKPlayer>
             'playersToInvite':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+maxPlayersAllowedForMatchOfType:':
                 name: getMaxPlayersAllowedForMatchType
@@ -362,7 +362,7 @@ classes:
                 name: loadPlayers
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     completionHandler:
                         type: '@Block VoidBlock2<NSArray<GKPlayer>, NSError>'
             '-loadPhotoForSize:withCompletionHandler:':
@@ -395,14 +395,14 @@ classes:
                 name: getChallengeComposeController
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     completionHandler:
                         type: '@Block VoidBlock3<UIViewController, Boolean, NSArray<NSString>>' # TODO asStringListMarshaler
             '-issueChallengeToPlayers:message:':
                 trim_after_first_colon: true
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+reportScores:withEligibleChallenges:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
@@ -422,7 +422,7 @@ classes:
                 throws: NSErrorException
                 parameters:
                     peers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-sendDataToAllPeers:withDataMode:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
@@ -445,7 +445,7 @@ classes:
                 name: disconnectPeer
             '-peersWithConnectionState:':
                 name: getPeers
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     GKTurnBasedEventHandler: # DONE
         methods:
             '+sharedTurnBasedEventHandler':
@@ -461,12 +461,12 @@ classes:
                 name: cancel
                 parameters:
                     arguments:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-replyWithLocalizableMessageKey:arguments:data:completionHandler:':
                 name: reply
                 parameters:
                     arguments:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     GKTurnBasedExchangeReply: {} # DONE
     GKTurnBasedMatch: # DONE
         properties:
@@ -479,7 +479,7 @@ classes:
                 name: setLocalizableMessage
                 parameters:
                     arguments:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-rematchWithCompletionHandler:':
                 name: rematch
             '-acceptInviteWithCompletionHandler:':
@@ -524,14 +524,14 @@ classes:
                     participants:
                         type: NSArray<GKTurnBasedParticipant>
                     arguments:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-sendReminderToParticipants:localizableMessageKey:arguments:completionHandler:':
                 name: sendReminder
                 parameters:
                     participants:
                         type: NSArray<GKTurnBasedParticipant>
                     arguments:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-endTurnWithNextParticipant:matchData:completionHandler:':
                 name: endTurn
             '-participantQuitInTurnWithOutcome:nextParticipant:matchData:completionHandler:':
@@ -556,7 +556,7 @@ classes:
     GKVoiceChat: # DONE
         properties:
             'playerIDs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'players':
                 type: NSArray<GKPlayer>
         methods:
@@ -635,7 +635,7 @@ protocols:
                 name: didRequestMatch
                 parameters:
                     playerIDsToInvite:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     GKLeaderboardViewControllerDelegate: # DONE
         methods:
             '-leaderboardViewControllerDidFinish:':
@@ -674,7 +674,7 @@ protocols:
                 name: didFindPlayers
                 parameters:
                     playerIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-matchmakerViewController:didReceiveAcceptFromHostedPlayer:':
                 name: didReceiveAccept
             '-matchmakerViewController:hostedPlayerDidAccept:':
@@ -714,7 +714,7 @@ protocols:
                 name: handleInvite
                 parameters:
                     playersToInvite:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-handleTurnEventForMatch:didBecomeActive:':
                 name: handleTurnEvent
             '-handleTurnEventForMatch:':
@@ -727,7 +727,7 @@ protocols:
                 name: didRequestMatch
                 parameters:
                     playerIDsToInvite:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-player:receivedTurnEventForMatch:didBecomeActive:':
                 name: receivedTurnEvent
             '-player:matchEnded:':

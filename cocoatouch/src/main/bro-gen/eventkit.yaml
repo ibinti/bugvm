@@ -1,4 +1,4 @@
-package: org.robovm.apple.eventkit
+package: com.bugvm.apple.eventkit
 include: [foundation.yaml, coregraphics.yaml, corelocation.yaml, addressbook.yaml]
 library: EventKit
 framework: EventKit

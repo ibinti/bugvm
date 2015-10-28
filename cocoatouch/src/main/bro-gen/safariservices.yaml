@@ -1,4 +1,4 @@
-package: org.robovm.apple.safariservices
+package: com.bugvm.apple.safariservices
 include: [foundation.yaml]
 library: SafariServices
 framework: SafariServices

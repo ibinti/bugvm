@@ -1,4 +1,4 @@
-package: org.robovm.apple.social
+package: com.bugvm.apple.social
 include: [foundation.yaml, uikit.yaml, coregraphics.yaml, accounts.yaml]
 library: Social
 framework: Social

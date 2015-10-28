@@ -1,4 +1,4 @@
-package: org.robovm.apple.coremedia
+package: com.bugvm.apple.coremedia
 include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coregraphics.yaml, corevideo.yaml, audiotoolbox.yaml]
 library: CoreMedia
 framework: CoreMedia

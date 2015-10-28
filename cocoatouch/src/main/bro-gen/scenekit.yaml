@@ -1,4 +1,4 @@
-package: org.robovm.apple.scenekit
+package: com.bugvm.apple.scenekit
 include: [foundation.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml, dispatch.yaml, glkit.yaml, spritekit.yaml, opengles.yaml]
 library: SceneKit
 framework: SceneKit
@@ -299,7 +299,7 @@ classes:
             'constraints':
                 type: NSArray<SCNConstraint>
             'filters':
-                type: NSArray<org.robovm.apple.coreimage.CIFilter>
+                type: NSArray<com.bugvm.apple.coreimage.CIFilter>
             'particleSystems':
                 type: NSArray<SCNParticleSystem>
         methods:
@@ -360,7 +360,7 @@ classes:
             'particleDiesOnCollision':
                 getter: particleDiesOnCollision
             'propertyControllers':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsPropertyControllerMapMarshaler.class) Map<SCNParticleProperty, SCNParticlePropertyController>'            
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsPropertyControllerMapMarshaler.class) Map<SCNParticleProperty, SCNParticlePropertyController>'
         methods:
             '+particleSystem.*':
                 name: create
@@ -368,14 +368,14 @@ classes:
                 name: handleEventForProperties
                 parameters:
                     properties:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsListMarshaler.class) List<SCNParticleProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsListMarshaler.class) List<SCNParticleProperty>'
                     block:
                         type: '@Block("(,,,@MachineSizedSInt)") VoidBlock4<VoidPtr.VoidPtrPtr, VoidPtr, IntPtr, Long>'
             '-addModifierForProperties:atStage:withBlock:':
                 trim_after_first_colon: true
                 parameters:
                     properties:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsListMarshaler.class) List<SCNParticleProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsListMarshaler.class) List<SCNParticleProperty>'
                     block:
                         type: '@Block("(,,,@MachineSizedSInt)") VoidBlock4<VoidPtr.VoidPtrPtr, VoidPtr, IntPtr, Long>'
             '-removeModifiersOfStage:':
@@ -470,7 +470,7 @@ classes:
                     shapes:
                         type: NSArray<SCNPhysicsShape>
                     transforms:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
     SCNPhysicsVehicleWheel: # DONE
         methods:
             '+wheelWithNode:':
@@ -600,7 +600,7 @@ classes:
                         type: 'Class<? extends NSObject>'
             '-identifiersOfEntriesWithClass:':
                 name: getIdentifiersOfEntriesWithClass
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                 parameters:
                     entryClass:
                         type: 'Class<? extends NSObject>'
@@ -614,7 +614,7 @@ classes:
     SCNSkinner: # DONE
          properties:
             'boneInverseBindTransforms':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
             'bones':
                 type: NSArray<SCNNode>
          methods:
@@ -624,7 +624,7 @@ classes:
                     bones:
                         type: NSArray<SCNNode>
                     boneInverseBindTransforms:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
     SCNTechnique: # DONE
         methods:
             '-handleBindingOfSymbol:usingBlock:':
@@ -679,7 +679,7 @@ protocols:
                 name: removeAnimation
             '-animationKeys':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-animationForKey:':
                 name: getAnimation
             '-pauseAnimationForKey:':
@@ -717,7 +717,7 @@ protocols:
                 trim_after_first_colon: true
                 parameters:
                     arguments:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D>'
     SCNPhysicsContactDelegate: # DONE
         methods:
             '-physicsWorld:didBeginContact:':
@@ -771,7 +771,7 @@ protocols:
     SCNShadable: # DONE
         properties:
             'shaderModifiers':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String>'
         methods:
             '-handleBindingOfSymbol:usingBlock:':    
                 trim_after_first_colon: true

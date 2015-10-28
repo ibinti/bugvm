@@ -1,4 +1,4 @@
-package: org.robovm.apple.mediatoolbox
+package: com.bugvm.apple.mediatoolbox
 include: [foundation.yaml, corefoundation.yaml, coremedia.yaml, coreaudio.yaml, audiotoolbox.yaml]
 library: MediaToolbox
 framework: MediaToolbox

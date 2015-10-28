@@ -1,4 +1,4 @@
-package: org.robovm.apple.gamecontroller
+package: com.bugvm.apple.gamecontroller
 include: [foundation.yaml]
 library: GameController
 framework: GameController

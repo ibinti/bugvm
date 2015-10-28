@@ -1,4 +1,4 @@
-package: org.robovm.apple.avkit
+package: com.bugvm.apple.avkit
 include: [foundation.yaml, uikit.yaml, avfoundation.yaml, coregraphics.yaml, iad.yaml]
 library: AVKit
 framework: AVKit

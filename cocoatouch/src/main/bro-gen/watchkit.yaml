@@ -1,4 +1,4 @@
-package: org.robovm.apple.watchkit
+package: com.bugvm.apple.watchkit
 include: [foundation.yaml, uikit.yaml, coregraphics.yaml, mapkit.yaml, corelocation.yaml]
 library: WatchKit
 framework: WatchKit

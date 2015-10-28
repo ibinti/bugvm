@@ -1,4 +1,4 @@
-package: org.robovm.apple.assetslibrary
+package: com.bugvm.apple.assetslibrary
 include: [foundation.yaml, coregraphics.yaml, imageio.yaml]
 library: AssetsLibrary
 framework: AssetsLibrary

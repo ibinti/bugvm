@@ -1,4 +1,4 @@
-package: org.robovm.apple.messageui
+package: com.bugvm.apple.messageui
 include: [foundation.yaml, uikit.yaml]
 library: MessageUI
 framework: MessageUI

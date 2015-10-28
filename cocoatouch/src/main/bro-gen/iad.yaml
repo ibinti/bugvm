@@ -1,4 +1,4 @@
-package: org.robovm.apple.iad
+package: com.bugvm.apple.iad
 include: [foundation.yaml, uikit.yaml, mediaplayer.yaml, coregraphics.yaml, avkit.yaml]
 library: iAd
 framework: iAd

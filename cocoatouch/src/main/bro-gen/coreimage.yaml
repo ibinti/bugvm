@@ -1,4 +1,4 @@
-package: org.robovm.apple.coreimage
+package: com.bugvm.apple.coreimage
 include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, corevideo.yaml, imageio.yaml, uikit.yaml]
 library: CoreImage
 framework: CoreImage
@@ -96,12 +96,12 @@ classes:
                         type: CIFilterInputParameters
             '+filterNames.*':
                 name: getFilterNames
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                 parameters:
                     category:
                         type: CIFilterCategory
                     categories:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(CIFilterCategory.AsListMarshaler.class) List<CIFilterCategory>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(CIFilterCategory.AsListMarshaler.class) List<CIFilterCategory>'
             '-name':
                 property: true
             '-attributes':
@@ -109,7 +109,7 @@ classes:
                 return_type: CIFilterAttributes
             '-(inputKeys|outputKeys)':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     CIImage: # DONE
         methods:
             '-initWithCVPixelBuffer:.*':

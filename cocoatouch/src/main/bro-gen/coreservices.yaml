@@ -1,4 +1,4 @@
-package: org.robovm.apple.coreservices
+package: com.bugvm.apple.coreservices
 include: [foundation.yaml, corefoundation.yaml]
 library: CFNetwork
 framework: CFNetwork

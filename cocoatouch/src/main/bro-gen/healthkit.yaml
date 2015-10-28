@@ -1,4 +1,4 @@
-package: org.robovm.apple.healthkit
+package: com.bugvm.apple.healthkit
 include: [foundation.yaml]
 library: HealthKit
 framework: HealthKit

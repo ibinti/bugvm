@@ -1,4 +1,4 @@
-package: org.robovm.apple.webkit
+package: com.bugvm.apple.webkit
 include: [foundation.yaml, uikit.yaml, coregraphics.yaml]
 library: WebKit
 framework: WebKit

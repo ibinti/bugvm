@@ -1,4 +1,4 @@
-package: org.robovm.apple.photos
+package: com.bugvm.apple.photos
 include: [foundation.yaml, coregraphics.yaml, uikit.yaml, corelocation.yaml, avfoundation.yaml]
 library: Photos
 framework: Photos
@@ -113,7 +113,7 @@ classes:
             '(displaySizeImage|avAsset|location)':
                 annotations: ['@WeaklyLinked']
             'fullSizeImageOrientation':
-                type: org.robovm.apple.imageio.CGImagePropertyOrientation
+                type: com.bugvm.apple.imageio.CGImagePropertyOrientation
                 annotations: ['@WeaklyLinked']
     PHContentEditingInputRequestOptions: {} # DONE
     PHContentEditingOutput: # DONE
@@ -233,7 +233,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+fetchKeyAssetsInAssetCollection:options:':
                 trim_after_first_colon: true
             '+fetchAssetsWithBurstIdentifier:options:':
@@ -263,7 +263,7 @@ classes:
     PHAssetCollection: # DONE
         properties:
             'localizedLocationNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'approximateLocation':
                 annotations: ['@WeaklyLinked']
         methods:
@@ -271,7 +271,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+fetchAssetCollectionsWithType:subtype:options:':
                 trim_after_first_colon: true
             '+fetchAssetCollectionsContainingAsset:withType:options:':
@@ -295,7 +295,7 @@ classes:
     PHCollectionList: # DONE
         properties:
             'localizedLocationNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+fetchCollectionListsContainingCollection:options:':
                 trim_after_first_colon: true
@@ -303,7 +303,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+fetchCollectionListsWithType:subtype:options:':
                 trim_after_first_colon: true
             '+fetchMomentListsWithSubtype:containingMoment:options:':

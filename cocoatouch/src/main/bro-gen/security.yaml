@@ -1,4 +1,4 @@
-package: org.robovm.apple.security
+package: com.bugvm.apple.security
 include: [foundation.yaml, corefoundation.yaml, dispatch.yaml]
 clang_args: ['-x', 'objective-c']
 library: Security

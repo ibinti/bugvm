@@ -1,4 +1,4 @@
-package: org.robovm.apple.corevideo
+package: com.bugvm.apple.corevideo
 include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, metal.yaml]
 library: CoreVideo
 framework: CoreVideo

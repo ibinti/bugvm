@@ -1,4 +1,4 @@
-package: org.robovm.apple.passkit
+package: com.bugvm.apple.passkit
 include: [foundation.yaml, uikit.yaml, addressbook.yaml]
 library: PassKit
 framework: PassKit
@@ -86,7 +86,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     supportedNetworks:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
     PKPaymentButton: # DONE
         methods:
             '+buttonWithType:style:':
@@ -95,7 +95,7 @@ classes:
     PKPaymentRequest: # DONE
         properties:
             'supportedNetworks':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
             'paymentSummaryItems':
                 type: NSArray<PKPaymentSummaryItem>
             'shippingMethods':

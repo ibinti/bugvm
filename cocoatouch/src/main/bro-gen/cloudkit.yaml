@@ -1,4 +1,4 @@
-package: org.robovm.apple.cloudkit
+package: com.bugvm.apple.cloudkit
 include: [foundation.yaml, corelocation.yaml]
 library: CloudKit
 framework: CloudKit
@@ -129,7 +129,7 @@ classes:
     CKNotification: # DONE
         properties:
             'alertLocalizationArgs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-init':
                 exclude: true
@@ -137,19 +137,19 @@ classes:
                 name: create
                 parameters:
                     notificationDictionary:
-                        type: org.robovm.apple.uikit.UIRemoteNotification
+                        type: com.bugvm.apple.uikit.UIRemoteNotification
     CKQueryNotification: # DONE
         properties:
             'recordFields':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
     CKRecordZoneNotification: {} # DONE
     CKNotificationID: {} # DONE
     CKNotificationInfo: # DONE
         properties:
             'alertLocalizationArgs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     CKQuery: # DONE
         properties:
             'sortDescriptors':
@@ -179,7 +179,7 @@ classes:
                         type: NSObject # We don't use CKRecordValue here because we don't want to make several Foundation objects implement the CKRecordValue interface.
             '-(allKeys|allTokens|changedKeys)':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-encodeSystemFieldsWithCoder:':
                 name: encodeSystemFields
             '-objectForKeyedSubscript:':
@@ -230,7 +230,7 @@ classes:
     CKFetchRecordChangesOperation: # DONE
         properties:
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-init.*':
                 name: init
@@ -239,7 +239,7 @@ classes:
             'recordIDs':
                 type: NSArray<CKRecordID>
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'fetchRecordsCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<CKRecordID, CKRecord>, NSError>'
         methods:
@@ -271,7 +271,7 @@ classes:
     CKFetchSubscriptionsOperation: # DONE
         properties:
             'subscriptionIDs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'fetchSubscriptionCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError>' # TODO asStringMapMarshaler
         methods:
@@ -281,7 +281,7 @@ classes:
                 name: init
                 parameters:
                     subscriptionIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+fetchAllSubscriptionsOperation':
                 name: createFetchAllSubscriptionsOperation
     CKModifyRecordsOperation: # DONE
@@ -325,7 +325,7 @@ classes:
             'subscriptionsToSave':
                 type: NSArray<CKSubscription>
             'subscriptionIDsToDelete':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'modifySubscriptionsCompletionBlock':
                 type: '@Block VoidBlock3<NSArray<CKSubscription>, NSArray<NSString>, NSError>' # TODO asStringListMarshaler
         methods:
@@ -335,11 +335,11 @@ classes:
                     subscriptionsToSave:
                         type: NSArray<CKSubscription>
                     subscriptionIDsToDelete:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     CKQueryOperation: # DONE
         properties:
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-init':
                 exclude: true
@@ -355,7 +355,7 @@ classes:
     CKDiscoverUserInfosOperation: # DONE
         properties:
             'emailAddresses':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'userRecordIDs':
                 type: NSArray<CKRecordID>
             'discoverUserInfosCompletionBlock':
@@ -367,7 +367,7 @@ classes:
                 name: init
                 parameters:
                     emailAddresses:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     userRecordIDs:
                         type: NSArray<CKRecordID>
     CKFetchNotificationChangesOperation: # DONE

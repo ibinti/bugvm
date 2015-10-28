@@ -1,4 +1,4 @@
-package: org.robovm.apple.coreaudiokit
+package: com.bugvm.apple.coreaudiokit
 include: [foundation.yaml, audiounit.yaml, coreaudio.yaml, uikit.yaml]
 library: CoreAudioKit
 framework: CoreAudioKit

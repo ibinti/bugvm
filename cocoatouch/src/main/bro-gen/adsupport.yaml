@@ -1,4 +1,4 @@
-package: org.robovm.apple.adsupport
+package: com.bugvm.apple.adsupport
 include: [foundation.yaml]
 library: AdSupport
 framework: AdSupport

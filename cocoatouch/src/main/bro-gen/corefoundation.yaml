@@ -1,4 +1,4 @@
-package: org.robovm.apple.corefoundation
+package: com.bugvm.apple.corefoundation
 include: [foundation.yaml, dispatch.yaml, coreservices.yaml, coremedia.yaml, uikit.yaml, coretext.yaml]
 library: CoreFoundation
 framework: CoreFoundation

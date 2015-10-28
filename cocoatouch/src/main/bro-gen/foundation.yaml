@@ -1,4 +1,4 @@
-package: org.robovm.apple.foundation
+package: com.bugvm.apple.foundation
 include: [corefoundation.yaml, uikit.yaml, coretext.yaml, coreanimation.yaml, coredata.yaml, coregraphics.yaml, coremedia.yaml, security.yaml, dispatch.yaml]
 library: Foundation
 framework: Foundation
@@ -329,9 +329,9 @@ classes:
     NSBundle: # DONE
         properties:
             'executableArchitectures':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSBundleExecutableArchitectureType.AsListMarshaler.class) List<NSBundleExecutableArchitectureType>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSBundleExecutableArchitectureType.AsListMarshaler.class) List<NSBundleExecutableArchitectureType>'
             '(preferredLocalizations|localizations)':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+mainBundle':
                 property: true
@@ -342,20 +342,20 @@ classes:
                 name: findResourcePathInBundle
             '+pathsForResourcesOfType:inDirectory:':
                 name: findResourcesPathsInBundle
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+URLForResource:withExtension:subdirectory:inBundleWithURL:':
                 name: findResourceURLInBundle
             '+URLsForResourcesWithExtension:subdirectory:inBundleWithURL:':
                 name: findResourceURLsInBundle
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+preferredLocalizationsFromArray:.*':
                 name: getPreferredLocalizations
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                 parameters:
                     localizationsArray:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                     preferencesArray:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-pathForAuxiliaryExecutable:':
                 name: findAuxiliaryExecutablePath
             '-pathForResource:ofType:':
@@ -366,10 +366,10 @@ classes:
                 name: findResourcePath
             '-pathsForResourcesOfType:inDirectory:':
                 name: findResourcesPaths
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-pathsForResourcesOfType:inDirectory:forLocalization:':
                 name: findResourcesPaths
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-classNamed:':
                 name: getClassNamed
             '-loadAndReturnError:':
@@ -440,7 +440,7 @@ classes:
             'calendarIdentifier':
                 type: NSCalendarIdentifier
             '.*Symbols':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+currentCalendar':
                 property: true
@@ -505,7 +505,7 @@ classes:
     NSCoder: # DONE
         properties:
             'allowedClasses':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
         methods:
             '-decodeArrayOfObjCType:count:at:': {exclude: true}
             '-decodeValueOfObjCType:at:': {exclude: true}
@@ -536,7 +536,7 @@ classes:
                 visibility: protected # reordering parameters
                 parameters:
                     classes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
             '-(encode[a-zA-Z0-9]+):forKey:':
                 name: '#{g[0]}0'
                 visibility: protected # reordering parameters
@@ -778,7 +778,7 @@ classes:
     NSDateFormatter: # DONE
         properties:
             '.*Symbols':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-getObjectValue:forString:range:error:': {exclude: true}
             '+defaultFormatterBehavior':
@@ -933,7 +933,7 @@ classes:
         skip_def_constructor: true
         properties:
             'localizedRecoveryOptions':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'userInfo':
                 type: NSErrorUserInfo
             'recoveryAttempter':
@@ -1037,7 +1037,7 @@ classes:
                 trim_after_first_colon: true
             '+filePresenters':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFilePresenter>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFilePresenter>'
     NSFileHandle: # DONE
         methods:
             '-init.*':
@@ -1078,22 +1078,22 @@ classes:
                 name: readInBackgroundAndNotify
                 parameters:
                     modes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-readToEndOfFileInBackgroundAndNotifyForModes:':
                 name: readToEndOfFileInBackgroundAndNotify
                 parameters:
                     modes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-acceptConnectionInBackgroundAndNotifyForModes:':
                 name: acceptConnectionInBackgroundAndNotify
                 parameters:
                     modes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-waitForDataInBackgroundAndNotifyForModes:':
                 name: waitForDataInBackgroundAndNotify
                 parameters:
                     modes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     NSFileManager: # DONE
         properties:
             'delegate':
@@ -1107,14 +1107,14 @@ classes:
                 visibility: protected
                 parameters:
                     propertyKeys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
             '-contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:':
                 name: getContentsOfDirectoryAtURL
                 return_type: NSArray<NSURL>
                 throws: NSErrorException
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
             '-URLsForDirectory:inDomains:':
                 name: getURLsForDirectory
                 return_type: NSArray<NSURL>
@@ -1148,7 +1148,7 @@ classes:
                 throws: NSErrorException
             '-subpathsOfDirectoryAtPath:error:':
                 name: getSubpathsOfDirectoryAtPath
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
                 throws: NSErrorException
             '-attributesOfItemAtPath:error:':
                 name: getAttributesOfItemAtPath
@@ -1223,7 +1223,7 @@ classes:
                 name: getDisplayNameAtPath
             '-componentsToDisplayForPath:':
                 name: getComponentsToDisplayForPath
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-enumeratorAtPath:':
                 name: getEnumeratorAtPath
             '-enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:':
@@ -1231,10 +1231,10 @@ classes:
                 visibility: protected
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
             '-subpathsAtPath:':
                 name: getSubpathsAtPath
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-contentsAtPath:':
                 name: getContentsAtPath
             '-createFileAtPath:contents:attributes:':
@@ -1244,7 +1244,7 @@ classes:
                         type: NSFileAttributes
             '-fileSystemRepresentationWithPath:':
                 name: getFileSystemRepresentationForPath
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
             '-stringWithFileSystemRepresentation:length:':
                 name: getPathForFileSystemRepresentation
             '-replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:':
@@ -1309,7 +1309,7 @@ classes:
             'fileAttributes':
                 type: NSFileAttributes
             'fileWrappers':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>'
         methods:
             '-initWithURL:options:error:':
                 name: init
@@ -1318,7 +1318,7 @@ classes:
                 name: init
                 parameters:
                     childrenByPreferredName:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>'
             '-initWithSerializedRepresentation:':
                 name: initSerialized
                 constructor: false
@@ -1429,7 +1429,7 @@ classes:
             'properties':
                 type: NSHTTPCookieAttributes
             'portList':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>'
         methods:
             '-initWithProperties:':
                 name: init
@@ -1440,7 +1440,7 @@ classes:
                 exclude: true
             '+requestHeaderFieldsWithCookies:':
                 name: getRequestHeaderFieldsWithCookies
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
                 parameters:
                     cookies:
                         type: NSArray<NSHTTPCookie>
@@ -1449,7 +1449,7 @@ classes:
                 return_type: NSArray<NSHTTPCookie>
                 parameters:
                     headerFields:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
                     URL:
                         name: url
     NSHTTPCookieStorage: # DONE
@@ -1490,13 +1490,13 @@ classes:
     NSHTTPURLResponse: # DONE
         properties:
             'allHeaderFields':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
         methods:
             '-initWithURL:statusCode:HTTPVersion:headerFields:':
                 name: init
                 parameters:
                     headerFields:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             '+localizedStringForStatusCode:':
                 name: getLocalizedStatusCode
     NSIndexPath: # DONE
@@ -1640,7 +1640,7 @@ classes:
     NSItemProvider: # DONE
         properties:
             'registeredTypeIdentifiers':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'previewImageHandler':
                 type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<?, ?>>' # todo dictionary marshaling
         methods:
@@ -1761,13 +1761,13 @@ classes:
     NSLinguisticTagger: # DONE
         properties:
             'tagSchemes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>'
         methods:
             '-initWithTagSchemes:options:':
                 name: init
                 parameters:
                     tagSchemes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>'
                     opts:
                         type: NSLinguisticTaggerOptions
             '-setOrthography:range:':
@@ -1794,20 +1794,20 @@ classes:
             '-tagsInRange:scheme:options:tokenRanges:':
                 name: getTags
                 visibility: protected
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTag>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTag>'
                 parameters:
                     tagScheme:
                         type: NSLinguisticTagScheme
             '-possibleTagsAtIndex:scheme:tokenRange:sentenceRange:scores:':
                 name: getPossibleTags
                 visibility: protected
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTag>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTag>'
                 parameters:
                     tagScheme:
                         type: NSLinguisticTagScheme
             '+availableTagSchemesForLanguage:':
                 name: getAvailableTagSchemes
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>'
     NSLocale: # DONE
         skip_def_constructor: true
         methods:
@@ -1816,7 +1816,7 @@ classes:
                 return_type: NSLocale
             '+(ISO.*|availableLocaleIdentifiers|commonISOCurrencyCodes|preferredLanguages)':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+canonical(.*Identifier)FromString:':
                 property: true
                 name: 'getCanonical#{g[0]}'
@@ -1937,7 +1937,7 @@ classes:
     NSMetadataItem: # DONE
         properties:
             'attributes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>'
         methods:
             '-valueForAttribute:':
                 name: getValue
@@ -1949,13 +1949,13 @@ classes:
                 return_type: NSMetadataItemAttributes
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>'
     NSMetadataQuery: # DONE
         properties:
             'sortDescriptors':
                 type: NSArray<NSSortDescriptor>
             '(valueListAttributes|groupingAttributes)':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>'
             'searchScopes':
                 name: searchScopes0
                 visibility: protected
@@ -2009,16 +2009,16 @@ classes:
     NSMethodSignature: # DONE
         properties:
             'methodReturnType':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
         methods:
             '-getArgumentTypeAtIndex:':
                 name: getArgumentType
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
             '+signatureWithObjCTypes:':
                 name: create
                 parameters:
                     types:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
     NSMutableArray: # DONE
         methods:
             '-initWithCapacity:':
@@ -2221,7 +2221,7 @@ classes:
             'HTTPShouldUsePipelining':
                 name: shouldUseHTTPPipelining
             'allHTTPHeaderFields':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
         methods:
             '-setValue:forHTTPHeaderField:':
                 name: setHTTPHeaderField0 # We change the order of arguments as in Java it's natural to specify the key as the first and the value as the second parameter.
@@ -2344,7 +2344,7 @@ classes:
                     coalesceMask:
                         type: NSNotificationCoalescing
                     modes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     NSNull: # DONE
         skip_def_constructor: true
         methods:
@@ -2584,22 +2584,22 @@ classes:
     NSOrthography: # DONE
         properties:
             'languageMap':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>>'
             'allScripts':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'allLanguages':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-languagesForScript:':
                 name: getLanguagesForScript
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-dominantLanguageForScript:':
                 name: getDominantLanguageForScript
             '-initWithDominantScript:languageMap:':
                 name: init
                 parameters:
                     map:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>>'
             '-init.*':
                 name: init
             '+orthographyWithDominantScript:languageMap:':
@@ -2668,9 +2668,9 @@ classes:
         skip_def_constructor: true
         properties:
             'environment':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             'arguments':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-operatingSystem':
                 property: true
@@ -2800,7 +2800,7 @@ classes:
                 name: perform
                 parameters:
                     modes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-cancelPerformSelectorsWithTarget:':
                 name: cancel
             '-cancelPerformSelector:target:argument:':
@@ -2995,11 +2995,11 @@ classes:
     NSTextCheckingResult: # DONE
         properties:
             'grammarDetails':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'components':
                 type: NSTextCheckingTransitComponents
             'alternativeStrings':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'addressComponents':
                 type: NSTextCheckingAddressComponents
         methods:
@@ -3015,7 +3015,7 @@ classes:
                 name: createGrammarCheckingResult
                 parameters:
                     details:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+dateCheckingResultWithRange:date:':
                 name: createDateCheckingResult
             '+dateCheckingResultWithRange:date:timeZone:duration:':
@@ -3039,7 +3039,7 @@ classes:
                 name: createCorrectionCheckingResult
                 parameters:
                     alternativeStrings:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+regularExpressionCheckingResultWithRanges:count:regularExpression:':
                 name: createRegularExpressionCheckingResult
                 visibility: protected
@@ -3155,14 +3155,14 @@ classes:
                 property: true
             '+knownTimeZoneNames':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+abbreviationDictionary':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             '+setAbbreviationDictionary:':
                 parameters:
                     dict:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             '+timeZoneWithName:.*':
                 name: fromName
                 return_type: NSTimeZone
@@ -3204,7 +3204,7 @@ classes:
     NSUndoManager: # DONE
         properties:
             'runLoopModes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'undoActionIsDiscardable':
                 name: undoActionDiscardable
             'redoActionIsDiscardable':
@@ -3225,7 +3225,7 @@ classes:
             'fileSystemRepresentation':
                 exclude: true
             'pathComponents':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+bookmarkDataWithContentsOfURL:error:':
                 name: createBookmarkData
@@ -3235,7 +3235,7 @@ classes:
                 return_type: NSURLProperties
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '+writeBookmarkData:toURL:options:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
@@ -3261,7 +3261,7 @@ classes:
                 return_type: NSURLProperties
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '-setResourceValue:forKey:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
@@ -3299,7 +3299,7 @@ classes:
                 throws: NSErrorException
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '+fileURL.*': {exclude: true}
             '+URL.*': {exclude: true}
             '-getFileSystemRepresentation:maxLength:': {exclude: true}
@@ -3319,7 +3319,7 @@ classes:
                 throws: NSErrorException
                 parameters:
                     keys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '-checkPromisedItemIsReachableAndReturnError:':
                 name: isPromisedItemReachable
                 throws: NSErrorException
@@ -3380,7 +3380,7 @@ classes:
     NSURLCredential: # DONE
         properties:
             'certificates':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>'
             'identity':
                 annotations: ['@WeaklyLinked']
         methods:
@@ -3391,18 +3391,18 @@ classes:
                 annotations: ['@WeaklyLinked']
                 parameters:
                     certArray:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>'
             '-init.*':
                 name: init
                 annotations: ['@WeaklyLinked']
     NSURLCredentialStorage: # DONE
         properties:
             'allCredentials':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>'
         methods:
             '-credentialsForProtectionSpace:':
                 name: getCredentials
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>'
             '-setCredential:forProtectionSpace:':
                 trim_after_first_colon: true
             '-removeCredential:forProtectionSpace:':
@@ -3423,7 +3423,7 @@ classes:
                 parameters:
                     completionHandler:
                         type: '@Block VoidBlock1<NSDictionary<NSString, NSURLCredential>>'
-                      #  type: '@Block("(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class))") VoidBlock1<Map<String, NSURLCredential>>' TODO
+                      #  type: '@Block("(@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class))") VoidBlock1<Map<String, NSURLCredential>>' TODO
             '-setCredential:forProtectionSpace:task:':
                 trim_after_first_colon: true
             '-removeCredential:forProtectionSpace:options:task:':
@@ -3442,7 +3442,7 @@ classes:
             'authenticationMethod':
                 type: NSURLAuthenticationMethod
             'distinguishedNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'protocol':
                 type: NSURLProtectionSpaceProtocol
             'proxyType':
@@ -3498,7 +3498,7 @@ classes:
     NSURLRequest: # DONE
         properties:
             'allHTTPHeaderFields':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             'HTTPShouldHandleCookies':
                 name: shouldHandleHTTPCookies
                 omit_prefix: true
@@ -3584,9 +3584,9 @@ classes:
                 type: CFProxy
             'HTTPAdditionalHeaders':
                 name: getAdditionalHTTPHeaders
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             'protocolClasses':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
         methods:
             '+(defaultSessionConfiguration|ephemeralSessionConfiguration)':
                 property: true
@@ -3614,7 +3614,7 @@ classes:
     NSUserDefaults: # DONE
         properties:
             'volatileDomainNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-objectForKey:':
                 name: get
@@ -3630,7 +3630,7 @@ classes:
                 name: getData
             '-stringArrayForKey:':
                 name: getStringArray
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-integerForKey:':
                 name: getLong
             '-floatForKey:':
@@ -3661,7 +3661,7 @@ classes:
                 name: removeVolatileDomain
             '-persistentDomainNames':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-persistentDomainForName:':
                 name: getPersistentDomain
             '-setPersistentDomain:forName:':
@@ -3885,7 +3885,7 @@ protocols:
                 return_type: 'Class<? extends NSObject>'
                 parameters:
                     classNames:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-unarchiver:didDecodeObject:':
                 name: didDecodeObject
             '-unarchiver:willReplaceObject:withObject:':
@@ -4106,7 +4106,7 @@ protocols:
                 name: didStartElement
                 parameters:
                     attributeDict:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: '@com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-parser:didEndElement:namespaceURI:qualifiedName:':
                 name: didEndElement
             '-parser:didStartMappingPrefix:toURI:':
@@ -4179,7 +4179,7 @@ functions:
     NS(SearchPathForDirectoriesInDomains):
         class: NSPathUtilities
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        return_type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
 
     NS(Intersection|Union)Range:
         class: NSRange

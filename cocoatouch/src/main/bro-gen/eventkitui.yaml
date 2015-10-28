@@ -1,4 +1,4 @@
-package: org.robovm.apple.eventkitui
+package: com.bugvm.apple.eventkitui
 include: [foundation.yaml, eventkit.yaml, uikit.yaml]
 library: EventKitUI
 framework: EventKitUI

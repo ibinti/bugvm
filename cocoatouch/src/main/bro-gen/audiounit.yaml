@@ -1,4 +1,4 @@
-package: org.robovm.apple.audiounit
+package: com.bugvm.apple.audiounit
 include: [foundation.yaml, audiotoolbox.yaml, corefoundation.yaml, coreaudio.yaml, uikit.yaml]
 library: AudioToolbox
 framework: AudioUnit

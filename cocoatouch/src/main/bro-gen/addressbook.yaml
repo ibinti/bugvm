@@ -1,4 +1,4 @@
-package: org.robovm.apple.addressbook
+package: com.bugvm.apple.addressbook
 include: [foundation.yaml, corefoundation.yaml]
 library: AddressBook
 framework: AddressBook

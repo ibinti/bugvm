@@ -1,4 +1,4 @@
-package: org.robovm.apple.mediaplayer
+package: com.bugvm.apple.mediaplayer
 include: [foundation.yaml, uikit.yaml, coregraphics.yaml]
 library: MediaPlayer
 framework: MediaPlayer
@@ -41,7 +41,7 @@ classes:
     MPChangePlaybackRateCommand: # DONE
         properties:
             supportedPlaybackRates:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
     MPChangePlaybackRateCommandEvent: {} # DONE
     MPContentItem: # DONE
         methods:
@@ -231,7 +231,7 @@ classes:
     MPSkipIntervalCommand: # DONE
         properties:
             'preferredIntervals':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
+                type: '@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
     MPSkipIntervalCommandEvent: {} # DONE
     MPTimedMetadata: {} # DONE
     MPVolumeView: # DONE
