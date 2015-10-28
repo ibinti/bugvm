@@ -59,7 +59,7 @@ public class NativeLibrary {
             throw new Error("Unsupported arch: " + System.getProperty("os.arch"));
         }
         
-        libName = "librobovm-llvm." + ext;
+        libName = "libbugvm-llvm." + ext;
     }
     
     public static synchronized void load() {
