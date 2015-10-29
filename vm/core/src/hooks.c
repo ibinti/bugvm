@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <robovm.h>
+#include <bugvm.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -22,7 +22,7 @@
 #include <string.h>
 #include <errno.h>
 #include <netinet/tcp.h>
-#include <robovm/types.h>
+#include <bugvm/types.h>
 #include "private.h"
 
 #define LOG_TAG "hooks"
@@ -95,7 +95,7 @@ Mutex writeMutex;
 static void* channelLoop(void* data);
 
 // used to offset in PIE/ASLR mode
-void* robovmBaseSymbol = NULL;
+void* bugvmBaseSymbol = NULL;
 
 static void nsleep(jlong millis) {
     struct timespec time;
@@ -370,7 +370,7 @@ jboolean _rvmHookHandshake(Options* options) {
     }
 
     // send base symbol address to deal with PIE/ASLR
-    writeChannelLong(clientSocket, (jlong) &robovmBaseSymbol, &error);
+    writeChannelLong(clientSocket, (jlong) &bugvmBaseSymbol, &error);
     rvmUnlockMutex(&writeMutex);
     DEBUG("Handshake complete");
 

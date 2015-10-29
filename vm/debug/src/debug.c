@@ -16,7 +16,7 @@
 
 #if defined(DARWIN)
 
-#include <robovm.h>
+#include <bugvm.h>
 #include <mach/mach.h>
 #include <mach/mach_error.h>
 #include <mach/exception.h>

@@ -15,7 +15,7 @@
  */
 
 #define _GNU_SOURCE
-#include <robovm.h>
+#include <bugvm.h>
 #include <signal.h>
 #if defined(DARWIN)
 #   include <mach/mach.h>

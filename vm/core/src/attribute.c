@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include <string.h>
-#include <robovm.h>
+#include <bugvm.h>
 
 #define SOURCE_FILE 1
 #define SIGNATURE 2

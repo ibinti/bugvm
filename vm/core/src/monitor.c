@@ -42,7 +42,7 @@
 #include <errno.h>
 #include <assert.h>
 
-#include <robovm.h>
+#include <bugvm.h>
 #include "private.h"
 
 #define LOG_TAG "core.monitor"

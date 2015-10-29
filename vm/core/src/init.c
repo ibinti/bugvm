@@ -17,7 +17,7 @@
 #   define _GNU_SOURCE // Required on Linux to get dladdr() support
 #endif
 
-#include <robovm.h>
+#include <bugvm.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -189,12 +189,12 @@ void rvmParseOption(char* arg, Options* options) {
     }
 }
 
-static void parseRoboVMIni(Options* options) {
+static void parseBugVMIni(Options* options) {
     char path[PATH_MAX];
 
     // Look for a robovm.ini next to the executable
     strncpy(path, options->resourcesPath, sizeof(path) - 1);
-    strcat(path, "/robovm.ini");
+    strcat(path, "/bugvm.ini");
     FILE* f = fopen(path, "r");
     if (f) {
         char* line = NULL;
@@ -250,8 +250,8 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
         }
     }
 
-    // Look for a robovm.ini in the resources path
-    parseRoboVMIni(options);
+    // Look for a bugvm.ini in the resources path
+    parseBugVMIni(options);
 
     if (argc > 0) {
         jint firstJavaArg = 1;

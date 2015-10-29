@@ -15,7 +15,7 @@
  */
 #define _GNU_SOURCE
 #include <pthread.h>
-#include <robovm.h>
+#include <bugvm.h>
 #if defined(DARWIN)
 # include <mach/mach.h>
 # include <unistd.h>

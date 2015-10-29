@@ -17,7 +17,7 @@
 #define PRIVATE_H
 
 #include <pthread.h>
-#include <robovm.h>
+#include <bugvm.h>
 
 /* memory.c */
 #define GC_BITMAP_BITS (sizeof(void*)<<3)

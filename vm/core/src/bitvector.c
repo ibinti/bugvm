@@ -17,7 +17,7 @@
 /*
  * Implementation of an expandable bit vector.
  */
-#include <robovm.h>
+#include <bugvm.h>
 
 #include <stdlib.h>
 #include <string.h>

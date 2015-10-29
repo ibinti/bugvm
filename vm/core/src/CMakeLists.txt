@@ -2,7 +2,7 @@ project(core)
 
 include_directories(../include ${CMAKE_BINARY_DIR}/gc/include)
 
-add_definitions(-DROBOVM_CORE_BUILD)
+add_definitions(-DBUGVM_CORE_BUILD)
 
 set(SRC
   array.c 
@@ -44,11 +44,11 @@ endif()
 # The code in unwind.c doesn't work properly if compiled with tail call optimizations
 set_property(SOURCE unwind.c PROPERTY COMPILE_FLAGS "-fno-optimize-sibling-calls")
 
-add_library(robovm-core STATIC ${SRC})
-add_dependencies(robovm-core extgc)
+add_library(bugvm-core STATIC ${SRC})
+add_dependencies(bugvm-core extgc)
 
-set_target_properties(robovm-core PROPERTIES SUFFIX "${LIB_SUFFIX}")
-install(TARGETS robovm-core DESTINATION ${INSTALL_DIR})
+set_target_properties(bugvm-core PROPERTIES SUFFIX "${LIB_SUFFIX}")
+install(TARGETS bugvm-core DESTINATION ${INSTALL_DIR})
 
 add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s unwind.c)
 add_library(test_call0_lib STATIC test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s unwind.c)

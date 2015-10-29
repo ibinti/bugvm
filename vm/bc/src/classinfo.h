@@ -16,7 +16,7 @@
 #ifndef CLASSINFO_H
 #define CLASSINFO_H
 
-#include <robovm.h>
+#include <bugvm.h>
 
 #define CI_PUBLIC 0x1
 #define CI_FINAL 0x2
