@@ -3,8 +3,8 @@
 export HOME=$(cd ~; pwd)
 
 BASE=$(cd $(dirname $0)/../..; pwd -P)
-if [ -f "$BASE/tests/drlvm/robovm-vts.env" ]; then
-  . $BASE/tests/drlvm/robovm-vts.env
+if [ -f "$BASE/tests/drlvm/bugvm-vts.env" ]; then
+  . $BASE/tests/drlvm/bugvm-vts.env
 fi
 [ "x$ARCH" == 'x' ] && ARCH=x86_64
 if [ "x$OS" == 'x' ]; then
@@ -17,9 +17,9 @@ fi
 EXTRA_ARGS=
 if [ "x$DEBUG" == 'x1' ]; then
   EXTRA_ARGS="$EXTRA_ARGS -debug"
-  [ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$OS-$ARCH.debug
+  [ "x$TARGET" == 'x' ] && TARGET=/tmp/bugvm-vts.$OS-$ARCH.debug
 else
-  [ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$OS-$ARCH.release
+  [ "x$TARGET" == 'x' ] && TARGET=/tmp/bugvm-vts.$OS-$ARCH.release
 fi
 [ "x$USE_DEBUG_LIBS" == 'x1' ] && EXTRA_ARGS="$EXTRA_ARGS -use-debug-libs"
 [ "x$ARGS" != 'x' ] && EXTRA_ARGS="$EXTRA_ARGS $ARGS"
@@ -32,7 +32,7 @@ fi
 
 export PATH
 
-mkdir -p $HOME/.robovm/vts/
+mkdir -p $HOME/.bugvm/vts/
 
 n=0
 while [ ${1:0:1} = '-' ]; do
@@ -41,7 +41,7 @@ while [ ${1:0:1} = '-' ]; do
     parts=$(echo $1 | tr ':' '\n')
     for p in $parts; do
       if [ -d "$p" ]; then
-        JAR=$HOME/.robovm/vts/vts$n.jar
+        JAR=$HOME/.bugvm/vts/vts$n.jar
         if [ ! -f "$JAR" ]; then
           jar cf $JAR -C "$p" .
         fi
@@ -68,18 +68,18 @@ done
 
 mkdir -p "$TARGET"
 if [ ! -x $TARGET/vts ]; then
-  if [ "x$ROBOVM_HOME" != 'x' ]; then
-    ROBOVM="$ROBOVM_HOME/bin/robovm"
+  if [ "x$BUGVM_HOME" != 'x' ]; then
+    BUGVM="$BUGVM_HOME/bin/bugvm"
   else
-    export ROBOVM_DEV_ROOT=$BASE
-    ROBOVM="$ROBOVM_DEV_ROOT/bin/robovm"
+    export BUGVM_DEV_ROOT=$BASE
+    BUGVM="$BUGVM_DEV_ROOT/bin/bugvm"
   fi
   if [ "$OS" == 'ios' ]; then
     if [ "x$KEYCHAIN_PASSWORD" != "x" ]; then
       security unlock-keychain -p $KEYCHAIN_PASSWORD
     fi
   fi
-  "$ROBOVM" \
+  "$BUGVM" \
     -tmp $TARGET.tmp \
     -d $TARGET \
     -arch $ARCH \
@@ -87,13 +87,13 @@ if [ ! -x $TARGET/vts ]; then
     -o vts \
     -verbose \
     $EXTRA_ARGS \
-    -cp $CP &> $TARGET/robovm.log
+    -cp $CP &> $TARGET/bugvm.log
   RET=$?
   if [ "$RET" != "0" ]; then
     exit $RET
   fi
   if [ "x$SSH_HOST" != 'x' ]; then
-    rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ >> $TARGET/robovm.log
+    rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ >> $TARGET/bugvm.log
   fi
 fi
 

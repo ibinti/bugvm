@@ -27,7 +27,7 @@ public final class FinalizeTest extends TestCase {
 
     public void testFinalizeIsCalled() throws Exception {
         AtomicBoolean finalized = new AtomicBoolean();
-        for (int i = 0; i < 1024; i++) { // RoboVM note: Create multiple objects to trigger finalization
+        for (int i = 0; i < 1024; i++) { // BugVM note: Create multiple objects to trigger finalization
             createFinalizableObject(finalized);
         }
 
@@ -55,7 +55,7 @@ public final class FinalizeTest extends TestCase {
     /** Do not inline this method; that could break non-precise GCs. See FinalizationTester. */
     private X createFinalizableObject(final AtomicBoolean finalized) {
         X result = new X() {
-            private final byte[] bytes = new byte[1024 * 16]; // RoboVM note: Added
+            private final byte[] bytes = new byte[1024 * 16]; // BugVM note: Added
             @Override protected void finalize() throws Throwable {
                 super.finalize();
                 finalized.set(true);
@@ -76,7 +76,7 @@ public final class FinalizeTest extends TestCase {
 
     // http://b/issue?id=2136462
     public void testBackFromTheDead() throws Exception {
-        for (int i = 0; i < 1024; i++) { // RoboVM note: Create multiple objects to trigger finalization
+        for (int i = 0; i < 1024; i++) { // BugVM note: Create multiple objects to trigger finalization
             try {
                 new ConstructionFails();
             } catch (AssertionError expected) {
@@ -90,7 +90,7 @@ public final class FinalizeTest extends TestCase {
     static class ConstructionFails {
         private static boolean finalized;
 
-        private final byte[] bytes = new byte[1024 * 16]; // RoboVM note: Added
+        private final byte[] bytes = new byte[1024 * 16]; // BugVM note: Added
         
         ConstructionFails() {
             throw new AssertionError();
@@ -113,7 +113,7 @@ public final class FinalizeTest extends TestCase {
         createSlowFinalizer(4000, latch);
         createSlowFinalizer(8000, latch);
         FinalizationTester.induceFinalization();
-        assertTrue(latch.await(20, TimeUnit.SECONDS));  // RoboVM note: Added
+        assertTrue(latch.await(20, TimeUnit.SECONDS));  // BugVM note: Added
     }
 
     public void createSlowFinalizer(final long millis, final CountDownLatch latch) {
@@ -134,8 +134,8 @@ public final class FinalizeTest extends TestCase {
         AtomicInteger count = new AtomicInteger();
         AtomicBoolean keepGoing = new AtomicBoolean(true);
         createChainedFinalizer(count, keepGoing);
-        while (count.get() == 0) { // RoboVM note: Repeat until count > 0
-            Thread.sleep(500); // RoboVM note: Without this short delay this test occasionally hangs.
+        while (count.get() == 0) { // BugVM note: Repeat until count > 0
+            Thread.sleep(500); // BugVM note: Without this short delay this test occasionally hangs.
             FinalizationTester.induceFinalization();
         }
         keepGoing.set(false);

@@ -465,7 +465,7 @@ public class OldClassTest extends junit.framework.TestCase {
         assertEquals(AbstractList.class, type.getRawType());
     }
 
-    // RoboVM note: Uses custom classloader which isn't supported on RoboVM
+    // BugVM note: Uses custom classloader which isn't supported on BugVM
     // // AndroidOnly: Uses dalvik.system.PathClassLoader.
     // // Different behavior between cts host and run-core-test")
     // public void test_getPackage() {

@@ -129,7 +129,7 @@ public class OldAndroidDatagramTest extends TestCase {
 
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             socket = new DatagramSocket(2345, InetAddress.getLocalHost());
-            socket.setSoTimeout(5 * 1000); // RoboVM note: Prevent this test from hanging.
+            socket.setSoTimeout(5 * 1000); // BugVM note: Prevent this test from hanging.
 
             // Send ten simple packets and check for the expected responses.
             for (int i = 1; i <= 10; i++) {
@@ -157,7 +157,7 @@ public class OldAndroidDatagramTest extends TestCase {
         } finally {
             if (reflector != null) {
                 reflector.alive = false;
-                // RoboVM note: Setting alive=false doesn't seem to shutdown the Reflector thread. Try harder.
+                // BugVM note: Setting alive=false doesn't seem to shutdown the Reflector thread. Try harder.
                 reflector.interrupt();
                 reflector.socket.close();
             }

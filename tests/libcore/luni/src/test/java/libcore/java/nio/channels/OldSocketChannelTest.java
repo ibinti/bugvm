@@ -282,7 +282,7 @@ public class OldSocketChannelTest extends TestCase {
     }
 
     public void test_socketChannel_read_DirectByteBuffer() throws InterruptedException, IOException {
-        // RoboVM note: This test has been modified to properly close down the ServerThread and
+        // BugVM note: This test has been modified to properly close down the ServerThread and
         // to close the SocketChannels opened even if the test fails half-way through.
         Thread server = null;
         try {

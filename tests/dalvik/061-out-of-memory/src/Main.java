@@ -92,7 +92,7 @@ public class Main {
             objSize = (objSize * 4) / 5;
         }
 
-        // RoboVM note: Seems like the GC cannot reclaim the list after this method finishes. It's 
+        // BugVM note: Seems like the GC cannot reclaim the list after this method finishes. It's
         // probably still referenced by some register. Clear it to make its elements reclaimable.
         list.clear();
         

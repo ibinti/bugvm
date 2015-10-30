@@ -65,9 +65,9 @@ import junit.framework.Assert;
  */
 public final class StandardNames extends Assert {
 
-    // RoboVM note: Changed to detect RoboVM properly
+    // BugVM note: Changed to detect BugVM properly
     public static final boolean IS_RI
-            = !"RoboVM Core Library".equals(System.getProperty("java.specification.name"));
+            = !"BugVM Core Library".equals(System.getProperty("java.specification.name"));
     public static final String JSSE_PROVIDER_NAME = (IS_RI) ? "SunJSSE" : "AndroidOpenSSL";
     public static final String SECURITY_PROVIDER_NAME = (IS_RI) ? "SUN" : "BC";
 

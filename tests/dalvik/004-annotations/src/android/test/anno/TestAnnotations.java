@@ -15,10 +15,10 @@ import java.util.TreeMap;
 
 public class TestAnnotations {
 
-    // RoboVM note: Reflection in Dalvik and RoboVM returns annotations, constructors, methods and 
+    // BugVM note: Reflection in Dalvik and BugVM returns annotations, constructors, methods and
     // fields in different orders. This test has been changed so that the ordering is ignored.
     
-    // Start RoboVM changes 
+    // Start BugVM changes
     static private String annotationMemberToString(Annotation a, Method member) {
         String name = member.getName();
         Object value;
@@ -66,7 +66,7 @@ public class TestAnnotations {
         result.append(')');
         return result.toString();
     }
-    // End RoboVM changes 
+    // End BugVM changes
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     static private List sortMembers(Object[] members) {

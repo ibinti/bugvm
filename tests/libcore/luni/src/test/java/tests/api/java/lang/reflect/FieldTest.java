@@ -1860,7 +1860,7 @@ public class FieldTest extends junit.framework.TestCase {
      * method is called after a test is executed.
      */
     protected void tearDown() {
-        // RoboVM note: Reset static fields in TestField after each test method.
+        // BugVM note: Reset static fields in TestField after each test method.
         TestField.pubfield1 = 0;
         TestField.privfield1 = 123;
         TestField.intSField = Integer.MAX_VALUE;

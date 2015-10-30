@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 public class OldUnixSocketTest extends TestCase {
 
     public void test_getInputStream() throws IOException {
-        // RoboVM note: On Darwin this test fails on both RoboVM and the RI with
+        // BugVM note: On Darwin this test fails on both BugVM and the RI with
         // the same error (Should throw SocketException; got i=-1).
         if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             return;

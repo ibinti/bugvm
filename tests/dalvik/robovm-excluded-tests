@@ -1,19 +1,19 @@
-# The tests listed in this file will not be run when testing RoboVM. The reason
+# The tests listed in this file will not be run when testing BugVM. The reason
 # why a test has been excluded must be indicated below.
 
 # This has a test with an enormous amount of gotos which makes Soot freak out.
 003-omnibus-opcodes
 
-# Tests package level annotations which we don't support in RoboVM
+# Tests package level annotations which we don't support in BugVM
 004-annotations
 
-# Tests assert which RoboVM doesn't implement.
+# Tests assert which BugVM doesn't implement.
 029-assert
 
 # Launches a child process (sleep 5) which is not possible on iOS devices
 063-process-manager
 
-# Uses a custom classloader which RoboVM doesn't allow.
+# Uses a custom classloader which BugVM doesn't allow.
 068-classloader
 
 # Tests DEX file stuff.
@@ -26,7 +26,7 @@
 # Tests Dalvik specific stuff
 080-oom-throw
 
-# Loads the dalvik.system.DexFile class which isn't included in RoboVM
+# Loads the dalvik.system.DexFile class which isn't included in BugVM
 086-null-super
 087-gc-after-link
 
@@ -34,7 +34,7 @@
 089-many-methods
 
 # Tests some locales which are not available in the ICU data file embedded in
-# RoboVM executables by default
+# BugVM executables by default
 092-locale
 
 # Tests Dalvik GC specifics

@@ -7,7 +7,7 @@ require 'fileutils'
 require 'tmpdir'
 
 @dev_root = File.realpath("#{File.dirname(__FILE__)}/../..")
-@dir = Dir.mktmpdir(['robovm-compiler-stress', ''])
+@dir = Dir.mktmpdir(['bugvm-compiler-stress', ''])
 puts "Using tmp dir #{@dir}"
 
 @includes = [
@@ -28,7 +28,7 @@ def compile_artifact(group, artifact, version, n)
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.robovm</groupId>
+  <groupId>com.bugvm</groupId>
   <artifactId>foo</artifactId>
   <version>1.0</version>
   <packaging>pom</packaging>
@@ -46,9 +46,9 @@ eof
   system("mvn -q -f #{pom} -DoutputAbsoluteArtifactFilename=true -DoutputFile=#{pom}.deps -Dsilent=true dependency:list")
   deps = File.readlines("#{pom}.deps").find_all {|e| e =~ /\.m2\/repo/}.map {|e| e.gsub(/.*?:\//, '/').strip}
   classpath = deps.join(':')
-  cmd = "#{@dev_root}/bin/robovm -cp #{classpath} -tmp #{@dir}/#{group}-#{artifact}.tmp -cache #{@dir}/cache -d #{@dir}/#{group}-#{artifact} -o out -verbose -forcelinkclasses '**.*' " + (ARGV.join(' '))
+  cmd = "#{@dev_root}/bin/bugvm -cp #{classpath} -tmp #{@dir}/#{group}-#{artifact}.tmp -cache #{@dir}/cache -d #{@dir}/#{group}-#{artifact} -o out -verbose -forcelinkclasses '**.*' " + (ARGV.join(' '))
   puts "Running command: #{cmd}"
-  system({"ROBOVM_DEV_ROOT" => @dev_root, "JVM_MX" => "4G"}, cmd) or raise "Compilation of #{group}:#{artifact} failed"
+  system({"BUGVM_DEV_ROOT" => @dev_root, "JVM_MX" => "4G"}, cmd) or raise "Compilation of #{group}:#{artifact} failed"
   system("rm -rf #{@dir}/#{group}-#{artifact}.tmp #{@dir}/#{group}-#{artifact}")
 end
 

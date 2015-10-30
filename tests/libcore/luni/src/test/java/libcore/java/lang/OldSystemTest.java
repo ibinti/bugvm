@@ -338,7 +338,7 @@ public class OldSystemTest extends junit.framework.TestCase {
     }
 
     public void test_mapLibraryName() {
-        // RoboVM note: .dylib is used as extension for dynamic libs on Darwin.
+        // BugVM note: .dylib is used as extension for dynamic libs on Darwin.
         if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             assertEquals("libname.dylib", System.mapLibraryName("name"));
         } else {

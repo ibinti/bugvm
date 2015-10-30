@@ -31,7 +31,7 @@ public class ZoneInfoDBTest extends junit.framework.TestCase {
 
   // An empty override file should fall back to the default file.
   public void testEmptyOverrideFile() throws Exception {
-     // RoboVM note: Use ZoneInfoDB.TzDataAndroid.
+     // BugVM note: Use ZoneInfoDB.TzDataAndroid.
     ZoneInfoDB.TzData data = new ZoneInfoDB.TzDataAndroid(makeEmptyFile(), TZDATA_IN_DATA, TZDATA_IN_ROOT);
     assertEquals(CURRENT_VERSION, data.getVersion());
     assertEquals(TimeZone.getAvailableIDs().length, data.getAvailableIDs().length);
@@ -39,7 +39,7 @@ public class ZoneInfoDBTest extends junit.framework.TestCase {
 
   // A corrupt override file should fall back to the default file.
   public void testCorruptOverrideFile() throws Exception {
-     // RoboVM note: Use ZoneInfoDB.TzDataAndroid.
+     // BugVM note: Use ZoneInfoDB.TzDataAndroid.
     ZoneInfoDB.TzData data = new ZoneInfoDB.TzDataAndroid(makeCorruptFile(), TZDATA_IN_DATA, TZDATA_IN_ROOT);
     assertEquals(CURRENT_VERSION, data.getVersion());
     assertEquals(TimeZone.getAvailableIDs().length, data.getAvailableIDs().length);
@@ -47,7 +47,7 @@ public class ZoneInfoDBTest extends junit.framework.TestCase {
 
   // Given no tzdata files we can use, we should fall back to built-in "GMT".
   public void testNoGoodFile() throws Exception {
-     // RoboVM note: Use ZoneInfoDB.TzDataAndroid.
+     // BugVM note: Use ZoneInfoDB.TzDataAndroid.
     ZoneInfoDB.TzData data = new ZoneInfoDB.TzDataAndroid(makeEmptyFile());
     assertEquals("missing", data.getVersion());
     assertEquals(1, data.getAvailableIDs().length);
@@ -70,7 +70,7 @@ public class ZoneInfoDBTest extends junit.framework.TestCase {
 
     String goodFile = makeTemporaryFile(content);
     try {
-     // RoboVM note: Use ZoneInfoDB.TzDataAndroid.
+     // BugVM note: Use ZoneInfoDB.TzDataAndroid.
       ZoneInfoDB.TzData data = new ZoneInfoDB.TzDataAndroid(goodFile, TZDATA_IN_DATA, TZDATA_IN_ROOT);
       assertEquals("9999z", data.getVersion());
       assertEquals(TimeZone.getAvailableIDs().length, data.getAvailableIDs().length);

@@ -60,7 +60,7 @@ public final class ProxySelectorTest extends TestCase {
         System.clearProperty("socket.proxyPort");
         System.clearProperty("proxyHost");
         System.clearProperty("proxyPort");
-        // RoboVM note: socksProxyHost and socksProxyPort must be cleared too
+        // BugVM note: socksProxyHost and socksProxyPort must be cleared too
         System.clearProperty("socksProxyHost");
         System.clearProperty("socksProxyPort");
     }

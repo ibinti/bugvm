@@ -257,11 +257,11 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
                 System.err.println("sleep...");
                 Thread.sleep(2000);
                 System.err.println("close...");
-                // RoboVM note: The original code just called invoke() here
+                // BugVM note: The original code just called invoke() here
                 // without setAccessible(true). For the test_connect_nonBlocking()
                 // test s is a SocketChannelImpl$SocketAdapter which isn't
                 // accessible to Killer so an IllegalAccessException was thrown
-                // on RoboVM. invoke() on Android doesn't seem to do enough
+                // on BugVM. invoke() on Android doesn't seem to do enough
                 // security checks since the code apparently worked on Dalvik.
                 Method m = s.getClass().getMethod("close");
                 m.setAccessible(true);

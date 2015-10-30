@@ -238,7 +238,7 @@ public class OldThreadGroupTest extends TestCase implements Thread.UncaughtExcep
         assertEquals(2, thrGroup.enumerate(listOfGroups, true));
         assertEquals(1, thrGroup.enumerate(listOfGroups, false));
         
-        // RoboVM note: Cleanup. Wait for the threads to finish.
+        // BugVM note: Cleanup. Wait for the threads to finish.
         List<MyThread> allThreads = new ArrayList<MyThread>();
         allThreads.addAll(subThreads);
         allThreads.addAll(subThreads1);
@@ -311,7 +311,7 @@ public class OldThreadGroupTest extends TestCase implements Thread.UncaughtExcep
         }
         
         try {
-            // RoboVM note: Cleanup. Wait for the thread to finish.
+            // BugVM note: Cleanup. Wait for the thread to finish.
             thread.join(5000);
         } catch (InterruptedException e) {
         }

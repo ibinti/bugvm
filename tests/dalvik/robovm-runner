@@ -5,8 +5,8 @@ BASE=$(cd $(dirname $0)/../..; pwd -P)
 
 SSH_HOST=
 
-if [ -f "$BASE/tests/dalvik/robovm.env" ]; then
-  . $BASE/tests/dalvik/robovm.env
+if [ -f "$BASE/tests/dalvik/bugvm.env" ]; then
+  . $BASE/tests/dalvik/bugvm.env
 fi
 
 if [ "x$SSH_HOST" != 'x' -a "x$SSH_HOST" != 'xlocalhost' ]; then

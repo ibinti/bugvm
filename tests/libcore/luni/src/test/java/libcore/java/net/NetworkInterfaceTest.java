@@ -30,7 +30,7 @@ import java.util.Set;
 
 public class NetworkInterfaceTest extends TestCase {
     
-    // RoboVM note: 'lo' is called 'lo0' on Darwin and 'eth0' is 'en0'.
+    // BugVM note: 'lo' is called 'lo0' on Darwin and 'eth0' is 'en0'.
     private static final String LO;
     private static final String ETH0;
     
@@ -50,14 +50,14 @@ public class NetworkInterfaceTest extends TestCase {
         NetworkInterface lo = NetworkInterface.getByName(LO);
         Set<InetAddress> actual = new HashSet<InetAddress>(Collections.list(lo.getInetAddresses()));
 
-        // RoboVM note: The original test checks that lo has exactly 2 addresses
+        // BugVM note: The original test checks that lo has exactly 2 addresses
         // (127.0.0.1 and ::1) but on Darwin we get an extra one (fe80::1) so
         // we now check for those 2 and ignore everything else.
         assertTrue(actual.contains(Inet4Address.LOOPBACK));
         assertTrue(actual.contains(Inet6Address.getByAddress("localhost", new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, null)));
     }
 
-    // RoboVM note: Tests a method we have removed.
+    // BugVM note: Tests a method we have removed.
     // // http://code.google.com/p/android/issues/detail?id=34022
     // public void test_collectIpv6Addresses_3digitInterfaceIndex() throws Exception {
     //     String lines[] = new String[] {
@@ -73,7 +73,7 @@ public class NetworkInterfaceTest extends TestCase {
     //     assertEquals(4*16 + 0, ifAddresses.get(0).getNetworkPrefixLength());
     // }
 
-    // RoboVM note: Tests a method we have removed.
+    // BugVM note: Tests a method we have removed.
     // public void test_collectIpv6Addresses_skipsUnmatchedLines() throws Exception {
     //     String[] lines = new String[] {
     //             "fe800000000000000000000000000000 40 40 20 80    wlan0",

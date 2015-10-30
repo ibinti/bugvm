@@ -16,7 +16,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        // Start RoboVM changes. In RoboVM we need to repeat this a couple of times to cause
+        // Start BugVM changes. In BugVM we need to repeat this a couple of times to cause
         // GC+finalization
         for (int i = 0; i < 10; i++) { 
             createAndForget();
@@ -26,7 +26,7 @@ public class Main {
                 break;
             }
         }
-        // End RoboVM changes
+        // End BugVM changes
 
         new Timer(true).schedule(new TimerTask() {
                 public void run() {
@@ -54,7 +54,7 @@ public class Main {
     }
 
     protected void finalize() throws Throwable {
-        // RoboVM note: Only do this for the first finalized object
+        // BugVM note: Only do this for the first finalized object
         if (!didFinal) {
             System.out.println("In finalizer");
     

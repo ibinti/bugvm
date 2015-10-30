@@ -50,7 +50,7 @@ public final class StuckServer {
             }
             int clientCount = 4;
             if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
-                // RoboVM note: On Darwin the exact backlog is honored.
+                // BugVM note: On Darwin the exact backlog is honored.
                 clientCount = 1;
             }
             for (int i = 0; i < clientCount; ++i) {

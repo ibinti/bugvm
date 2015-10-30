@@ -1559,7 +1559,7 @@ public final class URLConnectionTest extends TestCase {
 
     public void testRedirectToAnotherOriginServer() throws Exception {
         MockWebServer server2 = new MockWebServer();
-        try { // RoboVM note: Modified to call server2.shutdown() after test finishes regardless of outcome.
+        try { // BugVM note: Modified to call server2.shutdown() after test finishes regardless of outcome.
         server2.enqueue(new MockResponse().setBody("This is the 2nd server!"));
         server2.play();
 

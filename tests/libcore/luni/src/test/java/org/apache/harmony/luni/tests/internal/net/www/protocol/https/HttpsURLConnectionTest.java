@@ -95,7 +95,7 @@ public class HttpsURLConnectionTest extends TestCase {
 
     private static File store;
     
-    // RoboVM note: Used to remember the default HostnameVerifier and SSLSocketFactory so that 
+    // BugVM note: Used to remember the default HostnameVerifier and SSLSocketFactory so that
     // we can restore them after each test.
     private HostnameVerifier defaultHostnameVerifier; 
     private SSLSocketFactory defaultSSLSocketFactory;
@@ -625,7 +625,7 @@ public class HttpsURLConnectionTest extends TestCase {
             fail("couldn't set up key store");
         }
         
-        // RoboVM note: Remember default HostnameVerifier and SSLSocketFactory
+        // BugVM note: Remember default HostnameVerifier and SSLSocketFactory
         defaultHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
         defaultSSLSocketFactory = HttpsURLConnection.getDefaultSSLSocketFactory();
     }
@@ -634,9 +634,9 @@ public class HttpsURLConnectionTest extends TestCase {
         if (store != null) {
             store.delete();
         }
-        // RoboVM note: Clear any system properties set by the test.
+        // BugVM note: Clear any system properties set by the test.
         tearDownStoreProperties();
-        // RoboVM note: Restore default HostnameVerifier and SSLSocketFactory
+        // BugVM note: Restore default HostnameVerifier and SSLSocketFactory
         HttpsURLConnection.setDefaultHostnameVerifier(defaultHostnameVerifier);
         HttpsURLConnection.setDefaultSSLSocketFactory(defaultSSLSocketFactory);
     }
@@ -728,7 +728,7 @@ public class HttpsURLConnectionTest extends TestCase {
     }
 
     private static void tearDownStoreProperties() {
-        // RoboVM note: This method was added to cleanup system properties after each test.
+        // BugVM note: This method was added to cleanup system properties after each test.
         System.clearProperty("javax.net.ssl.keyStoreType");
         System.clearProperty("javax.net.ssl.keyStore");
         System.clearProperty("javax.net.ssl.keyStorePassword");

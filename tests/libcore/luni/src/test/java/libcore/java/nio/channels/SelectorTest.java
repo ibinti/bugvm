@@ -99,7 +99,7 @@ public class SelectorTest extends TestCase {
             assertEquals(0, count);
         } finally {
             selector.close();
-            // RoboVM note: Clear this thread's interrupted flag. Other tests may fail if we don't.
+            // BugVM note: Clear this thread's interrupted flag. Other tests may fail if we don't.
             Thread.interrupted();
         }
     }

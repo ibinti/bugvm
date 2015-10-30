@@ -37,9 +37,9 @@ public class SSLEngineResultStatusTest extends TestCase {
             for (int i = 0; i < enS.length; i++) {
                 flag = false;
                 for (int j = 0; j < str.length; j++) {
-                    // RoboVM note: Changed == to equals() here. The test sometimes failed with ==.
+                    // BugVM note: Changed == to equals() here. The test sometimes failed with ==.
                     // There's nothing that guarantees that the same String instance will be used.
-                    // RoboVM uses a cache of interned String instances. If too many other Strings
+                    // BugVM uses a cache of interned String instances. If too many other Strings
                     // have been interned between the load time of the SSLEngineResult.Status enum
                     // and this test is run the Strings in str will not be the same instances as
                     // those returned by toString() and == will fail.
@@ -48,7 +48,7 @@ public class SSLEngineResultStatusTest extends TestCase {
                         break;
                     }
                 }
-                // RoboVM note: Moved this assert inside the for-loop. Otherwise the test will succeed
+                // BugVM note: Moved this assert inside the for-loop. Otherwise the test will succeed
                 // as long as the last value in enS can be found in str.
                 assertTrue("Incorrect Status", flag);
             }

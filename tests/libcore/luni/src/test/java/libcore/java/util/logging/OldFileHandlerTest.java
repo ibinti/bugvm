@@ -82,7 +82,7 @@ public class OldFileHandlerTest extends TestCase {
             handler.close();
         }
         reset(TEMPPATH + SEP + "log", "");
-        // RoboVM note: Since we run the tests in the same process (and Android apparently doesn't)
+        // BugVM note: Since we run the tests in the same process (and Android apparently doesn't)
         // we need to clear the allLocks Map in FileHandler for all tests in here to succeed.
         java.lang.reflect.Field f = FileHandler.class.getDeclaredField("allLocks");
         f.setAccessible(true);

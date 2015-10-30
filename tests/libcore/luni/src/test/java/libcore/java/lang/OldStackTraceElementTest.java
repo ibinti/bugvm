@@ -139,7 +139,7 @@ public class OldStackTraceElementTest extends TestCase {
             original.pureJavaMethod(new Object());
             fail();
         } catch (Exception e) {
-            // RoboVM note: We don't do line numbers at the moment (changed 26 -> -1)
+            // BugVM note: We don't do line numbers at the moment (changed 26 -> -1)
             assertEquals("Incorrect line number",
                     -1, e.getStackTrace()[0].getLineNumber());
         }
@@ -206,7 +206,7 @@ public class OldStackTraceElementTest extends TestCase {
                     ste.toString().contains("Original"));
             assertTrue("String representation doesn't contain a file name",
                     ste.toString().contains("OldStackTraceElementTest.java"));
-            // RoboVM note: We don't do line numbers at the moment (changed assertTrue() -> assertFalse)
+            // BugVM note: We don't do line numbers at the moment (changed assertTrue() -> assertFalse)
             assertFalse("String representation doesn't contain a line number",
                     ste.toString().contains("26"));
             assertTrue("String representation doesn't contain a method name",

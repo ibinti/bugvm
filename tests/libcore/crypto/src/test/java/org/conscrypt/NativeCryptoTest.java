@@ -16,7 +16,7 @@
 
 package org.conscrypt;
 
-// RoboVM note: Not available in RoboVM.
+// BugVM note: Not available in BugVM.
 //import dalvik.system.BaseDexClassLoader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -2077,13 +2077,13 @@ public class NativeCryptoTest extends TestCase {
             ClassLoader loader = NativeCryptoTest.class.getClassLoader();
 
             final String libraryPaths;
-            // RoboVM note: Start change. RoboVM doesn't have BaseDexClassLoader.
+            // BugVM note: Start change. BugVM doesn't have BaseDexClassLoader.
             // if (loader instanceof BaseDexClassLoader) {
             //     libraryPaths = ((BaseDexClassLoader) loader).getLdLibraryPath();
             // } else {
                 libraryPaths = System.getProperty("java.library.path");
             // }
-            // RoboVM note: End change.
+            // BugVM note: End change.
             assertNotNull(libraryPaths);
 
             String[] libraryPathArray = libraryPaths.split(":");

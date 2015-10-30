@@ -77,7 +77,7 @@ public final class ThreadTest extends TestCase {
                 doSomething();
             }
             public void doSomething() {
-                for (int i = 0; i < 20; i++) { // RoboVM note: Added missing i++
+                for (int i = 0; i < 20; i++) { // BugVM note: Added missing i++
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException ignored) {

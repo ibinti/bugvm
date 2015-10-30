@@ -2107,7 +2107,7 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_shutdownInputOutput_twice() throws Exception {
-        // RoboVM note: On Darwin this test fails on both RoboVM and the RI with
+        // BugVM note: On Darwin this test fails on both BugVM and the RI with
         // a "Can't assign requested address" error.
         if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             return;

@@ -22,8 +22,8 @@
   <property name="mockwebserver.src" location="external/mockwebserver/src/main/java/"/>
   <property name="build" location="target/classes"/>
   <property name="reports.base" location="target/reports"/>
-  <property name="tmp" location="${java.io.tmpdir}/robovm.tests.libcore.${os}-${arch}.tmp"/>
-  <property name="install" location="${java.io.tmpdir}/robovm.tests.libcore.${os}-${arch}"/>
+  <property name="tmp" location="${java.io.tmpdir}/bugvm.tests.libcore.${os}-${arch}.tmp"/>
+  <property name="install" location="${java.io.tmpdir}/bugvm.tests.libcore.${os}-${arch}"/>
 
   <property name="maven-ant-tasks.version" value="2.1.3" />
   <path id="maven-ant-tasks.classpath" 
@@ -43,7 +43,7 @@
   <typedef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="jarjar.classpath"/>
 
   <path id="rt.classpath">
-    <pathelement location="${basedir}/../../rt/target/robovm-rt-${pom.version}.jar"/>
+    <pathelement location="${basedir}/../../rt/target/bugvm-rt-${pom.version}.jar"/>
     <pathelement location="${basedir}/../../rt/target/classes"/> <!-- For unmodified (not jarjar:ed) classes -->
   </path>
 
@@ -120,7 +120,7 @@
     <!-- Delete the classes in org.conscrypt.** -->
     <delete dir="${build}/org/conscrypt"/>
 
-    <copy todir="${build}" file="${basedir}/robovm-excluded-tests"/>
+    <copy todir="${build}" file="${basedir}/bugvm-excluded-tests"/>
     <pathconvert property="all-classes" dirsep="." pathsep="${line.separator}">
       <path>
         <fileset dir="${build}">
@@ -163,17 +163,17 @@
 
     <echo message="Running tests matching '${include}' and not matching '${exclude}'"/>
 
-    <property name="work" location="/tmp/robovm-libcore.${os}.${arch}.${timestamp}/work"/>
+    <property name="work" location="/tmp/bugvm-libcore.${os}.${arch}.${timestamp}/work"/>
     <mkdir dir="${work}"/>
     <property name="reports.tmp" location="${work}/reports"/>
     <mkdir dir="${reports.tmp}"/>
     <property name="reports" location="${reports.base}.${os}.${arch}.${timestamp}"/>
     <mkdir dir="${reports}"/>
 
-    <junit fork="true" jvm="${basedir}/robovm-ant-junit-runner" printsummary="true" showoutput="true" tempdir="${work}">
-      <env key="ROBOVM_TESTS_INCLUDE_PATTERN" value="${include}"/>
-      <env key="ROBOVM_TESTS_EXCLUDE_PATTERN" value="${exclude}"/>
-      <env key="ROBOVM_TESTS_RUN_EXCLUDED" value="${run-excluded}"/>
+    <junit fork="true" jvm="${basedir}/bugvm-ant-junit-runner" printsummary="true" showoutput="true" tempdir="${work}">
+      <env key="BUGVM_TESTS_INCLUDE_PATTERN" value="${include}"/>
+      <env key="BUGVM_TESTS_EXCLUDE_PATTERN" value="${exclude}"/>
+      <env key="BUGVM_TESTS_RUN_EXCLUDED" value="${run-excluded}"/>
       <classpath>
         <path refid="cp"/>
       </classpath>
@@ -182,7 +182,7 @@
       <jvmarg line="-timestamp ${timestamp}"/>
       <jvmarg line="-host ${host}"/>
       <formatter type="xml"/>
-      <test name="RoboVMAllTests" todir="${reports.tmp}"/>
+      <test name="BugVMAllTests" todir="${reports.tmp}"/>
     </junit>
 
     <copy todir="${reports}">

@@ -32,7 +32,7 @@ public class InetAddressTest extends junit.framework.TestCase {
         "[127.0.0.1]",
 
         // Trailing dots are not allowed.
-        // RoboVM note: getaddrinfo() in Ubuntu 12.04 happily parses this one
+        // BugVM note: getaddrinfo() in Ubuntu 12.04 happily parses this one
         //"1.2.3.4.",
         // Nor is any kind of trailing junk.
         "1.2.3.4hello",
@@ -56,7 +56,7 @@ public class InetAddressTest extends junit.framework.TestCase {
         "7f.0.0.1",
 
         // Octal.
-        // RoboVM note: getaddrinfo() in Mac OS X 10.8 happily parses this one
+        // BugVM note: getaddrinfo() in Mac OS X 10.8 happily parses this one
         //"0177.00.00.01", // Historically, this would have been interpreted as 127.0.0.1.
 
         // Negative numbers.

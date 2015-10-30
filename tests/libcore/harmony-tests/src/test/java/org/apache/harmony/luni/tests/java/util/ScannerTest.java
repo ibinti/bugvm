@@ -1076,7 +1076,7 @@ public class ScannerTest extends TestCase {
         s.useLocale(new Locale("ar", "AE"));
         assertEquals(-123, s.nextInt(10));
         // The following test case fails on RI
-        // RoboVM note: Also fails on Darwin with RoboVM so commented out.
+        // BugVM note: Also fails on Darwin with BugVM so commented out.
         //assertEquals(-123, s.nextInt(10));
         try {
             s.nextInt(10);
@@ -1263,7 +1263,7 @@ public class ScannerTest extends TestCase {
         s.useLocale(new Locale("ar", "AE"));
         assertEquals(-123, s.nextInt());
         // The following test case fails on RI
-        // RoboVM note: Also fails on Darwin with RoboVM so commented out.
+        // BugVM note: Also fails on Darwin with BugVM so commented out.
         //assertEquals(-123, s.nextInt());
         try {
             s.nextInt();

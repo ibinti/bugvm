@@ -181,7 +181,7 @@ public class ProcessManagerTest extends TestCase {
     public void testCloseNonStandardFds()
             throws IOException, InterruptedException {
         
-        // RoboVM note: This test is Linux specific
+        // BugVM note: This test is Linux specific
         if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             return;
         }

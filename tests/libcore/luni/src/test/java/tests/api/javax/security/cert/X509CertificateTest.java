@@ -758,7 +758,7 @@ public class X509CertificateTest extends TestCase {
 
         // myProvider.getService(type, algorithm)
 
-        // RoboVM note: The section below have been commented out since it has side effects that 
+        // BugVM note: The section below have been commented out since it has side effects that
         // make subsequent tests fail.
 //        Security.removeProvider(myProvider.getName());
 //        try {

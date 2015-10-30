@@ -148,7 +148,7 @@ public class ReferenceTest extends junit.framework.TestCase {
 
         r = newWeakReference(queue);
         FinalizationTester.induceFinalization();
-        Reference ref = queue.remove(10 * 1000); // RoboVM note: Don't wait indefinitely.
+        Reference ref = queue.remove(10 * 1000); // BugVM note: Don't wait indefinitely.
         assertNotNull("Object not enqueued.", ref);
         assertSame("Unexpected ref1", ref, r);
         assertNull("Object could not be reclaimed1.", r.get());

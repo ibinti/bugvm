@@ -27,7 +27,7 @@ import libcore.io.Libcore;
 
 public class FileTest extends junit.framework.TestCase {
     
-    // RoboVM note: Darwin has a path length limit of 1024 characters while 
+    // BugVM note: Darwin has a path length limit of 1024 characters while
     // Ubuntu allows as many as 4096.
     public static final int PATH_MAX = (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac") ? 1024 : 4096);
     

@@ -63,11 +63,11 @@ public final class MockOs {
             try {
                 return handler.invoke(proxy, method, args);
             } catch (SocketException e) {
-                // RoboVM note: The native methods in libcore.io.Posix which are
+                // BugVM note: The native methods in libcore.io.Posix which are
                 // used by the socket code sometimes throw SocketException even
                 // though the Os interface doesn't declare that this exception 
                 // can be thrown. When an undeclared checked exception is thrown 
-                // RoboVM's proxy implementation does the right thing and wraps
+                // BugVM's proxy implementation does the right thing and wraps
                 // the exception in an UndeclaredThrowableException as required
                 // by the InvokeHandler Javadocs. MockWebServer expects 
                 // SocketExceptions and will leak connections if it gets an

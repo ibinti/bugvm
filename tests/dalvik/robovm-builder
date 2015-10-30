@@ -6,8 +6,8 @@ BASE=$(cd $(dirname $0)/../..; pwd -P)
 ARCH=auto
 OS=auto
 
-if [ -f "$BASE/tests/dalvik/robovm.env" ]; then
-  . $BASE/tests/dalvik/robovm.env
+if [ -f "$BASE/tests/dalvik/bugvm.env" ]; then
+  . $BASE/tests/dalvik/bugvm.env
 fi
 
 EXTRA_ARGS=
@@ -18,13 +18,13 @@ TMP=$(pwd).tmp
 TARGET=$(pwd)
 
 if [ ! -x $TARGET/test.out ]; then
-  if [ "x$ROBOVM_HOME" != 'x' ]; then
-    ROBOVM="$ROBOVM_HOME/bin/robovm"
+  if [ "x$BUGVM_HOME" != 'x' ]; then
+    BUGVM="$BUGVM_HOME/bin/bugvm"
   else
-    export ROBOVM_DEV_ROOT=$BASE
-    ROBOVM="$ROBOVM_DEV_ROOT/bin/robovm"
+    export BUGVM_DEV_ROOT=$BASE
+    BUGVM="$BUGVM_DEV_ROOT/bin/bugvm"
   fi
-  echo "Build command line: " "$ROBOVM" \
+  echo "Build command line: " "$BUGVM" \
     -arch $ARCH \
     -os $OS \
     -tmp $TMP \
@@ -34,7 +34,7 @@ if [ ! -x $TARGET/test.out ]; then
     $EXTRA_ARGS \
     $@
 
-  "$ROBOVM" \
+  "$BUGVM" \
     -arch $ARCH \
     -os $OS \
     -tmp $TMP \

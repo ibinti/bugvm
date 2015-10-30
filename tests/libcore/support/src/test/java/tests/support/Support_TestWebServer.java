@@ -245,7 +245,7 @@ public class Support_TestWebServer implements Support_HttpConstants {
                     new Thread(new Worker(s), "additional worker").start();
                 } catch (SocketException e) {
                     log(e.getMessage());
-                    // RoboVM note: Quit this thread if the ServerSocket has been closed but 
+                    // BugVM note: Quit this thread if the ServerSocket has been closed but
                     // running == true
                     running = false;
                 } catch (IOException e) {

@@ -35,17 +35,17 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 import org.junit.runners.AllTests;
 import org.junit.runners.model.TestClass;
-import org.robovm.rt.VM;
+import com.bugvm.rt.VM;
 
 /**
  * Builds a JUnit {@link TestSuite} from the libcore tests. Tests listed in the 
  * <code>/bugvm-excluded-tests</code> file in the classpath will not be run.
- * The <code>ROBOVM_TESTS_INCLUDE_PATTERN</code> and <code>ROBOVM_TESTS_EXCLUDE_PATTERN</code>
+ * The <code>BUGVM_TESTS_INCLUDE_PATTERN</code> and <code>BUGVM_TESTS_EXCLUDE_PATTERN</code>
  * environment variables can be used to specify regular expression pattern that are used to
  * include/exclude tests. These are matched against a test's fully qualified class name.
  */
 @RunWith(AllTests.class)
-public class RoboVMAllTests {
+public class BugVMAllTests {
     static List<String> excludedTests = null;
     static List<Class<?>> allClasses;
     
@@ -281,15 +281,15 @@ public class RoboVMAllTests {
     }
     
     public static TestSuite suite() throws IOException {
-        String include = System.getenv("ROBOVM_TESTS_INCLUDE_PATTERN");
+        String include = System.getenv("BUGVM_TESTS_INCLUDE_PATTERN");
         if (include == null) {
             include = ".*";
         }
-        String exclude = System.getenv("ROBOVM_TESTS_EXCLUDE_PATTERN");
+        String exclude = System.getenv("BUGVM_TESTS_EXCLUDE_PATTERN");
         if (exclude == null) {
             exclude = " ";
         }
-        boolean runExcluded = Boolean.parseBoolean(System.getenv("ROBOVM_TESTS_RUN_EXCLUDED"));
+        boolean runExcluded = Boolean.parseBoolean(System.getenv("BUGVM_TESTS_RUN_EXCLUDED"));
         return suite(Pattern.compile(include), Pattern.compile(exclude), runExcluded);
     }
     
@@ -306,7 +306,7 @@ public class RoboVMAllTests {
     
     private static List<String> readLines(String path) {
         try {
-            InputStreamReader in = new InputStreamReader(RoboVMAllTests.class.getResourceAsStream(path), "UTF8");
+            InputStreamReader in = new InputStreamReader(BugVMAllTests.class.getResourceAsStream(path), "UTF8");
             StringWriter out = new StringWriter();
             copy(in, out);
             ArrayList<String> lines = new ArrayList<String>();

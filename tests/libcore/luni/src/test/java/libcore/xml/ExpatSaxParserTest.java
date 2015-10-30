@@ -585,7 +585,7 @@ public class ExpatSaxParserTest extends TestCase {
 
     public void testExternalEntityDownload() throws IOException, SAXException {
         final MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.enqueue(new MockResponse().setBody("<bar></bar>"));
         server.play();
 

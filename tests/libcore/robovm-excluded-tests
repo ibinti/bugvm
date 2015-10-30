@@ -21,11 +21,11 @@ libcore.java.net.URLConnectionTest#testGetHeadersThrows
 # Darwin does not support Unix domain sockets with "abstract socket addresses" as Linux does.
 libcore.io.OsTest#testUnixDomainSocket_abstract_name
 
-# Known to sometimes hang on RoboVM in Linux. See issue #47.
+# Known to sometimes hang on BugVM in Linux. See issue #47.
 libcore.java.io.InterruptedStreamTest#testInterruptWritablePipeChannel
 libcore.java.io.InterruptedStreamTest#testInterruptReadablePipeChannel
 
-# BUG? Hangs on RoboVM sometimes. Why?
+# BUG? Hangs on BugVM sometimes. Why?
 libcore.java.net.URLConnectionTest#testConnectViaHttpProxyToHttpsUsingBadProxyAndHttpResponseCache
 
 # Executes java to test deleteOnExit. We need to test this in some other way.
@@ -34,7 +34,7 @@ libcore.java.io.OldFileTest#test_deleteOnExit
 # Takes too long or hangs
 libcore.java.io.RandomAccessFileTest#testRandomAccessFileHasCleanupFinalizer
 
-# These try to test finalization by triggering OOM. Hangs or take a very long time on RoboVM.
+# These try to test finalization by triggering OOM. Hangs or take a very long time on BugVM.
 # Probably too specific to Android's GC.
 libcore.java.lang.ThreadTest#testLeakingStartedThreads
 libcore.java.lang.ThreadTest#testLeakingUnstartedThreads
@@ -55,7 +55,7 @@ libcore.java.nio.channels.SelectorTest#testEINTR
 # or the stack.
 org.apache.harmony.crypto.tests.javax.crypto.ExemptionMechanismTest#test_finalize
 
-# Triggers OutOfMemoryError to test SoftReferences. Seems like the RoboVM GC doesn't
+# Triggers OutOfMemoryError to test SoftReferences. Seems like the BugVM GC doesn't
 # behave the same as Android's here. Maybe because the data used to trigger OOM is still 
 # referenced by some register or the stack. The test ultimately core dumps with a GC error
 # message.
@@ -92,7 +92,7 @@ org.apache.harmony.crypto.tests.javax.crypto.interfaces.DHPublicKeyTest#test_get
 # POSTs to http://onearth.jpl.nasa.gov/landsat.cgi which doesn't seem to exist anymore (404)
 org.apache.harmony.luni.tests.java.net.URLConnectionTest#test_getAllowUserInteraction
 
-# Uses custom class loader which isn't supported on RoboVM
+# Uses custom class loader which isn't supported on BugVM
 libcore.java.lang.OldClassTest#test_forNameLjava_lang_StringLbooleanLClassLoader_AndroidOnly
 
 # Dalvik specific tests which launches a second Dalvik process.
@@ -101,7 +101,7 @@ libcore.java.util.jar.DalvikExecTest#test_execCreatedJarWithManifest
 libcore.java.util.jar.DalvikExecTest#test_execExistingJar
 tests.api.java.lang.Process2Test#test_streams
 
-# Hangs on RI and on RoboVM. Also in expectations/brokentests.txt.
+# Hangs on RI and on BugVM. Also in expectations/brokentests.txt.
 libcore.java.net.URLConnectionTest#testConnectTimeouts
 libcore.java.net.URLConnectionTest#testGetKeepAlive
 

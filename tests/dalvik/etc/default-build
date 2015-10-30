@@ -36,4 +36,4 @@ if [ -r src-ex ]; then
     cp=classes:classes-ex
 fi
 
-$BASE/tests/dalvik/robovm-builder -forcelinkclasses '##.#' -cp "$cp" Main > robovm.log 2>&1
+$BASE/tests/dalvik/bugvm-builder -forcelinkclasses '##.#' -cp "$cp" Main > bugvm.log 2>&1

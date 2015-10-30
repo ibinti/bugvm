@@ -44,17 +44,17 @@ public class CookiesTest extends TestCase {
 
     private static final Map<String, List<String>> EMPTY_COOKIES_MAP = Collections.emptyMap();
 
-    // RoboVM note: Added to restore default CookieHandler after each test
+    // BugVM note: Added to restore default CookieHandler after each test
     private CookieHandler defaultCookieHandler;
     
-    // RoboVM note: Added to restore default CookieHandler after each test
+    // BugVM note: Added to restore default CookieHandler after each test
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         defaultCookieHandler = CookieHandler.getDefault();
     }
 
-    // RoboVM note: Added to restore default CookieHandler after each test
+    // BugVM note: Added to restore default CookieHandler after each test
     @Override
     protected void tearDown() throws Exception {
         CookieHandler.setDefault(defaultCookieHandler);
@@ -65,7 +65,7 @@ public class CookiesTest extends TestCase {
         CookieManager cookieManager = new CookieManager(null, ACCEPT_ORIGINAL_SERVER);
         CookieHandler.setDefault(cookieManager);
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.play();
 
         server.enqueue(new MockResponse().addHeader("Set-Cookie: a=android; "
@@ -95,7 +95,7 @@ public class CookiesTest extends TestCase {
         CookieManager cookieManager = new CookieManager(null, ACCEPT_ORIGINAL_SERVER);
         CookieHandler.setDefault(cookieManager);
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.play();
 
         server.enqueue(new MockResponse().addHeader("Set-Cookie: a=android; "
@@ -127,7 +127,7 @@ public class CookiesTest extends TestCase {
         CookieManager cookieManager = new CookieManager(null, ACCEPT_ORIGINAL_SERVER);
         CookieHandler.setDefault(cookieManager);
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.play();
 
         server.enqueue(new MockResponse().addHeader("Set-Cookie2: a=android; "
@@ -163,7 +163,7 @@ public class CookiesTest extends TestCase {
         CookieManager cookieManager = new CookieManager(null, ACCEPT_ORIGINAL_SERVER);
         CookieHandler.setDefault(cookieManager);
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.play();
 
         server.enqueue(new MockResponse().addHeader("Set-Cookie2: a=\"android\"; "
@@ -270,7 +270,7 @@ public class CookiesTest extends TestCase {
 
     public void testSendingCookiesFromStore() throws Exception {
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.enqueue(new MockResponse());
         server.play();
 
@@ -297,12 +297,12 @@ public class CookiesTest extends TestCase {
 
     public void testRedirectsDoNotIncludeTooManyCookies() throws Exception {
         MockWebServer redirectTarget = new MockWebServer();
-        try { // RoboVM note: Modified to call redirectTarget.shutdown() after test finishes.
+        try { // BugVM note: Modified to call redirectTarget.shutdown() after test finishes.
         redirectTarget.enqueue(new MockResponse().setBody("A"));
         redirectTarget.play();
 
         MockWebServer redirectSource = new MockWebServer();
-        try { // RoboVM note: Modified to call redirectSource.shutdown() after test finishes.
+        try { // BugVM note: Modified to call redirectSource.shutdown() after test finishes.
         redirectSource.enqueue(new MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_MOVED_TEMP)
                 .addHeader("Location: " + redirectTarget.getUrl("/")));
@@ -354,7 +354,7 @@ public class CookiesTest extends TestCase {
             }
         });
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server.enqueue(new MockResponse());
         server.play();
 
@@ -405,7 +405,7 @@ public class CookiesTest extends TestCase {
             }
         });
         MockWebServer server = new MockWebServer();
-        try { // RoboVM note: Modified to call server.shutdown() after test finishes.
+        try { // BugVM note: Modified to call server.shutdown() after test finishes.
         server. enqueue(new MockResponse());
         server.play();
 

@@ -43,8 +43,8 @@ public class Main {
                 boolean showTime = timing;
 
                 if (! timing) {
-                    long epsilon = delay / 5; // RoboVM note: Changed from 10 to 5 to tolerate larger diff on iOS devices
-                    if (epsilon > 150) { // RoboVM note: Changed from 50 to 150 to tolerate larger diff on iOS devices
+                    long epsilon = delay / 5; // BugVM note: Changed from 10 to 5 to tolerate larger diff on iOS devices
+                    if (epsilon > 150) { // BugVM note: Changed from 50 to 150 to tolerate larger diff on iOS devices
                         epsilon = 150;
                     }
 
