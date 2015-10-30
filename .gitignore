@@ -9,6 +9,7 @@ a.out
 /vm/binaries/
 /vm/target/
 /compiler/target/
+/compiler-dist/target/
 /llvm/target/
 /libimobiledevice/target/
 /rt/target/
