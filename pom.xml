@@ -192,6 +192,7 @@
     <module>llvm</module>
     <module>libimobiledevice</module>
     <module>compiler</module>
+    <module>compiler-dist</module>
     <module>rt</module>
     <module>cacerts</module>
     <module>objc</module>
