@@ -197,5 +197,6 @@
     <module>cacerts</module>
     <module>objc</module>
     <module>cocoatouch</module>
+    <module>package</module>
   </modules>
 </project>
