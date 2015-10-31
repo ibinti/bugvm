@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE=$(cd $(dirname $0); pwd -P)
-JAVAOUT="$BASE/src/main/java/org/robovm/llvm/binding"
+JAVAOUT="$BASE/src/main/java/com/bugvm/llvm/binding"
 COUT="$BASE/src/main/native"
 
 function rename {

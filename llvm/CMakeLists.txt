@@ -73,7 +73,7 @@ if(MACOSX)
 endif()
 
 ExternalProject_Add(extclang 
-  GIT_REPOSITORY git://github.com/robovm/clang.git
+  GIT_REPOSITORY git://github.com/bugvm/clang.git
   GIT_TAG 7b389564897bc6c0431c42f8f1825f04624ff4e3
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND "" 
@@ -87,7 +87,7 @@ set(LLVM_C_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-
 set(LLVM_CXX_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-sections")
 ExternalProject_Add(extllvm
   DEPENDS extclang
-  GIT_REPOSITORY git://github.com/robovm/llvm.git
+  GIT_REPOSITORY git://github.com/bugvm/llvm.git
   GIT_TAG aceb47b80838681fe65a1d01aac7aae7b863ac5a
   PATCH_COMMAND bash -c "rm -rf tools/clang && ln -s ../../../../extclang-prefix/src/extclang tools/clang && ${CMAKE_SOURCE_DIR}/patches/apply-patches"
   LIST_SEPARATOR ^^
@@ -161,18 +161,18 @@ set(SRC
   src/main/native/ClangExtra.cpp
 )
 
-add_library(robovm-llvm SHARED ${SRC})
-add_dependencies(robovm-llvm extllvm)
-target_link_libraries(robovm-llvm ${LLVM_LIBS} ${LLVM_LDFLAGS})
-set_target_properties(robovm-llvm PROPERTIES LINKER_LANGUAGE CXX)
+add_library(bugvm-llvm SHARED ${SRC})
+add_dependencies(bugvm-llvm extllvm)
+target_link_libraries(bugvm-llvm ${LLVM_LIBS} ${LLVM_LDFLAGS})
+set_target_properties(bugvm-llvm PROPERTIES LINKER_LANGUAGE CXX)
 if(LINUX)
-  set_target_properties(robovm-llvm PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--version-script=${CMAKE_SOURCE_DIR}/src/main/native/exports_linux.sym")
+  set_target_properties(bugvm-llvm PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--version-script=${CMAKE_SOURCE_DIR}/src/main/native/exports_linux.sym")
 elseif(MACOSX)
-  set_target_properties(robovm-llvm PROPERTIES LINK_FLAGS "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,${CMAKE_SOURCE_DIR}/src/main/native/exports_macosx.sym")
+  set_target_properties(bugvm-llvm PROPERTIES LINK_FLAGS "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,${CMAKE_SOURCE_DIR}/src/main/native/exports_macosx.sym")
 endif()
-set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/src/main/resources/org/robovm/llvm/binding/${OS}/${ARCH})
+set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/src/main/resources/com/bugvm/llvm/binding/${OS}/${ARCH})
 if(WINDOWS)
-  install(TARGETS robovm-llvm RUNTIME DESTINATION ${INSTALL_DIR})
+  install(TARGETS bugvm-llvm RUNTIME DESTINATION ${INSTALL_DIR})
 else()
-  install(TARGETS robovm-llvm LIBRARY DESTINATION ${INSTALL_DIR})
+  install(TARGETS bugvm-llvm LIBRARY DESTINATION ${INSTALL_DIR})
 endif()

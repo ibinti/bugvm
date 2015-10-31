@@ -14,7 +14,7 @@
         <include>**/*</include>
       </includes>
       <directoryMode>755</directoryMode>
-      <fileMode>644</fileMode>
+      <fileMode>755</fileMode>
       <outputDirectory>lib/vm</outputDirectory>
     </fileSet>
     <fileSet>
