@@ -41,7 +41,7 @@ import libcore.io.MemoryMappedFile;
  * @hide - used to implement TimeZone
  */
 public final class ZoneInfoDB {
-  // RoboVM note: Decide whether we should use Android's TzData impl or RoboVM's.
+  // BugVM note: Decide whether we should use Android's TzData impl or BugVM's.
   private static final TzData DATA;
   static {
     if (hasAndroidData()) {
@@ -49,7 +49,7 @@ public final class ZoneInfoDB {
       new TzDataAndroid(System.getenv("ANDROID_DATA") + "/misc/zoneinfo/tzdata",
                  System.getenv("ANDROID_ROOT") + "/usr/share/zoneinfo/tzdata");
     } else {
-        DATA = new TzDataRoboVM();
+        DATA = new TzDataBugVM();
     }
   }
 
@@ -61,7 +61,7 @@ public final class ZoneInfoDB {
       return f.exists() && f.isFile();
   }
   
-  // RoboVM note: Made TzData an abstract class so that we can decide which
+  // BugVM note: Made TzData an abstract class so that we can decide which
   // implementation to use at runtime.
   public static abstract class TzData {
     public abstract String[] getAvailableIDs();

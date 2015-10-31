@@ -85,7 +85,7 @@ import com.bugvm.rt.bro.ptr.*;
     }
     
     /**
-     * Registers a default java uncaught exception handler that forwards exceptions to RoboVM's signal handlers.
+     * Registers a default java uncaught exception handler that forwards exceptions to BugVM's signal handlers.
      * Use this if you want Java exceptions to be logged by crash reporters.
      */
     public static void registerDefaultJavaUncaughtExceptionHandler() {

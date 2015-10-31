@@ -17,7 +17,7 @@ package com.bugvm.rt;
 
 /**
  * Provides a means for installing custom signal handlers without overriding
- * the signal handlers needed by RoboVM to handle {@link NullPointerException}s
+ * the signal handlers needed by BugVM to handle {@link NullPointerException}s
  * and {@link StackOverflowError}s properly. This should be used when using 
  * crash reporting services like TestFlight, Flurry or HockeyApp. The 
  * initialization method for the crash reporting service SDK should be called 
@@ -44,7 +44,7 @@ public class Signals {
     }
     
     /**
-     * Saves the current signal handlers essential for RoboVM to work correctly
+     * Saves the current signal handlers essential for BugVM to work correctly
      * then calls the specified {@link InstallSignalsCallback} and 
      * finally restores the saved signals chaining them to installed ones
      * properly.

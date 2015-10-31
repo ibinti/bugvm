@@ -329,7 +329,7 @@ public class Types {
     }
     
     public static boolean isNativeObject(SootClass sc) {
-        return isSubclass(sc, "org.robovm.rt.bro.NativeObject");
+        return isSubclass(sc, "com.bugvm.rt.bro.NativeObject");
     }
     
     public static boolean isStruct(soot.Type t) {
@@ -340,7 +340,7 @@ public class Types {
     }
     
     public static boolean isStruct(SootClass sc) {
-        return isSubclass(sc, "org.robovm.rt.bro.Struct");
+        return isSubclass(sc, "com.bugvm.rt.bro.Struct");
     }
     
     public static boolean isPrimitiveComponentType(String descriptor) {

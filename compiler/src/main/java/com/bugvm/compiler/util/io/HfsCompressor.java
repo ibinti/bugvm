@@ -26,7 +26,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * Takes a file and compresses it via the <code>libhfscompressor.dylib</code> in
- * <code>robovm/bin</code>. Used on object files.</p>
+ * <code>bugvm/bin</code>. Used on object files.</p>
  * 
  * Compression can be disabled completely by setting the <code>ROBOVM_DISABLE_COMPRESSION</code>
  * environment variable.

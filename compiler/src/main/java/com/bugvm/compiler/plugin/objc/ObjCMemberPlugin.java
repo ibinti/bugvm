@@ -81,7 +81,7 @@ import soot.util.Chain;
  * property.
  */
 public class ObjCMemberPlugin extends AbstractCompilerPlugin {
-    public static final String OBJC_ANNOTATIONS_PACKAGE = "org/robovm/objc/annotation";
+    public static final String OBJC_ANNOTATIONS_PACKAGE = "com/bugvm/objc/annotation";
     public static final String METHOD = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Method;";
     public static final String PROPERTY = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Property;";
     public static final String BIND_SELECTOR = "L" + OBJC_ANNOTATIONS_PACKAGE + "/BindSelector;";
@@ -91,42 +91,42 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String IBOUTLETCOLLECTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutletCollection;";
     public static final String NATIVE_CLASS = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NativeClass;";
     public static final String TYPE_ENCODING = "L" + OBJC_ANNOTATIONS_PACKAGE + "/TypeEncoding;";
-    public static final String SELECTOR = "org.robovm.objc.Selector";
-    public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
-    public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
-    public static final String OBJC_OBJECT = "org.robovm.objc.ObjCObject";
-    public static final String OBJC_RUNTIME = "org.robovm.objc.ObjCRuntime";
-    public static final String OBJC_EXTENSIONS = "org.robovm.objc.ObjCExtensions";
-    public static final String NS_OBJECT = "org.robovm.apple.foundation.NSObject";
-    public static final String NS_OBJECT$MARSHALER = "org.robovm.apple.foundation.NSObject$Marshaler";
-    public static final String NS_STRING$AS_STRING_MARSHALER = "org.robovm.apple.foundation.NSString$AsStringMarshaler";
-    public static final String $M = "org.robovm.objc.$M";
-    public static final String UI_EVENT = "org.robovm.apple.uikit.UIEvent";
-    public static final String NS_ARRAY = "org.robovm.apple.foundation.NSArray";
+    public static final String SELECTOR = "com.bugvm.objc.Selector";
+    public static final String OBJC_SUPER = "com.bugvm.objc.ObjCSuper";
+    public static final String OBJC_CLASS = "com.bugvm.objc.ObjCClass";
+    public static final String OBJC_OBJECT = "com.bugvm.objc.ObjCObject";
+    public static final String OBJC_RUNTIME = "com.bugvm.objc.ObjCRuntime";
+    public static final String OBJC_EXTENSIONS = "com.bugvm.objc.ObjCExtensions";
+    public static final String NS_OBJECT = "com.bugvm.apple.foundation.NSObject";
+    public static final String NS_OBJECT$MARSHALER = "com.bugvm.apple.foundation.NSObject$Marshaler";
+    public static final String NS_STRING$AS_STRING_MARSHALER = "com.bugvm.apple.foundation.NSString$AsStringMarshaler";
+    public static final String $M = "com.bugvm.objc.$M";
+    public static final String UI_EVENT = "com.bugvm.apple.uikit.UIEvent";
+    public static final String NS_ARRAY = "com.bugvm.apple.foundation.NSArray";
 
     private boolean initialized = false;
     private Config config;
-    private SootClass org_robovm_objc_ObjCClass = null;
-    private SootClass org_robovm_objc_ObjCSuper = null;
-    private SootClass org_robovm_objc_ObjCObject = null;
-    private SootClass org_robovm_objc_ObjCRuntime = null;
-    private SootClass org_robovm_objc_ObjCExtensions = null;
-    private SootClass org_robovm_objc_Selector = null;
+    private SootClass com_bugvm_objc_ObjCClass = null;
+    private SootClass com_bugvm_objc_ObjCSuper = null;
+    private SootClass com_bugvm_objc_ObjCObject = null;
+    private SootClass com_bugvm_objc_ObjCRuntime = null;
+    private SootClass com_bugvm_objc_ObjCExtensions = null;
+    private SootClass com_bugvm_objc_Selector = null;
     private SootClass java_lang_String = null;
     private SootClass java_lang_Class = null;
-    private SootClass org_robovm_apple_foundation_NSObject = null;
-    private SootClass org_robovm_objc_$M = null;
-    private SootClass org_robovm_apple_uikit_UIEvent = null;
-    private SootClass org_robovm_apple_foundation_NSArray = null;
-    private SootClass org_robovm_apple_foundation_NSObject$Marshaler = null;
-    private SootClass org_robovm_apple_foundation_NSString$AsStringMarshaler = null;
-    private SootMethodRef org_robovm_objc_ObjCObject_getSuper = null;
-    private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
-    private SootMethodRef org_robovm_objc_ObjCClass_getByType = null;
-    private SootMethodRef org_robovm_objc_ObjCRuntime_bind = null;
-    private SootMethodRef org_robovm_objc_ObjCObject_updateStrongRef = null;
-    private SootMethodRef org_robovm_objc_ObjCExtensions_updateStrongRef = null;
-    private SootMethodRef org_robovm_objc_Selector_register = null;
+    private SootClass com_bugvm_apple_foundation_NSObject = null;
+    private SootClass com_bugvm_objc_$M = null;
+    private SootClass com_bugvm_apple_uikit_UIEvent = null;
+    private SootClass com_bugvm_apple_foundation_NSArray = null;
+    private SootClass com_bugvm_apple_foundation_NSObject$Marshaler = null;
+    private SootClass com_bugvm_apple_foundation_NSString$AsStringMarshaler = null;
+    private SootMethodRef com_bugvm_objc_ObjCObject_getSuper = null;
+    private SootFieldRef com_bugvm_objc_ObjCObject_customClass = null;
+    private SootMethodRef com_bugvm_objc_ObjCClass_getByType = null;
+    private SootMethodRef com_bugvm_objc_ObjCRuntime_bind = null;
+    private SootMethodRef com_bugvm_objc_ObjCObject_updateStrongRef = null;
+    private SootMethodRef com_bugvm_objc_ObjCExtensions_updateStrongRef = null;
+    private SootMethodRef com_bugvm_objc_Selector_register = null;
 
     static SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
         for (SootMethod m : sootClass.getMethods()) {
@@ -148,7 +148,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
     private SootField getSelectorField(String selectorName) {
         return new SootField(getSelectorFieldName(selectorName),
-                org_robovm_objc_Selector.getType(), STATIC | PRIVATE | FINAL);
+                com_bugvm_objc_Selector.getType(), STATIC | PRIVATE | FINAL);
     }
 
     @SuppressWarnings("unchecked")
@@ -159,11 +159,11 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         if (extensions) {
             paramTypes.add(method.getParameterType(0));
         } else if (method.isStatic()) {
-            paramTypes.add(org_robovm_objc_ObjCClass.getType());
+            paramTypes.add(com_bugvm_objc_ObjCClass.getType());
         } else {
             paramTypes.add(receiverType == null ? method.getDeclaringClass().getType() : receiverType);
         }
-        paramTypes.add(org_robovm_objc_Selector.getType());
+        paramTypes.add(com_bugvm_objc_Selector.getType());
         if (extensions) {
             paramTypes.addAll(method.getParameterTypes().subList(1, method.getParameterTypes().size()));
         } else {
@@ -226,8 +226,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     @SuppressWarnings("unchecked")
     private SootMethod getMsgSendSuperMethod(String selectorName, SootMethod method) {
         List<Type> paramTypes = new ArrayList<>();
-        paramTypes.add(org_robovm_objc_ObjCSuper.getType());
-        paramTypes.add(org_robovm_objc_Selector.getType());
+        paramTypes.add(com_bugvm_objc_ObjCSuper.getType());
+        paramTypes.add(com_bugvm_objc_Selector.getType());
         paramTypes.addAll(method.getParameterTypes());
         SootMethod m = new SootMethod("$m$super$" + selectorName.replace(':', '$'),
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | NATIVE);
@@ -258,7 +258,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 if (stmt.getInvokeExpr() instanceof StaticInvokeExpr) {
                     StaticInvokeExpr expr = (StaticInvokeExpr) stmt.getInvokeExpr();
                     SootMethodRef ref = expr.getMethodRef();
-                    if (ref.isStatic() && ref.declaringClass().equals(org_robovm_objc_ObjCRuntime)
+                    if (ref.isStatic() && ref.declaringClass().equals(com_bugvm_objc_ObjCRuntime)
                             && ref.name().equals("bind")) {
                         if (ref.parameterTypes().isEmpty() || expr.getArg(0).equals(c)) {
                             return;
@@ -272,7 +272,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         units.insertBefore(
                 j.newInvokeStmt(
                         j.newStaticInvokeExpr(
-                                org_robovm_objc_ObjCRuntime_bind,
+                                com_bugvm_objc_ObjCRuntime_bind,
                                 ClassConstant.v(internalName))),
                 units.getLast()
                 );
@@ -284,12 +284,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         SootMethod clinit = getOrCreateStaticInitializer(sootClass);
         Body body = clinit.retrieveActiveBody();
 
-        Local objCClass = Jimple.v().newLocal("$objCClass", org_robovm_objc_ObjCClass.getType());
+        Local objCClass = Jimple.v().newLocal("$objCClass", com_bugvm_objc_ObjCClass.getType());
         body.getLocals().add(objCClass);
 
         Chain<Unit> units = body.getUnits();
 
-        SootField f = new SootField("$objCClass", org_robovm_objc_ObjCClass.getType(),
+        SootField f = new SootField("$objCClass", com_bugvm_objc_ObjCClass.getType(),
                 STATIC | PRIVATE | FINAL);
         sootClass.addField(f);
 
@@ -298,7 +298,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         j.newAssignStmt(
                                 objCClass,
                                 j.newStaticInvokeExpr(
-                                        org_robovm_objc_ObjCClass_getByType,
+                                        com_bugvm_objc_ObjCClass_getByType,
                                         ClassConstant.v(sootClass.getName().replace('.', '/')))),
                         j.newAssignStmt(
                                 j.newStaticFieldRef(f.makeRef()),
@@ -314,7 +314,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         SootMethod clinit = getOrCreateStaticInitializer(sootClass);
         Body body = clinit.retrieveActiveBody();
 
-        Local sel = Jimple.v().newLocal("$sel", org_robovm_objc_Selector.getType());
+        Local sel = Jimple.v().newLocal("$sel", com_bugvm_objc_Selector.getType());
         body.getLocals().add(sel);
 
         Chain<Unit> units = body.getUnits();
@@ -328,7 +328,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                             j.newAssignStmt(
                                     sel,
                                     j.newStaticInvokeExpr(
-                                            org_robovm_objc_Selector_register,
+                                            com_bugvm_objc_Selector_register,
                                             StringConstant.v(selectorName))),
                             j.newAssignStmt(
                                     j.newStaticFieldRef(f.makeRef()),
@@ -351,65 +351,65 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         SootResolver r = SootResolver.v();
         // These have to be resolved to HIERARCHY so that isPhantom() works
         // properly
-        org_robovm_objc_ObjCObject = r.resolveClass(OBJC_OBJECT, SootClass.HIERARCHY);
-        org_robovm_objc_ObjCExtensions = r.resolveClass(OBJC_EXTENSIONS, SootClass.HIERARCHY);
+        com_bugvm_objc_ObjCObject = r.resolveClass(OBJC_OBJECT, SootClass.HIERARCHY);
+        com_bugvm_objc_ObjCExtensions = r.resolveClass(OBJC_EXTENSIONS, SootClass.HIERARCHY);
         // These only have to be DANGLING
-        org_robovm_objc_ObjCClass = r.makeClassRef(OBJC_CLASS);
-        org_robovm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
-        org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
-        org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
-        org_robovm_apple_foundation_NSObject = r.makeClassRef(NS_OBJECT);
-        org_robovm_apple_foundation_NSObject$Marshaler = r.makeClassRef(NS_OBJECT$MARSHALER);
-        org_robovm_apple_foundation_NSString$AsStringMarshaler = r.makeClassRef(NS_STRING$AS_STRING_MARSHALER);
-        org_robovm_objc_$M = r.makeClassRef($M);
-        org_robovm_apple_uikit_UIEvent = r.makeClassRef(UI_EVENT);
-        org_robovm_apple_foundation_NSArray = r.makeClassRef(NS_ARRAY);
+        com_bugvm_objc_ObjCClass = r.makeClassRef(OBJC_CLASS);
+        com_bugvm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
+        com_bugvm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
+        com_bugvm_objc_Selector = r.makeClassRef(SELECTOR);
+        com_bugvm_apple_foundation_NSObject = r.makeClassRef(NS_OBJECT);
+        com_bugvm_apple_foundation_NSObject$Marshaler = r.makeClassRef(NS_OBJECT$MARSHALER);
+        com_bugvm_apple_foundation_NSString$AsStringMarshaler = r.makeClassRef(NS_STRING$AS_STRING_MARSHALER);
+        com_bugvm_objc_$M = r.makeClassRef($M);
+        com_bugvm_apple_uikit_UIEvent = r.makeClassRef(UI_EVENT);
+        com_bugvm_apple_foundation_NSArray = r.makeClassRef(NS_ARRAY);
         SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
 
-        org_robovm_objc_Selector_register =
+        com_bugvm_objc_Selector_register =
                 Scene.v().makeMethodRef(
-                        org_robovm_objc_Selector,
+                        com_bugvm_objc_Selector,
                         "register",
                         Arrays.<Type> asList(java_lang_String.getType()),
-                        org_robovm_objc_Selector.getType(), true);
-        org_robovm_objc_ObjCObject_getSuper =
+                        com_bugvm_objc_Selector.getType(), true);
+        com_bugvm_objc_ObjCObject_getSuper =
                 Scene.v().makeMethodRef(
-                        org_robovm_objc_ObjCObject,
+                        com_bugvm_objc_ObjCObject,
                         "getSuper",
                         Collections.<Type> emptyList(),
-                        org_robovm_objc_ObjCSuper.getType(), false);
-        org_robovm_objc_ObjCObject_updateStrongRef =
+                        com_bugvm_objc_ObjCSuper.getType(), false);
+        com_bugvm_objc_ObjCObject_updateStrongRef =
                 Scene.v().makeMethodRef(
-                        org_robovm_objc_ObjCObject,
+                        com_bugvm_objc_ObjCObject,
                         "updateStrongRef",
                         Arrays.<Type> asList(
                                 java_lang_Object.getType(),
                                 java_lang_Object.getType()),
                         VoidType.v(), false);
-        org_robovm_objc_ObjCClass_getByType =
+        com_bugvm_objc_ObjCClass_getByType =
                 Scene.v().makeMethodRef(
-                        org_robovm_objc_ObjCClass,
+                        com_bugvm_objc_ObjCClass,
                         "getByType",
                         Arrays.<Type> asList(java_lang_Class.getType()),
-                        org_robovm_objc_ObjCClass.getType(), true);
-        org_robovm_objc_ObjCRuntime_bind =
+                        com_bugvm_objc_ObjCClass.getType(), true);
+        com_bugvm_objc_ObjCRuntime_bind =
                 Scene.v().makeMethodRef(
-                        org_robovm_objc_ObjCRuntime,
+                        com_bugvm_objc_ObjCRuntime,
                         "bind",
                         Arrays.<Type> asList(java_lang_Class.getType()),
                         VoidType.v(), true);
-        org_robovm_objc_ObjCObject_customClass =
+        com_bugvm_objc_ObjCObject_customClass =
                 Scene.v().makeFieldRef(
-                        org_robovm_objc_ObjCObject,
+                        com_bugvm_objc_ObjCObject,
                         "customClass", BooleanType.v(), false);
-        org_robovm_objc_ObjCExtensions_updateStrongRef =
+        com_bugvm_objc_ObjCExtensions_updateStrongRef =
                 Scene.v().makeMethodRef(
-                        org_robovm_objc_ObjCExtensions,
+                        com_bugvm_objc_ObjCExtensions,
                         "updateStrongRef",
                         Arrays.<Type> asList(
-                                org_robovm_objc_ObjCObject.getType(),
+                                com_bugvm_objc_ObjCObject.getType(),
                                 java_lang_Object.getType(),
                                 java_lang_Object.getType()),
                         VoidType.v(), true);
@@ -427,52 +427,52 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private boolean isObjCObject(SootClass cls) {
-        return isAssignable(cls, org_robovm_objc_ObjCObject);
+        return isAssignable(cls, com_bugvm_objc_ObjCObject);
     }
 
     private boolean isObjCExtensions(SootClass cls) {
-        return isAssignable(cls, org_robovm_objc_ObjCExtensions);
+        return isAssignable(cls, com_bugvm_objc_ObjCExtensions);
     }
 
     private boolean isNSObject(Type type) {
         return (type instanceof RefType)
-                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_foundation_NSObject);
+                && isAssignable(((RefType) type).getSootClass(), com_bugvm_apple_foundation_NSObject);
     }
 
     private boolean isUIEvent(Type type) {
         return (type instanceof RefType)
-                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIEvent);
+                && isAssignable(((RefType) type).getSootClass(), com_bugvm_apple_uikit_UIEvent);
     }
 
     private boolean isSelector(Type type) {
         return (type instanceof RefType)
-                && isAssignable(((RefType) type).getSootClass(), org_robovm_objc_Selector);
+                && isAssignable(((RefType) type).getSootClass(), com_bugvm_objc_Selector);
     }
 
     private boolean isNSArray(Type type) {
         return (type instanceof RefType)
-                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_foundation_NSArray);
+                && isAssignable(((RefType) type).getSootClass(), com_bugvm_apple_foundation_NSArray);
     }
 
     private boolean isNSObject$Marshaler_toNative(SootMethod method) {
-        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSObject$Marshaler.getType())
+        return method.getDeclaringClass().getType().equals(com_bugvm_apple_foundation_NSObject$Marshaler.getType())
                 && method.getName().equals("toNative") && method.getParameterCount() == 2
-                && method.getParameterType(0).equals(org_robovm_apple_foundation_NSObject.getType())
+                && method.getParameterType(0).equals(com_bugvm_apple_foundation_NSObject.getType())
                 && method.getParameterType(1).equals(LongType.v())
                 && method.getReturnType().equals(LongType.v());
     }
 
     private boolean isNSObject$Marshaler_toObject(SootMethod method) {
-        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSObject$Marshaler.getType())
+        return method.getDeclaringClass().getType().equals(com_bugvm_apple_foundation_NSObject$Marshaler.getType())
                 && method.getName().equals("toObject") && method.getParameterCount() == 3
                 && method.getParameterType(0).equals(java_lang_Class.getType())
                 && method.getParameterType(1).equals(LongType.v())
                 && method.getParameterType(2).equals(LongType.v())
-                && method.getReturnType().equals(org_robovm_apple_foundation_NSObject.getType());
+                && method.getReturnType().equals(com_bugvm_apple_foundation_NSObject.getType());
     }
 
     private boolean isNSString$AsStringMarshaler_toNative(SootMethod method) {
-        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSString$AsStringMarshaler.getType())
+        return method.getDeclaringClass().getType().equals(com_bugvm_apple_foundation_NSString$AsStringMarshaler.getType())
                 && method.getName().equals("toNative") && method.getParameterCount() == 2
                 && method.getParameterType(0).equals(java_lang_String.getType())
                 && method.getParameterType(1).equals(LongType.v())
@@ -480,7 +480,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private boolean isNSString$AsStringMarshaler_toObject(SootMethod method) {
-        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSString$AsStringMarshaler.getType())
+        return method.getDeclaringClass().getType().equals(com_bugvm_apple_foundation_NSString$AsStringMarshaler.getType())
                 && method.getName().equals("toObject") && method.getParameterCount() == 3
                 && method.getParameterType(0).equals(java_lang_Class.getType())
                 && method.getParameterType(1).equals(LongType.v())
@@ -651,7 +651,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
     private List<SootMethod> findOverriddenMethods(SootClass sootClass, SootMethod method) {
         SootClass supercls = sootClass.getSuperclass();
-        while (!supercls.getType().equals(org_robovm_objc_ObjCObject.getType())) {
+        while (!supercls.getType().equals(com_bugvm_objc_ObjCObject.getType())) {
             try {
                 SootMethod m = supercls.getMethod(method.getName(), method.getParameterTypes(),
                         method.getReturnType());
@@ -690,7 +690,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             findOverriddenMethodsOnInterfaces(interfaze, method, candidates);
         }
         if (!sootClass.isInterface() && sootClass.hasSuperclass()
-                && !sootClass.getSuperclass().getType().equals(org_robovm_objc_ObjCObject.getType())) {
+                && !sootClass.getSuperclass().getType().equals(com_bugvm_objc_ObjCObject.getType())) {
             findOverriddenMethodsOnInterfaces(sootClass.getSuperclass(), method, candidates);
         }
     }
@@ -993,20 +993,20 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         new MarshalerLookup.MarshalSite(method, 0));
                 if (isNSObject$Marshaler_toNative(param0MarshalerMethod.getMethod())) {
                     // self uses the default marshaler
-                    List<Type> paramTypes = Arrays.<Type> asList(org_robovm_apple_foundation_NSObject.getType(),
-                            org_robovm_objc_Selector.getType());
+                    List<Type> paramTypes = Arrays.<Type> asList(com_bugvm_apple_foundation_NSObject.getType(),
+                            com_bugvm_objc_Selector.getType());
                     if (method.getReturnType() == VoidType.v() || method.getReturnType() instanceof PrimType) {
                         // Primitive return type or void
                         String prefix = getPrimitiveReturnTypeModifier(method);
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, prefix + "_objc_msgSend",
+                        return Scene.v().makeMethodRef(com_bugvm_objc_$M, prefix + "_objc_msgSend",
                                 paramTypes, method.getReturnType(), true);
                     } else if (isNSObject(method.getReturnType())) {
                         MarshalerLookup.MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                                 new MarshalerLookup.MarshalSite(method));
                         if (isNSObject$Marshaler_toObject(retMarshalerMethod.getMethod())) {
                             // Returns NSObject using the default marshaler
-                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "object_objc_msgSend",
-                                    paramTypes, org_robovm_apple_foundation_NSObject.getType(), true);
+                            return Scene.v().makeMethodRef(com_bugvm_objc_$M, "object_objc_msgSend",
+                                    paramTypes, com_bugvm_apple_foundation_NSObject.getType(), true);
                         }
                     } else if (method.getReturnType().equals(java_lang_String.getType())) {
                         MarshalerLookup.MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
@@ -1014,7 +1014,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         if (isNSString$AsStringMarshaler_toObject(retMarshalerMethod.getMethod())) {
                             // Returns String marshaled using
                             // NSSring$AsStringMarshaler
-                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "string_objc_msgSend",
+                            return Scene.v().makeMethodRef(com_bugvm_objc_$M, "string_objc_msgSend",
                                     paramTypes, method.getReturnType(), true);
                         }
                     }
@@ -1034,21 +1034,21 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         new MarshalerLookup.MarshalSite(method, 0));
                 if (isNSObject$Marshaler_toNative(param0MarshalerMethod.getMethod())) {
                     // self uses the default marshaler
-                    List<Type> paramTypes = Arrays.<Type> asList(org_robovm_apple_foundation_NSObject.getType(),
-                            org_robovm_objc_Selector.getType(), method.getParameterType(2));
+                    List<Type> paramTypes = Arrays.<Type> asList(com_bugvm_apple_foundation_NSObject.getType(),
+                            com_bugvm_objc_Selector.getType(), method.getParameterType(2));
                     if (method.getParameterType(2) instanceof PrimType) {
                         // Arg is a primitive
                         String suffix = getPrimitiveParameterTypeModifier(method, 2);
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_" + suffix,
+                        return Scene.v().makeMethodRef(com_bugvm_objc_$M, "objc_msgSend_" + suffix,
                                 paramTypes, method.getReturnType(), true);
                     } else if (isNSObject(method.getParameterType(2))) {
                         MarshalerLookup.MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                                 new MarshalerLookup.MarshalSite(method, 2));
                         if (isNSObject$Marshaler_toNative(param2MarshalerMethod.getMethod())) {
                             // Arg is an NSObject using the default marshaler
-                            paramTypes = Arrays.<Type> asList(org_robovm_apple_foundation_NSObject.getType(),
-                                    org_robovm_objc_Selector.getType(), org_robovm_apple_foundation_NSObject.getType());
-                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_object",
+                            paramTypes = Arrays.<Type> asList(com_bugvm_apple_foundation_NSObject.getType(),
+                                    com_bugvm_objc_Selector.getType(), com_bugvm_apple_foundation_NSObject.getType());
+                            return Scene.v().makeMethodRef(com_bugvm_objc_$M, "objc_msgSend_object",
                                     paramTypes, method.getReturnType(), true);
                         }
                     } else if (method.getParameterType(2).equals(java_lang_String.getType())) {
@@ -1057,7 +1057,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         if (isNSString$AsStringMarshaler_toNative(param2MarshalerMethod.getMethod())) {
                             // Arg is a String marshaled using
                             // NSSring@AsStringMarshaler
-                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_string",
+                            return Scene.v().makeMethodRef(com_bugvm_objc_$M, "objc_msgSend_string",
                                     paramTypes, method.getReturnType(), true);
                         }
                     }
@@ -1081,20 +1081,20 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
              * marshaler or a String marshaled from an NSString we can replace
              * it with a call to $M.
              */
-            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType())
+            if (method.getParameterType(0).equals(com_bugvm_objc_ObjCSuper.getType())
                     && isSelector(method.getParameterType(1)) && !Annotations.hasAnnotation(method, Annotations.MARSHALER)) {
                 if (method.getReturnType() == VoidType.v() || method.getReturnType() instanceof PrimType) {
                     // Primitive return type or void
                     String prefix = getPrimitiveReturnTypeModifier(method);
-                    return Scene.v().makeMethodRef(org_robovm_objc_$M, prefix + "_objc_msgSendSuper",
+                    return Scene.v().makeMethodRef(com_bugvm_objc_$M, prefix + "_objc_msgSendSuper",
                             method.getParameterTypes(), method.getReturnType(), true);
                 } else if (isNSObject(method.getReturnType())) {
                     MarshalerLookup.MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                             new MarshalerLookup.MarshalSite(method));
                     if (isNSObject$Marshaler_toObject(retMarshalerMethod.getMethod())) {
                         // Returns NSObject using the default marshaler
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "object_objc_msgSendSuper",
-                                method.getParameterTypes(), org_robovm_apple_foundation_NSObject.getType(), true);
+                        return Scene.v().makeMethodRef(com_bugvm_objc_$M, "object_objc_msgSendSuper",
+                                method.getParameterTypes(), com_bugvm_apple_foundation_NSObject.getType(), true);
                     }
                 } else if (method.getReturnType().equals(java_lang_String.getType())) {
                     MarshalerLookup.MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
@@ -1102,13 +1102,13 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     if (isNSString$AsStringMarshaler_toObject(retMarshalerMethod.getMethod())) {
                         // Returns String marshaled using
                         // NSSring$AsStringMarshaler
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "string_objc_msgSendSuper",
+                        return Scene.v().makeMethodRef(com_bugvm_objc_$M, "string_objc_msgSendSuper",
                                 method.getParameterTypes(), method.getReturnType(), true);
                     }
                 }
             }
         } else if (method.getParameterCount() == 3 && method.getReturnType() == VoidType.v()) {
-            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType())
+            if (method.getParameterType(0).equals(com_bugvm_objc_ObjCSuper.getType())
                     && isSelector(method.getParameterType(1)) && !Annotations.hasParameterAnnotation(method, 1, Annotations.MARSHALER)) {
                 /*
                  * This is a 1 arg ObjC method with no return type (void) (takes
@@ -1120,16 +1120,16 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 if (method.getParameterType(2) instanceof PrimType) {
                     // Arg is a primitive
                     String suffix = getPrimitiveParameterTypeModifier(method, 2);
-                    return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_" + suffix,
+                    return Scene.v().makeMethodRef(com_bugvm_objc_$M, "objc_msgSendSuper_" + suffix,
                             method.getParameterTypes(), method.getReturnType(), true);
                 } else if (isNSObject(method.getParameterType(2))) {
                     MarshalerLookup.MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                             new MarshalerLookup.MarshalSite(method, 2));
                     if (isNSObject$Marshaler_toNative(param2MarshalerMethod.getMethod())) {
                         // Arg is an NSObject using the default marshaler
-                        List<Type> paramTypes = Arrays.<Type> asList(org_robovm_objc_ObjCSuper.getType(),
-                                org_robovm_objc_Selector.getType(), org_robovm_apple_foundation_NSObject.getType());
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_object",
+                        List<Type> paramTypes = Arrays.<Type> asList(com_bugvm_objc_ObjCSuper.getType(),
+                                com_bugvm_objc_Selector.getType(), com_bugvm_apple_foundation_NSObject.getType());
+                        return Scene.v().makeMethodRef(com_bugvm_objc_$M, "objc_msgSendSuper_object",
                                 paramTypes, method.getReturnType(), true);
                     }
                 } else if (method.getParameterType(2).equals(java_lang_String.getType())) {
@@ -1138,7 +1138,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     if (isNSString$AsStringMarshaler_toNative(param2MarshalerMethod.getMethod())) {
                         // Arg is a String marshaled using
                         // NSSring@AsStringMarshaler
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_string",
+                        return Scene.v().makeMethodRef(com_bugvm_objc_$M, "objc_msgSendSuper_string",
                                 method.getParameterTypes(), method.getReturnType(), true);
                     }
                 }
@@ -1257,7 +1257,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
         Local objCClass = null;
         if (!extensions && method.isStatic()) {
-            objCClass = j.newLocal("$objCClass", org_robovm_objc_ObjCClass.getType());
+            objCClass = j.newLocal("$objCClass", com_bugvm_objc_ObjCClass.getType());
             body.getLocals().add(objCClass);
             units.add(
                     j.newAssignStmt(
@@ -1265,7 +1265,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                             j.newStaticFieldRef(
                                     Scene.v().makeFieldRef(
                                             sootClass,
-                                            "$objCClass", org_robovm_objc_ObjCClass.getType(), true))
+                                            "$objCClass", com_bugvm_objc_ObjCClass.getType(), true))
                             )
                     );
         }
@@ -1291,7 +1291,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     units.add(
                             j.newInvokeStmt(
                                     j.newStaticInvokeExpr(
-                                            org_robovm_objc_ObjCExtensions_updateStrongRef,
+                                            com_bugvm_objc_ObjCExtensions_updateStrongRef,
                                             Arrays.asList(thiz, before, after)))
                             );
                 } else {
@@ -1299,14 +1299,14 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                             j.newInvokeStmt(
                                     j.newVirtualInvokeExpr(
                                             objCClass != null ? objCClass : thiz,
-                                            org_robovm_objc_ObjCObject_updateStrongRef,
+                                            com_bugvm_objc_ObjCObject_updateStrongRef,
                                             before, after))
                             );
                 }
             }
         }
 
-        Local sel = j.newLocal("$sel", org_robovm_objc_Selector.getType());
+        Local sel = j.newLocal("$sel", com_bugvm_objc_Selector.getType());
         body.getLocals().add(sel);
         // $sel = <selector>
         units.add(
@@ -1316,7 +1316,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                                 Scene.v().makeFieldRef(
                                         sootClass,
                                         getSelectorFieldName(selectorName),
-                                        org_robovm_objc_Selector.getType(), true)))
+                                        com_bugvm_objc_Selector.getType(), true)))
                 );
         args.addFirst(sel);
 
@@ -1329,7 +1329,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                             customClass,
                             j.newInstanceFieldRef(
                                     thiz,
-                                    org_robovm_objc_ObjCObject_customClass)
+                                    com_bugvm_objc_ObjCObject_customClass)
                             )
                     );
         }
@@ -1367,14 +1367,14 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     );
 
             // $super = this.getSuper()
-            Local zuper = j.newLocal("$super", org_robovm_objc_ObjCSuper.getType());
+            Local zuper = j.newLocal("$super", com_bugvm_objc_ObjCSuper.getType());
             body.getLocals().add(zuper);
             units.add(
                     j.newAssignStmt(
                             zuper,
                             j.newVirtualInvokeExpr(
                                     body.getThisLocal(),
-                                    org_robovm_objc_ObjCObject_getSuper))
+                                    com_bugvm_objc_ObjCObject_getSuper))
                     );
             StaticInvokeExpr invokeMsgSendSuperExpr =
                     j.newStaticInvokeExpr(

@@ -60,7 +60,7 @@ typedef struct {
  * has been consumed at this point one usually uses an alternate signal stack for the signal
  * handler to run on using sigaltstack(). Unfortunately sigaltstack() seems to be broken on
  * iOS. Even if it completes without errors the alternate stack won't be used by the signal
- * handler. In RoboVM we work around this bug by inserting code in the prologue of
+ * handler. In BugVM we work around this bug by inserting code in the prologue of
  * compiled methods which tries to read from the stack area at sp-64k. If this read hits the 
  * guard page a fault will occur but we'll still have about 64k left of stack space to run the signal 
  * handler on.
@@ -80,7 +80,7 @@ static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context
 static jboolean installNoChainingSignals(Env* env);
 
 #if defined(DARWIN)
-// Weak stub for the function in vm/debug/src/debug.c. If librobovm-debug.a isn't
+// Weak stub for the function in vm/debug/src/debug.c. If libbugvm-debug.a isn't
 // linked in this version will be used and won't do anything.
 void registerDarwinExceptionHandler(void) __attribute__ ((weak));
 void registerDarwinExceptionHandler(void) {

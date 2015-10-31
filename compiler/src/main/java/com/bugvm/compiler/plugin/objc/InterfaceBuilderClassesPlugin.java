@@ -68,14 +68,14 @@ import com.bugvm.compiler.plugin.CompilerPlugin;
 public class InterfaceBuilderClassesPlugin extends AbstractCompilerPlugin {
     private static final String[] JAR_ZIP_EXTENSIONS = new String[] { "jar", "zip" };
     private static final String CLASS_EXTENSION = "class";
-    private static final String CUSTOM_CLASS = "Lorg/robovm/objc/annotation/CustomClass;";
+    private static final String CUSTOM_CLASS = "Lcom/bugvm/objc/annotation/CustomClass;";
     private static final Pattern IB_CLASS_PATTERN = Pattern.compile(".*(ViewController|View)");
     /**
      * Ignore package names like this when searching classpath folders for
      * classes in {@link #buildClassToUrlMap(List)}.
      */
-    private static final Pattern EXCLUDED_PACKAGES = Pattern.compile("org\\.robovm\\.apple\\..*");
-    private static final String RUNTIME_DATA_ID = "org.robovm.apple.uikit.UIApplication.preloadClasses";
+    private static final Pattern EXCLUDED_PACKAGES = Pattern.compile("org\\.bugvm\\.apple\\..*");
+    private static final String RUNTIME_DATA_ID = "com.bugvm.apple.uikit.UIApplication.preloadClasses";
 
     private Logger logger;
     private List<String> preloadClasses;

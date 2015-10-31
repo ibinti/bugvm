@@ -42,8 +42,8 @@ import soot.VoidType;
  * <code></code>.
  */
 public class TypeEncoder {
-    public static final String SELECTOR = "org.robovm.objc.Selector";
-    public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
+    public static final String SELECTOR = "com.bugvm.objc.Selector";
+    public static final String OBJC_CLASS = "com.bugvm.objc.ObjCClass";
 
     public String encode(SootMethod method, boolean is64bit) {
         StringBuilder sb = new StringBuilder();
@@ -214,7 +214,7 @@ public class TypeEncoder {
 
         if (clazz.hasSuperclass()) {
             SootClass superclass = clazz.getSuperclass();
-            if (!superclass.getName().equals("org.robovm.rt.bro.Struct")) {
+            if (!superclass.getName().equals("com.bugvm.rt.bro.Struct")) {
                 members.addAll(getStructMembers(clazz, is64bit));
             }
         }

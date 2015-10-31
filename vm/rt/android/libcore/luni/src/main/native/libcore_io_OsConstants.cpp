@@ -28,7 +28,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #if !defined(__APPLE__)
-// RoboVM note: Darwin doesn't have sys/capability.h
+// BugVM note: Darwin doesn't have sys/capability.h
 #include <sys/capability.h>
 #endif
 #include <sys/ioctl.h>
@@ -40,7 +40,7 @@
 
 #include <net/if.h> // After <sys/socket.h> to work around a Mac header file bug.
 
-// RoboVM note: Added
+// BugVM note: Added
 #include "Portability.h"
 
 static void initConstant(JNIEnv* env, jclass c, const char* fieldName, int value) {
@@ -62,7 +62,7 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
 #endif
     initConstant(env, c, "AI_PASSIVE", AI_PASSIVE);
     initConstant(env, c, "AI_V4MAPPED", AI_V4MAPPED);
-// RoboVM note: Darwin doesn't have sys/capability.h
+// BugVM note: Darwin doesn't have sys/capability.h
 #if !defined(__APPLE__)
     initConstant(env, c, "CAP_AUDIT_CONTROL", CAP_AUDIT_CONTROL);
     initConstant(env, c, "CAP_AUDIT_WRITE", CAP_AUDIT_WRITE);

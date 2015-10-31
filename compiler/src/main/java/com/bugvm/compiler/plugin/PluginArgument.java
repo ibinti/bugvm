@@ -17,7 +17,7 @@
 package com.bugvm.compiler.plugin;
 
 /**
- * Declares an argument to be added to the standard RoboVM command line
+ * Declares an argument to be added to the standard BugVM command line
  * arguments for a {@link CompilerPlugin}. An argument can have an 
  * optional value (a second token to be parsed). 
  */

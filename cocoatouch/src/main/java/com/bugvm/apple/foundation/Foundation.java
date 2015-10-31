@@ -167,7 +167,7 @@ import com.bugvm.rt.bro.ptr.*;
             if (parts.length > 1) minorSystemVersion = Integer.valueOf(parts[1]);
             if (parts.length > 2) patchSystemVersion = Integer.valueOf(parts[2]);
         } else {
-            // Default to minimum OS version that RoboVM supports.
+            // Default to minimum OS version that BugVM supports.
             majorSystemVersion = 6;
         }
     }

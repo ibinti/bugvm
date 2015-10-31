@@ -114,18 +114,18 @@ public abstract class AbstractTarget implements Target {
         
         String libSuffix = config.isUseDebugLibs() ? "-dbg" : "";
         
-        libs.add("-lrobovm-bc" + libSuffix); 
+        libs.add("-lbugvm-bc" + libSuffix);
         if (config.getOs().getFamily() == OS.Family.darwin) {
             libs.add("-force_load");
-            libs.add(new File(config.getOsArchDepLibDir(), "librobovm-rt" + libSuffix + ".a").getAbsolutePath());
+            libs.add(new File(config.getOsArchDepLibDir(), "libbugvm-rt" + libSuffix + ".a").getAbsolutePath());
         } else {
-            libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt" + libSuffix, "-Wl,--no-whole-archive"));            
+            libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lbugvm-rt" + libSuffix, "-Wl,--no-whole-archive"));
         }
         if (config.isSkipInstall()) {
-            libs.add("-lrobovm-debug" + libSuffix);
+            libs.add("-lbugvm-debug" + libSuffix);
         }
         libs.addAll(Arrays.asList(
-                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm", "-lz"));
+                "-lbugvm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm", "-lz"));
         if (config.getOs().getFamily() == OS.Family.linux) {
             libs.add("-lrt");
         }
@@ -518,8 +518,8 @@ public abstract class AbstractTarget implements Target {
                         if (entry.getName().toLowerCase().endsWith(".class")) {
                             continue;
                         }
-                        if (entry.getName().startsWith("META-INF/robovm/")) {
-                            // Don't include anything under META-INF/robovm/
+                        if (entry.getName().startsWith("META-INF/bugvm/")) {
+                            // Don't include anything under META-INF/bugvm/
                             continue;
                         }
                         ZipEntry newEntry = new ZipEntry(entry.getName());
@@ -548,8 +548,8 @@ public abstract class AbstractTarget implements Target {
                         continue;
                     }
                     String entryName = f.getAbsolutePath().substring(basePath.length() + 1);
-                    if (entryName.startsWith("META-INF/robovm/")) {
-                        // Don't include anything under META-INF/robovm/
+                    if (entryName.startsWith("META-INF/bugvm/")) {
+                        // Don't include anything under META-INF/bugvm/
                         continue;
                     }
                     ZipEntry newEntry = new ZipEntry(entryName);

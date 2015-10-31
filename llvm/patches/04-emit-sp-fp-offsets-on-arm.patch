@@ -6,7 +6,7 @@ index 97ef12c..e175480 100644
      if (const MCSection *S = MAI->getNonexecutableStackSection(OutContext))
        OutStreamer.SwitchSection(S);
  
-+  // RoboVM change: Emit spfpoffset symbols if requested to do so. The symbols are
++  // BugVM change: Emit spfpoffset symbols if requested to do so. The symbols are
 +  // created in ARMFrameLowering::emitPrologue and AAarch64FrameLowering::emitPrologue.
 +  if (MMI->getModule()->getNamedValue("bugvm.emitSpFpOffsets")) {
 +    bool InTextSeciton = false;
@@ -47,7 +47,7 @@ index 66aa216..57fa466 100644
      emitCalleeSavedFrameMoves(MBB, MBBI, FramePtr);
    }
 +    
-+  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
++  // BugVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
 +  // is finally emitted in AsmPrinter::doFinalization().
 +  MCSymbol *Offset = MMI.getContext().GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
 +  // Calculare the SP<->FP offset for the function. We subtract 16 to ignore fp/lr on the stack.
@@ -77,7 +77,7 @@ index 831c2eb..7ae8d19 100644
    if (MFI->hasVarSizedObjects())
      AFI->setShouldRestoreSPFromFP(true);
 +
-+  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
++  // BugVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
 +  // is finally emitted in AsmPrinter::doFinalization().
 +  MCSymbol *Offset = Context.GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
 +  // Calculare the SP<->FP offset for the function. We subtract 8 to ignore r7/lr on the stack.

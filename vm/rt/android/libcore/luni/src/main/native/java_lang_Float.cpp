@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// RoboVM note: isnanf is not available on Darwin
+// BugVM note: isnanf is not available on Darwin
 #if defined(__APPLE__)
 #   define isnanf(X) isnan(X)
 #endif

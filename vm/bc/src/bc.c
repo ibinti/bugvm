@@ -1091,7 +1091,7 @@ jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
         return JNI_ERR;
     }
 
-    // Start up robovm (JNI)
+    // Start up bugvm (JNI)
     Env* env = rvmStartup(&options);
     if (!env) {
         return JNI_ERR;

@@ -54,13 +54,13 @@ import libcore.io.Libcore;
  */
 public final class NetworkInterface extends Object {
     /*
-     * RoboVM note: This class has been changed heavily to work on Darwin.
+     * BugVM note: This class has been changed heavily to work on Darwin.
      * The original class read all required info from /sys/class/net
      * and /proc/net/if_inet6 and used no native code. Neither of those are 
      * available on Darwin so we need to call native code instead. 
      */
     
-    // RoboVM note: We need this to do things differently on DARWIN which
+    // BugVM note: We need this to do things differently on DARWIN which
     // has neither /sys/class/net nor /proc/net/if_inet6.
     private static final boolean DARWIN;
     
@@ -179,7 +179,7 @@ public final class NetworkInterface extends Object {
     private static void collectIpv6Addresses(String interfaceName, int interfaceIndex,
             List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
         
-        // RoboVM note: This method used to read from /proc/net/if_inet6 which isn't available on 
+        // BugVM note: This method used to read from /proc/net/if_inet6 which isn't available on
         // Darwin.
         byte[] bytes = getIpv6Addresses(interfaceName);
         if (bytes != null) {
@@ -206,7 +206,7 @@ public final class NetworkInterface extends Object {
             try {
                 broadcast = Libcore.os.ioctlInetAddress(fd, SIOCGIFBRDADDR, interfaceName);
             } catch (ErrnoException e) {
-                // RoboVM note: On Darwin ioctl(SIOCGIFBRDADDR) returns EINVAL for lo0
+                // BugVM note: On Darwin ioctl(SIOCGIFBRDADDR) returns EINVAL for lo0
                 if (!DARWIN || e.errno != EINVAL) {
                     throw e;
                 }
@@ -288,12 +288,12 @@ public final class NetworkInterface extends Object {
 
     /**
      * Returns an array of all available interface names.
-     * Added in RoboVM. 
+     * Added in BugVM.
      */
     private static native String[] getInterfaceNames();
     /**
      * Returns the index of the interface with specified name or 0 if not found. 
-     * Added in RoboVM. 
+     * Added in BugVM.
      */
     private static native int getInterfaceIndex(String interfaceName);
     /**
@@ -302,23 +302,23 @@ public final class NetworkInterface extends Object {
      * IPv6 addresses. Otherwise a byte array is returned with address 1 at 
      * index 0 and its netmask at index 16, address 2 at index 32 and its 
      * netmask at index 48, etc.
-     * Added in RoboVM.
+     * Added in BugVM.
      */
     private static native byte[] getIpv6Addresses(String interfaceName);
     /**
      * Uses getifaddrs() to retrieve the MAC address of the interface with the
      * specified name.
-     * Added in RoboVM.
+     * Added in BugVM.
      */
     private static native byte[] getHardwareAddress(String interfaceName);
     /**
      * Returns the flags of the specified interface using ioctl(SIOCGIFFLAGS).
-     * Added in RoboVM.
+     * Added in BugVM.
      */
     private static native int getFlags(String interfaceName);
     /**
      * Returns the MTU of the specified interface using ioctl(SIOCGIFMTU).
-     * Added in RoboVM.
+     * Added in BugVM.
      */
     private static native int getMTU(String interfaceName);
     
@@ -494,7 +494,7 @@ public final class NetworkInterface extends Object {
     }
 
     private boolean hasFlag(int mask) throws SocketException {
-        // RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        // BugVM note: Changed to call native code instead of reading from /sys/class/net
         int flags = getFlags(name);
         return (flags & mask) != 0;
     }
@@ -506,7 +506,7 @@ public final class NetworkInterface extends Object {
      * @since 1.6
      */
     public byte[] getHardwareAddress() throws SocketException {
-        // RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        // BugVM note: Changed to call native code instead of reading from /sys/class/net
         return getHardwareAddress(name);
     }
 
@@ -518,7 +518,7 @@ public final class NetworkInterface extends Object {
      * @since 1.6
      */
     public int getMTU() throws SocketException {
-        // RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        // BugVM note: Changed to call native code instead of reading from /sys/class/net
         return getMTU(name);
     }
 

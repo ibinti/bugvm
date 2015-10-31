@@ -178,7 +178,7 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
                 void** field_end = (void**) (((char*) field_start) + sizeof(jlong));
                 mark_stack_ptr = markRegion(field_start, field_end, mark_stack_ptr, mark_stack_limit);
             } else if (clazz == com_bugvm_rt_bro_Struct) {
-                // The 'handle' field in org.robovm.rt.bro.Struct (actually in its
+                // The 'handle' field in com.bugvm.rt.bro.Struct (actually in its
                 // superclass NativeObject) is a long but contains a pointer.
                 // Possibly to an address on the GCed heap.
                 void** field_start = (void**) (((char*) obj) + com_bugvm_rt_bro_Struct_handle->offset);

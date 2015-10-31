@@ -104,7 +104,7 @@ import libcore.io.IoUtils;
 public final class TrustedCertificateStore {
 
     /*
-     * RoboVM note: This class has been changed to use URIs instead of Files for the certs dirs.
+     * BugVM note: This class has been changed to use URIs instead of Files for the certs dirs.
      * If the ANDROID_ROOT and ANDROID_DATA environment variables have been set it will behave
      * as the old version (reading system certs from $ANDROID_ROOT/etc/security/cacerts). If
      * these have not been set system certs will be read from the /cacerts/ folder in the classpath.

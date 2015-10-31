@@ -53,10 +53,10 @@ import soot.SootResolver;
  * exposed).
  */
 public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
-    public static final String OBJC_PROTOCOL = "org.robovm.objc.ObjCProtocol";
+    public static final String OBJC_PROTOCOL = "com.bugvm.objc.ObjCProtocol";
     public static final String PROXY_CLASS_NAME_SUFFIX = "$ObjCProxy";
 
-    private SootClass org_robovm_objc_ObjCProtocol = null;
+    private SootClass com_bugvm_objc_ObjCProtocol = null;
 
     private boolean initialized = false;
 
@@ -65,7 +65,7 @@ public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
             return;
         }
         SootResolver r = SootResolver.v();
-        org_robovm_objc_ObjCProtocol = r.makeClassRef(OBJC_PROTOCOL);
+        com_bugvm_objc_ObjCProtocol = r.makeClassRef(OBJC_PROTOCOL);
         initialized = true;
     }
     
@@ -75,11 +75,11 @@ public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
     }
     
     private boolean isObjCProtocol(SootClass cls) {
-        if (org_robovm_objc_ObjCProtocol.isPhantom() || !cls.isInterface()) {
+        if (com_bugvm_objc_ObjCProtocol.isPhantom() || !cls.isInterface()) {
             return false;
         }
         for (SootClass interfaze : cls.getInterfaces()) {
-            if (interfaze == org_robovm_objc_ObjCProtocol || isObjCProtocol(interfaze)) {
+            if (interfaze == com_bugvm_objc_ObjCProtocol || isObjCProtocol(interfaze)) {
                 return true;
             }
         }
@@ -88,19 +88,19 @@ public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
     
     /**
      * Returns the class the proxy should have as superclass, either
-     * <code>org.robovm.apple.foundation.NSObject</code>, 
-     * <code>org.robovm.cocoatouch.foundation.NSObject</code> or
-     * <code>org.robovm.objc.ObjCObject</code>.
+     * <code>com.bugvm.apple.foundation.NSObject</code>,
+     * <code>com.bugvm.cocoatouch.foundation.NSObject</code> or
+     * <code>com.bugvm.objc.ObjCObject</code>.
      */
     private String getProxySuperclassInternalName(SootClass cls) {
-        if (cls.getName().equals("org.robovm.apple.foundation.NSObjectProtocol")) {
-            return "org/robovm/apple/foundation/NSObject";
+        if (cls.getName().equals("com.bugvm.apple.foundation.NSObjectProtocol")) {
+            return "com/bugvm/apple/foundation/NSObject";
         }
-        if (cls.getName().equals("org.robovm.cocoatouch.foundation.NSObjectProtocol")) {
-            return "org/robovm/cocoatouch/foundation/NSObject";
+        if (cls.getName().equals("com.bugvm.cocoatouch.foundation.NSObjectProtocol")) {
+            return "com/bugvm/cocoatouch/foundation/NSObject";
         }
-        if (cls == org_robovm_objc_ObjCProtocol) {
-            return "org/robovm/objc/ObjCObject";
+        if (cls == com_bugvm_objc_ObjCProtocol) {
+            return "com/bugvm/objc/ObjCObject";
         }
         for (SootClass interfaze : cls.getInterfaces()) {
             String name = getProxySuperclassInternalName(interfaze);

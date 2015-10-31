@@ -39,15 +39,15 @@
 
 
   <scm>
-    <url>https://github.com/bugvm/robovm</url>
-    <connection>scm:git:git://github.com/bugvm/robovm.git</connection>
-    <developerConnection>scm:git:git@github.com:bugvm/robovm.git</developerConnection>
+    <url>https://github.com/bugvm/bugvm</url>
+    <connection>scm:git:git://github.com/bugvm/bugvm.git</connection>
+    <developerConnection>scm:git:git@github.com:bugvm/bugvm.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/bugvm/robovm/issues</url>
+    <url>https://github.com/bugvm/bugvm/issues</url>
   </issueManagement>
 
   <dependencies>

@@ -144,7 +144,7 @@ public abstract class Reference<T> {
     }
 
     /**
-     * RoboVM note: This is not in Android.
+     * BugVM note: This is not in Android.
      */
     private native void register(T r);
     

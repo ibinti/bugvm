@@ -174,7 +174,7 @@ public final class System {
      */
     public static void arraycopy(Object src, int srcPos, Object dst, int dstPos,
             int length) {
-        // RoboVM note: This is native in Android. We're using code from Apache Harmony instead.
+        // BugVM note: This is native in Android. We're using code from Apache Harmony instead.
         if (src == null) {
             throw new NullPointerException("src == null");
         }
@@ -418,8 +418,8 @@ public final class System {
         VMRuntime runtime = VMRuntime.getRuntime();
         Properties p = new Properties();
 
-        String projectUrl = "http://www.robovm.org/";
-        String projectName = "RoboVM";
+        String projectUrl = "http://www.bugvm.com/";
+        String projectName = "BugVM";
 
         p.put("java.boot.class.path", runtime.bootClassPath());
         p.put("java.class.path", runtime.classPath());
@@ -432,10 +432,10 @@ public final class System {
         p.put("java.ext.dirs", "");
         p.put("java.version", "0");
 
-        // RoboVM note: Android uses getenv("JAVA_HOME") here with "/system" as fallback.
+        // BugVM note: Android uses getenv("JAVA_HOME") here with "/system" as fallback.
         p.put("java.home", VM.resourcesPath());
 
-        // RoboVM note: Use value of $TMPDIR if set. Otherwise use /tmp as Android does.
+        // BugVM note: Use value of $TMPDIR if set. Otherwise use /tmp as Android does.
         String tmpdir = getenv("TMPDIR");
         p.put("java.io.tmpdir", tmpdir != null ? tmpdir : "/tmp");
 
@@ -444,14 +444,14 @@ public final class System {
             p.put("java.library.path", ldLibraryPath);
         }
 
-        p.put("java.specification.name", "RoboVM Core Library");
+        p.put("java.specification.name", "BugVM Core Library");
         p.put("java.specification.vendor", projectName);
         p.put("java.specification.version", "0.9");
 
         p.put("java.vendor", projectName);
         p.put("java.vendor.url", projectUrl);
-        p.put("java.vm.name", "RoboVM");
-        p.put("java.vm.specification.name", "RoboVM Virtual Machine Specification");
+        p.put("java.vm.name", "BugVM");
+        p.put("java.vm.specification.name", "BugVM Virtual Machine Specification");
         p.put("java.vm.specification.vendor", projectName);
         p.put("java.vm.specification.version", "0.9");
         p.put("java.vm.vendor", projectName);
@@ -461,7 +461,7 @@ public final class System {
         p.put("line.separator", "\n");
         p.put("path.separator", ":");
 
-        p.put("java.runtime.name", "RoboVM Runtime");
+        p.put("java.runtime.name", "BugVM Runtime");
         p.put("java.runtime.version", "0.9");
         p.put("java.vm.vendor.url", projectUrl);
 
@@ -474,12 +474,12 @@ public final class System {
             p.put("user.home", passwd.pw_dir);
             p.put("user.name", passwd.pw_name);
         } catch (ErrnoException exception) {
-            // RoboVM note: Start change. Fall back to environment variables. getpwuid() fails on the iOS simulator.
+            // BugVM note: Start change. Fall back to environment variables. getpwuid() fails on the iOS simulator.
             String home = getenv("HOME");
             String user = getenv("USER");
             p.put("user.home", home != null ? home : "");
             p.put("user.name", user != null ? user : "");
-            // RoboVM note: End change.
+            // BugVM note: End change.
         }
 
         StructUtsname info = Libcore.os.uname();
@@ -494,9 +494,9 @@ public final class System {
 
         parsePropertyAssignments(p, specialProperties());
 
-        parsePropertyAssignments(p, robovmSpecialProperties());
+        parsePropertyAssignments(p, bugvmSpecialProperties());
         
-        // RoboVM note: Added in RoboVM. Make sure we get sane and consistent
+        // BugVM note: Added in BugVM. Make sure we get sane and consistent
         // user.home, user.dir and user.name values on iOS.
         if (p.getProperty("os.name").contains("iOS")) {
             // On iOS we want user.home and user.dir to point to the app's data
@@ -509,7 +509,7 @@ public final class System {
             p.put("user.dir", home != null ? home : "/");
             p.put("user.name", user != null ? user : "mobile");
         }
-        // RoboVM note: End change.
+        // BugVM note: End change.
 
         // Override built-in properties with settings from the command line.
         parsePropertyAssignments(p, runtime.properties());
@@ -523,7 +523,7 @@ public final class System {
      */
     private static native String[] specialProperties();
 
-    private static native String[] robovmSpecialProperties();
+    private static native String[] bugvmSpecialProperties();
     
     /**
      * Adds each element of 'assignments' to 'p', treating each element as an

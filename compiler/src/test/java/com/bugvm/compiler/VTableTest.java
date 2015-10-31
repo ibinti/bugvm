@@ -82,7 +82,7 @@ public class VTableTest {
         
         assertNull(vtable.findEntry("foo", "()V"));
         
-        Entry fooEntry = vtable.findEntry("org.robovm.compiler.a", "foo", "()V");
+        Entry fooEntry = vtable.findEntry("com.bugvm.compiler.a", "foo", "()V");
         assertEquals(sc.getName(), fooEntry.getDeclaringClass());
         assertEquals(11, fooEntry.getIndex());
     }
@@ -114,11 +114,11 @@ public class VTableTest {
         Entry superCloneEntry = vtableJLO.findEntry("clone", "()Ljava/lang/Object;");
         assertSame(superCloneEntry, cloneEntry);
 
-        Entry fooInAEntry = vtableB.findEntry("org.robovm.compiler.a", "foo", "()V");
+        Entry fooInAEntry = vtableB.findEntry("com.bugvm.compiler.a", "foo", "()V");
         assertEquals(scA.getName(), fooInAEntry.getDeclaringClass());
         assertEquals(11, fooInAEntry.getIndex());
 
-        Entry fooInBEntry = vtableB.findEntry("org.robovm.compiler.b", "foo", "()V");
+        Entry fooInBEntry = vtableB.findEntry("com.bugvm.compiler.b", "foo", "()V");
         assertEquals(scB.getName(), fooInBEntry.getDeclaringClass());
         assertEquals(14, fooInBEntry.getIndex());
         assertNotSame(fooInAEntry, fooInBEntry);
@@ -129,11 +129,11 @@ public class VTableTest {
         assertEquals(superFooIVEntry.getIndex(), fooIVEntry.getIndex());
         assertNotSame(superFooIVEntry, fooIVEntry);
         
-        Entry barInAEntry = vtableB.findEntry("org.robovm.compiler.a", "bar", "()V");
+        Entry barInAEntry = vtableB.findEntry("com.bugvm.compiler.a", "bar", "()V");
         assertEquals(scA.getName(), barInAEntry.getDeclaringClass());
         assertEquals(12, barInAEntry.getIndex());
 
-        Entry barInBEntry = vtableB.findEntry("org.robovm.compiler.b", "bar", "()V");
+        Entry barInBEntry = vtableB.findEntry("com.bugvm.compiler.b", "bar", "()V");
         assertEquals(scB.getName(), barInBEntry.getDeclaringClass());
         assertEquals(15, barInBEntry.getIndex());
         assertNotSame(barInAEntry, barInBEntry);
@@ -149,15 +149,15 @@ public class VTableTest {
         VTable vtableC = cache.get(scC);
         assertEquals(14, vtableC.size());
         
-        Entry fooEntry = vtableC.findEntry("org.robovm.compiler.a", "foo", "()V");
+        Entry fooEntry = vtableC.findEntry("com.bugvm.compiler.a", "foo", "()V");
         assertEquals(scC.getName(), fooEntry.getDeclaringClass());
-        Entry superFooEntry = vtableA.findEntry("org.robovm.compiler.a", "foo", "()V");
+        Entry superFooEntry = vtableA.findEntry("com.bugvm.compiler.a", "foo", "()V");
         assertEquals(superFooEntry.getIndex(), fooEntry.getIndex());
         assertNotSame(superFooEntry, fooEntry);
 
-        Entry barEntry = vtableC.findEntry("org.robovm.compiler.a", "bar", "()V");
+        Entry barEntry = vtableC.findEntry("com.bugvm.compiler.a", "bar", "()V");
         assertEquals(scA.getName(), barEntry.getDeclaringClass());
-        Entry superBarEntry = vtableA.findEntry("org.robovm.compiler.a", "bar", "()V");
+        Entry superBarEntry = vtableA.findEntry("com.bugvm.compiler.a", "bar", "()V");
         assertSame(superBarEntry, barEntry);
     }
     
@@ -172,16 +172,16 @@ public class VTableTest {
         VTable vtableD = cache.get(scD);
         assertEquals(vtableB.size(), vtableD.size());
         
-        Entry barInAEntry = vtableD.findEntry("org.robovm.compiler.a", "bar", "()V");
+        Entry barInAEntry = vtableD.findEntry("com.bugvm.compiler.a", "bar", "()V");
         assertEquals(scA.getName(), barInAEntry.getDeclaringClass());
         assertEquals(12, barInAEntry.getIndex());
 
-        Entry barInDEntry = vtableD.findEntry("org.robovm.compiler.b", "bar", "()V");
+        Entry barInDEntry = vtableD.findEntry("com.bugvm.compiler.b", "bar", "()V");
         assertEquals(scD.getName(), barInDEntry.getDeclaringClass());
         assertEquals(15, barInDEntry.getIndex());
         assertNotSame(barInAEntry, barInDEntry);
 
-        Entry barInBEntry = vtableD.findEntry("org.robovm.compiler.b", "bar", "()V");
+        Entry barInBEntry = vtableD.findEntry("com.bugvm.compiler.b", "bar", "()V");
         assertSame(barInBEntry, barInDEntry);
     }
     

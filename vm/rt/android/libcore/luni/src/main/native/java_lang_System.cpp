@@ -34,7 +34,7 @@
 #include <time.h>
 #include <unistd.h>
 #ifdef __APPLE__
-// RoboVM note: Needed for mach_absolute_time() on Darwin
+// BugVM note: Needed for mach_absolute_time() on Darwin
 #   include <mach/mach_time.h>
 #endif
 
@@ -97,7 +97,7 @@ extern "C" jlong Java_java_lang_System_currentTimeMillis(JNIEnv*, jclass) {
 }
 
 extern "C" jlong Java_java_lang_System_nanoTime(JNIEnv*, jclass) {
-// RoboVM note: Darwin doesn't have CLOCK_MONOTONIC
+// BugVM note: Darwin doesn't have CLOCK_MONOTONIC
 #if defined(__APPLE__)
     mach_timebase_info_data_t info;
     mach_timebase_info(&info);
@@ -112,7 +112,7 @@ extern "C" jlong Java_java_lang_System_nanoTime(JNIEnv*, jclass) {
 #endif
 }
 
-// RoboVM note: Renamed by appending '0'
+// BugVM note: Renamed by appending '0'
 extern "C" jstring Java_java_lang_System_mapLibraryName0(JNIEnv* env, jclass, jstring javaName) {
     ScopedUtfChars name(env, javaName);
     if (name.c_str() == NULL) {

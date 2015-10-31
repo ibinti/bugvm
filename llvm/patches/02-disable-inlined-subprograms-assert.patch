@@ -8,7 +8,7 @@ index b621e3b..4f96678 100644
      assert(DIDescriptor(Scope).isSubprogram());
 -    assert(DISubprogram(Scope).describes(MF->getFunction()));
 -    assert(!CurrentFnLexicalScope);
-+    // RoboVM note: These asserts fail for inlined functions like our [set] functions.
++    // BugVM note: These asserts fail for inlined functions like our [set] functions.
 +    //assert(DISubprogram(Scope).describes(MF->getFunction()));
 +    //assert(!CurrentFnLexicalScope);
      CurrentFnLexicalScope = &I->second;

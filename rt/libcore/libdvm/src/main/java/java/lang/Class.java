@@ -727,7 +727,7 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
     }
 
     /**
-     * Returns the RoboVM class name. E.g. java/lang/String, I, [[I,
+     * Returns the BugVM class name. E.g. java/lang/String, I, [[I,
      * [Ljava/lang/Object;.
      */
     final native String getName0();

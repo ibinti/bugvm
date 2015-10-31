@@ -627,7 +627,7 @@ outer:
      *             if {@code string} is {@code null}.
      */
     public int compareTo(String string) {
-        // RoboVM note: This method is native in Android
+        // BugVM note: This method is native in Android
         if (string == this) {
             return 0;
         }
@@ -765,7 +765,7 @@ outer:
      */
     @Override
     public boolean equals(Object object) {
-        // RoboVM note: This method is native in Android
+        // BugVM note: This method is native in Android
         // The code below has been copied from Apache Harmony 
         // and changed to be faster
         if (object == this) {
@@ -1008,7 +1008,7 @@ outer:
     }
 
     private int fastIndexOf(int c, int start) {
-        // RoboVM note: This is native in Android
+        // BugVM note: This is native in Android
         int _count = count;
         int _offset = offset;
         char[] _value = value;
@@ -1145,7 +1145,7 @@ outer:
      * @since 1.6
      */
     public boolean isEmpty() {
-        // RoboVM note: This method is native in Android
+        // BugVM note: This method is native in Android
         return count == 0;
     }
 

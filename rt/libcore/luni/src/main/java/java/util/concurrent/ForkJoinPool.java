@@ -2229,7 +2229,7 @@ public class ForkJoinPool extends AbstractExecutorService {
     static int getSurplusQueuedTaskCount() {
         Thread t; ForkJoinWorkerThread wt; ForkJoinPool pool; WorkQueue q;
         if (((t = Thread.currentThread()) instanceof ForkJoinWorkerThread)) {
-            // RoboVM note: Changed to prevent "LLVM ERROR: ran out of registers during register allocation"
+            // BugVM note: Changed to prevent "LLVM ERROR: ran out of registers during register allocation"
             wt = (ForkJoinWorkerThread)t;
             pool = wt.pool;
             int p = pool.config & SMASK;

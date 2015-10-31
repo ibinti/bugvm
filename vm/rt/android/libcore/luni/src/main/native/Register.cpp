@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 
-// RoboVM note: Macro slightly changed to just define prototypes. All functions return int.
+// BugVM note: Macro slightly changed to just define prototypes. All functions return int.
 #define REGISTER(FN) extern int FN(JNIEnv*)
     REGISTER(register_java_io_Console);
     REGISTER(register_java_io_File);
@@ -68,7 +68,7 @@
     REGISTER(register_sun_misc_Unsafe);
 #undef REGISTER
 
-// RoboVM note: rvmInit() calls this on startup, so we can statically register all our native methods.
+// BugVM note: rvmInit() calls this on startup, so we can statically register all our native methods.
 extern "C" int registerCoreLibrariesJni(JNIEnv* env) {
     ScopedLocalFrame localFrame(env);
 

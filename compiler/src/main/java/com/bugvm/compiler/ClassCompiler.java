@@ -367,7 +367,7 @@ public class ClassCompiler {
                                 f2.setLinkage(com.bugvm.llvm.binding.Linkage.PrivateLinkage);
                                 if (Symbols.isCallbackInnerCSymbol(name)) {
                                     // TODO: We should also always inline the bridge functions but for some reason
-                                    // that makes the RoboVM tests hang indefinitely.
+                                    // that makes the BugVM tests hang indefinitely.
                                     f2.removeAttribute(Attribute.NoInlineAttribute);
                                     f2.addAttribute(Attribute.AlwaysInlineAttribute);
                                 }
@@ -1360,7 +1360,7 @@ public class ClassCompiler {
                 }
                 if ((flags & MI_NATIVE) == 0) {
                     // Cannot use m.isNative() in the condition above since methods which are native in the
-                    // Java class file may have been changed to non-native by the RoboVM compiler 
+                    // Java class file may have been changed to non-native by the BugVM compiler
                     // (e.g. @StructMember methods). The native code which parses the info structs will see 
                     // the method as non-native.
 

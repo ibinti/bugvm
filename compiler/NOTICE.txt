@@ -61,7 +61,7 @@ http://www.bouncycastle.org
 
 The BugVM compiler uses hfscompressor which is copyright 2015 RoboVM AB and
 released under the GNU General Public License version 2.
-https://github.com/robovm/hfscompressor
+https://github.com/bugvm/hfscompressor
 
 The BugVM compiler uses the libarchive library. This library is copyright
 2003-2009 Tim Kientzle and released under the 2-clause BSD license.

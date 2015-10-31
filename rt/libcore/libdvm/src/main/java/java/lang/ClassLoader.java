@@ -95,7 +95,7 @@ public abstract class ClassLoader {
     }
 
     /*
-     * RoboVM NOTE: If the order of fields is changed or if fields are added/removed 
+     * BugVM NOTE: If the order of fields is changed or if fields are added/removed
      * the ClassLoader struct in types.h must also be changed accordingly 
      */
     

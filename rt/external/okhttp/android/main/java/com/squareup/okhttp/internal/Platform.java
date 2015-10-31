@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import javax.net.ssl.SSLSocket;
-import org.conscrypt.OpenSSLSocketImpl; // RoboVM note: Use unmodified package name.
+import org.conscrypt.OpenSSLSocketImpl; // BugVM note: Use unmodified package name.
 
 /**
  * Access to proprietary Android APIs. Doesn't use reflection.

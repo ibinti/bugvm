@@ -192,7 +192,7 @@ void rvmParseOption(char* arg, Options* options) {
 static void parseBugVMIni(Options* options) {
     char path[PATH_MAX];
 
-    // Look for a robovm.ini next to the executable
+    // Look for a bugvm.ini next to the executable
     strncpy(path, options->resourcesPath, sizeof(path) - 1);
     strcat(path, "/bugvm.ini");
     FILE* f = fopen(path, "r");
@@ -215,7 +215,7 @@ static void parseBugVMIni(Options* options) {
 
 jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
     if (argc > 0) {
-        // We're called from a RoboVM executable
+        // We're called from a BugVM executable
         if (!realpath(argv[0], options->imagePath)) {
             return FALSE;
         }

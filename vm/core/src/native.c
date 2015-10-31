@@ -109,7 +109,7 @@ static jint GetVersion(JNIEnv* env) {
 }
 
 static jclass DefineClass(JNIEnv* env, const char* name, jobject loader, const jbyte* buf, jsize len) {
-    // RoboVM does not support dynamic class generation.
+    // BugVM does not support dynamic class generation.
     throwUnsupportedOperationException((Env*) env, "DefineClass");
     return NULL;
 }

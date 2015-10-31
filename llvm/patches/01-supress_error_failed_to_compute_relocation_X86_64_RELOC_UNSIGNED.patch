@@ -8,7 +8,7 @@ index 37ba43f..d45618e 100644
            }
 -          errs() << "error: failed to compute relocation: "
 -                 << Name << "\n";
-+          // RoboVM note: This happens for RoboVM compiled code and also with code compiled with clang.
++          // BugVM note: This happens for BugVM compiled code and also with code compiled with clang.
 +          //              Prevent this from being written to stderr.
 +          //errs() << "error: failed to compute relocation: "
 +          //       << Name << "\n";

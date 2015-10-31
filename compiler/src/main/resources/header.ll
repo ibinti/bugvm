@@ -359,28 +359,28 @@ define private void @intrinsics.java_lang_System_arraycopy_C(%Env* %env, %Object
     ret void
 }
 
-define private void @intrinsics.org_robovm_rt_VM_memmove8(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+define private void @intrinsics.com_bugvm_rt_VM_memmove8(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
     %dest = inttoptr i64 %s1 to i8*
     %src = inttoptr i64 %s2 to i8*
     call void @llvm.memmove.p0i8.p0i8.i64(i8* %dest, i8* %src, i64 %n, i32 1, i1 true)
     ret void
 }
 
-define private void @intrinsics.org_robovm_rt_VM_memmove16(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+define private void @intrinsics.com_bugvm_rt_VM_memmove16(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
     %dest = inttoptr i64 %s1 to i8*
     %src = inttoptr i64 %s2 to i8*
     call void @_bcMoveMemory16(i8* %dest, i8* %src, i64 %n)
     ret void
 }
 
-define private void @intrinsics.org_robovm_rt_VM_memmove32(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+define private void @intrinsics.com_bugvm_rt_VM_memmove32(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
     %dest = inttoptr i64 %s1 to i8*
     %src = inttoptr i64 %s2 to i8*
     call void @_bcMoveMemory32(i8* %dest, i8* %src, i64 %n)
     ret void
 }
 
-define private void @intrinsics.org_robovm_rt_VM_memmove64(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+define private void @intrinsics.com_bugvm_rt_VM_memmove64(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
     %dest = inttoptr i64 %s1 to i8*
     %src = inttoptr i64 %s2 to i8*
     %n2 = shl i64 %n, 1

@@ -61,14 +61,14 @@
 #include <time.h>
 #include <unistd.h>
 
-// RoboVM note: Start change.
+// BugVM note: Start change.
 #if defined(__APPLE__)
 #include <mach-o/dyld.h> // for _NSGetExecutablePath()
 #include <libgen.h>      // for dirname()
 #endif
 #include "icudt51l.dat.gz.h"
 #include "zlib.h"
-// RoboVM note: End chage.
+// BugVM note: End chage.
 
 // TODO: put this in a header file and use it everywhere!
 // DISALLOW_COPY_AND_ASSIGN disallows the copy and operator= functions.
@@ -674,7 +674,7 @@ extern "C" jstring Java_libcore_icu_ICU_getBestDateTimePatternNative(JNIEnv* env
   return env->NewString(result.getBuffer(), result.length());
 }
 
-// RoboVM note: Start change.
+// BugVM note: Start change.
 #if (__APPLE__)
 static std::string getExecutablePath() {
     std::string exePath;
@@ -746,7 +746,7 @@ static int inflate(const void *src, int srcLen, void *dst, int dstLen) {
     inflateEnd(&strm);
     return ret;
 }
-// RoboVM note: End change.
+// BugVM note: End change.
 
 int register_libcore_icu_ICU(JNIEnv* env) {
     std::string path;
@@ -760,7 +760,7 @@ int register_libcore_icu_ICU(JNIEnv* env) {
             abort(); \
         }
 
-    // RoboVM note: Start change. Look for custom ICU data and fall back to builtin minimal data if not found.
+    // BugVM note: Start change. Look for custom ICU data and fall back to builtin minimal data if not found.
     if (!findCustomICUData(path)) {
         ALOGI("Using builtin minimal ICU data");
         void* data = malloc(out_icudt51l_dat_len);
@@ -789,7 +789,7 @@ int register_libcore_icu_ICU(JNIEnv* env) {
     }
 
     ALOGI("Using custom ICU data file: '%s'", path.c_str());
-    // RoboVM note: End change.
+    // BugVM note: End change.
 
     // Open the file and get its length.
     ScopedFd fd(open(path.c_str(), O_RDONLY));

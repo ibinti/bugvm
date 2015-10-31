@@ -90,7 +90,7 @@ public final class Runtime {
                 paths.add(new File(home, "lib").getAbsolutePath());
             }
         }
-        String basePath = System.getProperty("org.robovm.base.path");
+        String basePath = System.getProperty("com.bugvm.base.path");
         if (basePath != null) {
             paths.add(basePath);
         }

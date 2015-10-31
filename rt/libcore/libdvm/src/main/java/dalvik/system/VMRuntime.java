@@ -57,7 +57,7 @@ public final class VMRuntime {
      * These are in the form "name=value" rather than "-Dname=value".
      */
     public String[] properties() {
-        // RoboVM note: This is native Android.
+        // BugVM note: This is native Android.
         // TODO: Support command-line supplied properties?
         return EmptyArray.STRING;
     }
@@ -66,7 +66,7 @@ public final class VMRuntime {
      * Returns the VM's boot class path.
      */
     public String bootClassPath() {
-        // RoboVM note: This is native Android.
+        // BugVM note: This is native Android.
         return VM.bootClassPath();
     }
 
@@ -74,7 +74,7 @@ public final class VMRuntime {
      * Returns the VM's class path.
      */
     public String classPath() {
-        // RoboVM note: This is native Android.
+        // BugVM note: This is native Android.
         return VM.classPath();
     }
 
@@ -82,7 +82,7 @@ public final class VMRuntime {
      * Returns the VM's version.
      */
     public String vmVersion() {
-        // RoboVM note: This is native Android.
+        // BugVM note: This is native Android.
         return VM.vmVersion();
     }
 
@@ -133,7 +133,7 @@ public final class VMRuntime {
      * allocated version numbers start at 1).
      */
     public void setTargetSdkVersion(int targetSdkVersion) {
-        // RoboVM note: This is native in Android. In RoboVM this is a nop.
+        // BugVM note: This is native in Android. In BugVM this is a nop.
     }
 
     /**
@@ -177,7 +177,7 @@ public final class VMRuntime {
      *                  This value may be adjusted internally.
      */
     private void nativeSetTargetHeapUtilization(float newTarget) {
-        // RoboVM note: This is native in Android. In RoboVM this is a nop.
+        // BugVM note: This is native in Android. In BugVM this is a nop.
     }
 
     /**
@@ -210,7 +210,7 @@ public final class VMRuntime {
      * implementation, calling this method should have no effect.
      */
     public void startJitCompilation() {
-        // RoboVM note: This is native in Android. In RoboVM there's no JIT so this is a nop.
+        // BugVM note: This is native in Android. In BugVM there's no JIT so this is a nop.
     }
 
     /**
@@ -218,7 +218,7 @@ public final class VMRuntime {
      * implementation, calling this method should have no effect.
      */
     public void disableJitCompilation() {
-        // RoboVM note: This is native in Android. In RoboVM there's no JIT so this is a nop.
+        // BugVM note: This is native in Android. In BugVM there's no JIT so this is a nop.
     }
 
     /**
@@ -227,7 +227,7 @@ public final class VMRuntime {
      * and Bitmaps.
      */
     public Object newNonMovableArray(Class<?> componentType, int length) {
-        // RoboVM note: This is native in Android. In RoboVM the GC never moves around objects on
+        // BugVM note: This is native in Android. In BugVM the GC never moves around objects on
         // the heap so we can use Array.newInstance().
         return Array.newInstance(componentType, length);
     }
@@ -237,7 +237,7 @@ public final class VMRuntime {
      * give you the address of a copy of the array when in forcecopy mode.
      */
     public long addressOf(Object array) {
-        // RoboVM note: This is native in Android.
+        // BugVM note: This is native in Android.
         return VM.getArrayValuesAddress(array);
     }
 
@@ -251,7 +251,7 @@ public final class VMRuntime {
      * Returns true if either a Java debugger or native debugger is active.
      */
     public boolean isDebuggerActive() {
-        // RoboVM note: This is native in Android. Called by the FinalizerWatchdogDaemon thread to check whether a 
+        // BugVM note: This is native in Android. Called by the FinalizerWatchdogDaemon thread to check whether a
         // debugger is attached. If there is a debugger the  FinalizerWatchdogDaemon thread will not exit the VM if a
         // finalizer takes more time than the allowed MAX_FINALIZE_MILLIS.
         return false;
@@ -266,20 +266,20 @@ public final class VMRuntime {
      * from excessively increasing.
      */
     public void registerNativeAllocation(int bytes) {
-        // RoboVM note: This is native in Android. In RoboVM this is a nop.
+        // BugVM note: This is native in Android. In BugVM this is a nop.
     }
 
     /**
      * Registers a native free by reducing the number of native bytes accounted for.
      */
     public void registerNativeFree(int bytes) {
-        // RoboVM note: This is native in Android. In RoboVM this is a nop.
+        // BugVM note: This is native in Android. In BugVM this is a nop.
     }
 
     /**
      * Fill in dex caches with classes, fields, and methods that are already loaded.
      */
     public void preloadDexCaches() {
-        // RoboVM note: This is native in Android. In RoboVM this is a nop.
+        // BugVM note: This is native in Android. In BugVM this is a nop.
     }
 }

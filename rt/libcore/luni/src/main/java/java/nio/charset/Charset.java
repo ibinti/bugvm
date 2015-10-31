@@ -222,7 +222,7 @@ public abstract class Charset implements Comparable<Charset> {
         // Start with a copy of the built-in charsets...
         TreeMap<String, Charset> charsets = new TreeMap<String, Charset>(String.CASE_INSENSITIVE_ORDER);
         for (String charsetName : NativeConverter.getAvailableCharsetNames()) {
-            // RoboVM note: Added try-catch to ignore charsets with bad names (e.g. "x-UTF-16,version=1")
+            // BugVM note: Added try-catch to ignore charsets with bad names (e.g. "x-UTF-16,version=1")
             try {
                 Charset charset = NativeConverter.charsetForName(charsetName);
                 charsets.put(charset.name(), charset);

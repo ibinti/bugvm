@@ -30,7 +30,7 @@ public class Fifos {
      * file directory used by {@link File#createTempFile(String, String)}.
      */
     public static File mkfifo(String type) throws IOException {
-        File f = File.createTempFile("robovm-" + type + "-", ".fifo");
+        File f = File.createTempFile("bugvm-" + type + "-", ".fifo");
         f.delete();
         ProcessBuilder pb = new ProcessBuilder("mkfifo", "-m", "600", f.getAbsolutePath());
         try {

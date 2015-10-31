@@ -37,7 +37,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
             if (!enumType.isEnum()) {
                 return null;
             }
-            // RoboVM note: The code to lookup the values() method below emulates the behavior of 
+            // BugVM note: The code to lookup the values() method below emulates the behavior of
             // Android's Class.getDeclaredConstructorOrMethod() (i.e. make the method accessible 
             // and return null if not found).
             Method method = null;

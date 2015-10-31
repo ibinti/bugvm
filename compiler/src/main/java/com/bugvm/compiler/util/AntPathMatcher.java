@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 /**
  * PathMatcher implementation for Ant-style path patterns. Examples are provided below.
  * <p>
- * RoboVM note: This code was copied from the Apache Camel project.
+ * BugVM note: This code was copied from the Apache Camel project.
  * Part of this mapping code has been kindly borrowed from <a href="http://ant.apache.org">Apache Ant</a>
  * and <a href="http://springframework.org">Spring Framework</a>.
  * <p>

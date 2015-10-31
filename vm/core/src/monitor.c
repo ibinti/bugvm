@@ -30,7 +30,7 @@
  */
 
 /*
- * RoboVM note: This code was ported from Android's dalvik/vm/Sync.cpp
+ * BugVM note: This code was ported from Android's dalvik/vm/Sync.cpp
  */
 
 #include <fcntl.h>

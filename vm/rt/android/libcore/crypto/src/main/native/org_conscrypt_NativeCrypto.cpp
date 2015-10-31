@@ -7969,7 +7969,7 @@ extern "C" jlong Java_com_android_org_conscrypt_NativeCrypto_ERR_1peek_1last_1er
     return ERR_peek_last_error();
 }
 
-// RoboVM note: Not used on RoboVM.
+// BugVM note: Not used on BugVM.
 #if 0
 #define FILE_DESCRIPTOR "Ljava/io/FileDescriptor;"
 #define SSL_CALLBACKS "L" TO_STRING(JNI_JARJAR_PREFIX) "org/conscrypt/NativeCrypto$SSLHandshakeCallbacks;"
@@ -8191,7 +8191,7 @@ static JNINativeMethod sNativeCryptoMethods[] = {
 #endif
 
 static void initialize_conscrypt(JNIEnv* env) {
-// RoboVM note: Not used on RoboVM.
+// BugVM note: Not used on BugVM.
 #if 0
     jniRegisterNativeMethods(env, TO_STRING(JNI_JARJAR_PREFIX) "org/conscrypt/NativeCrypto",
                              sNativeCryptoMethods, NELEM(sNativeCryptoMethods));
@@ -8225,7 +8225,7 @@ static jclass findClass(JNIEnv* env, const char* name) {
     return result;
 }
 
-// RoboVM note: JNI_OnLoad() is not suppored with static JNI. The NativeCrypto Java class has been changed to call a native method named onload() instead.
+// BugVM note: JNI_OnLoad() is not suppored with static JNI. The NativeCrypto Java class has been changed to call a native method named onload() instead.
 #if 0
 // Use JNI_OnLoad for when we're standalone
 int JNI_OnLoad(JavaVM *vm, void*) {

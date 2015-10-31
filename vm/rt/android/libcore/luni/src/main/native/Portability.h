@@ -27,12 +27,12 @@
 #define bswap_32 OSSwapInt32
 #define bswap_64 OSSwapInt64
 
-// RoboVM note: Start change. Don't use _NSGetEnviron(). It's private on iOS.
+// BugVM note: Start change. Don't use _NSGetEnviron(). It's private on iOS.
 #if 0
 #include <crt_externs.h>
 #define environ (*_NSGetEnviron())
 #endif
-// RoboVM note: End change.
+// BugVM note: End change.
 
 // Mac OS has a 64-bit off_t and no 32-bit compatibility cruft.
 #define flock64 flock
@@ -42,11 +42,11 @@
 #define pread64 pread
 #define pwrite64 pwrite
 
-// RoboVM note: Start change. On Darwin there are no separate 64-bit versions of these.
+// BugVM note: Start change. On Darwin there are no separate 64-bit versions of these.
 #define F_GETLK64 F_GETLK
 #define F_SETLK64 F_SETLK
 #define F_SETLKW64 F_SETLKW
-// RoboVM note: End change.
+// BugVM note: End change.
 
 // TODO: Darwin appears to have an fdatasync syscall.
 static inline int fdatasync(int fd) { return fsync(fd); }
@@ -71,7 +71,7 @@ static inline int mincore(void* addr, size_t length, unsigned char* vec) {
   return mincore(addr, length, reinterpret_cast<char*>(vec));
 }
 
-// RoboVM note: Start change. libcore uses statvfs now instead of statfs.
+// BugVM note: Start change. libcore uses statvfs now instead of statfs.
 #if 0
 // For statfs(3).
 #include <sys/param.h>
@@ -80,13 +80,13 @@ static inline int mincore(void* addr, size_t length, unsigned char* vec) {
 #endif
 // For statvfs(3).
 #include <sys/statvfs.h>
-// RoboVM note: End change.
+// BugVM note: End change.
 
-// RoboVM note: Start change. Constants not available on Darwin.
+// BugVM note: Start change. Constants not available on Darwin.
 #define _SO_CUSTOM_BASE 0x10000000
 #define SO_PASSCRED (_SO_CUSTOM_BASE + 0)
 #define SO_PEERCRED (_SO_CUSTOM_BASE + 1)
-// RoboVM note: End change.
+// BugVM note: End change.
 
 #else
 

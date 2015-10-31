@@ -79,13 +79,13 @@ public class ToSignatureTest {
         type = methodParamType("m1", 1);
         assertEquals("Ljava/lang/String;", type.toGenericSignature());
         type = methodParamType("m1", 2);
-        assertEquals("Lorg/robovm/compiler/util/generic/ToSignatureTest$A<Ljava/lang/Number;*>;", 
+        assertEquals("Lcom/bugvm/compiler/util/generic/ToSignatureTest$A<Ljava/lang/Number;*>;",
                 type.toGenericSignature());
         type = methodParamType("m1", 3);
-        assertEquals("Lorg/robovm/compiler/util/generic/ToSignatureTest$A<Ljava/lang/Number;+Ljava/lang/Comparable<Ljava/lang/String;>;>;", 
+        assertEquals("Lcom/bugvm/compiler/util/generic/ToSignatureTest$A<Ljava/lang/Number;+Ljava/lang/Comparable<Ljava/lang/String;>;>;",
                 type.toGenericSignature());
         type = methodParamType("m1", 4);
-        assertEquals("Lorg/robovm/compiler/util/generic/ToSignatureTest$B<Ljava/lang/Integer;>.Inner<Ljava/lang/String;>;", 
+        assertEquals("Lcom/bugvm/compiler/util/generic/ToSignatureTest$B<Ljava/lang/Integer;>.Inner<Ljava/lang/String;>;",
                 type.toGenericSignature());
     }
 

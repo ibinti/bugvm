@@ -294,7 +294,7 @@ const char* jniStrError(int errnum, char* buf, size_t buflen) {
     // Note: glibc has a nonstandard strerror_r that returns char* rather than POSIX's int.
     // char *strerror_r(int errnum, char *buf, size_t n);
     char* ret = (char*) strerror_r(errnum, buf, buflen);
-    // RoboVM note: The original code uses (int) here but that fails on x86_64 with clang
+    // BugVM note: The original code uses (int) here but that fails on x86_64 with clang
     if (((size_t)ret) == 0) {
         // POSIX strerror_r, success
         return buf;

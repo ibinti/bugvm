@@ -34,7 +34,7 @@ public final class VMStack {
      *         bootstrap class loader.
      */
     public static ClassLoader getCallingClassLoader() {
-        // RoboVM note: This is native in Android
+        // BugVM note: This is native in Android
         return VM.getStackClasses(1, 1)[0].getClassLoader();
     }
 
@@ -44,7 +44,7 @@ public final class VMStack {
      * @return the requested class, or {@code null}.
      */
     public static Class<?> getStackClass2() {
-        // RoboVM note: This is native in Android
+        // BugVM note: This is native in Android
         Class<?>[] classes = VM.getStackClasses(2, 1);
         return classes != null && classes.length > 0 ? classes[0] : null;
     }
@@ -68,7 +68,7 @@ public final class VMStack {
      * @return an array with classes for the most-recent methods on the stack
      */
     public static Class<?>[] getClasses(int maxDepth) {
-        // RoboVM note: This is native in Android
+        // BugVM note: This is native in Android
         // TODO: Skip over java.lang.reflect classes.
         return VM.getStackClasses(1, maxDepth);
     }
@@ -98,7 +98,7 @@ public final class VMStack {
      *      doesn't have a stack trace (e.g. because it exited)
      */
     public static StackTraceElement[] getThreadStackTrace(Thread t) {
-        // RoboVM note: This is native in Android.
+        // BugVM note: This is native in Android.
         return t.getStackTrace();
     }
 
@@ -115,7 +115,7 @@ public final class VMStack {
      */
     public static int fillStackTraceElements(Thread t,
         StackTraceElement[] stackTraceElements) {
-        // RoboVM note: This is native in Android.
+        // BugVM note: This is native in Android.
         Arrays.fill(stackTraceElements, null);
         StackTraceElement[] st = t.getStackTrace();
         int n = Math.min(st.length, stackTraceElements.length);

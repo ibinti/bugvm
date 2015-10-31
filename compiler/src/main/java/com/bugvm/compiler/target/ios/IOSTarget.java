@@ -932,12 +932,12 @@ public class IOSTarget extends AbstractTarget {
 
     /**
      * Copies the dSYM and the executable to {@code ~/Library/Developer/Xcode/
-     * DerivedData/RoboVM/Build/Products/<appname>_<timestamp>/}.
+     * DerivedData/BugVM/Build/Products/<appname>_<timestamp>/}.
      */
     private void copyToIndexedDir(File dir, String executable, File dsymDir, File exePath) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         final File indexedDir = new File(System.getProperty("user.home"),
-                "Library/Developer/Xcode/DerivedData/RoboVM/Build/Products/"
+                "Library/Developer/Xcode/DerivedData/BugVM/Build/Products/"
                         + FilenameUtils.removeExtension(dir.getName()) + "_"
                         + sdf.format(new Date()));
         indexedDir.mkdirs();

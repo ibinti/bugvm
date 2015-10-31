@@ -6,6 +6,14 @@ a.out
 .*
 /target/
 /llvm/target.llvm/
+/llvm/extllvm-prefix/
+/llvm/bugvm-llvm.build/
+/llvm/CMakeFiles/
+/llvm/CMakeScripts/
+/llvm/extclang-prefix/
+/llvm/llvm/share/
+/llvm/llvm/lib/
+/llvm/llvm/bin/
 /vm/binaries/
 /vm/target/
 /compiler/target/
@@ -29,3 +37,7 @@ a.out
 /tests/libcore/sqliteTest*.db
 /tmp/
 !/tests/bugvm/src/test/resources/META-INF/**/*.o
+
+llvm/CMakeCache.txt
+
+llvm/cmake_install.cmake

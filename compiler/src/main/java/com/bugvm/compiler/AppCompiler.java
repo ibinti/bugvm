@@ -77,7 +77,7 @@ public class AppCompiler {
 
     /**
      * Names of root classes. These classes will always be linked in. These are
-     * here because they are either required by the RoboVM specific native VM
+     * here because they are either required by the BugVM specific native VM
      * libraries or by the Android's libcore native code.
      */
     private static final String[] ROOT_CLASSES = {
@@ -1059,7 +1059,7 @@ public class AppCompiler {
     }
 
     /**
-     * Performs an update check. If a newer version of RoboVM is available a
+     * Performs an update check. If a newer version of BugVM is available a
      * message will be printed to the log. The update check is also used to
      * gather some anonymous usage statistics.
      */

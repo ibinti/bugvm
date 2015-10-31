@@ -67,7 +67,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         Member {
 
     /*
-     * The RoboVM Method* object
+     * The BugVM Method* object
      */
     private final long method;
     

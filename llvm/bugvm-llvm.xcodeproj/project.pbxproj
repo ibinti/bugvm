@@ -1,0 +1,1265 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		086BE17339AC45299994BA93 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B1E44101368C46FBAC863100 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				C50D6B5EBAA74F6C83E6225F /* CMake Rules */,
+			);
+			dependencies = (
+				99A5E206E205445BB7D835C9 /* PBXTargetDependency */,
+				CB89C797AA9044F59C721FE8 /* PBXTargetDependency */,
+				DE7F838FC5ED49F8A3D2FE5B /* PBXTargetDependency */,
+				6EE2C98468124A839A56B896 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		81C1A6EC295B4ED498117A7A /* extllvm */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C03916981EB745688EA62EE2 /* Build configuration list for PBXAggregateTarget "extllvm" */;
+			buildPhases = (
+				3AD2B35E9463467DBC7AF2E7 /* CMake Rules */,
+			);
+			dependencies = (
+				76758656B6EB4876A16A40AA /* PBXTargetDependency */,
+				42203816A069440192B621FB /* PBXTargetDependency */,
+			);
+			name = extllvm;
+			productName = extllvm;
+		};
+		8C12A32502EF4EB78D2948A4 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 43C8A86A5EFE4D728DB3CBA5 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				EA0F7BA70CED4B64A1D5A82D /* CMake Rules */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		B485994AE0594BADA55BFBDE /* extclang */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 989993B0263C461EB11095E3 /* Build configuration list for PBXAggregateTarget "extclang" */;
+			buildPhases = (
+				D5B4EC02F52440288599224D /* CMake Rules */,
+			);
+			dependencies = (
+				FA66AE9B53CA4AF5B54AC414 /* PBXTargetDependency */,
+			);
+			name = extclang;
+			productName = extclang;
+		};
+		E5BC11D4EA864C0E8DB6546A /* install */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 96597C7C74674B11A37F0C37 /* Build configuration list for PBXAggregateTarget "install" */;
+			buildPhases = (
+				1B2C1B279DF447FD8705B5BE /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+				0121CB36C9394CB69386B5DF /* PBXTargetDependency */,
+			);
+			name = install;
+			productName = install;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		54D19FC00D25462CAE58C454 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVM_wrap.c */ = {isa = PBXBuildFile; fileRef = A8B89540DAF14A82A20FDB49 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVM_wrap.c */; settings = {COMPILER_FLAGS = ""; }; };
+		82E5BACDD97A4839A0EFD0EA /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 486895658F1C4BD5890AE1B2 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */; settings = {COMPILER_FLAGS = ""; }; };
+		BEAEFEC9494942D5BE524187 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/ClangExtra.cpp */ = {isa = PBXBuildFile; fileRef = 1E2B4FDE355E40229A3FE450 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/ClangExtra.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+		FFA4B0C2C4034D8290B05B87 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVMExtra.cpp */ = {isa = PBXBuildFile; fileRef = A3BCF8C90D7B4319AB5BAE9F /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVMExtra.cpp */; settings = {COMPILER_FLAGS = ""; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		209E1BB480E84E39B8126821 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		2122DE76A8E64DB397EBA2F3 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		25CD6B1456784B669657F3A7 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		38FE62434FC341A6B0E43F75 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		BF4DBCB6C3C04DB6998B0D52 = {
+			isa = PBXBuildStyle;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		1E10B81BB6794EB99290EE4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C12A32502EF4EB78D2948A4;
+			remoteInfo = ZERO_CHECK;
+		};
+		4542201406344F7083F8549D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C12A32502EF4EB78D2948A4;
+			remoteInfo = ZERO_CHECK;
+		};
+		478A41179F5A40AAADCAAFC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81C1A6EC295B4ED498117A7A;
+			remoteInfo = extllvm;
+		};
+		4A12DC36D43740C5B4EE39B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C12A32502EF4EB78D2948A4;
+			remoteInfo = ZERO_CHECK;
+		};
+		7C6B571F403C425BB9806540 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D0A589F26F8B4089B720D0E4;
+			remoteInfo = "bugvm-llvm";
+		};
+		9FBEDF052D5649068663D06A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 086BE17339AC45299994BA93;
+			remoteInfo = ALL_BUILD;
+		};
+		ABC75A773783489EAC55B85D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C12A32502EF4EB78D2948A4;
+			remoteInfo = ZERO_CHECK;
+		};
+		C60AAC35C97243F38809F027 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81C1A6EC295B4ED498117A7A;
+			remoteInfo = extllvm;
+		};
+		CAB00A6199F04E82B975284E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B485994AE0594BADA55BFBDE;
+			remoteInfo = extclang;
+		};
+		D715DC583C914D158675951C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79A77020A0FB44339E019A40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B485994AE0594BADA55BFBDE;
+			remoteInfo = extclang;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1C91D917975048B3BC657DA0 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		1E2B4FDE355E40229A3FE450 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/ClangExtra.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ClangExtra.cpp; path = src/main/native/ClangExtra.cpp; sourceTree = SOURCE_ROOT; };
+		43DC94C2ECBA4D1A95632370 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		486895658F1C4BD5890AE1B2 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		A3BCF8C90D7B4319AB5BAE9F /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVMExtra.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LLVMExtra.cpp; path = src/main/native/LLVMExtra.cpp; sourceTree = SOURCE_ROOT; };
+		A8B89540DAF14A82A20FDB49 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVM_wrap.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = LLVM_wrap.c; path = src/main/native/LLVM_wrap.c; sourceTree = SOURCE_ROOT; };
+		AABDE4B5C17141AFBD4E46A6 /* bugvm-llvm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = "libbugvm-llvm.dylib"; refType = 0; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2C650CE235E498AB1FEFB60 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		C6F0CFBC68614D09A4A10CB4 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0123DA80871D4FA7843AE63A = {
+			isa = PBXGroup;
+			children = (
+				F4ED9C12F2324379B8418A7B /* Sources */,
+				F0FCFDE25DC44A359771CE82 /* Resources */,
+				E481EC7AFBE94A1D8FCC68FA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		200A6867E6F645F399DD5FA1 /* ZERO_CHECK */ = {
+			isa = PBXGroup;
+			children = (
+				754EB4E8FEDE49D4830E0529 /* CMake Rules */,
+				C2C650CE235E498AB1FEFB60 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */,
+			);
+			name = ZERO_CHECK;
+			sourceTree = "<group>";
+		};
+		25AD23A789D041B29B6607E2 /* extclang */ = {
+			isa = PBXGroup;
+			children = (
+				CC1235EB0C1E422FBC0E2BB4 /* CMake Rules */,
+				1C91D917975048B3BC657DA0 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */,
+			);
+			name = extclang;
+			sourceTree = "<group>";
+		};
+		53EB7E1C7950405C83C9B242 /* extllvm */ = {
+			isa = PBXGroup;
+			children = (
+				C6AFDA7A2D3946AFB7F02814 /* extllvm */,
+			);
+			name = extllvm;
+			sourceTree = "<group>";
+		};
+		56A821E94B16433793431F68 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				1E2B4FDE355E40229A3FE450 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/ClangExtra.cpp */,
+				A3BCF8C90D7B4319AB5BAE9F /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVMExtra.cpp */,
+				A8B89540DAF14A82A20FDB49 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVM_wrap.c */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		59371591B5C34249B7A91357 /* ExternalProjectTargets */ = {
+			isa = PBXGroup;
+			children = (
+				53EB7E1C7950405C83C9B242 /* extllvm */,
+				9ED979ABDA6A41999D5AC2A0 /* extclang */,
+			);
+			name = ExternalProjectTargets;
+			sourceTree = "<group>";
+		};
+		6E3A5EB96F2E484BBA5DDA4F /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				B74307C43201417B956E7AE6 /* CMake Rules */,
+				43DC94C2ECBA4D1A95632370 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		754EB4E8FEDE49D4830E0529 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		9ED979ABDA6A41999D5AC2A0 /* extclang */ = {
+			isa = PBXGroup;
+			children = (
+				25AD23A789D041B29B6607E2 /* extclang */,
+			);
+			name = extclang;
+			sourceTree = "<group>";
+		};
+		A1BEDD3BC2164D8B8FC578E6 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		A35E7D7E7D4143998F06AE95 /* bugvm-llvm */ = {
+			isa = PBXGroup;
+			children = (
+				56A821E94B16433793431F68 /* Source Files */,
+				486895658F1C4BD5890AE1B2 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */,
+			);
+			name = "bugvm-llvm";
+			sourceTree = "<group>";
+		};
+		B74307C43201417B956E7AE6 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		C6AFDA7A2D3946AFB7F02814 /* extllvm */ = {
+			isa = PBXGroup;
+			children = (
+				A1BEDD3BC2164D8B8FC578E6 /* CMake Rules */,
+				C6F0CFBC68614D09A4A10CB4 /* /Users/yy/bugvm/bugvm/llvm/CMakeLists.txt */,
+			);
+			name = extllvm;
+			sourceTree = "<group>";
+		};
+		CC1235EB0C1E422FBC0E2BB4 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		E481EC7AFBE94A1D8FCC68FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AABDE4B5C17141AFBD4E46A6 /* bugvm-llvm */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F0FCFDE25DC44A359771CE82 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		F4ED9C12F2324379B8418A7B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				59371591B5C34249B7A91357 /* ExternalProjectTargets */,
+				6E3A5EB96F2E484BBA5DDA4F /* ALL_BUILD */,
+				200A6867E6F645F399DD5FA1 /* ZERO_CHECK */,
+				A35E7D7E7D4143998F06AE95 /* bugvm-llvm */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D0A589F26F8B4089B720D0E4 /* bugvm-llvm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20375E9D045A474689AFBD38 /* Build configuration list for PBXNativeTarget "bugvm-llvm" */;
+			buildPhases = (
+				696226758A4D48B6B36101A4 /* Sources */,
+				10BE7E728BB64EEEB259F3F5 /* CMake PostBuild Rules */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				287BEF726B9645BCB77BE5A8 /* PBXTargetDependency */,
+				10567CE9F61445198F4BAFB0 /* PBXTargetDependency */,
+			);
+			name = "bugvm-llvm";
+			productName = "bugvm-llvm";
+			productReference = AABDE4B5C17141AFBD4E46A6 /* bugvm-llvm */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		79A77020A0FB44339E019A40 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 72732F819026431293305017 /* Build configuration list for PBXProject "bugvm-llvm" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				25CD6B1456784B669657F3A7 /* Debug */,
+				38FE62434FC341A6B0E43F75 /* Release */,
+				2122DE76A8E64DB397EBA2F3 /* MinSizeRel */,
+				209E1BB480E84E39B8126821 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 0123DA80871D4FA7843AE63A;
+			projectDirPath = .;
+			projectRoot = "";
+			targets = (
+				086BE17339AC45299994BA93 /* ALL_BUILD */,
+				8C12A32502EF4EB78D2948A4 /* ZERO_CHECK */,
+				D0A589F26F8B4089B720D0E4 /* bugvm-llvm */,
+				B485994AE0594BADA55BFBDE /* extclang */,
+				81C1A6EC295B4ED498117A7A /* extllvm */,
+				E5BC11D4EA864C0E8DB6546A /* install */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		10BE7E728BB64EEEB259F3F5 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/yy/bugvm/bugvm/llvm -f /Users/yy/bugvm/bugvm/llvm/CMakeScripts/bugvm-llvm_postBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+		159EBDE0F7414F6FBBB8BB2B = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		1B2C1B279DF447FD8705B5BE /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/yy/bugvm/bugvm/llvm -f /Users/yy/bugvm/bugvm/llvm/CMakeScripts/install_postBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+		3AD2B35E9463467DBC7AF2E7 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/yy/bugvm/bugvm/llvm -f /Users/yy/bugvm/bugvm/llvm/CMakeScripts/extllvm_cmakeRulesBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+		77D96FD34E1548F09F49A76A = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		B9136BC5E34A4B459C081B46 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		C50D6B5EBAA74F6C83E6225F /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/yy/bugvm/bugvm/llvm -f /Users/yy/bugvm/bugvm/llvm/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+		C9F6D23F947F4B5A8C997177 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		CE0B1402CCEB4D99AF27CA34 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		D5B4EC02F52440288599224D /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/yy/bugvm/bugvm/llvm -f /Users/yy/bugvm/bugvm/llvm/CMakeScripts/extclang_cmakeRulesBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+		EA0F7BA70CED4B64A1D5A82D /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/yy/bugvm/bugvm/llvm -f /Users/yy/bugvm/bugvm/llvm/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		696226758A4D48B6B36101A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEAEFEC9494942D5BE524187 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/ClangExtra.cpp */,
+				FFA4B0C2C4034D8290B05B87 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVMExtra.cpp */,
+				54D19FC00D25462CAE58C454 /* /Users/yy/bugvm/bugvm/llvm/src/main/native/LLVM_wrap.c */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0121CB36C9394CB69386B5DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 086BE17339AC45299994BA93 /* ALL_BUILD */;
+			targetProxy = 9FBEDF052D5649068663D06A /* PBXContainerItemProxy */;
+		};
+		10567CE9F61445198F4BAFB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C12A32502EF4EB78D2948A4 /* ZERO_CHECK */;
+			targetProxy = ABC75A773783489EAC55B85D /* PBXContainerItemProxy */;
+		};
+		287BEF726B9645BCB77BE5A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81C1A6EC295B4ED498117A7A /* extllvm */;
+			targetProxy = C60AAC35C97243F38809F027 /* PBXContainerItemProxy */;
+		};
+		42203816A069440192B621FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B485994AE0594BADA55BFBDE /* extclang */;
+			targetProxy = D715DC583C914D158675951C /* PBXContainerItemProxy */;
+		};
+		6EE2C98468124A839A56B896 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D0A589F26F8B4089B720D0E4 /* bugvm-llvm */;
+			targetProxy = 7C6B571F403C425BB9806540 /* PBXContainerItemProxy */;
+		};
+		76758656B6EB4876A16A40AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C12A32502EF4EB78D2948A4 /* ZERO_CHECK */;
+			targetProxy = 4A12DC36D43740C5B4EE39B7 /* PBXContainerItemProxy */;
+		};
+		99A5E206E205445BB7D835C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81C1A6EC295B4ED498117A7A /* extllvm */;
+			targetProxy = 478A41179F5A40AAADCAAFC0 /* PBXContainerItemProxy */;
+		};
+		CB89C797AA9044F59C721FE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C12A32502EF4EB78D2948A4 /* ZERO_CHECK */;
+			targetProxy = 1E10B81BB6794EB99290EE4A /* PBXContainerItemProxy */;
+		};
+		DE7F838FC5ED49F8A3D2FE5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B485994AE0594BADA55BFBDE /* extclang */;
+			targetProxy = CAB00A6199F04E82B975284E /* PBXContainerItemProxy */;
+		};
+		FA66AE9B53CA4AF5B54AC414 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C12A32502EF4EB78D2948A4 /* ZERO_CHECK */;
+			targetProxy = 4542201406344F7083F8549D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1588EA6DDEFB40FEA72C11EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		34070A4BF8EE4DD6824760E5 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extclang;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		35434ABB118F4E0BB97EB268 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		3E47665740A54300B0083E1E /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extllvm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		41854715A69245568BB062E8 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		4A9612408A7D454F87310AB7 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extllvm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		52D1A5093CC141C591755C21 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extclang;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		52E79D34C9AB43EB9A37602A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk;
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm/build;
+			};
+			name = Debug;
+		};
+		536E8E932FE84AD089D56299 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		57D9633B942A45F092E38CD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		58D21964319C4F54BFA29C89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extclang;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		601E72769EC94AC68A8ABBFE /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		74D14783AD2745F180B27858 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", bugvm_llvm_EXPORTS, __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = /Users/yy/bugvm/bugvm/llvm/RelWithDebInfo;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk        -DNDEBUG -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fno-rtti -std=c++0x -stdlib=libc++        -DNDEBUG -fPIC  ";
+				OTHER_LDFLAGS = "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,/Users/yy/bugvm/bugvm/llvm/src/main/native/exports_macosx.sym -dynamiclib -Wl,-headerpad_max_install_names  -lLLVMObjCARCOpts -lLLVMInstrumentation -lLLVMOption -lLLVMLinker -lLLVMDebugInfo -lLLVMAArch64Disassembler -lLLVMAArch64CodeGen -lLLVMAArch64AsmParser -lLLVMAArch64Desc -lLLVMAArch64Info -lLLVMAArch64AsmPrinter -lLLVMAArch64Utils -lLLVMX86Disassembler -lLLVMX86AsmParser -lLLVMX86CodeGen -lLLVMX86Desc -lLLVMX86Info -lLLVMX86AsmPrinter -lLLVMX86Utils -lLLVMARMDisassembler -lLLVMARMCodeGen -lLLVMSelectionDAG -lLLVMAsmPrinter -lLLVMCodeGen -lLLVMARMAsmParser -lLLVMARMDesc -lLLVMMCDisassembler -lLLVMARMInfo -lLLVMARMAsmPrinter -lLLVMipo -lLLVMVectorize -lLLVMScalarOpts -lLLVMProfileData -lLLVMObject -lLLVMMCParser -lLLVMInstCombine -lLLVMTransformUtils -lLLVMipa -lLLVMAnalysis -lLLVMTarget -lLLVMMC -lLLVMIRReader -lLLVMAsmParser -lLLVMBitWriter -lLLVMBitReader -lLLVMCore -lLLVMSupport -lclangFrontend -lclangAST -lclangBasic -lclangLex -lclangSerialization -lclangSema -lclangEdit -lclangCodeGen -lclangParse -lclangAnalysis -lclangDriver -L\"/Users/yy/bugvm/bugvm/llvm/llvm/lib\" -lcurses -lpthread -lz";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "bugvm-llvm";
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		7C5B394148B64EFEB98AA2C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		8CDC93B7294943609664F64E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk;
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm/build;
+			};
+			name = Release;
+		};
+		8D2B92676A0943D3AC092012 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", bugvm_llvm_EXPORTS, __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = /Users/yy/bugvm/bugvm/llvm/MinSizeRel;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk     -DNDEBUG -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fno-rtti -std=c++0x -stdlib=libc++     -DNDEBUG -fPIC  ";
+				OTHER_LDFLAGS = "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,/Users/yy/bugvm/bugvm/llvm/src/main/native/exports_macosx.sym -dynamiclib -Wl,-headerpad_max_install_names  -lLLVMObjCARCOpts -lLLVMInstrumentation -lLLVMOption -lLLVMLinker -lLLVMDebugInfo -lLLVMAArch64Disassembler -lLLVMAArch64CodeGen -lLLVMAArch64AsmParser -lLLVMAArch64Desc -lLLVMAArch64Info -lLLVMAArch64AsmPrinter -lLLVMAArch64Utils -lLLVMX86Disassembler -lLLVMX86AsmParser -lLLVMX86CodeGen -lLLVMX86Desc -lLLVMX86Info -lLLVMX86AsmPrinter -lLLVMX86Utils -lLLVMARMDisassembler -lLLVMARMCodeGen -lLLVMSelectionDAG -lLLVMAsmPrinter -lLLVMCodeGen -lLLVMARMAsmParser -lLLVMARMDesc -lLLVMMCDisassembler -lLLVMARMInfo -lLLVMARMAsmPrinter -lLLVMipo -lLLVMVectorize -lLLVMScalarOpts -lLLVMProfileData -lLLVMObject -lLLVMMCParser -lLLVMInstCombine -lLLVMTransformUtils -lLLVMipa -lLLVMAnalysis -lLLVMTarget -lLLVMMC -lLLVMIRReader -lLLVMAsmParser -lLLVMBitWriter -lLLVMBitReader -lLLVMCore -lLLVMSupport -lclangFrontend -lclangAST -lclangBasic -lclangLex -lclangSerialization -lclangSema -lclangEdit -lclangCodeGen -lclangParse -lclangAnalysis -lclangDriver -L\"/Users/yy/bugvm/bugvm/llvm/llvm/lib\" -lcurses -lpthread -lz";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "bugvm-llvm";
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		931F711682904110A84885AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", bugvm_llvm_EXPORTS, __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = /Users/yy/bugvm/bugvm/llvm/Release;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk     -DNDEBUG -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fno-rtti -std=c++0x -stdlib=libc++     -DNDEBUG -fPIC  ";
+				OTHER_LDFLAGS = "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,/Users/yy/bugvm/bugvm/llvm/src/main/native/exports_macosx.sym -dynamiclib -Wl,-headerpad_max_install_names  -lLLVMObjCARCOpts -lLLVMInstrumentation -lLLVMOption -lLLVMLinker -lLLVMDebugInfo -lLLVMAArch64Disassembler -lLLVMAArch64CodeGen -lLLVMAArch64AsmParser -lLLVMAArch64Desc -lLLVMAArch64Info -lLLVMAArch64AsmPrinter -lLLVMAArch64Utils -lLLVMX86Disassembler -lLLVMX86AsmParser -lLLVMX86CodeGen -lLLVMX86Desc -lLLVMX86Info -lLLVMX86AsmPrinter -lLLVMX86Utils -lLLVMARMDisassembler -lLLVMARMCodeGen -lLLVMSelectionDAG -lLLVMAsmPrinter -lLLVMCodeGen -lLLVMARMAsmParser -lLLVMARMDesc -lLLVMMCDisassembler -lLLVMARMInfo -lLLVMARMAsmPrinter -lLLVMipo -lLLVMVectorize -lLLVMScalarOpts -lLLVMProfileData -lLLVMObject -lLLVMMCParser -lLLVMInstCombine -lLLVMTransformUtils -lLLVMipa -lLLVMAnalysis -lLLVMTarget -lLLVMMC -lLLVMIRReader -lLLVMAsmParser -lLLVMBitWriter -lLLVMBitReader -lLLVMCore -lLLVMSupport -lclangFrontend -lclangAST -lclangBasic -lclangLex -lclangSerialization -lclangSema -lclangEdit -lclangCodeGen -lclangParse -lclangAnalysis -lclangDriver -L\"/Users/yy/bugvm/bugvm/llvm/llvm/lib\" -lcurses -lpthread -lz";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "bugvm-llvm";
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		9919067553794732B3671087 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		9B505B12993644A78F975847 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extllvm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		9F44347732724FFF9A4985C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extllvm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		B2389B1AEC154D0B913CE04D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Release;
+		};
+		B40B15C1F4F54015BB9DF273 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = RelWithDebInfo;
+		};
+		B6A8BCD60FB44C00AE29CBFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = extclang;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		D8E00715A34440B2AC688C0E /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		EA30A8B64ACD4DE288BE2E3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", bugvm_llvm_EXPORTS, __STDC_LIMIT_MACROS, __STDC_CONSTANT_MACROS, );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = /Users/yy/bugvm/bugvm/llvm/Debug;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk    -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "  -fvisibility=hidden -fdata-sections -ffunction-sections -arch x86_64 -mmacosx-version-min=10.7 -isysroot /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fno-rtti -std=c++0x -stdlib=libc++    -fPIC  ";
+				OTHER_LDFLAGS = "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,/Users/yy/bugvm/bugvm/llvm/src/main/native/exports_macosx.sym -dynamiclib -Wl,-headerpad_max_install_names  -lLLVMObjCARCOpts -lLLVMInstrumentation -lLLVMOption -lLLVMLinker -lLLVMDebugInfo -lLLVMAArch64Disassembler -lLLVMAArch64CodeGen -lLLVMAArch64AsmParser -lLLVMAArch64Desc -lLLVMAArch64Info -lLLVMAArch64AsmPrinter -lLLVMAArch64Utils -lLLVMX86Disassembler -lLLVMX86AsmParser -lLLVMX86CodeGen -lLLVMX86Desc -lLLVMX86Info -lLLVMX86AsmPrinter -lLLVMX86Utils -lLLVMARMDisassembler -lLLVMARMCodeGen -lLLVMSelectionDAG -lLLVMAsmPrinter -lLLVMCodeGen -lLLVMARMAsmParser -lLLVMARMDesc -lLLVMMCDisassembler -lLLVMARMInfo -lLLVMARMAsmPrinter -lLLVMipo -lLLVMVectorize -lLLVMScalarOpts -lLLVMProfileData -lLLVMObject -lLLVMMCParser -lLLVMInstCombine -lLLVMTransformUtils -lLLVMipa -lLLVMAnalysis -lLLVMTarget -lLLVMMC -lLLVMIRReader -lLLVMAsmParser -lLLVMBitWriter -lLLVMBitReader -lLLVMCore -lLLVMSupport -lclangFrontend -lclangAST -lclangBasic -lclangLex -lclangSerialization -lclangSema -lclangEdit -lclangCodeGen -lclangParse -lclangAnalysis -lclangDriver -L\"/Users/yy/bugvm/bugvm/llvm/llvm/lib\" -lcurses -lpthread -lz";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "bugvm-llvm";
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = Debug;
+		};
+		EB5F43289BF740E395CE57FF /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'", );
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include, /Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/include/darwin, /Users/yy/bugvm/bugvm/llvm/llvm/include, );
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost", "-Wno-four-char-constants", "-Wno-unknown-pragmas", "$(inherited)", );
+			};
+			name = MinSizeRel;
+		};
+		EC2D35B3EDB344DDB08F770A /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk;
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm/build;
+			};
+			name = RelWithDebInfo;
+		};
+		FEFFB0A53181475EB50DFA4D /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk;
+				SYMROOT = /Users/yy/bugvm/bugvm/llvm/build;
+			};
+			name = MinSizeRel;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		20375E9D045A474689AFBD38 /* Build configuration list for PBXNativeTarget "bugvm-llvm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA30A8B64ACD4DE288BE2E3F /* Debug */,
+				931F711682904110A84885AE /* Release */,
+				8D2B92676A0943D3AC092012 /* MinSizeRel */,
+				74D14783AD2745F180B27858 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		43C8A86A5EFE4D728DB3CBA5 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C5B394148B64EFEB98AA2C9 /* Debug */,
+				B2389B1AEC154D0B913CE04D /* Release */,
+				D8E00715A34440B2AC688C0E /* MinSizeRel */,
+				35434ABB118F4E0BB97EB268 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		72732F819026431293305017 /* Build configuration list for PBXProject "bugvm-llvm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52E79D34C9AB43EB9A37602A /* Debug */,
+				8CDC93B7294943609664F64E /* Release */,
+				FEFFB0A53181475EB50DFA4D /* MinSizeRel */,
+				EC2D35B3EDB344DDB08F770A /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		96597C7C74674B11A37F0C37 /* Build configuration list for PBXAggregateTarget "install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				536E8E932FE84AD089D56299 /* Debug */,
+				9919067553794732B3671087 /* Release */,
+				EB5F43289BF740E395CE57FF /* MinSizeRel */,
+				B40B15C1F4F54015BB9DF273 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		989993B0263C461EB11095E3 /* Build configuration list for PBXAggregateTarget "extclang" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6A8BCD60FB44C00AE29CBFD /* Debug */,
+				58D21964319C4F54BFA29C89 /* Release */,
+				52D1A5093CC141C591755C21 /* MinSizeRel */,
+				34070A4BF8EE4DD6824760E5 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B1E44101368C46FBAC863100 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				57D9633B942A45F092E38CD6 /* Debug */,
+				1588EA6DDEFB40FEA72C11EA /* Release */,
+				601E72769EC94AC68A8ABBFE /* MinSizeRel */,
+				41854715A69245568BB062E8 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C03916981EB745688EA62EE2 /* Build configuration list for PBXAggregateTarget "extllvm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F44347732724FFF9A4985C1 /* Debug */,
+				9B505B12993644A78F975847 /* Release */,
+				4A9612408A7D454F87310AB7 /* MinSizeRel */,
+				3E47665740A54300B0083E1E /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 79A77020A0FB44339E019A40 /* Project object */;
+}

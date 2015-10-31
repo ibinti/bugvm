@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * RoboVM note: This test class was copied from Spring Framework.
+ * BugVM note: This test class was copied from Spring Framework.
  * 
  * @author Alef Arendsen
  * @author Seth Ladd

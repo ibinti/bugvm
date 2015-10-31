@@ -94,9 +94,9 @@ public class Intrinsics {
         }
         
         if (methodRef.name().startsWith("memmove") 
-                && "org.robovm.rt.VM".equals(methodRef.declaringClass().getName())) {
+                && "com.bugvm.rt.VM".equals(methodRef.declaringClass().getName())) {
             
-            return new FunctionRef("intrinsics.org_robovm_rt_VM_" + methodRef.name(), 
+            return new FunctionRef("intrinsics.com_bugvm_rt_VM_" + methodRef.name(),
                     new FunctionType(VOID, ENV_PTR, I64, I64, I64));
         }
 

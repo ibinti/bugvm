@@ -52,7 +52,7 @@ public class NativeLibrary {
         
         supportedPlatform = os != null && arch != null;
         if (supportedPlatform) {
-            libName = "librobovm-libimobiledevice" + ext;
+            libName = "libbugvm-libimobiledevice" + ext;
         } else {
             libName = null;
         }

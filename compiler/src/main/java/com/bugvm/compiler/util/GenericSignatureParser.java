@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * 
  * Modified from edu.umd.cs.findbugs.ba.SignatureParser
  * <p>
- * RoboVM note: Copied and slightly modified from findbugs
+ * BugVM note: Copied and slightly modified from findbugs
  * 
  * @author Nat Ayewah
  */

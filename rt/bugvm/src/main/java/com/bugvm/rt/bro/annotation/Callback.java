@@ -30,7 +30,7 @@ import com.bugvm.rt.bro.ptr.FunctionPtr;
  * pointer which points to the {@code @Callback} annotated method.
  * <p>
  * See the <em>The Bro Java to Native Bridge</em> section in the <a
- * href="http://docs.robovm.com">user reference documentation</a> for more
+ * href="http://docs.bugvm.com">user reference documentation</a> for more
  * information on how to call into native code and have native code call into
  * Java using the Bro framework.
  */

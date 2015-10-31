@@ -54,7 +54,7 @@ public class AnnotationImplPlugin extends AbstractCompilerPlugin {
     private static final int MOD_ANNOTATION = 0x00002000;
 
     public static final String IMPL_CLASS_NAME_SUFFIX = "$Impl";
-    private static final String BASE_CLASS = "org/robovm/rt/annotation/Annotation";
+    private static final String BASE_CLASS = "com/bugvm/rt/annotation/Annotation";
 
     private boolean initialized = false;
 

@@ -31,7 +31,7 @@ import com.bugvm.rt.bro.annotation.StructMember;
 /**
  * {@link Struct} mapping the {@code Block_literal} struct used internally by
  * the Objective-C runtime. This class is only for internal use. See the
- * source code of the block interfaces in the {@link org.robovm.objc.block}
+ * source code of the block interfaces in the {@link com.bugvm.objc.block}
  * package (e.g. {@link VoidBooleanBlock} for examples on how to marshal
  * Objective-C block types.
  * The <a href="http://clang.llvm.org/docs/Block-ABI-Apple.html">Block ABI

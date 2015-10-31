@@ -24,12 +24,12 @@ import com.bugvm.compiler.target.LaunchParameters;
  */
 public abstract class LaunchPlugin extends Plugin {
     /**
-     * Called before the launch of a RoboVM application
+     * Called before the launch of a BugVM application
      */
     public abstract void beforeLaunch(Config config, LaunchParameters parameters);
     
     /**
-     * Called after the launch of a RoboVM application
+     * Called after the launch of a BugVM application
      */
     public abstract void afterLaunch(Config config, LaunchParameters parameters, Process process);
     

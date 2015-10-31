@@ -83,7 +83,7 @@ import soot.tagkit.AnnotationTag;
  * annotated method parameters.
  */
 public class ObjCBlockPlugin extends AbstractCompilerPlugin {
-    public static final String OBJC_PACKAGE = "org/robovm/objc";
+    public static final String OBJC_PACKAGE = "com/bugvm/objc";
     public static final String OBJC_ANNOTATIONS_PACKAGE = OBJC_PACKAGE + "/annotation";
     public static final String BLOCK = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Block;";
     public static final String RUNNABLE_AS_OBJC_BLOCK_MARSHALER = 
@@ -102,7 +102,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         BLOCK_ANNOTATIONS.put("@Block", BLOCK);
     }
     
-    private SootClass org_robovm_objc_ObjCBlock = null;
+    private SootClass com_bugvm_objc_ObjCBlock = null;
     private SootClass java_lang_Boolean = null;
     private SootClass java_lang_Byte = null;
     private SootClass java_lang_Short = null;
@@ -119,7 +119,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             return;
         }
         SootResolver r = SootResolver.v();
-        org_robovm_objc_ObjCBlock = r.makeClassRef("org.robovm.objc.ObjCBlock");
+        com_bugvm_objc_ObjCBlock = r.makeClassRef("com.bugvm.objc.ObjCBlock");
         java_lang_Boolean = r.makeClassRef("java.lang.Boolean");
         java_lang_Byte = r.makeClassRef("java.lang.Byte");
         java_lang_Short = r.makeClassRef("java.lang.Short");
@@ -465,7 +465,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
 
         List<Type> genericParamTypes = new ArrayList<>();
         genericParamTypes.add(new SootTypeType(LongType.v()));
-        genericParamTypes.add(new SootTypeType(org_robovm_objc_ObjCBlock.getType()));
+        genericParamTypes.add(new SootTypeType(com_bugvm_objc_ObjCBlock.getType()));
         for (int i = 1; i < unboxedTypes.length; i++) {
             Type t = unboxedTypes[i] instanceof PrimType 
                     ? new SootTypeType(unboxedTypes[i]) : actualGenericTypes[i];
@@ -476,7 +476,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
 
         List<soot.Type> rawParamTypes = new ArrayList<>();
         rawParamTypes.add(LongType.v());
-        rawParamTypes.add(org_robovm_objc_ObjCBlock.getType());
+        rawParamTypes.add(com_bugvm_objc_ObjCBlock.getType());
         rawParamTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
 
         String name = "invoke";
@@ -510,7 +510,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         String targetInterfaceName = Types.getInternalName(targetMethod.getDeclaringClass());
 
         List<Type> genericParamTypes = new ArrayList<>();
-        genericParamTypes.add(new SootTypeType(org_robovm_objc_ObjCBlock.getType()));
+        genericParamTypes.add(new SootTypeType(com_bugvm_objc_ObjCBlock.getType()));
         for (int i = 1; i < unboxedTypes.length; i++) {
             Type t = unboxedTypes[i] instanceof PrimType 
                     ? new SootTypeType(unboxedTypes[i]) : actualGenericTypes[i];
@@ -520,7 +520,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 ? new SootTypeType(unboxedTypes[0]) : actualGenericTypes[0];
 
         List<soot.Type> rawParamTypes = new ArrayList<>();
-        rawParamTypes.add(org_robovm_objc_ObjCBlock.getType());
+        rawParamTypes.add(com_bugvm_objc_ObjCBlock.getType());
         rawParamTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
         
         String name = "invoked";
@@ -544,7 +544,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitCode();
         
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "org/robovm/objc/ObjCBlock", "object", "()Ljava/lang/Object;");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/bugvm/objc/ObjCBlock", "object", "()Ljava/lang/Object;");
         mv.visitTypeInsn(CHECKCAST, targetInterfaceName);
         
         for (int i = 1, var = 1; i < actualRawTypes.length; i++, var++) {
@@ -635,10 +635,10 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitCode();
         
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitFieldInsn(GETFIELD, owner, "objCBlock", "L" + Types.getInternalName(org_robovm_objc_ObjCBlock) + ";");
-        mv.visitMethodInsn(INVOKEVIRTUAL, Types.getInternalName(org_robovm_objc_ObjCBlock), "invoke", "()J");
+        mv.visitFieldInsn(GETFIELD, owner, "objCBlock", "L" + Types.getInternalName(com_bugvm_objc_ObjCBlock) + ";");
+        mv.visitMethodInsn(INVOKEVIRTUAL, Types.getInternalName(com_bugvm_objc_ObjCBlock), "invoke", "()J");
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitFieldInsn(GETFIELD, owner, "objCBlock", "L" + Types.getInternalName(org_robovm_objc_ObjCBlock) + ";");
+        mv.visitFieldInsn(GETFIELD, owner, "objCBlock", "L" + Types.getInternalName(com_bugvm_objc_ObjCBlock) + ";");
         
         for (int i = 1, var = 1; i < actualRawTypes.length; i++, var++) {
             soot.Type from = actualRawTypes[i];
@@ -673,7 +673,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         
         List<soot.Type> paramTypes = new ArrayList<>();
         paramTypes.add(LongType.v());
-        paramTypes.add(org_robovm_objc_ObjCBlock.getType());
+        paramTypes.add(com_bugvm_objc_ObjCBlock.getType());
         paramTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
 
         mv.visitMethodInsn(INVOKESTATIC, owner, 

@@ -41,7 +41,7 @@ set(SRC
   ssl_sess.c
   ssl_stat.c
   ssl_txt.c
-#  ssltest.c # RoboVM note: Doesn't seem to be needed.
+#  ssltest.c # BugVM note: Doesn't seem to be needed.
   t1_clnt.c
   t1_enc.c
   t1_lib.c

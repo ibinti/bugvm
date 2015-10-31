@@ -676,7 +676,7 @@ extern U_IMPORT char *U_TZNAME[];
 /* These platforms are likely to use Olson timezone IDs. */
 #define CHECK_LOCALTIME_LINK 1
 #if U_PLATFORM_IS_DARWIN_BASED
-// RoboVM note: tzfile.h is not available when building for iOS device.
+// BugVM note: tzfile.h is not available when building for iOS device.
 //#include <tzfile.h>
 #define TZDIR   "/usr/share/zoneinfo"
 #define TZDEFAULT   "/etc/localtime"

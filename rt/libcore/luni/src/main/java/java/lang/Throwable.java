@@ -143,7 +143,7 @@ public class Throwable implements java.io.Serializable {
     }
 
     /**
-     * RoboVM note: Called by RoboVM to initialize StackOverflowError and 
+     * BugVM note: Called by BugVM to initialize StackOverflowError and
      * NullPointerException instances from a signal handler. We cannot call a 
      * constructor from a signal handler as that could cause stack overflow if 
      * we're handling a StackOverflowError already. Using a static method which 

@@ -49,8 +49,8 @@ public final class NativeCrypto {
          * If we're compiled as part of Android, should use a different JNI
          * library name. Detect this by looking for the jarjar'd package name.
          */
-        // RoboVM note: Call onload() if running under RoboVM.
-        if (System.getProperty("java.vendor", "").contains("RoboVM")) {
+        // BugVM note: Call onload() if running under BugVM.
+        if (System.getProperty("java.vendor", "").contains("BugVM")) {
             onload();
         } else if ("com.android.org.conscrypt".equals(NativeCrypto.class.getPackage().getName())) {
             System.loadLibrary("javacrypto");
@@ -61,7 +61,7 @@ public final class NativeCrypto {
         clinit();
     }
 
-    private native static void onload(); // RoboVM note: Added in RoboVM.
+    private native static void onload(); // BugVM note: Added in BugVM.
     private native static void clinit();
 
     // --- ENGINE functions ----------------------------------------------------

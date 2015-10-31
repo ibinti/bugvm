@@ -71,7 +71,7 @@ import soot.tagkit.SignatureTag;
  * </pre>
  * 
  * <p>
- * RoboVM note: This is a port of the GenericSignatureParser class from Android
+ * BugVM note: This is a port of the GenericSignatureParser class from Android
  * class library. It has been adapted to work with Soot types instead of
  * java.lang.reflect.Type implementations.
  */

@@ -531,15 +531,15 @@ public abstract class ObjCObject extends NativeObject {
             int alignment = ptrSize == 4 ? 2 : 3;
 
             long cls = ObjCRuntime.objc_allocateClassPair(NS_OBJECT_CLASS,
-                    VM.getStringUTFChars("RoboVMReleaseListener"), ptrSize);
+                    VM.getStringUTFChars("BugVMReleaseListener"), ptrSize);
             if (cls == 0L) {
                 throw new Error(
-                        "Failed to create the RoboVMReleaseListener Objective-C class: objc_allocateClassPair(...) failed");
+                        "Failed to create the BugVMReleaseListener Objective-C class: objc_allocateClassPair(...) failed");
             }
             if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars(OWNER_IVAR_NAME), ptrSize, (byte) alignment,
                     VM.getStringUTFChars("?"))) {
                 throw new Error(
-                        "Failed to create the RoboVMAssocObjWrapper Objective-C class: class_addIvar(...) failed");
+                        "Failed to create the BugVMAssocObjWrapper Objective-C class: class_addIvar(...) failed");
             }
             Method releaseMethod = null;
             try {
@@ -552,7 +552,7 @@ public abstract class ObjCObject extends NativeObject {
             if (!ObjCRuntime.class_addMethod(cls, release.getHandle(), VM.getCallbackMethodImpl(releaseMethod),
                     releaseType)) {
                 throw new Error(
-                        "Failed to create the RoboVMReleaseListener Objective-C class: class_addMethod(...) failed");
+                        "Failed to create the BugVMReleaseListener Objective-C class: class_addMethod(...) failed");
             }
             ObjCRuntime.objc_registerClassPair(cls);
 

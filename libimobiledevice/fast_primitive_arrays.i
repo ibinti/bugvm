@@ -1,7 +1,7 @@
 /* -----------------------------------------------------------------------------
  * fast_primitive_arrays.i
  *
- * This is a RoboVM-specific patched verison of SWIG's original arrays_java.i file.
+ * This is a BugVM-specific patched verison of SWIG's original arrays_java.i file.
  * This doesn't do as much copying as the original code and should be more efficient.
  * Also it maps unsigned types to the signed Java type of the same bit length, e.g.
  * unsigned char is mapped to byte[] instead of short[] as arrays_java.i does.

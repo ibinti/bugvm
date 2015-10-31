@@ -168,15 +168,15 @@ public class ConfigTest {
         File p = new File(tmpDir, dir);
         for (OS os2 : OS.values()) {
             for (Arch arch2 : Arch.values()) {
-                File root = new File(p, "META-INF/robovm/" + os2 + "/" + arch2);
+                File root = new File(p, "META-INF/bugvm/" + os2 + "/" + arch2);
                 root.mkdirs();
-                if (!new File(root, "robovm.xml").exists()) {
-                    new Config.Builder().write(new File(root, "robovm.xml"));
+                if (!new File(root, "bugvm.xml").exists()) {
+                    new Config.Builder().write(new File(root, "bugvm.xml"));
                 }
             }
         }
 
-        File root = new File(p, "META-INF/robovm/" + os + "/" + arch);
+        File root = new File(p, "META-INF/bugvm/" + os + "/" + arch);
         new Config.Builder()
             .addExportedSymbol(id.toUpperCase() + "*")
             .addForceLinkClass("com." + id.toLowerCase() + ".**")
@@ -186,7 +186,7 @@ public class ConfigTest {
             .addLib(new Config.Lib(new File(root, "lib" + id.toLowerCase() + ".a").getAbsolutePath(), true))
             .addResource(new Resource(new File(root, "resources")))
             .addWeakFramework("Weak" + id)
-            .write(new File(root, "robovm.xml"));
+            .write(new File(root, "bugvm.xml"));
 
         if (jar) {
             File jarFile = new File(tmpDir, p.getName() + ".jar");
@@ -245,9 +245,9 @@ public class ConfigTest {
         builder.home(fakeHome);
         Config config = builder.build();
 
-        File p1X86Root = new File(p1, "META-INF/robovm/macosx/x86");
+        File p1X86Root = new File(p1, "META-INF/bugvm/macosx/x86");
         File p3X86Cache = config.getCacheDir(config.getClazzes().getClasspathPaths().get(2));
-        File p3X86Root = new File(p3X86Cache.getParentFile(), p3X86Cache.getName() + ".extracted/META-INF/robovm/macosx/x86");
+        File p3X86Root = new File(p3X86Cache.getParentFile(), p3X86Cache.getName() + ".extracted/META-INF/bugvm/macosx/x86");
 
         assertEquals(Arrays.asList("FOO*", "BAAZ*", "YADA*"), config.getExportedSymbols());
         assertEquals(Arrays.asList("com.foo.**", "com.baaz.**", "org.yada.**"), config.getForceLinkClasses());
@@ -275,7 +275,7 @@ public class ConfigTest {
         config = config.builder().arch(Arch.x86_64).build();
         
         File p3X86_64Cache = config.getCacheDir(config.getClazzes().getClasspathPaths().get(2));
-        File p3X86_64Root = new File(p3X86_64Cache.getParentFile(), p3X86_64Cache.getName() + ".extracted/META-INF/robovm/macosx/x86_64");
+        File p3X86_64Root = new File(p3X86_64Cache.getParentFile(), p3X86_64Cache.getName() + ".extracted/META-INF/bugvm/macosx/x86_64");
         
         assertEquals(Arrays.asList("RAAZ*", "YADA*"), config.getExportedSymbols());
         assertEquals(Arrays.asList("com.raaz.**", "org.yada.**"), config.getForceLinkClasses());

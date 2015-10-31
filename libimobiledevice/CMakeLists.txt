@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(robovm-libimobiledevice)
+project(bugvm-libimobiledevice)
 include(ExternalProject)
 
 find_package(JNI REQUIRED)
@@ -95,13 +95,13 @@ set(SRC
   src/main/native/libimobiledevice_wrap.c
 )
 
-add_library(robovm-libimobiledevice SHARED ${SRC})
-add_dependencies(robovm-libimobiledevice extlibimobiledevice)
-target_link_libraries(robovm-libimobiledevice ${LIBS} ${LDFLAGS})
+add_library(bugvm-libimobiledevice SHARED ${SRC})
+add_dependencies(bugvm-libimobiledevice extlibimobiledevice)
+target_link_libraries(bugvm-libimobiledevice ${LIBS} ${LDFLAGS})
 if(LINUX)
-  set_target_properties(robovm-libimobiledevice PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--version-script=${CMAKE_SOURCE_DIR}/src/main/native/exports_linux.sym")
+  set_target_properties(bugvm-libimobiledevice PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--version-script=${CMAKE_SOURCE_DIR}/src/main/native/exports_linux.sym")
 elseif(MACOSX)
-  set_target_properties(robovm-libimobiledevice PROPERTIES LINK_FLAGS "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,${CMAKE_SOURCE_DIR}/src/main/native/exports_macosx.sym")
+  set_target_properties(bugvm-libimobiledevice PROPERTIES LINK_FLAGS "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,${CMAKE_SOURCE_DIR}/src/main/native/exports_macosx.sym")
 endif()
-set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/src/main/resources/org/robovm/libimobiledevice/binding/${OS}/${ARCH})
-install(TARGETS robovm-libimobiledevice DESTINATION ${INSTALL_DIR})
+set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/src/main/resources/com/bugvm/libimobiledevice/binding/${OS}/${ARCH})
+install(TARGETS bugvm-libimobiledevice DESTINATION ${INSTALL_DIR})

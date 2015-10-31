@@ -27,8 +27,8 @@
 
 #define LOG_TAG "hooks"
 
-#define HANDSHAKE_QUESTION 0x526f626f564d3f3fLL // RoboVM??
-#define HANDSHAKE_ANSWER   0x526f626f564d2121LL // RoboVM!!
+#define HANDSHAKE_QUESTION 0x526f626f564d3f3fLL // BugVM??
+#define HANDSHAKE_ANSWER   0x526f626f564d2121LL // BugVM!!
 
 // memory operations
 #define CMD_READ_MEMORY 1
@@ -358,7 +358,7 @@ jboolean _rvmHookHandshake(Options* options) {
     int yes = 1;
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
 
-    // Let's see if we are taking to a RoboVM debug client
+    // Let's see if we are taking to a BugVM debug client
     rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelLong(clientSocket, HANDSHAKE_QUESTION, &error);

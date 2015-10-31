@@ -35,7 +35,7 @@ import soot.tagkit.AnnotationTag;
 public abstract class Bro {
 
     public static class MarshalerFlags {
-        // The constant here MUST correspond to those in org.robovm.rt.bro.MarshalerFlags in rt.
+        // The constant here MUST correspond to those in com.bugvm.rt.bro.MarshalerFlags in rt.
         
         // Bit 1-3: The type of call marshaled for
         public static final long CALL_TYPE_BRIDGE               = 0 << 0;

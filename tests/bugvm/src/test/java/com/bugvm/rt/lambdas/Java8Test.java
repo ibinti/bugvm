@@ -418,7 +418,7 @@ public class Java8Test {
 //    X2 makeX(int x);
 //  }
   
-    // RoboVM Note: uncomment once the nested classes
+    // BugVM Note: uncomment once the nested classes
     // situation above is resolved.
 //  @Test public void testPrivateConstructorReference() {
 //    new X2().foo();

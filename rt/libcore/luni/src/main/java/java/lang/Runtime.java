@@ -330,7 +330,7 @@ public class Runtime {
         if (pathName == null) {
             throw new NullPointerException("pathName == null");
         }
-        // RoboVM note: See note on nativeLoad() method.
+        // BugVM note: See note on nativeLoad() method.
         nativeLoad(pathName, loader);
     }
 
@@ -356,7 +356,7 @@ public class Runtime {
             throw new NullPointerException("libraryName");
         }
 
-        // RoboVM note: First check if the library has been statically linked in.
+        // BugVM note: First check if the library has been statically linked in.
         for (String l : VM.staticLibs()) {
             if (libraryName.equals(l)) {
                 return;
@@ -370,7 +370,7 @@ public class Runtime {
                                                " from loader " + loader +
                                                ": findLibrary returned null");
             }
-            // RoboVM note: See note on nativeLoad() method.
+            // BugVM note: See note on nativeLoad() method.
             nativeLoad(filename, loader);
             return;
         }
@@ -384,7 +384,7 @@ public class Runtime {
 
             if (IoUtils.canOpenReadOnly(candidate)) {
                 try {
-                    // RoboVM note: See note on nativeLoad() method.
+                    // BugVM note: See note on nativeLoad() method.
                     nativeLoad(candidate, loader);
                     return; // We successfully loaded the library. Job done.
                 } catch (UnsatisfiedLinkError e) {
@@ -401,7 +401,7 @@ public class Runtime {
 
     private static native void nativeExit(int code);
 
-    // RoboVM note: On Android nativeLoad() returns an error message String 
+    // BugVM note: On Android nativeLoad() returns an error message String
     // on errors which is then wrapped in an UnsatisfiedLinkError. Our 
     // nativeLoad() throws UnsatisfiedLinkError directly.
     // TODO: Synchronize?
@@ -446,7 +446,7 @@ public class Runtime {
      * Switches the output of debug information for methods on or off.
      */
     public void traceMethodCalls(boolean enable) {
-        // RoboVM note: Method tracing is not supported by RoboVM.
+        // BugVM note: Method tracing is not supported by BugVM.
 //        if (enable != tracingMethods) {
 //            if (enable) {
 //                VMDebug.startMethodTracing();

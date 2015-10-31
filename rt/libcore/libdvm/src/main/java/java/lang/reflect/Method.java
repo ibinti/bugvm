@@ -94,7 +94,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     };
 
     /*
-     * The RoboVM Method* object
+     * The BugVM Method* object
      */
     private final long method;
 

@@ -137,7 +137,7 @@ public abstract class TimeZone implements Serializable, Cloneable {
             if (zoneName != null) {
                 zoneName = zoneName.trim();
             }
-            // RoboVM note: Delegate to ZoneInfoDB first.
+            // BugVM note: Delegate to ZoneInfoDB first.
             if (zoneName == null || zoneName.isEmpty()) {
                 zoneName = ZoneInfoDB.getInstance().getDefaultID();
             }

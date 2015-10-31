@@ -34,11 +34,11 @@ import com.bugvm.rt.bro.annotation.Pointer;
  * Used to mark a method parameter or method return type as a block type. The
  * type of the parameter must be a functional interface with a single abstract
  * method, e.g. {@link Runnable}, {@link Callable} or any of the block
- * interfaces in the {@code org.robovm.objc.block} package. The RoboVM compiler
+ * interfaces in the {@code com.bugvm.objc.block} package. The BugVM compiler
  * will generate a {@link Marshaler} class which will be used to marshal the
  * block type.
  * <p>
- * The interface type can be a generic type such as {@link Callable}. The RoboVM
+ * The interface type can be a generic type such as {@link Callable}. The BugVM
  * compiler will resolve the actual type arguments from the method parameter or
  * return type and use these in the {@link Callback} method signature. Wrapper
  * classes for primitive types like {@link Integer} will be boxed/unboxed to

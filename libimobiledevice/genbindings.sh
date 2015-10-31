@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE=$(cd $(dirname $0); pwd -P)
-PACKAGE=org.robovm.libimobiledevice.binding
+PACKAGE=com.bugvm.libimobiledevice.binding
 JAVAOUT="$BASE/src/main/java/${PACKAGE//.//}"
 COUT="$BASE/src/main/native"
 

@@ -79,7 +79,7 @@ public final class Field extends AccessibleObject implements Member {
     };
     
     /*
-     * The RoboVM Field* object
+     * The BugVM Field* object
      */
     private final long field;
     

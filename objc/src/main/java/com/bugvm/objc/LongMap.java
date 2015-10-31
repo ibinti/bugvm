@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /*
- * RoboVM note: The LongMap and RandomXS128 classes in this file have been copied
+ * BugVM note: The LongMap and RandomXS128 classes in this file have been copied
  * from the libGDX project and modified slightly (removed a few things we don't
  * need).
  */
@@ -57,7 +57,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
         //private Keys keys1, keys2;
 
         /** Returns the next power of two. Returns the specified value if the value is already a power of two. */
-        // RoboVM note: Inlined from com.badlogic.gdx.math.MathUtils
+        // BugVM note: Inlined from com.badlogic.gdx.math.MathUtils
         static public int nextPowerOfTwo (int value) {
                 if (value == 0) return 1;
                 value--;
@@ -613,7 +613,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
                 return entries2;
         }
 
-        // RoboVM note: Not needed
+        // BugVM note: Not needed
         /** Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
          * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration. */
 /*        public Values<V> values () {
@@ -753,7 +753,7 @@ public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
                 }
         }
 
-        // RoboVM note: Not needed
+        // BugVM note: Not needed
 /*        static public class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
                 public Values (LongMap<V> map) {
                         super(map);

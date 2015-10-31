@@ -569,7 +569,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         StructureType superType = null;
         if (clazz.hasSuperclass()) {
             SootClass superclass = clazz.getSuperclass();
-            if (!superclass.getName().equals("org.robovm.rt.bro.Struct")) {
+            if (!superclass.getName().equals("com.bugvm.rt.bro.Struct")) {
                 superType = getStructType(superclass, false);
             }
         }

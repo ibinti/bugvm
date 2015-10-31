@@ -17,7 +17,7 @@ define private float @frem(%Env* %env, float %op1, float %op2) alwaysinline {
     ; frem compiles down to fmod() for doubles and fmodf() for floats on iOS ARM.
     ; fmodf() returns incorrect results for values close to zero. Converting the
     ; operands to doubles and using fmod() returns the expected result. See
-    ; https://github.com/robovm/robovm/issues/89
+    ; https://github.com/bugvm/bugvm/issues/89
     %dop1 = fpext float %op1 to double
     %dop2 = fpext float %op2 to double
     %dresult = call double @fmod(double %dop1, double %dop2)

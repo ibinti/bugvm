@@ -56,7 +56,7 @@
 #include <unistd.h>
 
 #if defined(__APPLE__)
-// RoboVM note: For SOL_LOCAL, LOCAL_PEERPID on Darwin.
+// BugVM note: For SOL_LOCAL, LOCAL_PEERPID on Darwin.
   #include <sys/un.h>
 #endif
 
@@ -286,7 +286,7 @@ static jobject makeStructTimeval(JNIEnv* env, const struct timeval& tv) {
             static_cast<jlong>(tv.tv_sec), static_cast<jlong>(tv.tv_usec));
 }
 
-// RoboVM note: Darwin doesn't have a compatible struct ucred
+// BugVM note: Darwin doesn't have a compatible struct ucred
 #if !defined(__APPLE__)
 static jobject makeStructUcred(JNIEnv* env, const struct ucred& u) {
   static jmethodID ctor = env->GetMethodID(JniConstants::structUcredClass, "<init>", "(III)V");
@@ -477,7 +477,7 @@ extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject java
         return;
     }
 #if defined(__APPLE__)
-    // RoboVM note: On Linux we can just call connect() with an AF_UNSPEC address to "disconnect" a datagram socket.
+    // BugVM note: On Linux we can just call connect() with an AF_UNSPEC address to "disconnect" a datagram socket.
     // On Darwin this is supposed to work too but fails with EINVAL probably because sa_len in the connect() call
     // below is incorrect. The docs also says that another option is to use an invalid address so that's what we do.
     bool disconnect = false;
@@ -490,7 +490,7 @@ extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject java
     const sockaddr* sa = reinterpret_cast<const sockaddr*>(&ss);
     int rc = NET_FAILURE_RETRY(env, int, connect, javaFd, sa, sa_len);
 #if defined(__APPLE__)
-    // RoboVM note: If this was a "disconnect" EADDRNOTAVAIL will be set and we need to ignore the thrown exception.
+    // BugVM note: If this was a "disconnect" EADDRNOTAVAIL will be set and we need to ignore the thrown exception.
     if (rc == -1 && disconnect && errno == EADDRNOTAVAIL) {
         env->ExceptionClear();
         errno = 0;
@@ -816,7 +816,7 @@ extern "C" jobject Java_libcore_io_Posix_getsockoptTimeval(JNIEnv* env, jobject,
     return makeStructTimeval(env, tv);
 }
 
-// RoboVM note: Darwin doesn't have a compatible struct ucred
+// BugVM note: Darwin doesn't have a compatible struct ucred
 #if !defined(__APPLE__)
 extern "C" jobject Java_libcore_io_Posix_getsockoptUcred(JNIEnv* env, jobject, jobject javaFd, jint level, jint option) {
   int fd = jniGetFDFromFileDescriptor(env, javaFd);
@@ -831,7 +831,7 @@ extern "C" jobject Java_libcore_io_Posix_getsockoptUcred(JNIEnv* env, jobject, j
   return makeStructUcred(env, u);
 }
 #else
-// RoboVM note: Hacked up version of Posix.getsockoptUcred() which only supports SO_PEERCRED for now.
+// BugVM note: Hacked up version of Posix.getsockoptUcred() which only supports SO_PEERCRED for now.
 extern "C" jobject Java_libcore_io_Posix_getsockoptUcred(JNIEnv* env, jobject, jobject javaFd, jint level, jint option) {
   int fd = jniGetFDFromFileDescriptor(env, javaFd);
   if (level == SOL_SOCKET && option == SO_PEERCRED) {
@@ -858,7 +858,7 @@ extern "C" jobject Java_libcore_io_Posix_getsockoptUcred(JNIEnv* env, jobject, j
 }
 #endif
 
-// RoboVM note: Darwin doesn't have gettid()
+// BugVM note: Darwin doesn't have gettid()
 #if !defined(__APPLE__)
 extern "C" jint Java_libcore_io_Posix_gettid(JNIEnv*, jobject) {
   // Neither bionic nor glibc exposes gettid(2).
@@ -1205,7 +1205,7 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
     }
     const sockaddr* to = (javaInetAddress != NULL) ? reinterpret_cast<const sockaddr*>(&ss) : NULL;
 #if defined(__APPLE__)
-    // RoboVM note: sendto() fails on Darwin for connected datagram sockets if a destination address is specified even if
+    // BugVM note: sendto() fails on Darwin for connected datagram sockets if a destination address is specified even if
     // that address is identical to the address connected to. DatagramSocket.send() and DatagramChannelImpl.send() have 
     // already checked that the connected address and the address in the packet are identical. DatagramSocket.send() calls 
     // PlainDatagramSocketImpl.send() which calls this function with a null address if the socket is connected.
@@ -1264,13 +1264,13 @@ extern "C" jint Java_libcore_io_Posix_setsid(JNIEnv* env, jobject) {
 
 extern "C" void Java_libcore_io_Posix_setsockoptByte(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jint value) {
 #if defined(__APPLE__)
-    // RoboVM note: MulticastSocket.setTimeToLive() ultimately calls setsockoptByte(fd, IPPROTO_IP, IP_MULTICAST_TTL) followed by
+    // BugVM note: MulticastSocket.setTimeToLive() ultimately calls setsockoptByte(fd, IPPROTO_IP, IP_MULTICAST_TTL) followed by
     // setsockoptInt(fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS) (see libcore.io.IoBridge.setSocketOptionErrno()). Our sockets
     // are always IPv6 and that first call to setsockoptByte() fails on Darwin when called for IPv6 sockets.
     if (level == IPPROTO_IP && option == IP_MULTICAST_TTL) {
         return;
     }
-    // RoboVM note: MulticastSocket.setLoopbackMode() ultimately calls setsockoptByte(fd, IPPROTO_IP, IP_MULTICAST_LOOP) followed by
+    // BugVM note: MulticastSocket.setLoopbackMode() ultimately calls setsockoptByte(fd, IPPROTO_IP, IP_MULTICAST_LOOP) followed by
     // setsockoptInt(fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP) (see libcore.io.IoBridge.setSocketOptionErrno()). Our sockets
     // are always IPv6 and that first call to setsockoptByte() fails on Darwin when called for IPv6 sockets.
     if (level == IPPROTO_IP && option == IP_MULTICAST_LOOP) {
@@ -1293,7 +1293,7 @@ extern "C" void Java_libcore_io_Posix_setsockoptIfreq(JNIEnv* env, jobject, jobj
 
 extern "C" void Java_libcore_io_Posix_setsockoptInt(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jint value) {
 #if defined(__APPLE__)
-    // RoboVM note: Socket.setTrafficClass() ultimately calls setsockoptInt(fd, IPPROTO_IP, IP_TOS) followed by
+    // BugVM note: Socket.setTrafficClass() ultimately calls setsockoptInt(fd, IPPROTO_IP, IP_TOS) followed by
     // setsockoptInt(fd, IPPROTO_IPV6, IPV6_TCLASS) (see libcore.io.IoBridge.setSocketOptionErrno()). Our sockets
     // are always IPv6 and that first call (IP_TOS is for IPv4 sockets) fails on Darwin when called for IPv6 sockets.
     if (level == IPPROTO_IP && option == IP_TOS) {
@@ -1302,7 +1302,7 @@ extern "C" void Java_libcore_io_Posix_setsockoptInt(JNIEnv* env, jobject, jobjec
 #endif
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
 #if defined(__APPLE__)
-    // RoboVM note: On Darwin not only SO_REUSEADDR has to be set for datagram sockets but also SO_REUSEPORT to get 
+    // BugVM note: On Darwin not only SO_REUSEADDR has to be set for datagram sockets but also SO_REUSEPORT to get
     // the desired behavior.
     if (level == SOL_SOCKET && option == SO_REUSEADDR) {
         int type = 0;
@@ -1336,7 +1336,7 @@ extern "C" void Java_libcore_io_Posix_setsockoptIpMreqn(JNIEnv* env, jobject, jo
 }
 
 extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jobject javaGroupReq) {
-    // RoboVM note: On Darwin we need to use IPv6 for multicast join/leave.
+    // BugVM note: On Darwin we need to use IPv6 for multicast join/leave.
 #if defined(__APPLE__)
     level = IPPROTO_IPV6;
     option = (option == MCAST_JOIN_GROUP) ? IPV6_JOIN_GROUP : IPV6_LEAVE_GROUP;
@@ -1420,7 +1420,7 @@ extern "C" void Java_libcore_io_Posix_shutdown(JNIEnv* env, jobject, jobject jav
 
 extern "C" jobject Java_libcore_io_Posix_socket(JNIEnv* env, jobject, jint domain, jint type, jint protocol) {
     int fd = throwIfMinusOne(env, "socket", TEMP_FAILURE_RETRY(socket(domain, type, protocol)));
-// RoboVM note: Prevent SIGPIPE from interrupting operations on this socket.
+// BugVM note: Prevent SIGPIPE from interrupting operations on this socket.
 #if defined(__APPLE__)
     if (fd != -1) {
         int value = 1;

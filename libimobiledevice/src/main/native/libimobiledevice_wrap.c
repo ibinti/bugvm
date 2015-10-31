@@ -822,8 +822,8 @@ void delete_StringArray_values_z(StringArray* s) {
         }
     }
 }
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_initNative(JNIEnv *env, jclass cls) {
-    class_Callbacks = (*env)->FindClass(env, "org/robovm/libimobiledevice/Callbacks");
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_initNative(JNIEnv *env, jclass cls) {
+    class_Callbacks = (*env)->FindClass(env, "com/bugvm/libimobiledevice/Callbacks");
     if ((*env)->ExceptionCheck(env)) return;
     meth_callInstproxyCallback = (*env)->GetStaticMethodID(env, class_Callbacks, "callInstproxyCallback", "(Ljava/lang/String;[BI)V");
     if ((*env)->ExceptionCheck(env)) return;
@@ -888,7 +888,7 @@ mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, 
 extern "C" {
 #endif
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct StringArray *arg1 = (struct StringArray *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -914,7 +914,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct StringArray *arg1 = (struct StringArray *) 0 ;
   char *result = 0 ;
@@ -929,7 +929,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1StringArray(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1StringArray(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   int arg1 ;
   struct StringArray *result = 0 ;
@@ -943,7 +943,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArray(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArray(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct StringArray *arg1 = (struct StringArray *) 0 ;
   
   (void)jenv;
@@ -953,7 +953,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jstring jresult = 0 ;
   struct StringArray *arg1 = (struct StringArray *) 0 ;
   int arg2 ;
@@ -970,7 +970,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jstring jarg3) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArray_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jstring jarg3) {
   struct StringArray *arg1 = (struct StringArray *) 0 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
@@ -990,7 +990,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyte jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyte jarg2) {
   struct ByteArray *arg1 = (struct ByteArray *) 0 ;
   jbyte arg2 ;
   
@@ -1003,7 +1003,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jbyte JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jbyte JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jbyte jresult = 0 ;
   struct ByteArray *arg1 = (struct ByteArray *) 0 ;
   jbyte result;
@@ -1018,7 +1018,7 @@ SWIGEXPORT jbyte JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1ByteArray(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1ByteArray(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   int arg1 ;
   struct ByteArray *result = 0 ;
@@ -1032,7 +1032,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1ByteArray(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1ByteArray(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct ByteArray *arg1 = (struct ByteArray *) 0 ;
   
   (void)jenv;
@@ -1042,7 +1042,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jbyte JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jbyte JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jbyte jresult = 0 ;
   struct ByteArray *arg1 = (struct ByteArray *) 0 ;
   int arg2 ;
@@ -1059,7 +1059,7 @@ SWIGEXPORT jbyte JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jbyte jarg3) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArray_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jbyte jarg3) {
   struct ByteArray *arg1 = (struct ByteArray *) 0 ;
   int arg2 ;
   jbyte arg3 ;
@@ -1074,7 +1074,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IntOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IntOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   struct IntOut *arg1 = (struct IntOut *) 0 ;
   jint result;
@@ -1089,7 +1089,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IntOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IntOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct IntOut *result = 0 ;
   
@@ -1101,7 +1101,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IntOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IntOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct IntOut *arg1 = (struct IntOut *) 0 ;
   
   (void)jenv;
@@ -1111,7 +1111,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LongOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LongOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct LongOut *arg1 = (struct LongOut *) 0 ;
   jlong result;
@@ -1126,7 +1126,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LongOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LongOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct LongOut *result = 0 ;
   
@@ -1138,7 +1138,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LongOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LongOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct LongOut *arg1 = (struct LongOut *) 0 ;
   
   (void)jenv;
@@ -1148,7 +1148,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_StringOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_StringOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct StringOut *arg1 = (struct StringOut *) 0 ;
   char *result = 0 ;
@@ -1163,7 +1163,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1StringOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1StringOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct StringOut *result = 0 ;
   
@@ -1175,7 +1175,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct StringOut *arg1 = (struct StringOut *) 0 ;
   
   (void)jenv;
@@ -1185,7 +1185,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArrayOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_StringArrayOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct StringArrayOut *arg1 = (struct StringArrayOut *) 0 ;
   StringArray *result = 0 ;
@@ -1200,7 +1200,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1StringArrayOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1StringArrayOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct StringArrayOut *result = 0 ;
   
@@ -1212,7 +1212,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArrayOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArrayOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct StringArrayOut *arg1 = (struct StringArrayOut *) 0 ;
   
   (void)jenv;
@@ -1222,7 +1222,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArrayOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_ByteArrayOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct ByteArrayOut *arg1 = (struct ByteArrayOut *) 0 ;
   ByteArray *result = 0 ;
@@ -1237,7 +1237,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1ByteArrayOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1ByteArrayOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct ByteArrayOut *result = 0 ;
   
@@ -1249,7 +1249,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1ByteArrayOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1ByteArrayOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct ByteArrayOut *arg1 = (struct ByteArrayOut *) 0 ;
   
   (void)jenv;
@@ -1259,7 +1259,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct IDeviceRefOut *arg1 = (struct IDeviceRefOut *) 0 ;
   idevice_t result;
@@ -1274,7 +1274,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IDeviceRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IDeviceRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct IDeviceRefOut *result = 0 ;
   
@@ -1286,7 +1286,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IDeviceRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IDeviceRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct IDeviceRefOut *arg1 = (struct IDeviceRefOut *) 0 ;
   
   (void)jenv;
@@ -1296,7 +1296,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceConnectionRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceConnectionRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct IDeviceConnectionRefOut *arg1 = (struct IDeviceConnectionRefOut *) 0 ;
   idevice_connection_t result;
@@ -1311,7 +1311,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IDeviceConnectionRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IDeviceConnectionRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct IDeviceConnectionRefOut *result = 0 ;
   
@@ -1323,7 +1323,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IDeviceConnectionRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IDeviceConnectionRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct IDeviceConnectionRefOut *arg1 = (struct IDeviceConnectionRefOut *) 0 ;
   
   (void)jenv;
@@ -1333,7 +1333,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct LockdowndClientRefOut *arg1 = (struct LockdowndClientRefOut *) 0 ;
   lockdownd_client_t result;
@@ -1348,7 +1348,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndClientRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndClientRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct LockdowndClientRefOut *result = 0 ;
   
@@ -1360,7 +1360,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct LockdowndClientRefOut *arg1 = (struct LockdowndClientRefOut *) 0 ;
   
   (void)jenv;
@@ -1370,7 +1370,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStructOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStructOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct LockdowndServiceDescriptorStructOut *arg1 = (struct LockdowndServiceDescriptorStructOut *) 0 ;
   lockdownd_service_descriptor_t result;
@@ -1385,7 +1385,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndServiceDescriptorStructOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndServiceDescriptorStructOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct LockdowndServiceDescriptorStructOut *result = 0 ;
   
@@ -1397,7 +1397,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndServiceDescriptorStructOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndServiceDescriptorStructOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct LockdowndServiceDescriptorStructOut *arg1 = (struct LockdowndServiceDescriptorStructOut *) 0 ;
   
   (void)jenv;
@@ -1407,7 +1407,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_AfcClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_AfcClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct AfcClientRefOut *arg1 = (struct AfcClientRefOut *) 0 ;
   afc_client_t result;
@@ -1422,7 +1422,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1AfcClientRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1AfcClientRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct AfcClientRefOut *result = 0 ;
   
@@ -1434,7 +1434,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1AfcClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1AfcClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct AfcClientRefOut *arg1 = (struct AfcClientRefOut *) 0 ;
   
   (void)jenv;
@@ -1444,7 +1444,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_PlistRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_PlistRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct PlistRefOut *arg1 = (struct PlistRefOut *) 0 ;
   plist_t result;
@@ -1463,7 +1463,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1PlistRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1PlistRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct PlistRefOut *result = 0 ;
   
@@ -1475,7 +1475,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1PlistRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1PlistRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct PlistRefOut *arg1 = (struct PlistRefOut *) 0 ;
   
   (void)jenv;
@@ -1485,7 +1485,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_InstproxyClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_InstproxyClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct InstproxyClientRefOut *arg1 = (struct InstproxyClientRefOut *) 0 ;
   instproxy_client_t result;
@@ -1500,7 +1500,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1InstproxyClientRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1InstproxyClientRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct InstproxyClientRefOut *result = 0 ;
   
@@ -1512,7 +1512,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1InstproxyClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1InstproxyClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct InstproxyClientRefOut *arg1 = (struct InstproxyClientRefOut *) 0 ;
   
   (void)jenv;
@@ -1522,7 +1522,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_MobileImageMounterClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_MobileImageMounterClientRefOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct MobileImageMounterClientRefOut *arg1 = (struct MobileImageMounterClientRefOut *) 0 ;
   mobile_image_mounter_client_t result;
@@ -1537,7 +1537,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1MobileImageMounterClientRefOut(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1MobileImageMounterClientRefOut(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct MobileImageMounterClientRefOut *result = 0 ;
   
@@ -1549,7 +1549,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1MobileImageMounterClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1MobileImageMounterClientRefOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct MobileImageMounterClientRefOut *arg1 = (struct MobileImageMounterClientRefOut *) 0 ;
   
   (void)jenv;
@@ -1559,7 +1559,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1new_1dict(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1new_1dict(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   plist_t result;
   
@@ -1575,7 +1575,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   plist_t arg1 ;
   plist_t *argp1 ;
   
@@ -1591,7 +1591,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1to_1bin(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1to_1bin(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   plist_t arg1 ;
   char **arg2 = (char **) 0 ;
   uint32_t *arg3 = (uint32_t *) 0 ;
@@ -1613,7 +1613,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1to_1xml(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1to_1xml(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   plist_t arg1 ;
   char **arg2 = (char **) 0 ;
   uint32_t *arg3 = (uint32_t *) 0 ;
@@ -1635,7 +1635,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1from_1bin(JNIEnv *jenv, jclass jcls, jbyteArray jarg1, jint jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_plist_1from_1bin(JNIEnv *jenv, jclass jcls, jbyteArray jarg1, jint jarg2, jlong jarg3, jobject jarg3_) {
   char *arg1 = (char *) 0 ;
   uint32_t arg2 ;
   plist_t *arg3 = (plist_t *) 0 ;
@@ -1653,7 +1653,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringOut_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringOut_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   StringOut *arg1 = (StringOut *) 0 ;
   
   (void)jenv;
@@ -1664,7 +1664,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1ByteArrayOut_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1ByteArrayOut_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   ByteArrayOut *arg1 = (ByteArrayOut *) 0 ;
   
   (void)jenv;
@@ -1675,7 +1675,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArray_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArray_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   StringArray *arg1 = (StringArray *) 0 ;
   int arg2 ;
   
@@ -1688,7 +1688,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArray_1values_1z(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1StringArray_1values_1z(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   StringArray *arg1 = (StringArray *) 0 ;
   
   (void)jenv;
@@ -1699,7 +1699,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_get_1global_1instproxy_1status_1cb(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_get_1global_1instproxy_1status_1cb(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   jlong result;
   
@@ -1711,7 +1711,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_get_1global_1idevice_1event_1cb(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_get_1global_1idevice_1event_1cb(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   jlong result;
   
@@ -1723,7 +1723,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_upload_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jbyteArray jarg4, jlong jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_upload_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jbyteArray jarg4, jlong jarg5) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1758,7 +1758,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1set_1debug_1level(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1set_1debug_1level(JNIEnv *jenv, jclass jcls, jint jarg1) {
   int arg1 ;
   
   (void)jenv;
@@ -1768,7 +1768,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1event_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1event_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   enum idevice_event_type arg2 ;
   
@@ -1781,7 +1781,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1event_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1event_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   enum idevice_event_type result;
@@ -1796,7 +1796,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1udid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1udid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -1821,7 +1821,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1udid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1udid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   char *result = 0 ;
@@ -1836,7 +1836,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1connectionType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1connectionType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   int arg2 ;
   
@@ -1849,7 +1849,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1connectionType_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1connectionType_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   int result;
@@ -1864,7 +1864,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IDeviceEvent(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1IDeviceEvent(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   idevice_event_t *result = 0 ;
   
@@ -1876,7 +1876,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IDeviceEvent(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1IDeviceEvent(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   
   (void)jenv;
@@ -1886,7 +1886,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1event_1subscribe(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1event_1subscribe(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
   jint jresult = 0 ;
   idevice_event_cb_t arg1 = (idevice_event_cb_t) 0 ;
   void *arg2 = (void *) 0 ;
@@ -1902,7 +1902,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1event_1unsubscribe(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1event_1unsubscribe(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   idevice_error_t result;
   
@@ -1914,7 +1914,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1device_1list(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1device_1list(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   char ***arg1 = (char ***) 0 ;
   int *arg2 = (int *) 0 ;
@@ -1932,7 +1932,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1device_1list_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1device_1list_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   char **arg1 = (char **) 0 ;
   idevice_error_t result;
@@ -1947,7 +1947,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   jint jresult = 0 ;
   idevice_t *arg1 = (idevice_t *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1969,7 +1969,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   idevice_error_t result;
@@ -1983,7 +1983,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connect(JNIEnv *jenv, jclass jcls, jlong jarg1, jshort jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connect(JNIEnv *jenv, jclass jcls, jlong jarg1, jshort jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   uint16_t arg2 ;
@@ -2002,7 +2002,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1disconnect(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1disconnect(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   idevice_connection_t arg1 = (idevice_connection_t) 0 ;
   idevice_error_t result;
@@ -2016,7 +2016,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1send(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1send(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
   jint jresult = 0 ;
   idevice_connection_t arg1 = (idevice_connection_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2040,7 +2040,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1receive_1timeout(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2, jint jarg3, jlong jarg4, jobject jarg4_, jlong jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1receive_1timeout(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2, jint jarg3, jlong jarg4, jobject jarg4_, jlong jarg5) {
   jint jresult = 0 ;
   idevice_connection_t arg1 = (idevice_connection_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2066,7 +2066,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1receive(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1receive(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
   jint jresult = 0 ;
   idevice_connection_t arg1 = (idevice_connection_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2090,7 +2090,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1enable_1ssl(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1enable_1ssl(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   idevice_connection_t arg1 = (idevice_connection_t) 0 ;
   idevice_error_t result;
@@ -2104,7 +2104,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1disable_1ssl(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1disable_1ssl(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   idevice_connection_t arg1 = (idevice_connection_t) 0 ;
   idevice_error_t result;
@@ -2118,7 +2118,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1handle(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1handle(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
@@ -2135,7 +2135,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1udid(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1udid(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   char **arg2 = (char **) 0 ;
@@ -2152,7 +2152,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1device_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1device_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2178,7 +2178,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1device_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1device_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *result = 0 ;
@@ -2193,7 +2193,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2219,7 +2219,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *result = 0 ;
@@ -2234,7 +2234,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2260,7 +2260,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *result = 0 ;
@@ -2275,7 +2275,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1id_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1id_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2301,7 +2301,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1id_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1id_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *result = 0 ;
@@ -2316,7 +2316,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1system_1buid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1system_1buid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2342,7 +2342,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1system_1buid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1system_1buid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *result = 0 ;
@@ -2357,7 +2357,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndPairRecordStruct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndPairRecordStruct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct lockdownd_pair_record *result = 0 ;
   
@@ -2369,7 +2369,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndPairRecordStruct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndPairRecordStruct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   
   (void)jenv;
@@ -2379,7 +2379,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1port_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jshort jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1port_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jshort jarg2) {
   struct lockdownd_service_descriptor *arg1 = (struct lockdownd_service_descriptor *) 0 ;
   uint16_t arg2 ;
   
@@ -2392,7 +2392,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1port_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jshort JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1port_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jshort jresult = 0 ;
   struct lockdownd_service_descriptor *arg1 = (struct lockdownd_service_descriptor *) 0 ;
   uint16_t result;
@@ -2407,7 +2407,7 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1sslEnabled_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1sslEnabled_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   struct lockdownd_service_descriptor *arg1 = (struct lockdownd_service_descriptor *) 0 ;
   uint8_t arg2 ;
   
@@ -2420,7 +2420,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1sslEnabled_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jboolean JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndServiceDescriptorStruct_1sslEnabled_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   struct lockdownd_service_descriptor *arg1 = (struct lockdownd_service_descriptor *) 0 ;
   uint8_t result;
@@ -2435,7 +2435,7 @@ SWIGEXPORT jboolean JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileD
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndServiceDescriptorStruct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_new_1LockdowndServiceDescriptorStruct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct lockdownd_service_descriptor *result = 0 ;
   
@@ -2447,7 +2447,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndServiceDescriptorStruct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_delete_1LockdowndServiceDescriptorStruct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct lockdownd_service_descriptor *arg1 = (struct lockdownd_service_descriptor *) 0 ;
   
   (void)jenv;
@@ -2457,7 +2457,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   lockdownd_client_t *arg2 = (lockdownd_client_t *) 0 ;
@@ -2481,7 +2481,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1new_1with_1handshake(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1new_1with_1handshake(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   lockdownd_client_t *arg2 = (lockdownd_client_t *) 0 ;
@@ -2505,7 +2505,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_error_t result;
@@ -2519,7 +2519,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1query_1type(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1query_1type(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char **arg2 = (char **) 0 ;
@@ -2536,7 +2536,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jlong jarg4, jobject jarg4_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jlong jarg4, jobject jarg4_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2567,7 +2567,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1set_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jlong jarg4) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1set_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jlong jarg4) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2603,7 +2603,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1remove_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1remove_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2631,7 +2631,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2655,7 +2655,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1start_1service_1with_1escrow_1bag(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1start_1service_1with_1escrow_1bag(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2679,7 +2679,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1start_1session(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1start_1session(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2706,7 +2706,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1stop_1session(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1stop_1session(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2727,7 +2727,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1send(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1send(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   plist_t arg2 ;
@@ -2749,7 +2749,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1receive(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1receive(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   plist_t *arg2 = (plist_t *) 0 ;
@@ -2766,7 +2766,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1pair(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1pair(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_pair_record_t arg2 = (lockdownd_pair_record_t) 0 ;
@@ -2783,7 +2783,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1validate_1pair(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1validate_1pair(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_pair_record_t arg2 = (lockdownd_pair_record_t) 0 ;
@@ -2800,7 +2800,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1unpair(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1unpair(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_pair_record_t arg2 = (lockdownd_pair_record_t) 0 ;
@@ -2817,7 +2817,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1activate(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1activate(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   plist_t arg2 ;
@@ -2839,7 +2839,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1deactivate(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1deactivate(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_error_t result;
@@ -2853,7 +2853,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1enter_1recovery(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1enter_1recovery(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_error_t result;
@@ -2867,7 +2867,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1goodbye(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1goodbye(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   lockdownd_error_t result;
@@ -2881,7 +2881,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1set_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1client_1set_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2898,7 +2898,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1device_1udid(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1device_1udid(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char **arg2 = (char **) 0 ;
@@ -2915,7 +2915,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1device_1name(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1device_1name(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char **arg2 = (char **) 0 ;
@@ -2932,7 +2932,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1sync_1data_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1get_1sync_1data_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   lockdownd_client_t arg1 = (lockdownd_client_t) 0 ;
   char ***arg2 = (char ***) 0 ;
@@ -2952,7 +2952,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1data_1classes_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1data_1classes_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   char **arg1 = (char **) 0 ;
   lockdownd_error_t result;
@@ -2967,7 +2967,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1service_1descriptor_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_lockdownd_1service_1descriptor_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   lockdownd_service_descriptor_t arg1 = (lockdownd_service_descriptor_t) 0 ;
   lockdownd_error_t result;
@@ -2982,7 +2982,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   lockdownd_service_descriptor_t arg2 = (lockdownd_service_descriptor_t) 0 ;
@@ -3002,7 +3002,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   afc_client_t *arg2 = (afc_client_t *) 0 ;
@@ -3026,7 +3026,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   afc_error_t result;
@@ -3040,7 +3040,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1get_1device_1info(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1get_1device_1info(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char ***arg2 = (char ***) 0 ;
@@ -3057,7 +3057,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1read_1directory(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1read_1directory(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3081,7 +3081,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1get_1file_1info(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1get_1file_1info(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3105,7 +3105,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1open(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1open(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3131,7 +3131,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1close(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1close(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3147,7 +3147,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1lock(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jint jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1lock(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jint jarg3) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3165,7 +3165,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1read(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jbyteArray jarg3, jint jarg4, jlong jarg5, jobject jarg5_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1read(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jbyteArray jarg3, jint jarg4, jlong jarg5, jobject jarg5_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3191,7 +3191,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1write(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jbyteArray jarg3, jint jarg4, jlong jarg5, jobject jarg5_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1write(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jbyteArray jarg3, jint jarg4, jlong jarg5, jobject jarg5_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3217,7 +3217,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1seek(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jint jarg4) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1seek(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jint jarg4) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3237,7 +3237,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1tell(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1tell(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3256,7 +3256,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1truncate(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1file_1truncate(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   uint64_t arg2 ;
@@ -3274,7 +3274,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1remove_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1remove_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3295,7 +3295,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1rename_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1rename_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3323,7 +3323,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1make_1directory(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1make_1directory(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3344,7 +3344,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1truncate(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1truncate(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3367,7 +3367,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1make_1link(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2, jstring jarg3, jstring jarg4) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1make_1link(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2, jstring jarg3, jstring jarg4) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   afc_link_type_t arg2 ;
@@ -3397,7 +3397,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1set_1file_1time(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1set_1file_1time(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3420,7 +3420,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1remove_1path_1and_1contents(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1remove_1path_1and_1contents(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3441,7 +3441,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1get_1device_1info_1key(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1get_1device_1info_1key(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3465,7 +3465,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1dictionary_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1dictionary_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   char **arg1 = (char **) 0 ;
   afc_error_t result;
@@ -3480,7 +3480,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   lockdownd_service_descriptor_t arg2 = (lockdownd_service_descriptor_t) 0 ;
@@ -3500,7 +3500,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   instproxy_client_t *arg2 = (instproxy_client_t *) 0 ;
@@ -3524,7 +3524,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   instproxy_error_t result;
@@ -3538,7 +3538,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1browse(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1browse(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   plist_t arg2 ;
@@ -3563,7 +3563,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1install(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1install(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3596,7 +3596,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1upgrade(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1upgrade(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3629,7 +3629,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1uninstall(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1uninstall(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3662,7 +3662,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1lookup_1archives(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1lookup_1archives(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   plist_t arg2 ;
@@ -3687,7 +3687,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1archive(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1archive(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3720,7 +3720,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1restore(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1restore(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3753,7 +3753,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1remove_1archive(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1remove_1archive(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3786,7 +3786,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1options_1new(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1options_1new(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   plist_t result;
   
@@ -3802,7 +3802,7 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1options_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1options_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   plist_t arg1 ;
   plist_t *argp1 ;
   
@@ -3818,7 +3818,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1get_1path_1for_1bundle_1identifier(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1get_1path_1for_1bundle_1identifier(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3842,7 +3842,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   lockdownd_service_descriptor_t arg2 = (lockdownd_service_descriptor_t) 0 ;
@@ -3862,7 +3862,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
   jint jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
   mobile_image_mounter_client_t *arg2 = (mobile_image_mounter_client_t *) 0 ;
@@ -3886,7 +3886,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   mobile_image_mounter_error_t result;
@@ -3900,7 +3900,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1lookup_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1lookup_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3924,7 +3924,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1mount_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jbyteArray jarg3, jshort jarg4, jstring jarg5, jlong jarg6, jobject jarg6_) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1mount_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jbyteArray jarg3, jshort jarg4, jstring jarg5, jlong jarg6, jobject jarg6_) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3962,7 +3962,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1hangup(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1hangup(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   mobile_image_mounter_error_t result;

@@ -70,7 +70,7 @@ public final class StackTraceElement implements Serializable {
     }
 
     /**
-     * Private constructor used by RoboVM only.
+     * Private constructor used by BugVM only.
      */
     @SuppressWarnings("unused")
     private StackTraceElement(Class<?> cls, String method, String file, int line) {

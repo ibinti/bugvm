@@ -543,7 +543,7 @@ public class PlainSocketImpl extends SocketImpl {
             // socket are all-or-nothing, so we don't need a loop here.
             // http://code.google.com/p/android/issues/detail?id=15304
 
-            // RoboVM note: The original code passed this.address here as 
+            // BugVM note: The original code passed this.address here as
             // destination address. However, on Darwin sendto() fails with 
             // EINVAL if called with a non-null destination address for an 
             // already connected socket (see issue #76). Non-streaming Sockets 

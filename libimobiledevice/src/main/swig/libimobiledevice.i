@@ -205,8 +205,8 @@ void delete_StringArray_values_z(StringArray* s) {
         }
     }
 }
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_initNative(JNIEnv *env, jclass cls) {
-    class_Callbacks = (*env)->FindClass(env, "org/robovm/libimobiledevice/Callbacks");
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_initNative(JNIEnv *env, jclass cls) {
+    class_Callbacks = (*env)->FindClass(env, "com/bugvm/libimobiledevice/Callbacks");
     if ((*env)->ExceptionCheck(env)) return;
     meth_callInstproxyCallback = (*env)->GetStaticMethodID(env, class_Callbacks, "callInstproxyCallback", "(Ljava/lang/String;[BI)V");
     if ((*env)->ExceptionCheck(env)) return;

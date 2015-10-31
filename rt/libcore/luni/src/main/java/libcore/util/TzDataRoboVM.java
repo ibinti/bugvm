@@ -48,11 +48,11 @@ import libcore.io.HeapBufferIterator;
 import libcore.io.IoUtils;
 
 /**
- * RoboVM implementation of {@link ZoneInfoDB.TzData} which loads the zoneinfo
+ * BugVM implementation of {@link ZoneInfoDB.TzData} which loads the zoneinfo
  * from a standard Olson tzdata folder structure as used in Mac OS X, iOS and
  * most Linux distributions.
  */
-final class TzDataRoboVM extends ZoneInfoDB.TzData {
+final class TzDataBugVM extends ZoneInfoDB.TzData {
 
     private static final String ZONE_DIRECTORY_NAME = "/usr/share/zoneinfo/";
 
@@ -153,7 +153,7 @@ final class TzDataRoboVM extends ZoneInfoDB.TzData {
      * Populates the ids array when using a multi file timezone database. Reads the contents of 
      * {@link #ZONE_DIRECTORY_NAME}. We assume that all files beginning with an upper case letter at depth 0 to 2 are
      * proper TZ files. Fragile but known to work on Ubuntu 12.04, Mac OS X 10.7 and iOS 6.0.
-     * This was added in RoboVM.
+     * This was added in BugVM.
      */
     private static void readIndexMulti() throws IOException {
         TreeSet<String> set = new TreeSet<String>();
@@ -266,7 +266,7 @@ final class TzDataRoboVM extends ZoneInfoDB.TzData {
 
     @Override
     public String getDefaultID() {
-        // In RoboVM we check the files /etc/timezone, /etc/localtime and /private/var/db/timezone/localtime.
+        // In BugVM we check the files /etc/timezone, /etc/localtime and /private/var/db/timezone/localtime.
         // The first file is a text file containing the id of the current time zone, e.g. 'Europe/Stockholm'
         // The two other files should be symlinks into the /usr/share/zoneinfo dir pointing out the current
         // time zone.

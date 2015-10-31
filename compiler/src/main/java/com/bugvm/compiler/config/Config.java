@@ -966,7 +966,7 @@ public class Config {
 
         public static Home find() {
             // Check if ROBOVM_DEV_ROOT has been set. If set it should be
-            // pointing at the root of a complete RoboVM source tree.
+            // pointing at the root of a complete BugVM source tree.
             if (System.getenv("BUGVM_DEV_ROOT") != null) {
                 File dir = new File(System.getenv("BUGVM_DEV_ROOT"));
                 return validateDevRootDir(dir);
@@ -1030,7 +1030,7 @@ public class Config {
             }
 
             // Compare the version of this compiler with the version of the
-            // robovm-rt.jar in the home dir. They have to match.
+            // bugvm-rt.jar in the home dir. They have to match.
             try {
                 String thisVersion = Version.getVersion();
                 String thatVersion = getImplementationVersion(rtJarFile);
@@ -1485,11 +1485,11 @@ public class Config {
         /**
          * Reads properties from a project basedir. If {@code isTest} is
          * {@code true} this method will first attempt to load a
-         * {@code robovm.test.properties} file in {@code basedir}.
+         * {@code bugvm.test.properties} file in {@code basedir}.
          * <p>
          * If no test specific file is found or if {@code isTest} is
          * {@code false} this method attempts to load a
-         * {@code robovm.properties} and a {@code robovm.local.properties} file
+         * {@code bugvm.properties} and a {@code bugvm.local.properties} file
          * in {@code basedir} and merges them so that properties from the local
          * file (if it exists) override properties in the non-local file.
          * <p>
@@ -1544,10 +1544,10 @@ public class Config {
         /**
          * Reads a config file from a project basedir. If {@code isTest} is
          * {@code true} this method will first attempt to load a
-         * {@code robovm.test.xml} file in {@code basedir}.
+         * {@code bugvm.test.xml} file in {@code basedir}.
          * <p>
          * If no test-specific file is found or if {@code isTest} is
-         * {@code false} this method attempts to load a {@code robovm.xml} file
+         * {@code false} this method attempts to load a {@code bugvm.xml} file
          * in {@code basedir}.
          * <p>
          * If none of the files can be found found this method does nothing.

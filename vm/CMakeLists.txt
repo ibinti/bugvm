@@ -219,7 +219,7 @@ message(STATUS "CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
 message(STATUS "CMAKE_SHARED_LINKER_FLAGS: ${CMAKE_SHARED_LINKER_FLAGS}")
 message(STATUS "CMAKE_MODULE_LINKER_FLAGS: ${CMAKE_MODULE_LINKER_FLAGS}")
 
-# Ugly hardcoding. This is the offset in bytes of the gcDescriptor member in the Class struct from core/include/robovm/types.h
+# Ugly hardcoding. This is the offset in bytes of the gcDescriptor member in the Class struct from core/include/bugvm/types.h
 # Should be the value of sizeof(void*)*3 for the target platform.
 if(64_BIT)
   set(EXTGC_MARK_DESCR_OFFSET 24)

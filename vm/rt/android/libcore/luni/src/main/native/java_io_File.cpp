@@ -39,7 +39,7 @@
 #include <unistd.h>
 #include <utime.h>
 
-// RoboVM note: This prototype used to be local to the Java_java_io_File_realpath below.
+// BugVM note: This prototype used to be local to the Java_java_io_File_realpath below.
 // This made clang confused and thought the call to realpath was to the system's C version 
 // and not to the one in realpath.cpp.
 extern bool realpath(const char* path, std::string& resolved);

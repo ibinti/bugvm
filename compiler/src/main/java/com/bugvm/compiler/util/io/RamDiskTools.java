@@ -47,7 +47,7 @@ import com.dd.plist.PropertyListParser;
  *
  */
 public class RamDiskTools {
-    private static final String ROBOVM_RAM_DISK_PATH = "/Volumes/RoboVM RAM Disk";
+    private static final String ROBOVM_RAM_DISK_PATH = "/Volumes/BugVM RAM Disk";
     private static final long MIN_FREE_SPACE = 1024 * 1024 * 400;
 
     private File newCacheDir;
@@ -84,10 +84,10 @@ public class RamDiskTools {
                 NSObject value = dict.objectForKey("SolidState");
                 if(value == null || (value instanceof NSNumber && !((NSNumber)value).boolValue())) {
                     // @formatter:off
-                    config.getLogger().warn("RoboVM has detected that you are running on a slow HDD. Please consider mounting a RAM disk.\n" +
+                    config.getLogger().warn("BugVM has detected that you are running on a slow HDD. Please consider mounting a RAM disk.\n" +
                                             "To create a 2GB RAM disk, run this in your terminal:\n" +
-                                            "SIZE=2048 ; diskutil erasevolume HFS+ 'RoboVM RAM Disk' `hdiutil attach -nomount ram://$((SIZE * 2048))`\n" +
-                                            "See http://docs.robovm.com/ for more info");
+                                            "SIZE=2048 ; diskutil erasevolume HFS+ 'BugVM RAM Disk' `hdiutil attach -nomount ram://$((SIZE * 2048))`\n" +
+                                            "See http://docs.bugvm.com/ for more info");
                     // @formatter:on
                 }
             } catch (Throwable t) {
