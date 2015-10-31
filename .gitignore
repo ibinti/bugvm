@@ -8,10 +8,10 @@ a.out
 /llvm/target.llvm/
 /llvm/extllvm-prefix/
 /llvm/bugvm-llvm.build/
+/llvm/bugvm-llvm.xcodeproj/
 /llvm/CMakeFiles/
 /llvm/CMakeScripts/
 /llvm/extclang-prefix/
-/llvm/llvm/share/
 /llvm/llvm/lib/
 /llvm/llvm/bin/
 /vm/binaries/
@@ -19,6 +19,7 @@ a.out
 /compiler/target/
 /compiler-dist/target/
 /llvm/target/
+/llvm/target.llvm/
 /libimobiledevice/target/
 /rt/target/
 /cacerts/target/
