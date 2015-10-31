@@ -34,7 +34,7 @@ a.out
 /tests/bugvm/target/
 /tests/drlvm/bugvm-vts.env
 /tests/drlvm-vts-bundle/
-/tests/drlvm/drlvm-vts-bundle/
+/tests/drlvm/drlvm-vts-bundle
 /tests/libcore/sqliteTest*.db
 /tmp/
 !/tests/bugvm/src/test/resources/META-INF/**/*.o
