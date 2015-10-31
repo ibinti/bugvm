@@ -8,7 +8,7 @@ index 97ef12c..e175480 100644
  
 +  // RoboVM change: Emit spfpoffset symbols if requested to do so. The symbols are
 +  // created in ARMFrameLowering::emitPrologue and AAarch64FrameLowering::emitPrologue.
-+  if (MMI->getModule()->getNamedValue("robovm.emitSpFpOffsets")) {
++  if (MMI->getModule()->getNamedValue("bugvm.emitSpFpOffsets")) {
 +    bool InTextSeciton = false;
 +    for (const Function &F : *(MMI->getModule())) {
 +      if (F.isDeclaration())

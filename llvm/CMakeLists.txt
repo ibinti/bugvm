@@ -17,7 +17,7 @@ if (WINDOWS)
   #should be passed from build.sh, just here to prevent warning
   set(CMAKE_RC_COMPILER "/usr/bin/x86_64-w64-mingw32-windres")
   
-  #these are not actually used by robovm but find_package does not always resolve them, use JAVA_HOME env var to prevent paths?
+  #these are not actually used by com_bugvm but find_package does not always resolve them, use JAVA_HOME env var to prevent paths?
   set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libawt.so")
   set(JAVA_JVM_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so")
 
@@ -29,7 +29,7 @@ if (WINDOWS)
   set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 endif()
 
-project(robovm-llvm)
+project(bugvm-llvm)
 
 find_package(JNI REQUIRED)
 

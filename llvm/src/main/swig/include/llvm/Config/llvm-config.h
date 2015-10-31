@@ -78,7 +78,7 @@
 /* #undef LLVM_ON_WIN32 */
 
 /* Installation prefix directory */
-#define LLVM_PREFIX "/Users/niklas/Projects/robovm/llvm/target.llvm/build/macosx-x86_64/llvm"
+#define LLVM_PREFIX "/Users/yy/bugvm/llvm/target.llvm/build/macosx-x86_64/llvm"
 
 /* Define if we have the Intel JIT API runtime support library */
 /* #undef LLVM_USE_INTEL_JITEVENTS */
