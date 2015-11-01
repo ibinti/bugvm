@@ -21,6 +21,13 @@ a.out
 /llvm/target/
 /llvm/target.llvm/
 /libimobiledevice/target/
+/libimobiledevice/extlibxml-prefix/
+/libimobiledevice/CMakeFiles/
+/libimobiledevice/ext/
+/libimobiledevice/extlibimobiledevice-prefix/
+/libimobiledevice/extlibplist-prefix/
+/libimobiledevice/extlibusbx-prefix/
+/libimobiledevice/extlibusbmuxd-prefix/
 /rt/target/
 /cacerts/target/
 /cacerts/full/target/
@@ -43,3 +50,9 @@ a.out
 llvm/CMakeCache.txt
 
 llvm/cmake_install.cmake
+
+libimobiledevice/cmake_install.cmake
+
+libimobiledevice/CMakeCache.txt
+
+libimobiledevice/Makefile
