@@ -47,7 +47,7 @@ import com.dd.plist.PropertyListParser;
  *
  */
 public class RamDiskTools {
-    private static final String ROBOVM_RAM_DISK_PATH = "/Volumes/BugVM RAM Disk";
+    private static final String BUGVM_RAM_DISK_PATH = "/Volumes/BugVM RAM Disk";
     private static final long MIN_FREE_SPACE = 1024 * 1024 * 400;
 
     private File newCacheDir;
@@ -72,7 +72,7 @@ public class RamDiskTools {
             return;
         }
 
-        File volume = new File(ROBOVM_RAM_DISK_PATH);
+        File volume = new File(BUGVM_RAM_DISK_PATH);
         if (!volume.exists()) {
             try {
                 FileStore store = Files.getFileStore(new File(System.getProperty("user.home"))
@@ -118,7 +118,7 @@ public class RamDiskTools {
                 return;
             }
             newTmpDir = new File(newTmpDir, tmpDir.getAbsolutePath());
-            config.getLogger().info("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
+            config.getLogger().info("Using RAM disk at %s for cache and tmp directory", BUGVM_RAM_DISK_PATH);
             this.newCacheDir = newCacheDir;
             this.newTmpDir = newTmpDir;
         } catch (Throwable t) {

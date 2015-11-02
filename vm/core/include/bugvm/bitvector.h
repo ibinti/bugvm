@@ -106,4 +106,4 @@ void rvmBitVectorIteratorInit(BitVector* pBits, BitVectorIterator* iterator);
 /* Return the next position set to 1. -1 means end-of-vector reached */
 jint rvmBitVectorIteratorNext(BitVectorIterator* iterator);
 
-#endif  // ROBOVM_BITVECTOR_H_
+#endif  // BUGVM_BITVECTOR_H_

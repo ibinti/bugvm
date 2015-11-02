@@ -340,8 +340,7 @@ typedef struct Options {
     SystemProperty* properties;
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
-    jboolean dynamicJNI;
-    char** staticLibs; 
+    char** staticLibs;
     void* runtimeData;
     Class* (*loadBootClass)(Env*, const char*, Object*);
     Class* (*loadUserClass)(Env*, const char*, Object*);

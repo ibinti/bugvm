@@ -121,8 +121,6 @@ public class Config {
     @Element(required = false)
     private String imageName = null;
     @Element(required = false)
-    private Boolean useDynamicJni = null;
-    @Element(required = false)
     private Boolean skipRuntimeLib = null;
     @Element(required = false)
     private File mainJar;
@@ -169,8 +167,6 @@ public class Config {
     private File iosInfoPListFile = null;
     @Element(required = false, name = "infoPList")
     private File infoPListFile = null;
-    @Element(required = false)
-    private File iosResourceRulesPList;
     @Element(required = false)
     private File iosEntitlementsPList;
 
@@ -324,10 +320,6 @@ public class Config {
 
     public boolean isSkipInstall() {
         return skipInstall;
-    }
-
-    public boolean isUseDynamicJni() {
-        return useDynamicJni != null && useDynamicJni.booleanValue();
     }
 
     public int getThreads() {
@@ -519,10 +511,6 @@ public class Config {
             infoPList = new InfoPList(infoPListFile);
         }
         return infoPList;
-    }
-
-    public File getIosResourceRulesPList() {
-        return iosResourceRulesPList;
     }
 
     public File getIosEntitlementsPList() {
@@ -965,7 +953,7 @@ public class Config {
         }
 
         public static Home find() {
-            // Check if ROBOVM_DEV_ROOT has been set. If set it should be
+            // Check if BUGVM_DEV_ROOT has been set. If set it should be
             // pointing at the root of a complete BugVM source tree.
             if (System.getenv("BUGVM_DEV_ROOT") != null) {
                 File dir = new File(System.getenv("BUGVM_DEV_ROOT"));
@@ -1214,11 +1202,6 @@ public class Config {
             return this;
         }
 
-        public Builder useDynamicJni(boolean b) {
-            config.useDynamicJni = b;
-            return this;
-        }
-
         public Builder threads(int threads) {
             config.threads = threads;
             return this;
@@ -1429,11 +1412,6 @@ public class Config {
 
         public Builder iosEntitlementsPList(File entitlementsPList) {
             config.iosEntitlementsPList = entitlementsPList;
-            return this;
-        }
-
-        public Builder iosResourceRulesPList(File resourceRulesPList) {
-            config.iosResourceRulesPList = resourceRulesPList;
             return this;
         }
 

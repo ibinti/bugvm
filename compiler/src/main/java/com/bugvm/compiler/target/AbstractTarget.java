@@ -39,13 +39,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import com.bugvm.compiler.config.Config;
-import com.bugvm.compiler.config.OS;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import com.bugvm.compiler.clazz.Path;
 import com.bugvm.compiler.config.Arch;
+import com.bugvm.compiler.config.Config;
+import com.bugvm.compiler.config.OS;
 import com.bugvm.compiler.config.Resource;
 import com.bugvm.compiler.config.Resource.Walker;
 import com.bugvm.compiler.util.ToolchainUtil;
@@ -138,19 +138,36 @@ public abstract class AbstractTarget implements Target {
         
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
+
+        List<String> exportedSymbols = new ArrayList<String>();
+        exportedSymbols.addAll(getTargetExportedSymbols());
+        exportedSymbols.add("JNI_OnLoad_*");
+        exportedSymbols.addAll(config.getExportedSymbols());
+
         if (config.getOs().getFamily() == OS.Family.linux) {
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
+
+            if (!exportedSymbols.isEmpty()) {
+                // Create an ld version script which makes the exported symbols global
+                // and all other symbols local.
+                StringBuilder sb = new StringBuilder();
+                sb.append("{\n    ");
+                sb.append(StringUtils.join(exportedSymbols, ";\n    "));
+                sb.append(";\n};\n");
+
+                File dynamicListFile = new File(config.getTmpDir(), "exported_symbols");
+                FileUtils.writeStringToFile(dynamicListFile, sb.toString());
+                ccArgs.add("-Wl,--dynamic-list=" + dynamicListFile.getAbsolutePath());
+            }
+
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             ccArgs.add("-ObjC");
 
-            List<String> exportedSymbols = new ArrayList<String>();
-            exportedSymbols.addAll(getTargetExportedSymbols());
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
             }
-            exportedSymbols.addAll(config.getExportedSymbols());
             for (int i = 0; i < exportedSymbols.size(); i++) {
                 // On Darwin symbols are always prefixed with a '_'. We'll prepend
                 // '_' to each symbol here so the user won't have to.
@@ -463,7 +480,7 @@ public abstract class AbstractTarget implements Target {
 
         Map<String, String> env = new HashMap<>(launchParameters.getEnvironment() != null 
                 ? launchParameters.getEnvironment() : Collections.<String, String>emptyMap());
-        env.put("ROBOVM_LAUNCH_MODE", config.isDebug() ? "debug" : "release");
+        env.put("BUGVM_LAUNCH_MODE", config.isDebug() ? "debug" : "release");
         launchParameters.setEnvironment(env);
         
         return doLaunch(launchParameters);

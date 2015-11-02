@@ -147,7 +147,6 @@ public class ConfigTest {
         assertEquals("6.1", config.getIosSdkVersion());
         Assert.assertEquals(new File(wd, "Info.plist"), config.getIosInfoPList().getFile());
         assertEquals(new File(wd, "entitlements.plist"), config.getIosEntitlementsPList());
-        assertEquals(new File(tmp, "resourcerules.plist"), config.getIosResourceRulesPList());
     }
     
     @Test
@@ -156,7 +155,6 @@ public class ConfigTest {
         builder.iosSdkVersion("6.1");
         builder.iosInfoPList(new File("Info.plist"));
         builder.iosEntitlementsPList(new File("entitlements.plist"));
-        builder.iosResourceRulesPList(new File(tmp, "resourcerules.plist"));
         builder.targetType(IOSTarget.TYPE);
         
         StringWriter out = new StringWriter();

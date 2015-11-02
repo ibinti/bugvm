@@ -27,21 +27,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
-import com.bugvm.compiler.CompilerException;
-import com.bugvm.compiler.config.Arch;
-import com.bugvm.compiler.config.Config;
-import com.bugvm.compiler.config.OS;
-import com.bugvm.compiler.log.Logger;
-import com.bugvm.compiler.target.AbstractTarget;
-import com.bugvm.compiler.target.LaunchParameters;
-import com.bugvm.compiler.util.Executor;
-import com.bugvm.compiler.util.ToolchainUtil;
-import com.bugvm.compiler.util.io.OpenOnWriteFileOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -49,8 +41,20 @@ import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import com.bugvm.compiler.CompilerException;
+import com.bugvm.compiler.config.Arch;
+import com.bugvm.compiler.config.Config;
+import com.bugvm.compiler.config.OS;
 import com.bugvm.compiler.config.Resource;
+import com.bugvm.compiler.log.Logger;
+import com.bugvm.compiler.log.LoggerProxy;
+import com.bugvm.compiler.target.AbstractTarget;
+import com.bugvm.compiler.target.LaunchParameters;
 import com.bugvm.compiler.target.Launcher;
+import com.bugvm.compiler.target.ios.ProvisioningProfile.Type;
+import com.bugvm.compiler.util.Executor;
+import com.bugvm.compiler.util.ToolchainUtil;
+import com.bugvm.compiler.util.io.OpenOnWriteFileOutputStream;
 import com.bugvm.libimobiledevice.AfcClient.UploadProgressCallback;
 import com.bugvm.libimobiledevice.IDevice;
 import com.bugvm.libimobiledevice.InstallationProxyClient.StatusCallback;
@@ -74,8 +78,7 @@ public class IOSTarget extends AbstractTarget {
     private static File iosSimPath;
 
     private Arch arch;
-    private SDK sdk;
-    private File resourceRulesPList;
+    private SDK sdk;    
     private File entitlementsPList;
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;
@@ -190,7 +193,58 @@ public class IOSTarget extends AbstractTarget {
 
         File xcodePath = new File(ToolchainUtil.findXcodePath());
         Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
-        return new Executor(config.getLogger(), iosSimPath)
+        
+        // See issue https://github.com/bugvm/bugvm/issues/1150, we need
+        // to swallow the error message by ios-sim on Xcode 7. We need
+        // to remove this
+        Logger proxyLogger = new Logger() {
+            boolean skipWarningsAndErrors = false;
+
+            @Override
+            public void debug(String format, Object... args) {
+                config.getLogger().debug(format, args);
+            }
+
+            @Override
+            public void info(String format, Object... args) {
+                config.getLogger().info(format, args);
+            }
+
+            @Override
+            public void warn(String format, Object... args) {
+                // we swallow the first warning message, then
+                // error() will turn on skipWarningsAndErrors until
+                // we get another warning.
+                if (format.toString().contains("DVTPlugInManager.m:257")) {
+                    config.getLogger().info(format, args);
+                    return;
+                }
+
+                // received the "closing" warning, enable
+                // logging of warnings and errors again
+                if (skipWarningsAndErrors) {
+                    skipWarningsAndErrors = false;
+                    config.getLogger().info(format, args);
+                } else {
+                    config.getLogger().warn(format, args);
+                }
+            }
+
+            @Override
+            public void error(String format, Object... args) {
+                if (format.contains(
+                        "Requested but did not find extension point with identifier Xcode.DVTFoundation.DevicePlatformMapping")) {
+                    skipWarningsAndErrors = true;                    
+                }
+                if (skipWarningsAndErrors) {
+                    config.getLogger().info(format, args);
+                } else {
+                    config.getLogger().error(format, args);
+                }
+            }
+        };
+        
+        return new Executor(proxyLogger, iosSimPath)
                 .args(args)
                 .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
@@ -345,8 +399,7 @@ public class IOSTarget extends AbstractTarget {
             // LLDB can't resolve the DWARF info
             if (!config.isDebug()) {
                 strip(installDir, getExecutable());
-            }
-            copyResourcesPList(installDir);
+            }            
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skipping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
@@ -354,7 +407,7 @@ public class IOSTarget extends AbstractTarget {
             } else {
                 // Copy the provisioning profile
                 copyProvisioningProfile(provisioningProfile, installDir);
-                boolean getTaskAllow = provisioningProfile.getType() == ProvisioningProfile.Type.Development;
+                boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
                 signFrameworks(installDir, getTaskAllow);
                 codesignApp(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), installDir);
                 // For some odd reason there needs to be a symbolic link in the
@@ -381,8 +434,7 @@ public class IOSTarget extends AbstractTarget {
         createInfoPList(appDir);
         generateDsym(appDir, getExecutable(), true);
 
-        if (isDeviceArch(arch)) {
-            copyResourcesPList(appDir);
+        if (isDeviceArch(arch)) {            
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
@@ -473,15 +525,6 @@ public class IOSTarget extends AbstractTarget {
                 .exec();
     }
 
-    private void copyResourcesPList(File destDir) throws IOException {
-        File destFile = new File(destDir, "ResourceRules.plist");
-        if (resourceRulesPList != null) {
-            FileUtils.copyFile(resourceRulesPList, destFile);
-        } else {
-            FileUtils.copyURLToFile(getClass().getResource("/ResourceRules.plist"), destFile);
-        }
-    }
-
     private File getOrCreateEntitlementsPList(boolean getTaskAllow, String bundleId) throws IOException {
         try {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
@@ -515,7 +558,16 @@ public class IOSTarget extends AbstractTarget {
         final File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
         final File exePath = new File(dir, executable);
         FileUtils.deleteDirectory(dsymDir);
-        final Process process = new Executor(config.getLogger(), "xcrun")
+        Logger logger = new LoggerProxy(config.getLogger()) {
+            @Override
+            public void warn(String format, Object... args) {
+                if (!(format.startsWith("warning:") && format.contains("could not find object file symbol for symbol"))) {
+                    // Suppress this kind of warnings for now. See bugvm/bugvm#1126.
+                    super.warn(format, args);
+                }
+            }
+        };
+        final Process process = new Executor(logger, "xcrun")
                 .args("dsymutil", "-o", dsymDir, exePath)
                 .execAsync();
         if (copyToIndexedDir) {
@@ -713,8 +765,7 @@ public class IOSTarget extends AbstractTarget {
     protected void customizeInfoPList(NSDictionary dict) {
         if (isSimulatorArch(arch)) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
-        } else {
-            dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
+        } else {            
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());
@@ -932,12 +983,12 @@ public class IOSTarget extends AbstractTarget {
 
     /**
      * Copies the dSYM and the executable to {@code ~/Library/Developer/Xcode/
-     * DerivedData/BugVM/Build/Products/<appname>_<timestamp>/}.
+     * DerivedData/RoboVM/Build/Products/<appname>_<timestamp>/}.
      */
     private void copyToIndexedDir(File dir, String executable, File dsymDir, File exePath) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         final File indexedDir = new File(System.getProperty("user.home"),
-                "Library/Developer/Xcode/DerivedData/BugVM/Build/Products/"
+                "Library/Developer/Xcode/DerivedData/RoboVM/Build/Products/"
                         + FilenameUtils.removeExtension(dir.getName()) + "_"
                         + sdf.format(new Date()));
         indexedDir.mkdirs();

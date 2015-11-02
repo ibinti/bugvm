@@ -352,7 +352,7 @@ import com.bugvm.rt.bro.ptr.*;
             delegateClassName = ObjCClass.getByType(delegateClass).getName();            
         }
 
-        if (System.getenv("ROBOVM_LAUNCH_MODE") == null) {
+        if (System.getenv("BUGVM_LAUNCH_MODE") == null) {
             if (!(System.err instanceof FoundationLogPrintStream)) {
                 System.setErr(new FoundationLogPrintStream());
             }

@@ -28,7 +28,7 @@ import org.apache.commons.io.FileUtils;
  * Takes a file and compresses it via the <code>libhfscompressor.dylib</code> in
  * <code>bugvm/bin</code>. Used on object files.</p>
  * 
- * Compression can be disabled completely by setting the <code>ROBOVM_DISABLE_COMPRESSION</code>
+ * Compression can be disabled completely by setting the <code>BUGVM_DISABLE_COMPRESSION</code>
  * environment variable.
  * 
  * @author badlogic
@@ -51,7 +51,7 @@ public class HfsCompressor {
      * to the file on other systems.
      */
     public void compress(File file, byte[] data, Config config) throws IOException, InterruptedException {
-        if (OS.getDefaultOS() == OS.macosx && System.getenv("ROBOVM_DISABLE_COMPRESSION") == null) {
+        if (OS.getDefaultOS() == OS.macosx && System.getenv("BUGVM_DISABLE_COMPRESSION") == null) {
             if (!file.getParentFile().exists()) {
                 if (!file.getParentFile().mkdirs()) {
                     throw new CompilerException("Couldn't create directory for " + file.getAbsolutePath());

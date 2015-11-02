@@ -16,10 +16,12 @@
  */
 package com.bugvm.compiler;
 
-import static com.bugvm.compiler.llvm.Type.*;
 import static com.bugvm.compiler.Access.*;
 import static com.bugvm.compiler.Functions.*;
 import static com.bugvm.compiler.Symbols.*;
+import static com.bugvm.compiler.Types.*;
+import static com.bugvm.compiler.llvm.Linkage.*;
+import static com.bugvm.compiler.llvm.Type.*;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -46,17 +48,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.bugvm.compiler.clazz.MethodInfo;
-import com.bugvm.compiler.config.Config;
-import com.bugvm.compiler.config.OS;
-import com.bugvm.compiler.llvm.FunctionRef;
-import com.bugvm.compiler.llvm.Linkage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import com.bugvm.compiler.clazz.Clazz;
 import com.bugvm.compiler.clazz.ClazzInfo;
+import com.bugvm.compiler.clazz.MethodInfo;
 import com.bugvm.compiler.clazz.Path;
 import com.bugvm.compiler.config.Arch;
+import com.bugvm.compiler.config.Config;
+import com.bugvm.compiler.config.OS;
 import com.bugvm.compiler.hash.HashTableGenerator;
 import com.bugvm.compiler.hash.ModifiedUtf8HashFunction;
 import com.bugvm.compiler.llvm.Alias;
@@ -67,6 +67,7 @@ import com.bugvm.compiler.llvm.ConstantBitcast;
 import com.bugvm.compiler.llvm.ConstantGetelementptr;
 import com.bugvm.compiler.llvm.Function;
 import com.bugvm.compiler.llvm.FunctionDeclaration;
+import com.bugvm.compiler.llvm.FunctionRef;
 import com.bugvm.compiler.llvm.FunctionType;
 import com.bugvm.compiler.llvm.Global;
 import com.bugvm.compiler.llvm.IntegerConstant;
@@ -199,19 +200,16 @@ public class Linker {
 
         mb.addGlobal(new Global("_bcRuntimeData", runtimeDataToBytes()));
 
-        mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
         ArrayConstantBuilder staticLibs = new ArrayConstantBuilder(I8_PTR);
-        if (!config.isUseDynamicJni()) {
-            for (Config.Lib lib : config.getLibs()) {
-                String p = lib.getValue();
-                if (p.endsWith(".a")) {
-                    p = new File(p).getName();
-                    String libName = p.substring(0, p.length() - 2);
-                    if (libName.startsWith("lib")) {
-                        libName = libName.substring(3);
-                    }
-                    staticLibs.add(mb.getString(libName));
+        for (Config.Lib lib : config.getLibs()) {
+            String p = lib.getValue();
+            if (p.endsWith(".a")) {
+                p = new File(p).getName();
+                String libName = p.substring(0, p.length() - 2);
+                if (libName.startsWith("lib")) {
+                    libName = libName.substring(3);
                 }
+                staticLibs.add(mb.getString(libName));
             }
         }
         staticLibs.add(new NullConstant(Type.I8_PTR));
@@ -233,7 +231,7 @@ public class Linker {
             StructureConstant infoErrorStruct = createClassInfoErrorStruct(mb, clazz.getClazzInfo());
             Global info = null;
             if (infoErrorStruct == null) {
-                info = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), Linkage.external, I8_PTR, false);
+                info = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), external, I8_PTR, false);
             } else {
                 typeInfo.error = true;
                 info = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), infoErrorStruct);
@@ -289,8 +287,8 @@ public class Linker {
                     String.format("header-%s-%s.ll", os.getFamily(), arch)));
             mbs[i].addInclude(getClass().getClassLoader().getResource("header.ll"));
 
-            Function fn = new FunctionBuilder("_stripped_method" + i, new FunctionType(VOID, Types.ENV_PTR))
-                    .linkage(Linkage.external).build();
+            Function fn = new FunctionBuilder("_stripped_method" + i, new FunctionType(VOID, ENV_PTR))
+                    .linkage(external).build();
             call(fn, BC_THROW_NO_SUCH_METHOD_ERROR, fn.getParameterRef(0),
                     mbs[i].getString("Method has been stripped out of the executable"));
             fn.add(new Unreachable());
@@ -664,7 +662,7 @@ public class Linker {
 
     private void createStrippedMethodStub(FunctionRef stubRef, ModuleBuilder mb, Clazz clazz, MethodInfo mi) {
         String symbol = methodSymbol(clazz.getInternalName(), mi.getName(), mi.getDesc());
-        Alias alias = new Alias(symbol, Linkage.external, stubRef);
+        Alias alias = new Alias(symbol, external, stubRef);
         mb.addAlias(alias);
     }
     
@@ -730,7 +728,7 @@ public class Linker {
     private Value getInfoStruct(ModuleBuilder mb, Function f, Clazz clazz) {
         String symbol = Symbols.infoStructSymbol(clazz.getInternalName());
         if (!mb.hasSymbol(symbol)) {
-            Global info = new Global(symbol, Linkage.external, I8_PTR, false);
+            Global info = new Global(symbol, external, I8_PTR, false);
             mb.addGlobal(info);
             return info.ref();
         } else {

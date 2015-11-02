@@ -42,16 +42,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.bugvm.compiler.config.Config;
-import com.bugvm.compiler.config.OS;
-import com.bugvm.compiler.plugin.PluginArgument;
-import com.bugvm.compiler.plugin.TargetPlugin;
-import com.bugvm.compiler.target.ConsoleTarget;
-import com.bugvm.compiler.target.LaunchParameters;
-import com.bugvm.compiler.target.ios.IOSSimulatorLaunchParameters;
-import com.bugvm.compiler.target.ios.ProvisioningProfile;
-import com.bugvm.compiler.target.ios.SigningIdentity;
-import com.bugvm.compiler.util.AntPathMatcher;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -62,12 +52,23 @@ import com.bugvm.compiler.clazz.Clazz;
 import com.bugvm.compiler.clazz.Clazzes;
 import com.bugvm.compiler.clazz.Path;
 import com.bugvm.compiler.config.Arch;
+import com.bugvm.compiler.config.Config;
+import com.bugvm.compiler.config.Config.TreeShakerMode;
+import com.bugvm.compiler.config.OS;
 import com.bugvm.compiler.config.Resource;
 import com.bugvm.compiler.log.ConsoleLogger;
 import com.bugvm.compiler.plugin.LaunchPlugin;
 import com.bugvm.compiler.plugin.Plugin;
+import com.bugvm.compiler.plugin.PluginArgument;
+import com.bugvm.compiler.plugin.TargetPlugin;
+import com.bugvm.compiler.target.ConsoleTarget;
+import com.bugvm.compiler.target.LaunchParameters;
 import com.bugvm.compiler.target.ios.DeviceType;
+import com.bugvm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import com.bugvm.compiler.target.ios.IOSTarget;
+import com.bugvm.compiler.target.ios.ProvisioningProfile;
+import com.bugvm.compiler.target.ios.SigningIdentity;
+import com.bugvm.compiler.util.AntPathMatcher;
 
 /**
  *
@@ -77,7 +78,7 @@ public class AppCompiler {
 
     /**
      * Names of root classes. These classes will always be linked in. These are
-     * here because they are either required by the BugVM specific native VM
+     * here because they are either required by the RoboVM specific native VM
      * libraries or by the Android's libcore native code.
      */
     private static final String[] ROOT_CLASSES = {
@@ -539,7 +540,8 @@ public class AppCompiler {
                 } else if ("-dump-intermediates".equals(args[i])) {
                     builder.dumpIntermediates(true);
                 } else if ("-dynamic-jni".equals(args[i])) {
-                    builder.useDynamicJni(true);
+                    // TODO: Old option not used any longer. We still accept it
+                    // for now. Delete it in a future release.
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
                 } else if ("-skipsign".equals(args[i])) {
@@ -573,7 +575,7 @@ public class AppCompiler {
                     builder.targetType("auto".equals(s) ? null : s);
                 } else if ("-treeshaker".equals(args[i])) {
                     String s = args[++i];
-                    builder.treeShakerMode(Config.TreeShakerMode.valueOf(s));
+                    builder.treeShakerMode(TreeShakerMode.valueOf(s));
                 } else if ("-forcelinkclasses".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         p = p.replace('#', '*');
@@ -624,8 +626,6 @@ public class AppCompiler {
                     builder.infoPList(new File(args[++i]));
                 } else if ("-entitlements".equals(args[i])) {
                     builder.iosEntitlementsPList(new File(args[++i]));
-                } else if ("-resourcerules".equals(args[i])) {
-                    builder.iosResourceRulesPList(new File(args[++i]));
                 } else if ("-signidentity".equals(args[i])) {
                     builder.iosSignIdentity(SigningIdentity.find(SigningIdentity.list(), args[++i]));
                 } else if ("-provisioningprofile".equals(args[i])) {
@@ -890,7 +890,7 @@ public class AppCompiler {
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
                          + "                        Default is <wd>/<executableName>. Ignored if -run is specified.");
         System.err.println("  -cc <path>            Path to the c compiler binary. gcc and clang are supported.");
-        System.err.println("  -home <dir>           Directory where BugVM runtime has been installed.\n"
+        System.err.println("  -home <dir>           Directory where RoboVM runtime has been installed.\n"
                          + "                        Default is $BUGVM_HOME. If not set the following paths\n"
                          + "                        will be searched: ~/Applications/bugvm/, ~/.bugvm/home/,\n"
                          + "                        /usr/local/lib/bugvm/, /opt/bugvm/, /usr/lib/bugvm/.");
@@ -939,11 +939,7 @@ public class AppCompiler {
                          + "                        file for iOS apps). The archive will be created in the\n" 
                          + "                        install dir specified using -d.");
         System.err.println("  -debug                Generates debug information");
-        System.err.println("  -use-debug-libs       Links against debug versions of the BugVM VM libraries");
-        System.err.println("  -dynamic-jni          Use dynamic JNI. Native methods will be dynamically\n" 
-                         + "                        linked at runtime. Native methods in classes in the boot\n"
-                         + "                        classpath will always use static JNI. On iOS only static\n" 
-                         + "                        JNI is supported and this option is ignored.");
+        System.err.println("  -use-debug-libs       Links against debug versions of the RoboVM VM libraries");
         System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
                          + "                        files (.o) and system libraries that should be included\n" 
                          + "                        when linking the final executable.");
@@ -1059,7 +1055,7 @@ public class AppCompiler {
     }
 
     /**
-     * Performs an update check. If a newer version of BugVM is available a
+     * Performs an update check. If a newer version of RoboVM is available a
      * message will be printed to the log. The update check is also used to
      * gather some anonymous usage statistics.
      */
@@ -1090,7 +1086,7 @@ public class AppCompiler {
             if (result != null) {
                 String version = (String) result.get("version");
                 if (version != null && Version.isOlderThan(version)) {
-                    config.getLogger().info("A new version of BugVM is available. "
+                    config.getLogger().info("A new version of RoboVM is available. "
                             + "Current version: %s. New version: %s.", Version.getVersion(), version);
                 }
             }
