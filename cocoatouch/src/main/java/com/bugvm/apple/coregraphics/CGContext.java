@@ -16,21 +16,27 @@
 package com.bugvm.apple.coregraphics;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.foundation.NSDictionary;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGContext/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGContextPtr extends Ptr<CGContext, CGContextPtr> {}/*</ptr>*/

@@ -16,23 +16,20 @@
 package com.bugvm.apple.addressbookui;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.addressbook.ABAddressBook;
-import com.bugvm.apple.addressbook.ABPerson;
-import com.bugvm.apple.addressbook.ABPersonProperty;
-import com.bugvm.apple.addressbook.ABProperty;
-import com.bugvm.apple.uikit.UIViewController;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBookUI") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonViewController/*</name>*/ 
-    extends /*<extends>*/UIViewController/*</extends>*/
+    extends /*<extends>*/UIViewController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class ABPersonViewControllerPtr extends Ptr<ABPersonViewController, ABPersonViewControllerPtr> {}/*</ptr>*/

@@ -16,26 +16,31 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.*;
-import com.bugvm.apple.foundation.NSExtensions;
-import com.bugvm.apple.foundation.NSValue;
-import com.bugvm.objc.ObjCClass;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSValueExtensions/*</name>*/ 
-    extends /*<extends>*/NSExtensions/*</extends>*/
+    extends /*<extends>*/NSExtensions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -51,20 +56,15 @@ import com.bugvm.rt.bro.ptr.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "CGPointValue")
-    public static native @ByVal
-    CGPoint getPointValue(NSValue thiz);
+    public static native @ByVal CGPoint getPointValue(NSValue thiz);
     @Method(selector = "CGVectorValue")
-    public static native @ByVal
-    CGVector getVectorValue(NSValue thiz);
+    public static native @ByVal CGVector getVectorValue(NSValue thiz);
     @Method(selector = "CGSizeValue")
-    public static native @ByVal
-    CGSize getSizeValue(NSValue thiz);
+    public static native @ByVal CGSize getSizeValue(NSValue thiz);
     @Method(selector = "CGRectValue")
-    public static native @ByVal
-    CGRect getRectValue(NSValue thiz);
+    public static native @ByVal CGRect getRectValue(NSValue thiz);
     @Method(selector = "CGAffineTransformValue")
-    public static native @ByVal
-    CGAffineTransform getAffineTransformValue(NSValue thiz);
+    public static native @ByVal CGAffineTransform getAffineTransformValue(NSValue thiz);
     @Method(selector = "UIEdgeInsetsValue")
     public static native @ByVal UIEdgeInsets getEdgeInsetsValue(NSValue thiz);
     /**

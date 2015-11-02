@@ -16,26 +16,24 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coreanimation.CALayer;
-import com.bugvm.apple.coregraphics.CGAffineTransform;
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.Selector;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBooleanBlock;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -89,13 +87,11 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setBounds:")
     public native void setBounds(@ByVal CGRect v);
     @Property(selector = "center")
-    public native @ByVal
-    CGPoint getCenter();
+    public native @ByVal CGPoint getCenter();
     @Property(selector = "setCenter:")
     public native void setCenter(@ByVal CGPoint v);
     @Property(selector = "transform")
-    public native @ByVal
-    CGAffineTransform getTransform();
+    public native @ByVal CGAffineTransform getTransform();
     @Property(selector = "setTransform:")
     public native void setTransform(@ByVal CGAffineTransform v);
     /**
@@ -397,8 +393,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Method(selector = "convertRect:fromView:")
     public native @ByVal CGRect convertRectFromView(@ByVal CGRect rect, UIView view);
     @Method(selector = "sizeThatFits:")
-    public native @ByVal
-    CGSize getSizeThatFits(@ByVal CGSize size);
+    public native @ByVal CGSize getSizeThatFits(@ByVal CGSize size);
     @Method(selector = "sizeToFit")
     public native void sizeToFit();
     @Method(selector = "removeFromSuperview")

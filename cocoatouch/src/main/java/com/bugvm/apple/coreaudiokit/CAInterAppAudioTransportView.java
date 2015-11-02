@@ -16,22 +16,21 @@
 package com.bugvm.apple.coreaudiokit;
 
 /*<imports>*/
-
-import com.bugvm.apple.audiounit.AudioUnit;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.uikit.UIColor;
-import com.bugvm.apple.uikit.UIFont;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.audiounit.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +40,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreAudioKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAInterAppAudioTransportView/*</name>*/ 
-    extends /*<extends>*/UIView/*</extends>*/
+    extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CAInterAppAudioTransportViewPtr extends Ptr<CAInterAppAudioTransportView, CAInterAppAudioTransportViewPtr> {}/*</ptr>*/
@@ -49,7 +48,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAInterAppAudioTransportView() {}
-    protected CAInterAppAudioTransportView(NSObject.SkipInit skipInit) { super(skipInit); }
+    protected CAInterAppAudioTransportView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isEnabled")

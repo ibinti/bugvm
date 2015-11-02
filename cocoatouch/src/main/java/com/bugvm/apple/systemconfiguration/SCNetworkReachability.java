@@ -16,26 +16,27 @@
 package com.bugvm.apple.systemconfiguration;
 
 /*<imports>*/
-
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.corefoundation.CFRunLoop;
-import com.bugvm.apple.corefoundation.CFString;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.dispatch.DispatchQueue;
-import com.bugvm.objc.LongMap;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("SystemConfiguration")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNetworkReachability/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class SCNetworkReachabilityPtr extends Ptr<SCNetworkReachability, SCNetworkReachabilityPtr> {}/*</ptr>*/

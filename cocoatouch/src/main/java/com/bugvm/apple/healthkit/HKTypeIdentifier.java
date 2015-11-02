@@ -18,8 +18,8 @@ package com.bugvm.apple.healthkit;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.bugvm.apple.foundation.NSObject;
 import com.bugvm.apple.foundation.GlobalValueEnumeration;
+import com.bugvm.apple.foundation.NSObject;
 import com.bugvm.apple.foundation.NSString;
 import com.bugvm.rt.VM;
 import com.bugvm.rt.bro.Bro;

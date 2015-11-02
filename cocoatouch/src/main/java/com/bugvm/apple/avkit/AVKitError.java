@@ -16,21 +16,30 @@
 package com.bugvm.apple.avkit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 
-import com.bugvm.apple.foundation.NSError;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.avfoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.iad.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AVKit") @StronglyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVKitError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     protected AVKitError(SkipInit skipInit) {

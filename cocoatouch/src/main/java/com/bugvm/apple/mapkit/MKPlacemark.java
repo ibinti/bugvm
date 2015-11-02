@@ -16,20 +16,22 @@
 package com.bugvm.apple.mapkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.addressbook.ABPersonAddress;
-import com.bugvm.apple.corelocation.CLLocationCoordinate2D;
-import com.bugvm.apple.corelocation.CLPlacemark;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -39,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("MapKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MKPlacemark/*</name>*/ 
-    extends /*<extends>*/CLPlacemark/*</extends>*/
+    extends /*<extends>*/CLPlacemark/*</extends>*/ 
     /*<implements>*/implements MKAnnotation/*</implements>*/ {
 
     /*<ptr>*/public static class MKPlacemarkPtr extends Ptr<MKPlacemark, MKPlacemarkPtr> {}/*</ptr>*/
@@ -50,7 +52,7 @@ import com.bugvm.rt.bro.ptr.*;
     }
     /*<constructors>*/
     protected MKPlacemark(SkipInit skipInit) { super(skipInit); }
-    public MKPlacemark(@ByVal CLLocationCoordinate2D coordinate, ABPersonAddress addressDictionary) { super((SkipInit) null); initObject(init(coordinate, addressDictionary)); }
+    public MKPlacemark(@ByVal CLLocationCoordinate2D coordinate, com.bugvm.apple.addressbook.ABPersonAddress addressDictionary) { super((SkipInit) null); initObject(init(coordinate, addressDictionary)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "countryCode")
@@ -67,6 +69,6 @@ import com.bugvm.rt.bro.ptr.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCoordinate:addressDictionary:")
-    protected native @Pointer long init(@ByVal CLLocationCoordinate2D coordinate, ABPersonAddress addressDictionary);
+    protected native @Pointer long init(@ByVal CLLocationCoordinate2D coordinate, com.bugvm.apple.addressbook.ABPersonAddress addressDictionary);
     /*</methods>*/
 }

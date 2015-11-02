@@ -16,22 +16,20 @@
 package com.bugvm.apple.eventkitui;
 
 /*<imports>*/
-
-import com.bugvm.apple.eventkit.EKCalendar;
-import com.bugvm.apple.eventkit.EKEntityType;
-import com.bugvm.apple.eventkit.EKEventStore;
-import com.bugvm.apple.foundation.NSSet;
-import com.bugvm.apple.uikit.UIViewController;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.eventkit.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +39,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("EventKitUI") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/EKCalendarChooser/*</name>*/ 
-    extends /*<extends>*/UIViewController/*</extends>*/
+    extends /*<extends>*/UIViewController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class EKCalendarChooserPtr extends Ptr<EKCalendarChooser, EKCalendarChooserPtr> {}/*</ptr>*/

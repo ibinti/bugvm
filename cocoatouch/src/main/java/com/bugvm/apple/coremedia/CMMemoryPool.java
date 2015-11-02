@@ -16,21 +16,31 @@
 package com.bugvm.apple.coremedia;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.corefoundation.CFType;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMMemoryPool/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CMMemoryPoolPtr extends Ptr<CMMemoryPool, CMMemoryPoolPtr> {}/*</ptr>*/

@@ -16,29 +16,26 @@
 package com.bugvm.apple.foundation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.avfoundation.NSCoderExtensions;
-import com.bugvm.apple.coregraphics.CGAffineTransform;
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.coremedia.CMTime;
-import com.bugvm.apple.coremedia.CMTimeMapping;
-import com.bugvm.apple.coremedia.CMTimeRange;
-import com.bugvm.apple.uikit.UIEdgeInsets;
-import com.bugvm.apple.uikit.UIOffset;
-import com.bugvm.objc.ObjCClass;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.security.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -136,42 +133,42 @@ import com.bugvm.rt.bro.ptr.*;
      */
     @WeaklyLinked
     public void encodeCMTime(String key, CMTime time) {
-        NSCoderExtensions.encodeCMTime(this, time, key);
+        com.bugvm.apple.avfoundation.NSCoderExtensions.encodeCMTime(this, time, key);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @WeaklyLinked
     public CMTime decodeCMTime(String key) {
-        return NSCoderExtensions.decodeCMTime(this, key);
+        return com.bugvm.apple.avfoundation.NSCoderExtensions.decodeCMTime(this, key);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @WeaklyLinked
     public void encodeCMTimeRange(String key, CMTimeRange timeRange) {
-        NSCoderExtensions.encodeCMTimeRange(this, timeRange, key);
+        com.bugvm.apple.avfoundation.NSCoderExtensions.encodeCMTimeRange(this, timeRange, key);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @WeaklyLinked
     public CMTimeRange decodeCMTimeRange(String key) {
-        return NSCoderExtensions.decodeCMTimeRange(this, key);
+        return com.bugvm.apple.avfoundation.NSCoderExtensions.decodeCMTimeRange(this, key);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @WeaklyLinked
     public void encodeCMTimeMapping(String key, CMTimeMapping timeMapping) {
-        NSCoderExtensions.encodeCMTimeMapping(this, timeMapping, key);
+        com.bugvm.apple.avfoundation.NSCoderExtensions.encodeCMTimeMapping(this, timeMapping, key);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @WeaklyLinked
     public CMTimeMapping decodeCMTimeMapping(String key) {
-        return NSCoderExtensions.decodeCMTimeMapping(this, key);
+        return com.bugvm.apple.avfoundation.NSCoderExtensions.decodeCMTimeMapping(this, key);
     }
     
     public void encodeBytes(byte[] bytes) {

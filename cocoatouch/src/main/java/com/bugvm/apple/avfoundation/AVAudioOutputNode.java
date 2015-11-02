@@ -16,16 +16,29 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.mediatoolbox.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,7 +56,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AVAudioOutputNode() {}
-    protected AVAudioOutputNode(NSObject.SkipInit skipInit) { super(skipInit); }
+    protected AVAudioOutputNode(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     

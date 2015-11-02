@@ -16,23 +16,29 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.coreimage.CIContext;
-import com.bugvm.apple.coreimage.CIImage;
-import com.bugvm.apple.coremedia.CMTime;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.mediatoolbox.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +48,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAsynchronousCIImageFilteringRequest/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AVAsynchronousCIImageFilteringRequestPtr extends Ptr<AVAsynchronousCIImageFilteringRequest, AVAsynchronousCIImageFilteringRequestPtr> {}/*</ptr>*/
@@ -54,11 +60,9 @@ import com.bugvm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "renderSize")
-    public native @ByVal
-    CGSize getRenderSize();
+    public native @ByVal CGSize getRenderSize();
     @Property(selector = "compositionTime")
-    public native @ByVal
-    CMTime getCompositionTime();
+    public native @ByVal CMTime getCompositionTime();
     @Property(selector = "sourceImage")
     public native CIImage getSourceImage();
     /*</properties>*/

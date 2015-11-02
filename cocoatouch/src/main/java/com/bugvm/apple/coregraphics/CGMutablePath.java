@@ -16,12 +16,20 @@
 package com.bugvm.apple.coregraphics;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -60,17 +68,17 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPathCreateMutable", optional=true)
-    public static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) CGMutablePath createMutable();
+    public static native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGMutablePath createMutable();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPathCreateMutableCopy", optional=true)
-    public static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) CGMutablePath createMutableCopy(CGPath path);
+    public static native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGMutablePath createMutableCopy(CGPath path);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CGPathCreateMutableCopyByTransformingPath", optional=true)
-    public static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) CGMutablePath createMutableCopyByTransformingPath(CGPath path, CGAffineTransform transform);
+    public static native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGMutablePath createMutableCopyByTransformingPath(CGPath path, CGAffineTransform transform);
     /**
      * @since Available in iOS 7.0 and later.
      */

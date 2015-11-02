@@ -16,33 +16,31 @@
 package com.bugvm.apple.coremedia;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coreaudio.AudioBufferList;
-import com.bugvm.apple.coreaudio.AudioStreamPacketDescription;
-import com.bugvm.apple.corefoundation.*;
-import com.bugvm.apple.corevideo.CVImageBuffer;
-import com.bugvm.apple.corevideo.CVPixelBuffer;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.LongMap;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.block.Block2;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBlock2;
-import com.bugvm.objc.block.VoidBlock4;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMSampleBuffer/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/implements CMBuffer {
 
     public static class Notifications {

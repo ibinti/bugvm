@@ -16,23 +16,27 @@
 package com.bugvm.apple.security;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.corefoundation.OSStatus;
-import com.bugvm.apple.corefoundation.OSStatusException;
-import com.bugvm.apple.foundation.CocoaUtility;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecItem/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -43,7 +47,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
     public static CFType getMatching(SecQuery query) throws OSStatusException {

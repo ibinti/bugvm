@@ -16,25 +16,26 @@
 package com.bugvm.apple.notificationcenter;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSExtensions;
-import com.bugvm.apple.uikit.UIVibrancyEffect;
-import com.bugvm.objc.ObjCClass;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("NotificationCenter")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/UIVibrancyEffectExtensions/*</name>*/ 
-    extends /*<extends>*/NSExtensions/*</extends>*/
+    extends /*<extends>*/NSExtensions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

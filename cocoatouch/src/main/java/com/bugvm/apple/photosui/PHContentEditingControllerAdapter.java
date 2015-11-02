@@ -16,28 +16,27 @@
 package com.bugvm.apple.photosui;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.photos.PHAdjustmentData;
-import com.bugvm.apple.photos.PHContentEditingInput;
-import com.bugvm.apple.photos.PHContentEditingOutput;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.NotImplemented;
-import com.bugvm.objc.block.VoidBlock1;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.photos.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PHContentEditingControllerAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements PHContentEditingController/*</implements>*/ {
 
     /*<ptr>*/

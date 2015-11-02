@@ -16,15 +16,23 @@
 package com.bugvm.apple.scenekit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 
-import com.bugvm.apple.foundation.GlobalValueEnumeration;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.glkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,7 +66,7 @@ public abstract class SCNProgramSemantic extends GlobalValueEnumeration<NSString
     static { Bro.bind(SCNProgramSemantic.class); }
 
     public static SCNProgramSemantic valueOf(NSString value) {
-        SCNProgramSemantic v = valueOf(value);
+        SCNProgramSemantic v = SCNGeometrySourceSemantic.valueOf(value);
         if (v == null) v = SCNRenderingTransform.valueOf(value);
                 
         return v;

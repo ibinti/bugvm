@@ -16,27 +16,27 @@
 package com.bugvm.apple.imageio;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.CFArray;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.coregraphics.CGDataProvider;
-import com.bugvm.apple.coregraphics.CGImage;
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSURL;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageSource/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGImageSourcePtr extends Ptr<CGImageSource, CGImageSourcePtr> {}/*</ptr>*/
@@ -102,8 +102,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateImageAtIndex", optional=true)
-    public native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class)
-    CGImage createImage(@MachineSizedUInt long index, CGImageSourceOptions options);
+    public native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createImage(@MachineSizedUInt long index, CGImageSourceOptions options);
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -16,20 +16,26 @@
 package com.bugvm.apple.spritekit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.avfoundation.*;
+import com.bugvm.apple.glkit.*;
+import com.bugvm.apple.scenekit.*;
+import com.bugvm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -37,7 +43,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKView/*</name>*/ 
-    extends /*<extends>*/UIView/*</extends>*/
+    extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class SKViewPtr extends Ptr<SKView, SKViewPtr> {}/*</ptr>*/
@@ -143,8 +149,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Method(selector = "textureFromNode:crop:")
     public native SKTexture getTextureFromNode(SKNode node, @ByVal CGRect crop);
     @Method(selector = "convertPoint:toScene:")
-    public native @ByVal
-    CGPoint convertPointToScene(@ByVal CGPoint point, SKScene scene);
+    public native @ByVal CGPoint convertPointToScene(@ByVal CGPoint point, SKScene scene);
     @Method(selector = "convertPoint:fromScene:")
     public native @ByVal CGPoint convertPointFromScene(@ByVal CGPoint point, SKScene scene);
     /*</methods>*/

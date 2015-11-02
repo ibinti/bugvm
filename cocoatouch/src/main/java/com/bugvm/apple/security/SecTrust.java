@@ -16,27 +16,27 @@
 package com.bugvm.apple.security;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.*;
-import com.bugvm.apple.dispatch.DispatchQueue;
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSDate;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecTrust/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     private static final java.lang.reflect.Method cbEvaluate;
@@ -67,7 +67,7 @@ import com.bugvm.rt.bro.ptr.*;
     }
     
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
     public static SecTrust create(SecCertificate certificate, SecPolicy policy) throws OSStatusException {

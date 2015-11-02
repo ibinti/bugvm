@@ -16,22 +16,29 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.coremedia.CMTime;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.mediatoolbox.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -71,13 +78,11 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setCustomVideoCompositorClass:")
     public native void setCustomVideoCompositorClass(Class<? extends AVVideoCompositing> v);
     @Property(selector = "frameDuration")
-    public native @ByVal
-    CMTime getFrameDuration();
+    public native @ByVal CMTime getFrameDuration();
     @Property(selector = "setFrameDuration:")
     public native void setFrameDuration(@ByVal CMTime v);
     @Property(selector = "renderSize")
-    public native @ByVal
-    CGSize getRenderSize();
+    public native @ByVal CGSize getRenderSize();
     @Property(selector = "setRenderSize:")
     public native void setRenderSize(@ByVal CGSize v);
     @Property(selector = "renderScale")

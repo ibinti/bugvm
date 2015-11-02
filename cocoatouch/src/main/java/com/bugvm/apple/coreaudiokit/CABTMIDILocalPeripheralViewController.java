@@ -16,17 +16,21 @@
 package com.bugvm.apple.coreaudiokit;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.uikit.UIViewController;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.audiounit.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -36,7 +40,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreAudioKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CABTMIDILocalPeripheralViewController/*</name>*/ 
-    extends /*<extends>*/UIViewController/*</extends>*/
+    extends /*<extends>*/UIViewController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CABTMIDILocalPeripheralViewControllerPtr extends Ptr<CABTMIDILocalPeripheralViewController, CABTMIDILocalPeripheralViewControllerPtr> {}/*</ptr>*/
@@ -44,7 +48,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CABTMIDILocalPeripheralViewController() {}
-    protected CABTMIDILocalPeripheralViewController(NSObject.SkipInit skipInit) { super(skipInit); }
+    protected CABTMIDILocalPeripheralViewController(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     

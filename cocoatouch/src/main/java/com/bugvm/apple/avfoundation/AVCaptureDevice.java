@@ -16,23 +16,29 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coremedia.CMTime;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBooleanBlock;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.mediatoolbox.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +48,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVCaptureDevice/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Notifications {
@@ -116,8 +122,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "activeVideoMinFrameDuration")
-    public native @ByVal
-    CMTime getActiveVideoMinFrameDuration();
+    public native @ByVal CMTime getActiveVideoMinFrameDuration();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -179,8 +184,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "isFocusPointOfInterestSupported")
     public native boolean isFocusPointOfInterestSupported();
     @Property(selector = "focusPointOfInterest")
-    public native @ByVal
-    CGPoint getFocusPointOfInterest();
+    public native @ByVal CGPoint getFocusPointOfInterest();
     @Property(selector = "setFocusPointOfInterest:")
     public native void setFocusPointOfInterest(@ByVal CGPoint v);
     @Property(selector = "isAdjustingFocus")

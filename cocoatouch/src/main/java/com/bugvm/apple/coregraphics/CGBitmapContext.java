@@ -16,14 +16,20 @@
 package com.bugvm.apple.coregraphics;
 
 /*<imports>*/
-
-import com.bugvm.objc.LongMap;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -125,12 +131,12 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGBitmapContextCreateWithData", optional=true)
-    private static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) CGBitmapContext create(IntPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, FunctionPtr releaseCallback, @Pointer long releaseInfo);
+    private static native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext create(IntPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, FunctionPtr releaseCallback, @Pointer long releaseInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGBitmapContextCreate", optional=true)
-    public static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) CGBitmapContext create(IntPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo);
+    public static native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext create(IntPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -180,6 +186,6 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGBitmapContextCreateImage", optional=true)
-    public native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) CGImage toImage();
+    public native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage toImage();
     /*</methods>*/
 }

@@ -16,20 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSCoder;
-import com.bugvm.apple.foundation.NSCoding;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -37,7 +40,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAValueFunction/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CAValueFunctionPtr extends Ptr<CAValueFunction, CAValueFunctionPtr> {}/*</ptr>*/

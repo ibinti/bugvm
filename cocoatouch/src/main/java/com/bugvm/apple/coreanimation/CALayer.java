@@ -16,21 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coregraphics.*;
-import com.bugvm.apple.coreimage.CIFilter;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -38,7 +40,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CALayer/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding, CAMediaTiming/*</implements>*/ {
 
     /*<ptr>*/public static class CALayerPtr extends Ptr<CALayer, CALayerPtr> {}/*</ptr>*/
@@ -53,13 +55,11 @@ import com.bugvm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bounds")
-    public native @ByVal
-    CGRect getBounds();
+    public native @ByVal CGRect getBounds();
     @Property(selector = "setBounds:")
     public native void setBounds(@ByVal CGRect v);
     @Property(selector = "position")
-    public native @ByVal
-    CGPoint getPosition();
+    public native @ByVal CGPoint getPosition();
     @Property(selector = "setPosition:")
     public native void setPosition(@ByVal CGPoint v);
     @Property(selector = "zPosition")
@@ -235,8 +235,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setShadowOpacity:")
     public native void setShadowOpacity(float v);
     @Property(selector = "shadowOffset")
-    public native @ByVal
-    CGSize getShadowOffset();
+    public native @ByVal CGSize getShadowOffset();
     @Property(selector = "setShadowOffset:")
     public native void setShadowOffset(@ByVal CGSize v);
     @Property(selector = "shadowRadius")

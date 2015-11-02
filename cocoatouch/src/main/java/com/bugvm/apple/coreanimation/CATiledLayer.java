@@ -16,18 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,8 +60,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setLevelsOfDetailBias:")
     public native void setLevelsOfDetailBias(@MachineSizedUInt long v);
     @Property(selector = "tileSize")
-    public native @ByVal
-    CGSize getTileSize();
+    public native @ByVal CGSize getTileSize();
     @Property(selector = "setTileSize:")
     public native void setTileSize(@ByVal CGSize v);
     /*</properties>*/

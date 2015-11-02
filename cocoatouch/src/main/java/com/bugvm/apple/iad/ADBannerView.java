@@ -16,22 +16,22 @@
 package com.bugvm.apple.iad;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.mediaplayer.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("iAd") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ADBannerView/*</name>*/ 
-    extends /*<extends>*/UIView/*</extends>*/
+    extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class ADBannerViewPtr extends Ptr<ADBannerView, ADBannerViewPtr> {}/*</ptr>*/
@@ -121,7 +121,6 @@ import com.bugvm.rt.bro.ptr.*;
     @Deprecated
     @WeaklyLinked
     @Method(selector = "sizeFromBannerContentSizeIdentifier:")
-    protected static native @ByVal
-    CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
+    protected static native @ByVal CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
     /*</methods>*/
 }

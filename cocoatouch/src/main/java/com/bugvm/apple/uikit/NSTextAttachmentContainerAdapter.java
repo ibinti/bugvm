@@ -16,24 +16,31 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.annotation.NotImplemented;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextAttachmentContainerAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSTextAttachmentContainer/*</implements>*/ {
 
     /*<ptr>*/

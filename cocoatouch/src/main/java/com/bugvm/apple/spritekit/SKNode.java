@@ -17,27 +17,25 @@ package com.bugvm.apple.spritekit;
 
 /*<imports>*/
 import java.io.*;
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSCoder;
-import com.bugvm.apple.foundation.NSCoding;
-import com.bugvm.apple.foundation.NSMutableDictionary;
-import com.bugvm.apple.gameplaykit.GKPolygonObstacle;
-import com.bugvm.apple.uikit.UIResponder;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock2;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.avfoundation.*;
+import com.bugvm.apple.glkit.*;
+import com.bugvm.apple.scenekit.*;
+import com.bugvm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,7 +43,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKNode/*</name>*/ 
-    extends /*<extends>*/UIResponder/*</extends>*/
+    extends /*<extends>*/UIResponder/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class SKNodePtr extends Ptr<SKNode, SKNodePtr> {}/*</ptr>*/
@@ -63,11 +61,9 @@ import com.bugvm.rt.bro.ptr.*;
     }
     /*<properties>*/
     @Property(selector = "frame")
-    public native @ByVal
-    CGRect getFrame();
+    public native @ByVal CGRect getFrame();
     @Property(selector = "position")
-    public native @ByVal
-    CGPoint getPosition();
+    public native @ByVal CGPoint getPosition();
     @Property(selector = "setPosition:")
     public native void setPosition(@ByVal CGPoint v);
     @Property(selector = "zPosition")

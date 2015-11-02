@@ -16,19 +16,19 @@
 package com.bugvm.apple.gamecontroller;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,9 +44,9 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public GCGamepadSnapshot() {}
-    protected GCGamepadSnapshot(NSObject.SkipInit skipInit) { super(skipInit); }
-    public GCGamepadSnapshot(NSData data) { super((NSObject.SkipInit) null); initObject(init(data)); }
-    public GCGamepadSnapshot(GCController controller, NSData data) { super((NSObject.SkipInit) null); initObject(init(controller, data)); }
+    protected GCGamepadSnapshot(SkipInit skipInit) { super(skipInit); }
+    public GCGamepadSnapshot(NSData data) { super((SkipInit) null); initObject(init(data)); }
+    public GCGamepadSnapshot(GCController controller, NSData data) { super((SkipInit) null); initObject(init(controller, data)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "snapshotData")

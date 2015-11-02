@@ -16,23 +16,24 @@
 package com.bugvm.apple.coreimage;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGColor;
-import com.bugvm.apple.coregraphics.CGColorSpace;
-import com.bugvm.apple.foundation.NSCoder;
-import com.bugvm.apple.foundation.NSCoding;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.uikit.CIColorExtensions;
-import com.bugvm.apple.uikit.UIColor;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.imageio.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIColor/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CIColorPtr extends Ptr<CIColor, CIColorPtr> {}/*</ptr>*/
@@ -77,7 +78,7 @@ import com.bugvm.rt.bro.ptr.*;
 
     /* UIKit extensions */
     @WeaklyLinked
-    public static CIColor fromUIColor(UIColor color) {
+    public static CIColor fromUIColor(com.bugvm.apple.uikit.UIColor color) {
         return CIColorExtensions.create(color);
     }
     

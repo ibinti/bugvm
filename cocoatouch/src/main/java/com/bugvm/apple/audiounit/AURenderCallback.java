@@ -15,11 +15,11 @@
  */
 package com.bugvm.apple.audiounit;
 
+import com.bugvm.apple.coreaudio.AudioBufferList;
 import com.bugvm.apple.coreaudio.AudioTimeStamp;
 import com.bugvm.apple.corefoundation.OSStatusException;
-import com.bugvm.apple.coreaudio.AudioBufferList;
 
 public interface AURenderCallback {
-    void onRender(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp,
+    void onRender(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, 
             int busNumber, int numberFrames, AudioBufferList data) throws OSStatusException;
 }

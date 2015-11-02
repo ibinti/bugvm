@@ -16,21 +16,29 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSURL;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.mediatoolbox.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,8 +57,8 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constructors>*/
     public AVURLAsset() {}
     protected AVURLAsset(long handle) { super(handle); }
-    protected AVURLAsset(NSObject.SkipInit skipInit) { super(skipInit); }
-    public AVURLAsset(NSURL URL, AVURLAssetOptions options) { super((NSObject.SkipInit) null); initObject(init(URL, options)); }
+    protected AVURLAsset(SkipInit skipInit) { super(skipInit); }
+    public AVURLAsset(NSURL URL, AVURLAssetOptions options) { super((SkipInit) null); initObject(init(URL, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "URL")

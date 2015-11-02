@@ -16,24 +16,19 @@
 package com.bugvm.apple.gamekit;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBlock2;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,7 +38,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("GameKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GKMatchmaker/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class GKMatchmakerPtr extends Ptr<GKMatchmaker, GKMatchmakerPtr> {}/*</ptr>*/
@@ -60,8 +55,7 @@ import com.bugvm.rt.bro.ptr.*;
      */
     @Deprecated
     @Property(selector = "inviteHandler")
-    public native @Block
-    VoidBlock2<GKInvite, NSArray<NSString>> getInviteHandler();
+    public native @Block VoidBlock2<GKInvite, NSArray<NSString>> getInviteHandler();
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 7.0.

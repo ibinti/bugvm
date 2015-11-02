@@ -16,22 +16,20 @@
 package com.bugvm.apple.assetslibrary;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGImage;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.imageio.CGImageProperties;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBlock2;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AssetsLibrary") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetsLibrary/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Notifications {

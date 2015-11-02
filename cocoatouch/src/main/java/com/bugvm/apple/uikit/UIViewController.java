@@ -16,28 +16,27 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.iad.ADInterstitialPresentationPolicy;
-import com.bugvm.apple.mediaplayer.MPMoviePlayerViewController;
-import com.bugvm.apple.mediaplayer.UIViewControllerExtensions;
-import com.bugvm.objc.ObjCClass;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.Selector;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBooleanBlock;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
+import com.bugvm.apple.iad.ADInterstitialPresentationPolicy;
+import com.bugvm.apple.mediaplayer.MPMoviePlayerViewController;
 
 /*<javadoc>*/
 /**
@@ -69,9 +68,9 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constructors>*/
     public UIViewController() {}
     protected UIViewController(long handle) { super(handle); }
-    protected UIViewController(NSObject.SkipInit skipInit) { super(skipInit); }
-    public UIViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((NSObject.SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
-    public UIViewController(NSCoder aDecoder) { super((NSObject.SkipInit) null); initObject(init(aDecoder)); }
+    protected UIViewController(SkipInit skipInit) { super(skipInit); }
+    public UIViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
+    public UIViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "view")
@@ -206,8 +205,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "preferredContentSize")
-    public native @ByVal
-    CGSize getPreferredContentSize();
+    public native @ByVal CGSize getPreferredContentSize();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -428,11 +426,11 @@ import com.bugvm.rt.bro.ptr.*;
     /* MediaPlayer extensions */
     @WeaklyLinked
     public void presentMoviePlayerViewController(MPMoviePlayerViewController moviePlayerViewController) {
-        UIViewControllerExtensions.presentMoviePlayerViewController(this, moviePlayerViewController);
+        com.bugvm.apple.mediaplayer.UIViewControllerExtensions.presentMoviePlayerViewController(this, moviePlayerViewController);
     }
     @WeaklyLinked
     public void dismissMoviePlayerViewController() {
-        UIViewControllerExtensions.dismissMoviePlayerViewController(this);
+        com.bugvm.apple.mediaplayer.UIViewControllerExtensions.dismissMoviePlayerViewController(this);
     }
     
     /*<methods>*/

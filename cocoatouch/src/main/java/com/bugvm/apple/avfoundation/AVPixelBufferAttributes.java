@@ -16,26 +16,35 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 
-import com.bugvm.apple.corefoundation.CFDictionary;
-import com.bugvm.apple.corefoundation.CFMutableDictionary;
-import com.bugvm.apple.corevideo.CVPixelBufferAttributes;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSMutableDictionary;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.avfoundation.AVVideoSettings.Keys;
+import com.bugvm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPixelBufferAttributes/*</name>*/ 
-    extends /*<extends>*/CVPixelBufferAttributes/*</extends>*/
+    extends /*<extends>*/CVPixelBufferAttributes/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     /*<ptr>*/
     /*</ptr>*/

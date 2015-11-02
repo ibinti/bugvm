@@ -16,25 +16,31 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGAffineTransform;
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.annotation.NotImplemented;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDynamicItemAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements UIDynamicItem/*</implements>*/ {
 
     /*<ptr>*/
@@ -45,16 +51,13 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("center")
-    public @ByVal
-    CGPoint getCenter() { return null; }
+    public @ByVal CGPoint getCenter() { return null; }
     @NotImplemented("setCenter:")
     public void setCenter(@ByVal CGPoint v) {}
     @NotImplemented("bounds")
-    public @ByVal
-    CGRect getBounds() { return null; }
+    public @ByVal CGRect getBounds() { return null; }
     @NotImplemented("transform")
-    public @ByVal
-    CGAffineTransform getTransform() { return null; }
+    public @ByVal CGAffineTransform getTransform() { return null; }
     @NotImplemented("setTransform:")
     public void setTransform(@ByVal CGAffineTransform v) {}
     /**

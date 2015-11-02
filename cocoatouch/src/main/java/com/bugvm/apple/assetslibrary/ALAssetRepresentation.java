@@ -16,24 +16,20 @@
 package com.bugvm.apple.assetslibrary;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGImage;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSErrorException;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSURL;
-import com.bugvm.apple.imageio.CGImageProperties;
-import com.bugvm.apple.imageio.CGImageSourceOptions;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AssetsLibrary") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetRepresentation/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class ALAssetRepresentationPtr extends Ptr<ALAssetRepresentation, ALAssetRepresentationPtr> {}/*</ptr>*/
@@ -90,8 +86,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Deprecated
     @WeaklyLinked
     @Method(selector = "dimensions")
-    public native @ByVal
-    CGSize getDimensions();
+    public native @ByVal CGSize getDimensions();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 9.0.

@@ -16,28 +16,29 @@
 package com.bugvm.apple.coretext;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.CFArray;
-import com.bugvm.apple.corefoundation.CFRange;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.coregraphics.CGContext;
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSAttributedString;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTLine/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class AsListMarshaler {
@@ -151,8 +152,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineGetStringRange", optional=true)
-    public native @ByVal
-    CFRange getStringRange();
+    public native @ByVal CFRange getStringRange();
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -172,8 +172,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CTLineGetBoundsWithOptions", optional=true)
-    public native @ByVal
-    CGRect getBounds(CTLineBoundsOptions options);
+    public native @ByVal CGRect getBounds(CTLineBoundsOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */

@@ -16,22 +16,24 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock2;
-import com.bugvm.objc.block.VoidBlock4;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,13 +51,13 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIActivityViewController() {}
-    protected UIActivityViewController(NSObject.SkipInit skipInit) { super(skipInit); }
-    public UIActivityViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((NSObject.SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
-    public UIActivityViewController(NSCoder aDecoder) { super((NSObject.SkipInit) null); initObject(init(aDecoder)); }
-    public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((NSObject.SkipInit) null); initObject(init(activityItems, applicationActivities)); }
+    protected UIActivityViewController(SkipInit skipInit) { super(skipInit); }
+    public UIActivityViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
+    public UIActivityViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(init(activityItems, applicationActivities)); }
     /*</constructors>*/
     public UIActivityViewController(List<?> activityItems, NSArray<UIActivity> applicationActivities) {
-        super((NSObject.SkipInit) null);
+        super((SkipInit) null);
         NSArray<NSObject> items = new NSMutableArray<>();
         for (Object item : activityItems) {
             if (!(item instanceof NSObject)) {
@@ -79,8 +81,7 @@ import com.bugvm.rt.bro.ptr.*;
      */
     @Deprecated
     @Property(selector = "completionHandler")
-    public native @Block
-    VoidBlock2<String, Boolean> getCompletionHandler();
+    public native @Block VoidBlock2<String, Boolean> getCompletionHandler();
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 8.0.
@@ -92,8 +93,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "completionWithItemsHandler")
-    public native @Block
-    VoidBlock4<String, Boolean, NSArray<NSObject>, NSError> getCompletionWithItemsHandler();
+    public native @Block VoidBlock4<String, Boolean, NSArray<NSObject>, NSError> getCompletionWithItemsHandler();
     /**
      * @since Available in iOS 8.0 and later.
      */

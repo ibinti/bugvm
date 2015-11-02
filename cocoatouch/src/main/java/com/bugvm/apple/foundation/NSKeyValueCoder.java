@@ -110,7 +110,7 @@ public class NSKeyValueCoder extends NSExtensions {
     private static native void setValuesForKeys(NSObject thiz, @com.bugvm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> keyedValues);
 
     
-    // BUGVM NOTE: For simplicity we only expose the key-path methods
+    // ROBOVM NOTE: For simplicity we only expose the key-path methods 
     // as they already have the same functionality as the key-only methods.
     @Method(selector = "valueForKey:")
     private static native NSObject getValueForKey(NSObject thiz, String key);

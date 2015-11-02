@@ -16,13 +16,26 @@
 package com.bugvm.apple.foundation;
 
 /*<imports>*/
-import com.bugvm.apple.uikit.UIDevice;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.security.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -167,7 +180,7 @@ import com.bugvm.rt.bro.ptr.*;
             if (parts.length > 1) minorSystemVersion = Integer.valueOf(parts[1]);
             if (parts.length > 2) patchSystemVersion = Integer.valueOf(parts[2]);
         } else {
-            // Default to minimum OS version that BugVM supports.
+            // Default to minimum OS version that RoboVM supports.
             majorSystemVersion = 6;
         }
     }

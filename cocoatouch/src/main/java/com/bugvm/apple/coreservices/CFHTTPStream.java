@@ -16,21 +16,26 @@
 package com.bugvm.apple.coreservices;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.foundation.NSInputStream;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPStream/*</name>*/ 
-    extends /*<extends>*/NSInputStream/*</extends>*/
+    extends /*<extends>*/NSInputStream/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -59,13 +64,13 @@ import com.bugvm.rt.bro.ptr.*;
      */
     @Deprecated
     @Bridge(symbol="CFReadStreamCreateForHTTPRequest", optional=true)
-    public static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) NSInputStream create(CFAllocator alloc, CFHTTPMessage request);
+    public static native @com.bugvm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSInputStream create(CFAllocator alloc, CFHTTPMessage request);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 9.0.
      */
     @Deprecated
     @Bridge(symbol="CFReadStreamCreateForStreamedHTTPRequest", optional=true)
-    public static native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) NSInputStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, NSInputStream requestBody);
+    public static native @com.bugvm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSInputStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, NSInputStream requestBody);
     /*</methods>*/
 }

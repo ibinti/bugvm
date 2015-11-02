@@ -16,21 +16,18 @@
 package com.bugvm.apple.healthkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock3;
-import com.bugvm.objc.block.VoidBlock4;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,8 +45,8 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public HKStatisticsCollectionQuery() {}
-    protected HKStatisticsCollectionQuery(NSObject.SkipInit skipInit) { super(skipInit); }
-    public HKStatisticsCollectionQuery(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents) { super((NSObject.SkipInit) null); initObject(init(quantityType, quantitySamplePredicate, options, anchorDate, intervalComponents)); }
+    protected HKStatisticsCollectionQuery(SkipInit skipInit) { super(skipInit); }
+    public HKStatisticsCollectionQuery(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents) { super((SkipInit) null); initObject(init(quantityType, quantitySamplePredicate, options, anchorDate, intervalComponents)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "anchorDate")
@@ -59,13 +56,11 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "intervalComponents")
     public native NSDateComponents getIntervalComponents();
     @Property(selector = "initialResultsHandler")
-    public native @Block
-    VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError> getInitialResultsHandler();
+    public native @Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError> getInitialResultsHandler();
     @Property(selector = "setInitialResultsHandler:")
     public native void setInitialResultsHandler(@Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError> v);
     @Property(selector = "statisticsUpdateHandler")
-    public native @Block
-    VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError> getStatisticsUpdateHandler();
+    public native @Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError> getStatisticsUpdateHandler();
     @Property(selector = "setStatisticsUpdateHandler:")
     public native void setStatisticsUpdateHandler(@Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError> v);
     /*</properties>*/

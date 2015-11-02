@@ -16,18 +16,24 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSObjectProtocol;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,16 +53,14 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "bounds")
-    @ByVal
-    CGRect getBounds();
+    @ByVal CGRect getBounds();
     /*</properties>*/
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "convertPoint:toCoordinateSpace:")
-    @ByVal
-    CGPoint convertPointToCoordinateSpace(@ByVal CGPoint point, UICoordinateSpace coordinateSpace);
+    @ByVal CGPoint convertPointToCoordinateSpace(@ByVal CGPoint point, UICoordinateSpace coordinateSpace);
     /**
      * @since Available in iOS 8.0 and later.
      */

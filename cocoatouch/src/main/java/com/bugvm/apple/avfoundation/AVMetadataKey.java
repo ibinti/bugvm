@@ -16,14 +16,27 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
 
-import com.bugvm.apple.foundation.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -31,7 +44,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 @Marshaler(AVMetadataKey.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ abstract class /*<name>*/AVMetadataKey/*</name>*/ 
-    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     protected AVMetadataKey(Class<?> clazz, String getterName) {

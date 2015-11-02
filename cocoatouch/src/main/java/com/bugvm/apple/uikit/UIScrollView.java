@@ -16,22 +16,24 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSCoding;
-import com.bugvm.apple.foundation.NSSet;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,13 +60,11 @@ import com.bugvm.rt.bro.ptr.*;
     
     /*<properties>*/
     @Property(selector = "contentOffset")
-    public native @ByVal
-    CGPoint getContentOffset();
+    public native @ByVal CGPoint getContentOffset();
     @Property(selector = "setContentOffset:")
     public native void setContentOffset(@ByVal CGPoint v);
     @Property(selector = "contentSize")
-    public native @ByVal
-    CGSize getContentSize();
+    public native @ByVal CGSize getContentSize();
     @Property(selector = "setContentSize:")
     public native void setContentSize(@ByVal CGSize v);
     @Property(selector = "contentInset")

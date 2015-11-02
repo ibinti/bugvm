@@ -16,19 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -60,8 +64,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setLifetime:")
     public native void setLifetime(float v);
     @Property(selector = "emitterPosition")
-    public native @ByVal
-    CGPoint getEmitterPosition();
+    public native @ByVal CGPoint getEmitterPosition();
     @Property(selector = "setEmitterPosition:")
     public native void setEmitterPosition(@ByVal CGPoint v);
     @Property(selector = "emitterZPosition")
@@ -69,8 +72,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setEmitterZPosition:")
     public native void setEmitterZPosition(@MachineSizedFloat double v);
     @Property(selector = "emitterSize")
-    public native @ByVal
-    CGSize getEmitterSize();
+    public native @ByVal CGSize getEmitterSize();
     @Property(selector = "setEmitterSize:")
     public native void setEmitterSize(@ByVal CGSize v);
     @Property(selector = "emitterDepth")

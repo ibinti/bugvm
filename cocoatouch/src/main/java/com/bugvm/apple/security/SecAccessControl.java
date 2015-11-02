@@ -16,23 +16,27 @@
 package com.bugvm.apple.security;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSErrorException;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecAccessControl/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class SecAccessControlPtr extends Ptr<SecAccessControl, SecAccessControlPtr> {}/*</ptr>*/

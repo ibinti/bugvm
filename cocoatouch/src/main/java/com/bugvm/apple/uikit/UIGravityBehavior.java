@@ -16,19 +16,24 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coregraphics.CGVector;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,8 +58,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "items")
     public native List<UIDynamicItem> getItems();
     @Property(selector = "gravityDirection")
-    public native @ByVal
-    CGVector getGravityDirection();
+    public native @ByVal CGVector getGravityDirection();
     @Property(selector = "setGravityDirection:")
     public native void setGravityDirection(@ByVal CGVector v);
     @Property(selector = "angle")

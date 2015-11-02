@@ -16,22 +16,26 @@
 package com.bugvm.apple.spritekit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSCoder;
-import com.bugvm.apple.uikit.UIColor;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.avfoundation.*;
+import com.bugvm.apple.glkit.*;
+import com.bugvm.apple.scenekit.*;
+import com.bugvm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -103,8 +107,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setShadowedBitMask:")
     public native void setShadowedBitMask(int v);
     @Property(selector = "centerRect")
-    public native @ByVal
-    CGRect getCenterRect();
+    public native @ByVal CGRect getCenterRect();
     @Property(selector = "setCenterRect:")
     public native void setCenterRect(@ByVal CGRect v);
     @Property(selector = "colorBlendFactor")
@@ -120,8 +123,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setBlendMode:")
     public native void setBlendMode(SKBlendMode v);
     @Property(selector = "anchorPoint")
-    public native @ByVal
-    CGPoint getAnchorPoint();
+    public native @ByVal CGPoint getAnchorPoint();
     @Property(selector = "setAnchorPoint:")
     public native void setAnchorPoint(@ByVal CGPoint v);
     @Property(selector = "size")

@@ -16,22 +16,20 @@
 package com.bugvm.apple.cloudkit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSNumber;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.uikit.UIRemoteNotification;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +39,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CloudKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CKNotification/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CKNotificationPtr extends Ptr<CKNotification, CKNotificationPtr> {}/*</ptr>*/
@@ -50,7 +48,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constructors>*/
     public CKNotification() {}
     protected CKNotification(SkipInit skipInit) { super(skipInit); }
-    public CKNotification(UIRemoteNotification notificationDictionary) { super(create(notificationDictionary)); retain(getHandle()); }
+    public CKNotification(com.bugvm.apple.uikit.UIRemoteNotification notificationDictionary) { super(create(notificationDictionary)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "notificationType")
@@ -89,6 +87,6 @@ import com.bugvm.rt.bro.ptr.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "notificationFromRemoteNotificationDictionary:")
-    protected static native @Pointer long create(UIRemoteNotification notificationDictionary);
+    protected static native @Pointer long create(com.bugvm.apple.uikit.UIRemoteNotification notificationDictionary);
     /*</methods>*/
 }

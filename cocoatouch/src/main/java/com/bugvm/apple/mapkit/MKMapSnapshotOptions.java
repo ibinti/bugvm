@@ -16,18 +16,22 @@
 package com.bugvm.apple.mapkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -37,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("MapKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MKMapSnapshotOptions/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class MKMapSnapshotOptionsPtr extends Ptr<MKMapSnapshotOptions, MKMapSnapshotOptionsPtr> {}/*</ptr>*/
@@ -73,8 +77,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setShowsBuildings:")
     public native void setShowsBuildings(boolean v);
     @Property(selector = "size")
-    public native @ByVal
-    CGSize getSize();
+    public native @ByVal CGSize getSize();
     @Property(selector = "setSize:")
     public native void setSize(@ByVal CGSize v);
     @Property(selector = "scale")

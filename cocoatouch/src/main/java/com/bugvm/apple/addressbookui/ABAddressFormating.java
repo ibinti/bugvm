@@ -16,21 +16,28 @@
 package com.bugvm.apple.addressbookui;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFDictionary;
-import com.bugvm.apple.foundation.CocoaUtility;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.addressbook.*;
 /*</imports>*/
+import com.bugvm.apple.corefoundation.CFDictionary;
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBookUI")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABAddressFormating/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

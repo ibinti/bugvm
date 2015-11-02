@@ -16,24 +16,23 @@
 package com.bugvm.apple.metalkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coreanimation.CAMetalDrawable;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSCoder;
-import com.bugvm.apple.foundation.NSCoding;
-import com.bugvm.apple.metal.*;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.metal.*;
+import com.bugvm.apple.modelio.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreanimation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,7 +42,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("MetalKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MTKView/*</name>*/ 
-    extends /*<extends>*/UIView/*</extends>*/
+    extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class MTKViewPtr extends Ptr<MTKView, MTKViewPtr> {}/*</ptr>*/
@@ -87,8 +86,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setSampleCount:")
     public native void setSampleCount(@MachineSizedUInt long v);
     @Property(selector = "clearColor")
-    public native @ByVal
-    MTLClearColor getClearColor();
+    public native @ByVal MTLClearColor getClearColor();
     @Property(selector = "setClearColor:")
     public native void setClearColor(@ByVal MTLClearColor v);
     @Property(selector = "clearDepth")
@@ -118,8 +116,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setAutoResizeDrawable:")
     public native void setAutoResizeDrawable(boolean v);
     @Property(selector = "drawableSize")
-    public native @ByVal
-    CGSize getDrawableSize();
+    public native @ByVal CGSize getDrawableSize();
     @Property(selector = "setDrawableSize:")
     public native void setDrawableSize(@ByVal CGSize v);
     @Property(selector = "isPaused")

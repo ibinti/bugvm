@@ -16,24 +16,24 @@
 package com.bugvm.apple.uikit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coreanimation.CATransform3D;
-import com.bugvm.apple.coregraphics.CGAffineTransform;
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSIndexPath;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,7 +43,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UICollectionViewLayoutAttributes/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements UIDynamicItem/*</implements>*/ {
 
     /*<ptr>*/public static class UICollectionViewLayoutAttributesPtr extends Ptr<UICollectionViewLayoutAttributes, UICollectionViewLayoutAttributesPtr> {}/*</ptr>*/
@@ -55,23 +55,19 @@ import com.bugvm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "frame")
-    public native @ByVal
-    CGRect getFrame();
+    public native @ByVal CGRect getFrame();
     @Property(selector = "setFrame:")
     public native void setFrame(@ByVal CGRect v);
     @Property(selector = "center")
-    public native @ByVal
-    CGPoint getCenter();
+    public native @ByVal CGPoint getCenter();
     @Property(selector = "setCenter:")
     public native void setCenter(@ByVal CGPoint v);
     @Property(selector = "size")
-    public native @ByVal
-    CGSize getSize();
+    public native @ByVal CGSize getSize();
     @Property(selector = "setSize:")
     public native void setSize(@ByVal CGSize v);
     @Property(selector = "transform3D")
-    public native @ByVal
-    CATransform3D getTransform3D();
+    public native @ByVal CATransform3D getTransform3D();
     @Property(selector = "setTransform3D:")
     public native void setTransform3D(@ByVal CATransform3D v);
     /**
@@ -88,8 +84,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "transform")
-    public native @ByVal
-    CGAffineTransform getTransform();
+    public native @ByVal CGAffineTransform getTransform();
     /**
      * @since Available in iOS 7.0 and later.
      */

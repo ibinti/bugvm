@@ -16,18 +16,20 @@
 package com.bugvm.apple.coredata;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
 /*</imports>*/
+import com.bugvm.apple.foundation.NSError.NSErrorPtr;
 
 /*<javadoc>*/
 /**
@@ -71,7 +73,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Method(selector = "save:")
     private native boolean save(NSError.NSErrorPtr error);
     @Method(selector = "newCacheNodeForManagedObject:")
-    public native @com.bugvm.rt.bro.annotation.Marshaler(NoRetainMarshaler.class) NSAtomicStoreCacheNode newCacheNode(NSManagedObject managedObject);
+    public native @com.bugvm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSAtomicStoreCacheNode newCacheNode(NSManagedObject managedObject);
     @Method(selector = "updateCacheNode:fromManagedObject:")
     public native void updateCacheNode(NSAtomicStoreCacheNode node, NSManagedObject managedObject);
     @Method(selector = "cacheNodes")

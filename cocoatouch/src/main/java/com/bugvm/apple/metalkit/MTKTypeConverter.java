@@ -16,24 +16,30 @@
 package com.bugvm.apple.metalkit;
 
 /*<imports>*/
-import com.bugvm.apple.foundation.CocoaUtility;
-import com.bugvm.apple.metal.MTLVertexDescriptor;
-import com.bugvm.apple.metal.MTLVertexFormat;
-import com.bugvm.apple.modelio.MDLVertexDescriptor;
-import com.bugvm.apple.modelio.MDLVertexFormat;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.metal.*;
+import com.bugvm.apple.modelio.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreanimation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("MetalKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MTKTypeConverter/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

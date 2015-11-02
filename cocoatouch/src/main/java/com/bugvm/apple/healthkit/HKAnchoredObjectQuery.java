@@ -16,22 +16,18 @@
 package com.bugvm.apple.healthkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSPredicate;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.block.VoidBlock4;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,8 +47,8 @@ import com.bugvm.rt.bro.ptr.*;
     /*</constants>*/
     /*<constructors>*/
     public HKAnchoredObjectQuery() {}
-    protected HKAnchoredObjectQuery(NSObject.SkipInit skipInit) { super(skipInit); }
-    public HKAnchoredObjectQuery(HKSampleType type, NSPredicate predicate, @MachineSizedUInt long anchor, @MachineSizedUInt long limit, @Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, NSError> handler) { super((NSObject.SkipInit) null); initObject(init(type, predicate, anchor, limit, handler)); }
+    protected HKAnchoredObjectQuery(SkipInit skipInit) { super(skipInit); }
+    public HKAnchoredObjectQuery(HKSampleType type, NSPredicate predicate, @MachineSizedUInt long anchor, @MachineSizedUInt long limit, @Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, NSError> handler) { super((SkipInit) null); initObject(init(type, predicate, anchor, limit, handler)); }
     /*</constructors>*/
     /*<properties>*/
     

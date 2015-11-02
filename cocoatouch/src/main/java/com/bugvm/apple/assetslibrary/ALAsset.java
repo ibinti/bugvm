@@ -16,25 +16,20 @@
 package com.bugvm.apple.assetslibrary;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coregraphics.CGImage;
-import com.bugvm.apple.corelocation.CLLocation;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.imageio.CGImageProperties;
-import com.bugvm.apple.imageio.CGImagePropertyOrientation;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AssetsLibrary") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAsset/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class ALAssetPtr extends Ptr<ALAsset, ALAssetPtr> {}/*</ptr>*/
@@ -83,8 +78,8 @@ import com.bugvm.rt.bro.ptr.*;
         return null;
     }
     @WeaklyLinked
-    public CLLocation getLocation() {
-        CLLocation val = getPropertyValue(ALAssetProperty.Location, CLLocation.class);
+    public com.bugvm.apple.corelocation.CLLocation getLocation() {
+        com.bugvm.apple.corelocation.CLLocation val = getPropertyValue(ALAssetProperty.Location, com.bugvm.apple.corelocation.CLLocation.class);
         if (val != null) {
             return val;
         }

@@ -15,10 +15,7 @@
  */
 package com.bugvm.apple.accounts;
 
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSDictionaryWrapper;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
+import com.bugvm.apple.foundation.*;
 
 public abstract class ACAccountOptions extends NSDictionaryWrapper {
 

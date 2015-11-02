@@ -16,31 +16,22 @@
 package com.bugvm.apple.photos;
 
 /*<imports>*/
-
-import com.bugvm.apple.avfoundation.AVAsset;
-import com.bugvm.apple.avfoundation.AVAssetExportSession;
-import com.bugvm.apple.avfoundation.AVAudioMix;
-import com.bugvm.apple.avfoundation.AVPlayerItem;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.apple.uikit.UIImageOrientation;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.block.VoidBlock2;
-import com.bugvm.objc.block.VoidBlock3;
-import com.bugvm.objc.block.VoidBlock4;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.avfoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("Photos") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PHImageManager/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class PHImageManagerPtr extends Ptr<PHImageManager, PHImageManagerPtr> {}/*</ptr>*/
@@ -71,8 +62,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="PHImageManagerMaximumSize", optional=true)
-    public static native @ByVal
-    CGSize getMaximumSize();
+    public static native @ByVal CGSize getMaximumSize();
     
     @WeaklyLinked
     @Method(selector = "requestImageForAsset:targetSize:contentMode:options:resultHandler:")

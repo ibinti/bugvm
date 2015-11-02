@@ -16,23 +16,20 @@
 package com.bugvm.apple.cloudkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock2;
-import com.bugvm.objc.block.VoidBlock3;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -75,8 +72,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setAtomic:")
     public native void setAtomic(boolean v);
     @Property(selector = "perRecordProgressBlock")
-    public native @Block
-    VoidBlock2<CKRecord, Double> getPerRecordProgressBlock();
+    public native @Block VoidBlock2<CKRecord, Double> getPerRecordProgressBlock();
     @Property(selector = "setPerRecordProgressBlock:")
     public native void setPerRecordProgressBlock(@Block VoidBlock2<CKRecord, Double> v);
     @Property(selector = "perRecordCompletionBlock")
@@ -84,8 +80,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setPerRecordCompletionBlock:")
     public native void setPerRecordCompletionBlock(@Block VoidBlock2<CKRecord, NSError> v);
     @Property(selector = "modifyRecordsCompletionBlock")
-    public native @Block
-    VoidBlock3<NSArray<CKRecord>, NSArray<CKRecordID>, NSError> getModifyRecordsCompletionBlock();
+    public native @Block VoidBlock3<NSArray<CKRecord>, NSArray<CKRecordID>, NSError> getModifyRecordsCompletionBlock();
     @Property(selector = "setModifyRecordsCompletionBlock:")
     public native void setModifyRecordsCompletionBlock(@Block VoidBlock3<NSArray<CKRecord>, NSArray<CKRecordID>, NSError> v);
     /*</properties>*/

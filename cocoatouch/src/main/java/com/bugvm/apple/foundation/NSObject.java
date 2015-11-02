@@ -18,18 +18,26 @@ package com.bugvm.apple.foundation;
 import static com.bugvm.rt.bro.MarshalerFlags.*;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
 import com.bugvm.objc.*;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.security.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +52,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Marshaler(NSObject.Marshaler.class)
 })
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSObject/*</name>*/ 
-    extends /*<extends>*/ObjCObject/*</extends>*/
+    extends /*<extends>*/ObjCObject/*</extends>*/ 
     /*<implements>*/implements NSObjectProtocol/*</implements>*/ {
 
     public static final int FLAG_NO_RETAIN = 0x1;

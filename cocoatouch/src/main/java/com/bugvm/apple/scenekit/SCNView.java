@@ -16,29 +16,25 @@
 package com.bugvm.apple.scenekit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.opengles.EAGLContext;
-import com.bugvm.apple.spritekit.SKScene;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.Block0;
-import com.bugvm.objc.block.VoidBooleanBlock;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.glkit.*;
+import com.bugvm.apple.spritekit.*;
+import com.bugvm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +42,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNView/*</name>*/ 
-    extends /*<extends>*/UIView/*</extends>*/
+    extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*/implements SCNSceneRenderer, SCNTechniqueSupport/*</implements>*/ {
 
     /*<ptr>*/public static class SCNViewPtr extends Ptr<SCNView, SCNViewPtr> {}/*</ptr>*/

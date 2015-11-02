@@ -16,20 +16,29 @@
 package com.bugvm.apple.iad;
 
 /*<imports>*/
-import com.bugvm.apple.foundation.NSError;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.mediaplayer.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("iAd") @StronglyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ADError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     protected ADError(SkipInit skipInit) {

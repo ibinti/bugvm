@@ -16,16 +16,26 @@
 package com.bugvm.apple.corefoundation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSObject;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreservices.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coretext.*;
 /*</imports>*/
+import com.bugvm.apple.foundation.NSObject;
+import com.bugvm.apple.foundation.NSObject.NSObjectPtr;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -61,7 +71,7 @@ import com.bugvm.rt.bro.ptr.*;
         if (objects.length == 0) {
             return create(null, null, 0, getTypeCallBacks());
         }
-        NSObject.NSObjectPtr values = Struct.allocate(NSObject.NSObjectPtr.class, objects.length);
+        NSObjectPtr values = Struct.allocate(NSObjectPtr.class, objects.length);
         values.set(objects);
         return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, getTypeCallBacks());
     }

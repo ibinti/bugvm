@@ -16,15 +16,22 @@
 package com.bugvm.apple.mapkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.corelocation.CLLocationCoordinate2D;
-import com.bugvm.objc.annotation.NotImplemented;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,8 +49,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("coordinate")
-    public @ByVal
-    CLLocationCoordinate2D getCoordinate() { return null; }
+    public @ByVal CLLocationCoordinate2D getCoordinate() { return null; }
     @NotImplemented("boundingMapRect")
     public @ByVal MKMapRect getBoundingMapRect() { return null; }
     /*</properties>*/

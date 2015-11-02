@@ -16,23 +16,24 @@
 package com.bugvm.apple.coreimage;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.*;
-import com.bugvm.apple.corevideo.CVPixelBuffer;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.imageio.CGImageProperties;
-import com.bugvm.apple.imageio.CGImagePropertyOrientation;
-import com.bugvm.apple.uikit.CIImageExtensions;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.imageio.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIImage/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CIImagePtr extends Ptr<CIImage, CIImagePtr> {}/*</ptr>*/
@@ -80,17 +81,17 @@ import com.bugvm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIImage(UIImage image) {
+    public CIImage(com.bugvm.apple.uikit.UIImage image) {
         super((SkipInit) null);
-        CIImage i = CIImageExtensions.create(image);
+        CIImage i = com.bugvm.apple.uikit.CIImageExtensions.create(image);
         initObject(i.getHandle());
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIImage(UIImage image, CIImageOptions options) {
+    public CIImage(com.bugvm.apple.uikit.UIImage image, CIImageOptions options) {
         super((SkipInit) null);
-        CIImage i = CIImageExtensions.create(image, options);
+        CIImage i = com.bugvm.apple.uikit.CIImageExtensions.create(image, options);
         initObject(i.getHandle());
     }
     /*<methods>*/

@@ -16,20 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.scenekit.CAAnimationExtensions;
-import com.bugvm.apple.scenekit.SCNAnimationEvent;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 import com.bugvm.rt.annotation.WeaklyLinked;
 
@@ -54,35 +57,35 @@ import com.bugvm.rt.annotation.WeaklyLinked;
     /* SceneKit extensions */
     @WeaklyLinked
     public boolean usesSceneTimeBase() {
-        return CAAnimationExtensions.usesSceneTimeBase(this);
+        return com.bugvm.apple.scenekit.CAAnimationExtensions.usesSceneTimeBase(this);
     }
     @WeaklyLinked
     public void setUsesSceneTimeBase(boolean v) {
-        CAAnimationExtensions.setUsesSceneTimeBase(this, v);
+        com.bugvm.apple.scenekit.CAAnimationExtensions.setUsesSceneTimeBase(this, v);
     }
     @WeaklyLinked
     public @MachineSizedFloat double getFadeInDuration() {
-        return CAAnimationExtensions.getFadeInDuration(this);
+        return com.bugvm.apple.scenekit.CAAnimationExtensions.getFadeInDuration(this);
     }
     @WeaklyLinked
     public void setFadeInDuration(@MachineSizedFloat double v) {
-        CAAnimationExtensions.setFadeInDuration(this, v);
+        com.bugvm.apple.scenekit.CAAnimationExtensions.setFadeInDuration(this, v);
     }
     @WeaklyLinked
     public @MachineSizedFloat double getFadeOutDuration() {
-        return CAAnimationExtensions.getFadeOutDuration(this);
+        return com.bugvm.apple.scenekit.CAAnimationExtensions.getFadeOutDuration(this);
     }
     @WeaklyLinked
     public void setFadeOutDuration(@MachineSizedFloat double v) {
-        CAAnimationExtensions.setFadeOutDuration(this, v);
+        com.bugvm.apple.scenekit.CAAnimationExtensions.setFadeOutDuration(this, v);
     }
     @WeaklyLinked
-    public NSArray<SCNAnimationEvent> getAnimationEvents() {
-        return CAAnimationExtensions.getAnimationEvents(this);
+    public NSArray<com.bugvm.apple.scenekit.SCNAnimationEvent> getAnimationEvents() {
+        return com.bugvm.apple.scenekit.CAAnimationExtensions.getAnimationEvents(this);
     }
     @WeaklyLinked
-    public void setAnimationEvents(NSArray<SCNAnimationEvent> v) {
-        CAAnimationExtensions.setAnimationEvents(this, v);
+    public void setAnimationEvents(NSArray<com.bugvm.apple.scenekit.SCNAnimationEvent> v) {
+        com.bugvm.apple.scenekit.CAAnimationExtensions.setAnimationEvents(this, v);
     }
     /*<properties>*/
     @Property(selector = "timingFunction")

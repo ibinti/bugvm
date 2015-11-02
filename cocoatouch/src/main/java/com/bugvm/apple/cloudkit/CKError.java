@@ -16,23 +16,27 @@
 package com.bugvm.apple.cloudkit;
 
 /*<imports>*/
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSErrorUserInfo;
-import com.bugvm.apple.foundation.NSNumber;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CloudKit") @StronglyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CKError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     protected CKError(SkipInit skipInit) {

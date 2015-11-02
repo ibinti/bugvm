@@ -16,18 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -35,7 +40,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATransaction/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CATransactionPtr extends Ptr<CATransaction, CATransactionPtr> {}/*</ptr>*/
@@ -76,8 +81,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Method(selector = "setDisableActions:")
     public static native void setDisablesActions(boolean flag);
     @Method(selector = "completionBlock")
-    public static native @Block
-    Runnable getCompletionBlock();
+    public static native @Block Runnable getCompletionBlock();
     @Method(selector = "setCompletionBlock:")
     public static native void setCompletionBlock(@Block Runnable block);
     @Method(selector = "valueForKey:")

@@ -16,20 +16,22 @@
 package com.bugvm.apple.mapkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.corelocation.CLLocationCoordinate2D;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,23 +49,23 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MKPolygon() {}
-    protected MKPolygon(NSObject.SkipInit skipInit) { super(skipInit); }
+    protected MKPolygon(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     public MKPolygon(MKMapPoint[] points) {
         super(create0(points));
-        NSObject.retain(getHandle());
+        retain(getHandle());
     }
     public MKPolygon(MKMapPoint[] points, NSArray<MKPolygon> interiorPolygons) {
         super(create0(points, interiorPolygons));
-        NSObject.retain(getHandle());
+        retain(getHandle());
     }
     public MKPolygon(CLLocationCoordinate2D[] coords) {
         super(create0(coords));
-        NSObject.retain(getHandle());
+        retain(getHandle());
     }
     public MKPolygon(CLLocationCoordinate2D[] coords, NSArray<MKPolygon> interiorPolygons) {
         super(create0(coords, interiorPolygons));
-        NSObject.retain(getHandle());
+        retain(getHandle());
     }
     /*<properties>*/
     @Property(selector = "interiorPolygons")

@@ -16,21 +16,20 @@
 package com.bugvm.apple.corelocation;
 
 /*<imports>*/
-
-import com.bugvm.apple.corebluetooth.CBAdvertisementData;
-import com.bugvm.apple.foundation.NSNumber;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSUUID;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.addressbook.*;
+import com.bugvm.apple.corebluetooth.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,10 +47,10 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CLBeaconRegion() {}
-    protected CLBeaconRegion(NSObject.SkipInit skipInit) { super(skipInit); }
-    public CLBeaconRegion(NSUUID proximityUUID, String identifier) { super((NSObject.SkipInit) null); initObject(init(proximityUUID, identifier)); }
-    public CLBeaconRegion(NSUUID proximityUUID, short major, String identifier) { super((NSObject.SkipInit) null); initObject(init(proximityUUID, major, identifier)); }
-    public CLBeaconRegion(NSUUID proximityUUID, short major, short minor, String identifier) { super((NSObject.SkipInit) null); initObject(init(proximityUUID, major, minor, identifier)); }
+    protected CLBeaconRegion(SkipInit skipInit) { super(skipInit); }
+    public CLBeaconRegion(NSUUID proximityUUID, String identifier) { super((SkipInit) null); initObject(init(proximityUUID, identifier)); }
+    public CLBeaconRegion(NSUUID proximityUUID, short major, String identifier) { super((SkipInit) null); initObject(init(proximityUUID, major, identifier)); }
+    public CLBeaconRegion(NSUUID proximityUUID, short major, short minor, String identifier) { super((SkipInit) null); initObject(init(proximityUUID, major, minor, identifier)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "proximityUUID")

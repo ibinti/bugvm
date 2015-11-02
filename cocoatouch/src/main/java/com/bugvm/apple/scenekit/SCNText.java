@@ -16,23 +16,25 @@
 package com.bugvm.apple.scenekit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coreanimation.CATextAlignmentMode;
-import com.bugvm.apple.coreanimation.CATextTruncationMode;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSAttributedString;
-import com.bugvm.apple.uikit.UIBezierPath;
-import com.bugvm.apple.uikit.UIFont;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.glkit.*;
+import com.bugvm.apple.spritekit.*;
+import com.bugvm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -70,8 +72,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setWrapped:")
     public native void setWrapped(boolean v);
     @Property(selector = "containerFrame")
-    public native @ByVal
-    CGRect getContainerFrame();
+    public native @ByVal CGRect getContainerFrame();
     @Property(selector = "setContainerFrame:")
     public native void setContainerFrame(@ByVal CGRect v);
     @Property(selector = "truncationMode")

@@ -16,40 +16,37 @@
 package com.bugvm.apple.foundation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coreanimation.CATransform3D;
-import com.bugvm.apple.coreanimation.NSValueExtensions;
-import com.bugvm.apple.coregraphics.CGAffineTransform;
-import com.bugvm.apple.coregraphics.CGPoint;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.corelocation.CLLocationCoordinate2D;
-import com.bugvm.apple.coremedia.CMTime;
-import com.bugvm.apple.coremedia.CMTimeMapping;
-import com.bugvm.apple.coremedia.CMTimeRange;
-import com.bugvm.apple.mapkit.MKCoordinateSpan;
-import com.bugvm.apple.scenekit.SCNMatrix4;
-import com.bugvm.apple.scenekit.SCNVector3;
-import com.bugvm.apple.scenekit.SCNVector4;
-import com.bugvm.apple.uikit.UIEdgeInsets;
-import com.bugvm.apple.uikit.UIOffset;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coredata.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.security.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
+import com.bugvm.apple.corelocation.CLLocationCoordinate2D;
+import com.bugvm.apple.mapkit.MKCoordinateSpan;
+import com.bugvm.apple.scenekit.SCNMatrix4;
+import com.bugvm.apple.scenekit.SCNVector3;
+import com.bugvm.apple.scenekit.SCNVector4;
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass
-@WeaklyLinked/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @NativeClass @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSValue/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -188,11 +185,11 @@ import com.bugvm.rt.bro.ptr.*;
     /* CoreAnimation extensions */
     @WeaklyLinked
     public CATransform3D transform3DValue() {
-        return NSValueExtensions.getCATransform3DValue(this);
+        return com.bugvm.apple.coreanimation.NSValueExtensions.getCATransform3DValue(this);
     }
     @WeaklyLinked
     public static NSValue valueOf(CATransform3D t) {
-        return NSValueExtensions.create(t);
+        return com.bugvm.apple.coreanimation.NSValueExtensions.create(t);
     }
     
     /* MapKit extensions */

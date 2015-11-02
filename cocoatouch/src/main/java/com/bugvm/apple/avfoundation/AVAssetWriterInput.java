@@ -16,28 +16,29 @@
 package com.bugvm.apple.avfoundation;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGAffineTransform;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.coremedia.CMFormatDescription;
-import com.bugvm.apple.coremedia.CMSampleBuffer;
-import com.bugvm.apple.coremedia.CMTime;
-import com.bugvm.apple.dispatch.DispatchQueue;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSURL;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.mediatoolbox.*;
+import com.bugvm.apple.audiotoolbox.*;
+import com.bugvm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +48,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAssetWriterInput/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AVAssetWriterInputPtr extends Ptr<AVAssetWriterInput, AVAssetWriterInputPtr> {}/*</ptr>*/
@@ -131,16 +132,14 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "naturalSize")
-    public native @ByVal
-    CGSize getNaturalSize();
+    public native @ByVal CGSize getNaturalSize();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setNaturalSize:")
     public native void setNaturalSize(@ByVal CGSize v);
     @Property(selector = "transform")
-    public native @ByVal
-    CGAffineTransform getTransform();
+    public native @ByVal CGAffineTransform getTransform();
     @Property(selector = "setTransform:")
     public native void setTransform(@ByVal CGAffineTransform v);
     /**
@@ -177,8 +176,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "preferredMediaChunkDuration")
-    public native @ByVal
-    CMTime getPreferredMediaChunkDuration();
+    public native @ByVal CMTime getPreferredMediaChunkDuration();
     /**
      * @since Available in iOS 8.0 and later.
      */

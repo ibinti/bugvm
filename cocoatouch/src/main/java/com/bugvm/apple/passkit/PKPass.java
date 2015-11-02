@@ -16,19 +16,21 @@
 package com.bugvm.apple.passkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.addressbook.*;
+import com.bugvm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,9 +46,9 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public PKPass() {}
-    protected PKPass(NSObject.SkipInit skipInit) { super(skipInit); }
+    protected PKPass(SkipInit skipInit) { super(skipInit); }
     public PKPass(NSData data) throws NSErrorException {
-       super((NSObject.SkipInit) null);
+       super((SkipInit) null);
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        long handle = init(data, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }

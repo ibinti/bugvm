@@ -16,25 +16,29 @@
 package com.bugvm.apple.corevideo;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.apple.metal.MTLDevice;
-import com.bugvm.apple.metal.MTLPixelFormat;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreVideo") @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CVMetalTextureCache/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CVMetalTextureCachePtr extends Ptr<CVMetalTextureCache, CVMetalTextureCachePtr> {}/*</ptr>*/

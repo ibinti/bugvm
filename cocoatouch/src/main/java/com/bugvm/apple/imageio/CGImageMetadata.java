@@ -16,26 +16,27 @@
 package com.bugvm.apple.imageio;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.CFString;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageMetadata/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGImageMetadataPtr extends Ptr<CGImageMetadata, CGImageMetadataPtr> {}/*</ptr>*/
@@ -145,8 +146,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCreateXMPData", optional=true)
-    public native @com.bugvm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class)
-    NSData createXMPData(NSDictionary options);
+    public native @com.bugvm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData createXMPData(NSDictionary options);
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -16,29 +16,27 @@
 package com.bugvm.apple.security;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.CFArray;
-import com.bugvm.apple.corefoundation.CFDictionary;
-import com.bugvm.apple.corefoundation.CFString;
-import com.bugvm.apple.foundation.CocoaUtility;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecSharedCredential/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

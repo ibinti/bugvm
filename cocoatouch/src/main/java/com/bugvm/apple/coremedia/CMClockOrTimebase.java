@@ -16,22 +16,31 @@
 package com.bugvm.apple.coremedia;
 
 /*<imports>*/
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.corefoundation.OSStatus;
-import com.bugvm.apple.corefoundation.OSStatusException;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMClockOrTimebase/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CMClockOrTimebasePtr extends Ptr<CMClockOrTimebase, CMClockOrTimebasePtr> {}/*</ptr>*/
@@ -41,7 +50,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
     public CMTime getAnchorTime() throws OSStatusException {

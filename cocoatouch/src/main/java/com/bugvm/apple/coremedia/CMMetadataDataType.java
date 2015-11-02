@@ -16,16 +16,24 @@
 package com.bugvm.apple.coremedia;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.*;
-import com.bugvm.apple.foundation.CocoaUtility;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -33,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
 @Marshaler(CMMetadataDataType.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMMetadataDataType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -68,7 +76,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
     public void register(String description, List<String> conformingDataTypes) throws OSStatusException {

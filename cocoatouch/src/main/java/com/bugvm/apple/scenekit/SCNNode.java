@@ -16,25 +16,25 @@
 package com.bugvm.apple.scenekit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coreanimation.CAAnimation;
-import com.bugvm.apple.coreimage.CIFilter;
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.Block2;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreanimation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.glkit.*;
+import com.bugvm.apple.spritekit.*;
+import com.bugvm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +44,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNNode/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements SCNAnimatable, SCNActionable, SCNBoundingVolume/*</implements>*/ {
 
     /*<ptr>*/public static class SCNNodePtr extends Ptr<SCNNode, SCNNodePtr> {}/*</ptr>*/
@@ -193,12 +193,12 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "filters")
-    public native NSArray<CIFilter> getFilters();
+    public native NSArray<com.bugvm.apple.coreimage.CIFilter> getFilters();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setFilters:")
-    public native void setFilters(NSArray<CIFilter> v);
+    public native void setFilters(NSArray<com.bugvm.apple.coreimage.CIFilter> v);
     /**
      * @since Available in iOS 8.0 and later.
      */

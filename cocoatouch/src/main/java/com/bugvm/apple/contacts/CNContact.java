@@ -16,21 +16,18 @@
 package com.bugvm.apple.contacts;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.*;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.Block2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,7 +37,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("Contacts") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CNContact/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CNContactPtr extends Ptr<CNContact, CNContactPtr> {}/*</ptr>*/
@@ -124,8 +121,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Method(selector = "localizedStringForKey:")
     public static native String getLocalizedProperty(CNContactPropertyKey key);
     @Method(selector = "comparatorForNameSortOrder:")
-    public static native @Block
-    Block2<String, String, NSComparisonResult> getNameComparator(CNContactSortOrder sortOrder);
+    public static native @Block Block2<String, String, NSComparisonResult> getNameComparator(CNContactSortOrder sortOrder);
     @Method(selector = "descriptorForAllComparatorKeys")
     public static native String getDescriptorForAllComparatorKeys();
     @Method(selector = "predicateForContactsMatchingName:")

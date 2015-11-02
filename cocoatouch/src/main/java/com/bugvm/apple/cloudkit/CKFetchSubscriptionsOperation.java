@@ -16,24 +16,20 @@
 package com.bugvm.apple.cloudkit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -60,8 +56,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setSubscriptionIDs:")
     public native void setSubscriptionIDs(@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "fetchSubscriptionCompletionBlock")
-    public native @Block
-    VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError> getFetchSubscriptionCompletionBlock();
+    public native @Block VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError> getFetchSubscriptionCompletionBlock();
     @Property(selector = "setFetchSubscriptionCompletionBlock:")
     public native void setFetchSubscriptionCompletionBlock(@Block VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError> v);
     /*</properties>*/

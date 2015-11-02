@@ -16,20 +16,22 @@
 package com.bugvm.apple.photos;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSURL;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.avfoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,8 +48,8 @@ import com.bugvm.rt.bro.ptr.*;
     /*<bind>*/static { ObjCRuntime.bind(PHAssetCreationRequest.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    protected PHAssetCreationRequest(NSObject.SkipInit skipInit) { super(skipInit); }
-    public PHAssetCreationRequest() { super(create()); NSObject.retain(getHandle()); }
+    protected PHAssetCreationRequest(SkipInit skipInit) { super(skipInit); }
+    public PHAssetCreationRequest() { super(create()); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     

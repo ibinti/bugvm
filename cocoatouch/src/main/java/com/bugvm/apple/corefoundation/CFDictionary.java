@@ -16,16 +16,25 @@
 package com.bugvm.apple.corefoundation;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSObject;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreservices.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coretext.*;
 /*</imports>*/
+import com.bugvm.apple.foundation.NSObject.NSObjectPtr;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -154,9 +163,9 @@ import com.bugvm.rt.bro.ptr.*;
             return create(null, null, null, 0, getTypeKeyCallBacks(), getTypeValueCallBacks());
         }
         if (k[0] instanceof NSObject) {
-            NSObject.NSObjectPtr keys = Struct.allocate(NSObject.NSObjectPtr.class, k.length);
+            NSObjectPtr keys = Struct.allocate(NSObjectPtr.class, k.length);
             keys.set((NSObject[])k);
-            NSObject.NSObjectPtr values = Struct.allocate(NSObject.NSObjectPtr.class, v.length);
+            NSObjectPtr values = Struct.allocate(NSObjectPtr.class, v.length);
             values.set((NSObject[])v);
             return create(null, keys.as(VoidPtr.VoidPtrPtr.class), values.as(VoidPtr.VoidPtrPtr.class), v.length, getTypeKeyCallBacks(), getTypeValueCallBacks());
         } else if (k[0] instanceof CFType) {

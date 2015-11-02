@@ -16,25 +16,22 @@
 package com.bugvm.apple.mapkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.corelocation.CLLocationCoordinate2D;
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSURL;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock2;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("MapKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MKTileOverlay/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements MKOverlay/*</implements>*/ {
 
     /*<ptr>*/public static class MKTileOverlayPtr extends Ptr<MKTileOverlay, MKTileOverlayPtr> {}/*</ptr>*/
@@ -57,8 +54,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "tileSize")
-    public native @ByVal
-    CGSize getTileSize();
+    public native @ByVal CGSize getTileSize();
     @Property(selector = "setTileSize:")
     public native void setTileSize(@ByVal CGSize v);
     @Property(selector = "isGeometryFlipped")
@@ -80,8 +76,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setCanReplaceMapContent:")
     public native void setCanReplaceMapContent(boolean v);
     @Property(selector = "coordinate")
-    public native @ByVal
-    CLLocationCoordinate2D getCoordinate();
+    public native @ByVal CLLocationCoordinate2D getCoordinate();
     @Property(selector = "boundingMapRect")
     public native @ByVal MKMapRect getBoundingMapRect();
     @Property(selector = "setCoordinate:")

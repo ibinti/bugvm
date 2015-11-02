@@ -16,24 +16,20 @@
 package com.bugvm.apple.cloudkit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.foundation.NSArray;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBlock2;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corelocation.*;
+import com.bugvm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,9 +47,9 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CKQueryOperation() {}
-    protected CKQueryOperation(NSObject.SkipInit skipInit) { super(skipInit); }
-    public CKQueryOperation(CKQuery query) { super((NSObject.SkipInit) null); initObject(init(query)); }
-    public CKQueryOperation(CKQueryCursor cursor) { super((NSObject.SkipInit) null); initObject(init(cursor)); }
+    protected CKQueryOperation(SkipInit skipInit) { super(skipInit); }
+    public CKQueryOperation(CKQuery query) { super((SkipInit) null); initObject(init(query)); }
+    public CKQueryOperation(CKQueryCursor cursor) { super((SkipInit) null); initObject(init(cursor)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "query")
@@ -77,13 +73,11 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "setDesiredKeys:")
     public native void setDesiredKeys(@com.bugvm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "recordFetchedBlock")
-    public native @Block
-    VoidBlock1<CKRecord> getRecordFetchedBlock();
+    public native @Block VoidBlock1<CKRecord> getRecordFetchedBlock();
     @Property(selector = "setRecordFetchedBlock:")
     public native void setRecordFetchedBlock(@Block VoidBlock1<CKRecord> v);
     @Property(selector = "queryCompletionBlock")
-    public native @Block
-    VoidBlock2<CKQueryCursor, NSError> getQueryCompletionBlock();
+    public native @Block VoidBlock2<CKQueryCursor, NSError> getQueryCompletionBlock();
     @Property(selector = "setQueryCompletionBlock:")
     public native void setQueryCompletionBlock(@Block VoidBlock2<CKQueryCursor, NSError> v);
     /*</properties>*/

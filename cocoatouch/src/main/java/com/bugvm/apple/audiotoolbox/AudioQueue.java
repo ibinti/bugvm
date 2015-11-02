@@ -16,23 +16,22 @@
 package com.bugvm.apple.audiotoolbox;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coreaudio.AudioChannelLayout;
-import com.bugvm.apple.coreaudio.AudioStreamBasicDescription;
-import com.bugvm.apple.coreaudio.AudioStreamPacketDescription;
-import com.bugvm.apple.coreaudio.AudioTimeStamp;
-import com.bugvm.apple.corefoundation.OSStatus;
-import com.bugvm.apple.corefoundation.OSStatusException;
-import com.bugvm.apple.foundation.NSRunLoop;
-import com.bugvm.apple.foundation.NSRunLoopMode;
-import com.bugvm.objc.LongMap;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.audiounit.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -99,7 +98,7 @@ import com.bugvm.rt.bro.ptr.*;
     }
     
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
     public static AudioQueue createOutput(AudioStreamBasicDescription format, OutputCallback callback) throws OSStatusException {

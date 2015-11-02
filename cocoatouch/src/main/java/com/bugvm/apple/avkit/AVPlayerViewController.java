@@ -16,26 +16,22 @@
 package com.bugvm.apple.avkit;
 
 /*<imports>*/
-
-import com.bugvm.apple.avfoundation.AVLayerVideoGravity;
-import com.bugvm.apple.avfoundation.AVPlayer;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSError;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.iad.AVPlayerViewControllerExtensions;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.apple.uikit.UIViewController;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.avfoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.iad.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AVKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPlayerViewController/*</name>*/ 
-    extends /*<extends>*/UIViewController/*</extends>*/
+    extends /*<extends>*/UIViewController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AVPlayerViewControllerPtr extends Ptr<AVPlayerViewController, AVPlayerViewControllerPtr> {}/*</ptr>*/
@@ -53,7 +49,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AVPlayerViewController() {}
-    protected AVPlayerViewController(NSObject.SkipInit skipInit) { super(skipInit); }
+    protected AVPlayerViewController(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "player")
@@ -71,8 +67,7 @@ import com.bugvm.rt.bro.ptr.*;
     @Property(selector = "isReadyForDisplay")
     public native boolean isReadyForDisplay();
     @Property(selector = "videoBounds")
-    public native @ByVal
-    CGRect getVideoBounds();
+    public native @ByVal CGRect getVideoBounds();
     @Property(selector = "contentOverlayView")
     public native UIView getContentOverlayView();
     /**

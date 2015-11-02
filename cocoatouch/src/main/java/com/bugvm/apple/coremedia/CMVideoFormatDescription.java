@@ -16,21 +16,24 @@
 package com.bugvm.apple.coremedia;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.corefoundation.CFArray;
-import com.bugvm.apple.corefoundation.OSStatus;
-import com.bugvm.apple.corefoundation.OSStatusException;
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.corevideo.CVImageBuffer;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.dispatch.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +50,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 4.0 and later.
      */
     public static CMVideoFormatDescription create(CMVideoCodecType codecType, int width, int height, CMVideoFormatDescriptionExtension extensions) throws OSStatusException {
@@ -119,15 +122,13 @@ import com.bugvm.rt.bro.ptr.*;
      */
     @WeaklyLinked
     @Bridge(symbol="CMVideoFormatDescriptionGetPresentationDimensions", optional=true)
-    public native @ByVal
-    CGSize getPresentationDimensions(boolean usePixelAspectRatio, boolean useCleanAperture);
+    public native @ByVal CGSize getPresentationDimensions(boolean usePixelAspectRatio, boolean useCleanAperture);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @WeaklyLinked
     @Bridge(symbol="CMVideoFormatDescriptionGetCleanAperture", optional=true)
-    public native @ByVal
-    CGRect getCleanAperture(boolean originIsAtTopLeft);
+    public native @ByVal CGRect getCleanAperture(boolean originIsAtTopLeft);
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -16,25 +16,22 @@
 package com.bugvm.apple.watchkit;
 
 /*<imports>*/
+import java.io.*;
+import java.nio.*;
 import java.util.*;
-
-import com.bugvm.apple.coregraphics.CGRect;
-import com.bugvm.apple.foundation.NSData;
-import com.bugvm.apple.foundation.NSDictionary;
-import com.bugvm.apple.foundation.NSNumber;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.uikit.UIContentSizeCategory;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.mapkit.*;
+import com.bugvm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +39,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("WatchKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/WKInterfaceDevice/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class WKInterfaceDevicePtr extends Ptr<WKInterfaceDevice, WKInterfaceDevicePtr> {}/*</ptr>*/
@@ -54,8 +51,7 @@ import com.bugvm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "screenBounds")
-    public native @ByVal
-    CGRect getScreenBounds();
+    public native @ByVal CGRect getScreenBounds();
     @Property(selector = "screenScale")
     public native @MachineSizedFloat double getScreenScale();
     @Property(selector = "preferredContentSizeCategory")

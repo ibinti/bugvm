@@ -16,26 +16,20 @@
 package com.bugvm.apple.mediaplayer;
 
 /*<imports>*/
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.iad.MPMoviePlayerControllerExtensions;
-import com.bugvm.apple.uikit.UIImage;
-import com.bugvm.apple.uikit.UIView;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Block;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
-import com.bugvm.objc.block.VoidBlock1;
-import com.bugvm.objc.block.VoidBlock2;
-import com.bugvm.objc.block.VoidBlock3;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.uikit.*;
+import com.bugvm.apple.coregraphics.*;
 /*</imports>*/
 import com.bugvm.rt.annotation.WeaklyLinked;
 
@@ -46,7 +40,7 @@ import com.bugvm.rt.annotation.WeaklyLinked;
 /*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMoviePlayerController/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements MPMediaPlayback/*</implements>*/ {
 
     public static class Notifications {
@@ -310,8 +304,7 @@ import com.bugvm.rt.annotation.WeaklyLinked;
     @Property(selector = "playableDuration")
     public native double getPlayableDuration();
     @Property(selector = "naturalSize")
-    public native @ByVal
-    CGSize getNaturalSize();
+    public native @ByVal CGSize getNaturalSize();
     @Property(selector = "initialPlaybackTime")
     public native double getInitialPlaybackTime();
     @Property(selector = "setInitialPlaybackTime:")
@@ -382,21 +375,21 @@ import com.bugvm.rt.annotation.WeaklyLinked;
      */
     @WeaklyLinked
     public void playPrerollAd(@Block VoidBlock1<NSError> completionHandler) {
-        MPMoviePlayerControllerExtensions.playPrerollAd(this, completionHandler);
+        com.bugvm.apple.iad.MPMoviePlayerControllerExtensions.playPrerollAd(this, completionHandler);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @WeaklyLinked
     public static void preparePrerollAds() {
-        MPMoviePlayerControllerExtensions.preparePrerollAds();
+        com.bugvm.apple.iad.MPMoviePlayerControllerExtensions.preparePrerollAds();
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @WeaklyLinked
     public void cancelPreroll() {
-        MPMoviePlayerControllerExtensions.cancelPreroll(this);
+        com.bugvm.apple.iad.MPMoviePlayerControllerExtensions.cancelPreroll(this);
     }
     
     /*<members>*//*</members>*/

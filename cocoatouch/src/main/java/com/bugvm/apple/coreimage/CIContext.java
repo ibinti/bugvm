@@ -16,21 +16,24 @@
 package com.bugvm.apple.coreimage;
 
 /*<imports>*/
-
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.coregraphics.*;
-import com.bugvm.apple.corevideo.CVPixelBuffer;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.opengles.EAGLContext;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.corevideo.*;
+import com.bugvm.apple.imageio.*;
+import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -38,7 +41,7 @@ import com.bugvm.rt.bro.ptr.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIContext/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CIContextPtr extends Ptr<CIContext, CIContextPtr> {}/*</ptr>*/
@@ -75,8 +78,7 @@ import com.bugvm.rt.bro.ptr.*;
     public native void drawImage(CIImage im, @ByVal CGRect dest, @ByVal CGRect src);
     @WeaklyLinked
     @Method(selector = "createCGImage:fromRect:")
-    public native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class)
-    CGImage createCGImage(CIImage im, @ByVal CGRect r);
+    public native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r);
     @WeaklyLinked
     @Method(selector = "createCGImage:fromRect:format:colorSpace:")
     public native @com.bugvm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r, int f, CGColorSpace cs);
@@ -99,8 +101,7 @@ import com.bugvm.rt.bro.ptr.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "inputImageMaximumSize")
-    public native @ByVal
-    CGSize getInputImageMaximumSize();
+    public native @ByVal CGSize getInputImageMaximumSize();
     /**
      * @since Available in iOS 5.0 and later.
      */

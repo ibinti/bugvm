@@ -62,8 +62,8 @@ public class UIAppearance {
         return array.length > index ? ObjCClass.getByType((Class<? extends ObjCObject>) array[index]) : null;
     }
     
-    public static <T extends NSObject & UIAppearanceContainer> T getAppearance(Class<T> type,
-                                                                               Class<?> ... containedIn) {
+    public static <T extends NSObject & UIAppearanceContainer> T getAppearance(Class<T> type, 
+            Class<?> ... containedIn) {
         
         ObjCClass objCClass = ObjCClass.getByType(type);
         long proxyHandle = 0;

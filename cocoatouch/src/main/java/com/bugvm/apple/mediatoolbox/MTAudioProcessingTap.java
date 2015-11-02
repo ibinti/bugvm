@@ -16,28 +16,29 @@
 package com.bugvm.apple.mediatoolbox;
 
 /*<imports>*/
-
-import com.bugvm.apple.coreaudio.AudioBufferList;
-import com.bugvm.apple.coreaudio.AudioStreamBasicDescription;
-import com.bugvm.apple.corefoundation.CFAllocator;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.corefoundation.OSStatus;
-import com.bugvm.apple.corefoundation.OSStatusException;
-import com.bugvm.apple.coremedia.CMTimeRange;
-import com.bugvm.objc.LongMap;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.corefoundation.*;
+import com.bugvm.apple.coremedia.*;
+import com.bugvm.apple.coreaudio.*;
+import com.bugvm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("MediaToolbox") @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MTAudioProcessingTap/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/
+    extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public interface Callbacks {
@@ -131,7 +132,7 @@ import com.bugvm.rt.bro.ptr.*;
     
     
     /**
-     * @throws OSStatusException
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
     public static MTAudioProcessingTap create(Callbacks callbacks, MTAudioProcessingTapCreationFlags flags) throws OSStatusException {

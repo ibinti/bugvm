@@ -16,18 +16,20 @@
 package com.bugvm.apple.corelocation;
 
 /*<imports>*/
-
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.Method;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.addressbook.*;
+import com.bugvm.apple.corebluetooth.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,8 +47,8 @@ import com.bugvm.rt.bro.ptr.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CLCircularRegion() {}
-    protected CLCircularRegion(NSObject.SkipInit skipInit) { super(skipInit); }
-    public CLCircularRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((NSObject.SkipInit) null); initObject(init(center, radius, identifier)); }
+    protected CLCircularRegion(SkipInit skipInit) { super(skipInit); }
+    public CLCircularRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((SkipInit) null); initObject(init(center, radius, identifier)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "center")

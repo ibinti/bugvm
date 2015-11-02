@@ -16,24 +16,23 @@
 package com.bugvm.apple.coreanimation;
 
 /*<imports>*/
-
-import com.bugvm.apple.corefoundation.CFString;
-import com.bugvm.apple.corefoundation.CFType;
-import com.bugvm.apple.coregraphics.CGColor;
-import com.bugvm.apple.coregraphics.CGFont;
-import com.bugvm.apple.coretext.CTFont;
-import com.bugvm.apple.foundation.NSAttributedString;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.objc.ObjCRuntime;
-import com.bugvm.objc.annotation.NativeClass;
-import com.bugvm.objc.annotation.Property;
+import java.io.*;
+import java.nio.*;
+import java.util.*;
 import com.bugvm.objc.*;
+import com.bugvm.objc.annotation.*;
+import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
 import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
+import com.bugvm.apple.foundation.*;
+import com.bugvm.apple.coregraphics.*;
+import com.bugvm.apple.coreimage.*;
+import com.bugvm.apple.coretext.*;
+import com.bugvm.apple.opengles.*;
+import com.bugvm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -115,10 +114,10 @@ import com.bugvm.rt.bro.ptr.*;
         if (ptr == 0) {
             return null;
         }
-        CFType cfObj =
-                CFType.Marshaler.toObject(
-                        CFType.class, ptr, 0);
-        if (cfObj instanceof CFString) {
+        com.bugvm.apple.corefoundation.CFType cfObj =
+                com.bugvm.apple.corefoundation.CFType.Marshaler.toObject(
+                        com.bugvm.apple.corefoundation.CFType.class, ptr, 0);
+        if (cfObj instanceof com.bugvm.apple.corefoundation.CFString) {
             return cfObj.toString();
         }
         return cfObj;
