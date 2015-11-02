@@ -11,7 +11,7 @@
 
   <groupId>com.bugvm</groupId>
   <version>1.8.0</version>
-  <artifactId>bugvm</artifactId>
+  <artifactId>bugvm-parent</artifactId>
   <name>BugVM</name>
   <packaging>pom</packaging>
   <url>http://www.bugvm.com</url>

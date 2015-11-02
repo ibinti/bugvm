@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>com.bugvm</groupId>
-    <artifactId>bugvm-dist-parent</artifactId>
+    <artifactId>bugvm-parent</artifactId>
     <version>1.8.0</version>
   </parent>
 
