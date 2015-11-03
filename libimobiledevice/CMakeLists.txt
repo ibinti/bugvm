@@ -18,11 +18,11 @@ endif()
 
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fdata-sections -ffunction-sections")
 if(MACOSX AND X86)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch i386 -mmacosx-version-min=10.6")
-  set(LD_FLAGS "${LD_FLAGS} -arch i386 -mmacosx-version-min=10.6")
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch i386 -mmacosx-version-min=10.10")
+  set(LD_FLAGS "${LD_FLAGS} -arch i386 -mmacosx-version-min=10.10")
 elseif(MACOSX AND X86_64)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.6")
-  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.6")
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.10")
+  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.10")
 elseif(LINUX AND X86)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32 -fPIC")
   set(LD_FLAGS "${LD_FLAGS} -m32")
@@ -33,7 +33,7 @@ endif()
 
 if(MACOSX)
   exec_program(xcode-select ARGS --print-path OUTPUT_VARIABLE XCODE_PATH)
-  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
+  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
   if(NOT IS_DIRECTORY ${SYSROOT})
     set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk")
   endif()
@@ -71,6 +71,7 @@ set(LIBIMOBILEDEVICE_CFLAGS "${EXTCFLAGS}")
 if(MACOSX)
   set(LIBIMOBILEDEVICE_CFLAGS "${EXTCFLAGS} -std=gnu89")
 endif()
+
 ExternalProject_Add(extlibimobiledevice
   URL http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS}' LDFLAGS='-L${EXTPREFIX}/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"

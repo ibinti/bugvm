@@ -997,7 +997,7 @@ void _bcPopCallbackFrame(Env* env) {
 
 void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
     if (*ptr != NULL) return *ptr;
-    TRACEF("_bcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s",
+    TRACEF("_bcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s", 
         clazz->name, name, desc, shortMangledName, longMangledName);
     NativeMethod* method = (NativeMethod*) rvmGetMethod(env, clazz, name, desc);
     void* impl = NULL;
