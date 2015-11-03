@@ -1,4 +1,4 @@
-# BugVM
+# BugVM 1.8.0
 
 We are the BugVM.
 
