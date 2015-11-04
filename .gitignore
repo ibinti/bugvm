@@ -59,4 +59,4 @@ libimobiledevice/Makefile
 
 compiler-dist/dependency-reduced-pom.xml
 /bin/ios-sim
-/bin/libhfdescompressor.dylib
+/bin/libhfscompressor.dylib
