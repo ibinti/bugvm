@@ -5,7 +5,7 @@ set(MACOSX_MIN_VERSION 10.6)
 # The iOS SDK version required when building the VM libs
 set(IOS_SDK_VERSION 8.4)
 # The minimum iOS version needed by apps built by BugVM
-set(IOS_MIN_VERSION 6.0)
+set(IOS_MIN_VERSION 5.1.1)
 
 cmake_minimum_required(VERSION 2.8.8)
 project(build)
