@@ -46,17 +46,11 @@ a.out
 /tests/libcore/sqliteTest*.db
 /tmp/
 !/tests/bugvm/src/test/resources/META-INF/**/*.o
-
 llvm/CMakeCache.txt
-
 llvm/cmake_install.cmake
-
 libimobiledevice/cmake_install.cmake
-
 libimobiledevice/CMakeCache.txt
-
 libimobiledevice/Makefile
-
 compiler-dist/dependency-reduced-pom.xml
 /bin/ios-sim
 /bin/libhfscompressor.dylib
