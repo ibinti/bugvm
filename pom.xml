@@ -49,8 +49,6 @@
     <url>https://github.com/bugvm/bugvm/issues</url>
   </issueManagement>
 
-  <dependencies>
-  </dependencies>
   <dependencyManagement>
     <dependencies>
       <dependency>
