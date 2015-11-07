@@ -14,7 +14,7 @@
   <artifactId>bugvm-parent</artifactId>
   <name>BugVM</name>
   <packaging>pom</packaging>
-  <url>http://www.bugvm.com</url>
+  <url>http://bugvm.com</url>
   <description>
     The BugVM compiler translates Java bytecode into native ARM or x86 code. Apps run directly on the CPU.
     No interpreter or virtual machine involved.
@@ -23,7 +23,7 @@
 
   <organization>
     <name>BugVM</name>
-    <url>http://www.bugvm.com</url>
+    <url>http://bugvm.com</url>
   </organization>
 
   <developers>
@@ -36,7 +36,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <scm>
     <url>https://github.com/bugvm/bugvm</url>
@@ -229,22 +228,7 @@
       </plugins>
     </pluginManagement>
   </build>
-  <!--
-  <repositories>
-  </repositories>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>maven.org</id>
-      <url>http://repo1.maven.org/maven2/</url>
-      <releases><enabled>true</enabled></releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>Codehaus repository</id>
-      <url>http://repository.codehaus.org/</url>
-    </pluginRepository>
-  </pluginRepositories>
-  -->
   <modules>
     <module>rt</module>
     <module>llvm</module>
