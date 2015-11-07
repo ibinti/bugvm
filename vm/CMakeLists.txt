@@ -251,7 +251,7 @@ if (IOS)
   endif()
 endif()
 ExternalProject_Add(libatomic_ops 
-  GIT_REPOSITORY git://github.com/bugvm/libatomic_ops.git
+  GIT_REPOSITORY git://github.com/bugvm/bugvm-libatomic_ops.git
   GIT_TAG 4e22546e8a161b6bab93e43c115a22151daf45c5
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND "" 
@@ -261,7 +261,7 @@ ExternalProject_Add(libatomic_ops
 )
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
-  GIT_REPOSITORY git://github.com/bugvm/bdwgc.git
+  GIT_REPOSITORY git://github.com/bugvm/bugvm-bdwgc.git
   GIT_TAG 0458ff8c3cc04376bb4584de7729e6dbb6384bad
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
