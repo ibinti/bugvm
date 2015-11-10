@@ -172,9 +172,8 @@ public class IOSApplication implements Application {
 		return version;
 	}
 
-	public UINavigationController getNavCon() {
-		return this.navCon;
-	}
+	public UINavigationController getNavCon() {return navCon;}
+	public ApplicationListener getListener() {return listener;}
 
 	/** Return the UI view controller of IOSApplication
 	 * @return the view controller of IOSApplication */
