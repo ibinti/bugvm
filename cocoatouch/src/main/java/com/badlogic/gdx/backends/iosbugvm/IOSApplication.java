@@ -24,16 +24,7 @@ import com.bugvm.apple.foundation.NSMutableDictionary;
 import com.bugvm.apple.foundation.NSObject;
 import com.bugvm.apple.foundation.NSString;
 import com.bugvm.apple.foundation.NSThread;
-import com.bugvm.apple.uikit.UIApplication;
-import com.bugvm.apple.uikit.UIApplicationDelegateAdapter;
-import com.bugvm.apple.uikit.UIApplicationLaunchOptions;
-import com.bugvm.apple.uikit.UIDevice;
-import com.bugvm.apple.uikit.UIInterfaceOrientation;
-import com.bugvm.apple.uikit.UIPasteboard;
-import com.bugvm.apple.uikit.UIScreen;
-import com.bugvm.apple.uikit.UIUserInterfaceIdiom;
-import com.bugvm.apple.uikit.UIViewController;
-import com.bugvm.apple.uikit.UIWindow;
+import com.bugvm.apple.uikit.*;
 import com.bugvm.rt.bro.Bro;
 
 import com.badlogic.gdx.Application;
@@ -89,6 +80,7 @@ public class IOSApplication implements Application {
 
 	UIApplication uiApp;
 	UIWindow uiWindow;
+	UINavigationController navCon;
 	ApplicationListener listener;
 	IOSViewControllerListener viewControllerListener;
 	IOSApplicationConfiguration config;
@@ -164,9 +156,11 @@ public class IOSApplication implements Application {
 		Gdx.net = this.net;
 
 		this.input.setupPeripherals();
-
+		this.navCon = new UINavigationController();
+		this.navCon.setNavigationBarHidden(true);
+		this.navCon.addChildViewController(this.graphics.viewController);
 		this.uiWindow = new UIWindow(UIScreen.getMainScreen().getBounds());
-		this.uiWindow.setRootViewController(this.graphics.viewController);
+		this.uiWindow.setRootViewController(this.navCon);
 		this.uiWindow.makeKeyAndVisible();
 		Gdx.app.debug("IOSApplication", "created");
 		return true;
@@ -176,6 +170,10 @@ public class IOSApplication implements Application {
 		String systemVersion = UIDevice.getCurrentDevice().getSystemVersion();
 		int version = Integer.parseInt(systemVersion.split("\\.")[0]);
 		return version;
+	}
+
+	public UINavigationController getNavCon() {
+		return this.navCon;
 	}
 
 	/** Return the UI view controller of IOSApplication
