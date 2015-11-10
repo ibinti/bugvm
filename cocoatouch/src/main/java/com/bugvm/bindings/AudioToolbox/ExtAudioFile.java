@@ -27,18 +27,7 @@ public class ExtAudioFile extends NativeObject {
     public static class ExtAudioFilePtr extends Ptr<ExtAudioFile, ExtAudioFilePtr> {}
     static { Bro.bind(ExtAudioFile.class); }
     protected ExtAudioFile() {}
-    public static ExtAudioFile openURL(CFURL url) throws OSStatusException {
 
-        ExtAudioFilePtr ptr = new ExtAudioFilePtr();
-        System.out.println("new ExtAudioFilePtr");
-
-        OSStatus status = openCFURL0(url, ptr);
-        System.out.println("openCFURL0 status " + status.getStatusCode());
-
-        //OSStatusException.throwIfNecessary(status);
-
-        return ptr.get();
-    }
     public static ExtAudioFile openURL(NSURL url) throws OSStatusException {
 
         ExtAudioFilePtr ptr = new ExtAudioFilePtr();
@@ -49,10 +38,7 @@ public class ExtAudioFile extends NativeObject {
         return ptr.get();
     }
     @Bridge(symbol="ExtAudioFileOpenURL", optional=true)
-    protected static native OSStatus openCFURL0(CFURL inURL, ExtAudioFilePtr outExtAudioFile);
-    @Bridge(symbol="ExtAudioFileOpenURL", optional=true)
     protected static native OSStatus openNSURL0(NSURL inURL, ExtAudioFilePtr outExtAudioFile);
-
 
     public <T extends Struct<T>> T getProperty(ExtAudioFileProperty id, Class<T> type) throws OSStatusException {
 
@@ -66,8 +52,6 @@ public class ExtAudioFile extends NativeObject {
     }
     @Bridge(symbol="ExtAudioFileGetProperty", optional=true)
     protected native OSStatus getProperty0(ExtAudioFileProperty inPropertyID, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
-
-
 
     public static ExtAudioFile wrapAudioFile(AudioFile audioFile, boolean forWriting) throws OSStatusException {
         ExtAudioFilePtr ptr = new ExtAudioFilePtr();
