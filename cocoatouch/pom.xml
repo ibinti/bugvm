@@ -33,6 +33,10 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.badlogicgames.gdx</groupId>
+      <artifactId>gdx</artifactId>
+      <version>1.7.1</version>
+    </dependency>    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
