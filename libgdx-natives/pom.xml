@@ -1,106 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>5</version>
-  </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.badlogicgames.gdx</groupId>
-  <artifactId>gdx-natives</artifactId>
-  <packaging>pom</packaging>
-  <version>1.7.1</version>
-
-  <name>libGDX Parent</name>
-  <description>Android/Desktop/iOS/HTML5 game development framework.</description>
-  <url>http://libgdx.badlogicgames.com</url>
-  <issueManagement>
-    <url>https://github.com/libgdx/libgdx/issues</url>
-  </issueManagement>
-
-  <licenses>
-    <license>
-      <name>Apache Licence 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <id>Developers</id>
-      <url>http://code.google.com/p/libgdx/people/list</url>
-    </developer>
-  </developers>
-
-  <scm>
-    <connection>scm:git:https://github.com/libgdx/libgdx.git</connection>
-    <developerConnection>scm:git:https://github.com/libgdx/libgdx.git</developerConnection>
-    <url>http://github.com/libgdx/libgdx</url>
-  </scm>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <bugvm.version>1.8.1-SNAPSHOT</bugvm.version>
-  </properties>
-
-  <modules>
-    <module>gdx-jnigen</module>
-    <module>jni/maven</module>
-  </modules>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <fork>true</fork>
-          <showWarnings>true</showWarnings>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.3</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
-        <configuration>
-          <quiet>true</quiet>
-          <show>public</show>
-          <additionalparam>-Xdoclint:none</additionalparam>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.3.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-      </plugin>
-    </plugins>
-  </build>
+    <parent>
+        <groupId>com.bugvm</groupId>
+        <artifactId>bugvm-parent</artifactId>
+        <version>1.8.1-SNAPSHOT</version>
+    </parent>
+    
+    <artifactId>bugvm-libgdx</artifactId>
+    <packaging>jar</packaging>
+    <name>BugVM libGDX Native Libraries</name>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-local-ios</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource><directory>${basedir}/libs/ios32</directory></resource>
+                            </resources>
+                            <outputDirectory>${basedir}/target/ios</outputDirectory>
+                            <overwrite>true</overwrite>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- finally package everything up into jar files -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>ios.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
