@@ -534,11 +534,6 @@ public class IOSInput implements Input {
 	@Override
 	public void setCatchMenuKey (boolean catchMenu) {
 	}
-	
-	@Override
-	public boolean isCatchMenuKey() {
-		return false;
-	}
 
 	@Override
 	public void setInputProcessor (InputProcessor processor) {
