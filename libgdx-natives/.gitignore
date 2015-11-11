@@ -1,0 +1,19 @@
+# Temporary Files
+*~
+.*.swp
+.DS_STORE
+
+.gradle/
+build/
+bin/
+libs/
+target/
+obj/
+out/
+classes/
+*.a
+*.userprefs
+*.sdf
+*.class
+*.iml
+/.idea/
