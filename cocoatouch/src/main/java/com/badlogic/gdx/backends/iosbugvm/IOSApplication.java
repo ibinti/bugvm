@@ -16,17 +16,6 @@
 
 package com.badlogic.gdx.backends.iosbugvm;
 
-import java.io.File;
-
-import com.bugvm.apple.coregraphics.CGSize;
-import com.bugvm.apple.foundation.Foundation;
-import com.bugvm.apple.foundation.NSMutableDictionary;
-import com.bugvm.apple.foundation.NSObject;
-import com.bugvm.apple.foundation.NSString;
-import com.bugvm.apple.foundation.NSThread;
-import com.bugvm.apple.uikit.*;
-import com.bugvm.rt.bro.Bro;
-
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Audio;
@@ -37,11 +26,33 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.backends.iosbugvm.IOSViewControllerListener;
 import com.badlogic.gdx.backends.iosbugvm.objectal.OALAudioSession;
 import com.badlogic.gdx.backends.iosbugvm.objectal.OALSimpleAudio;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Clipboard;
+
+import com.bugvm.apple.coregraphics.CGSize;
+import com.bugvm.apple.foundation.Foundation;
+import com.bugvm.apple.foundation.NSMutableDictionary;
+import com.bugvm.apple.foundation.NSObject;
+import com.bugvm.apple.foundation.NSString;
+import com.bugvm.apple.foundation.NSThread;
+import com.bugvm.apple.uikit.UIApplication;
+import com.bugvm.apple.uikit.UIApplicationDelegateAdapter;
+import com.bugvm.apple.uikit.UIApplicationLaunchOptions;
+import com.bugvm.apple.uikit.UIDevice;
+import com.bugvm.apple.uikit.UIInterfaceOrientation;
+import com.bugvm.apple.uikit.UINavigationController;
+import com.bugvm.apple.uikit.UIPasteboard;
+import com.bugvm.apple.uikit.UIScreen;
+import com.bugvm.apple.uikit.UIUserInterfaceIdiom;
+import com.bugvm.apple.uikit.UIViewController;
+import com.bugvm.apple.uikit.UIWindow;
+import com.bugvm.rt.bro.Bro;
+
+import java.io.File;
 
 public class IOSApplication implements Application {
 
@@ -116,7 +127,7 @@ public class IOSApplication implements Application {
 		Gdx.app.debug("IOSApplication", "Running in " + (Bro.IS_64BIT ? "64-bit" : "32-bit") + " mode");
 
 		float scale = (float)(getIosVersion() >= 8 ? UIScreen.getMainScreen().getNativeScale() : UIScreen.getMainScreen()
-			.getScale());
+				.getScale());
 		if (scale >= 2.0f) {
 			Gdx.app.debug("IOSApplication", "scale: " + scale);
 			if (UIDevice.getCurrentDevice().getUserInterfaceIdiom() == UIUserInterfaceIdiom.Pad) {
@@ -156,6 +167,7 @@ public class IOSApplication implements Application {
 		Gdx.net = this.net;
 
 		this.input.setupPeripherals();
+
 		this.navCon = new UINavigationController();
 		this.navCon.setNavigationBarHidden(true);
 		this.navCon.addChildViewController(this.graphics.viewController);
@@ -172,9 +184,6 @@ public class IOSApplication implements Application {
 		return version;
 	}
 
-	public UINavigationController getNavCon() {return navCon;}
-	public ApplicationListener getListener() {return listener;}
-
 	/** Return the UI view controller of IOSApplication
 	 * @return the view controller of IOSApplication */
 	public UIViewController getUIViewController () {
@@ -186,6 +195,9 @@ public class IOSApplication implements Application {
 	public UIWindow getUIWindow () {
 		return uiWindow;
 	}
+
+	public UINavigationController getNavCon() {return navCon;}
+	public ApplicationListener getListener() {return listener;}
 
 	/** Returns our real display dimension based on screen orientation.
 	 *
@@ -212,19 +224,19 @@ public class IOSApplication implements Application {
 		int width;
 		int height;
 		switch (orientation) {
-		case LandscapeLeft:
-		case LandscapeRight:
-			height = (int)bounds.getWidth();
-			width = (int)bounds.getHeight();
-			if (width < height) {
+			case LandscapeLeft:
+			case LandscapeRight:
+				height = (int)bounds.getWidth();
+				width = (int)bounds.getHeight();
+				if (width < height) {
+					width = (int)bounds.getWidth();
+					height = (int)bounds.getHeight();
+				}
+				break;
+			default:
+				// assume portrait
 				width = (int)bounds.getWidth();
 				height = (int)bounds.getHeight();
-			}
-			break;
-		default:
-			// assume portrait
-			width = (int)bounds.getWidth();
-			height = (int)bounds.getHeight();
 		}
 
 		Gdx.app.debug("IOSApplication", "Unscaled View: " + orientation.toString() + " " + width + "x" + height);
@@ -390,7 +402,7 @@ public class IOSApplication implements Application {
 
 		@SuppressWarnings("unchecked")
 		NSMutableDictionary<NSString, NSObject> nsDictionary = (NSMutableDictionary<NSString, NSObject>)NSMutableDictionary
-			.read(finalPath);
+				.read(finalPath);
 
 		// if it fails to get an existing dictionary, create a new one.
 		if (nsDictionary == null) {
