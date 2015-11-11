@@ -8,52 +8,12 @@
         <relativePath>../..</relativePath>
     </parent>
     
-    <artifactId>gdx-platform</artifactId>
+    <artifactId>bugvm-libgdx</artifactId>
     <packaging>jar</packaging>
     <name>libGDX Native Libraries</name>
     
-    <properties>
-        <base.url>http://libgdx.badlogicgames.com/nightlies/dist</base.url>
-    </properties>
-    
-    <dependencies>
-    </dependencies>
-    
     <build>
-        <sourceDirectory>src</sourceDirectory>
-        
         <plugins>
-            <!-- first download an unpack the native libraries -->
-            <plugin>
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>maven-download-plugin</artifactId>
-                <version>1.1.0</version>
-                <executions>
-                    <execution>
-                        <id>ios-gdx</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
-                        <configuration>
-                            <cacheDirectory>${project.build.directory}/download-cache/ios</cacheDirectory>
-                            <url>${base.url}/ios/libgdx.a</url>
-                            <outputDirectory>${project.build.directory}/ios</outputDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>ios-objectal</id>
-                        <phase>process-resources</phase>
-                        <goals><goal>wget</goal></goals>
-                        <configuration>
-                            <cacheDirectory>${project.build.directory}/download-cache/ios</cacheDirectory>
-                            <url>${base.url}/ios/libObjectAL.a</url>
-                            <outputDirectory>${project.build.directory}/ios</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- if we have pre-built versions, replace the downloaded versions with those -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
