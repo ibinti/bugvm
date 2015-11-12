@@ -14,7 +14,7 @@ a.out
 /llvm/extclang-prefix/
 /llvm/llvm/lib/
 /llvm/llvm/bin/
-/vm/target/
+/vm/target/build
 /compiler/target/
 /compiler-dist/target/
 /llvm/target/
