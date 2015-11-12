@@ -228,6 +228,7 @@
   </build>
 
   <modules>
+    <module>soot</module>
     <module>rt</module>
     <module>llvm</module>
     <module>libimobiledevice</module>
