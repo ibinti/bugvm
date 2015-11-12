@@ -52,5 +52,3 @@ libimobiledevice/cmake_install.cmake
 libimobiledevice/CMakeCache.txt
 libimobiledevice/Makefile
 compiler-dist/dependency-reduced-pom.xml
-/bin/ios-sim
-/bin/libhfscompressor.dylib
