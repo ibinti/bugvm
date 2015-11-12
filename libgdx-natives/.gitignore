@@ -6,12 +6,11 @@
 .gradle/
 build/
 bin/
-libs/
 target/
 obj/
 out/
 classes/
-*.a
+*.a.*
 *.userprefs
 *.sdf
 *.class
