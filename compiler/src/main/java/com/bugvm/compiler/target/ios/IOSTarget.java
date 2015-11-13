@@ -867,7 +867,7 @@ public class IOSTarget extends AbstractTarget {
 
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
-            dict.put("MinimumOSVersion", "6.0");
+            dict.put("MinimumOSVersion", "5.1.1");
         }
 
         customizeInfoPList(dict);
