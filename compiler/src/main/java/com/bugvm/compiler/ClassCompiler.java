@@ -93,7 +93,6 @@ import com.bugvm.compiler.llvm.VariableRef;
 import com.bugvm.compiler.plugin.CompilerPlugin;
 import com.bugvm.compiler.trampoline.Invoke;
 import com.bugvm.compiler.trampoline.Invokevirtual;
-import com.bugvm.compiler.util.io.HfsCompressor;
 import com.bugvm.llvm.Context;
 import com.bugvm.llvm.LineInfo;
 import com.bugvm.llvm.Module;
@@ -415,8 +414,9 @@ public class ClassCompiler {
                     oFile.getParentFile().mkdirs();
                     ByteArrayOutputStream oFileBytes = new ByteArrayOutputStream();
                     targetMachine.assemble(asm, clazz.getClassName(), oFileBytes);                                                                                               
-                    new HfsCompressor().compress(oFile, oFileBytes.toByteArray(), config);
-                    
+                    //new HfsCompressor().compress(oFile, oFileBytes.toByteArray(), config);
+                    FileUtils.writeByteArrayToFile(oFile, oFileBytes.toByteArray());
+
                     for (CompilerPlugin plugin : config.getCompilerPlugins()) {
                         plugin.afterObjectFile(config, clazz, oFile);
                     }
@@ -527,7 +527,8 @@ public class ClassCompiler {
                             File linesOFile = config.getLinesOFile(clazz);
                             ByteArrayOutputStream linesOBytes = new ByteArrayOutputStream();
                             targetMachine.emit(linesModule, linesOBytes, CodeGenFileType.ObjectFile);
-                            new HfsCompressor().compress(linesOFile, linesOBytes.toByteArray(), config);
+                            //new HfsCompressor().compress(linesOFile, linesOBytes.toByteArray(), config);
+                            FileUtils.writeByteArrayToFile(linesOFile, linesOBytes.toByteArray());
                         }
                     } else {
                         // Make sure there's no stale lines.o file lingering
