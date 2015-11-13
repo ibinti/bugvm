@@ -87,7 +87,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Mario Zechner";
+				ORGANIZATIONNAME = "The BugVM";
 				TargetAttributes = {
 					7686206E1A9E24550054E949 = {
 						CreatedOnToolsVersion = 6.1.1;
