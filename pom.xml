@@ -41,7 +41,6 @@
     <url>https://github.com/bugvm/bugvm</url>
     <connection>scm:git:git://github.com/bugvm/bugvm.git</connection>
     <developerConnection>scm:git:git@github.com:bugvm/bugvm.git</developerConnection>
-    <tag>bugvm-1.8.0</tag>
   </scm>
 
   <issueManagement>
