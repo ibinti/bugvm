@@ -238,6 +238,5 @@
     <module>objc</module>
     <module>cocoatouch</module>
     <module>package</module>
-    <module>libgdx-natives</module>
   </modules>
 </project>
