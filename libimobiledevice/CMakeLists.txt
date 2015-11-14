@@ -18,11 +18,11 @@ endif()
 
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fdata-sections -ffunction-sections")
 if(MACOSX AND X86)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch i386 -mmacosx-version-min=10.10")
-  set(LD_FLAGS "${LD_FLAGS} -arch i386 -mmacosx-version-min=10.10")
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch i386 -mmacosx-version-min=10.11")
+  set(LD_FLAGS "${LD_FLAGS} -arch i386 -mmacosx-version-min=10.11")
 elseif(MACOSX AND X86_64)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.10")
-  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.10")
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.11")
+  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.11")
 elseif(LINUX AND X86)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32 -fPIC")
   set(LD_FLAGS "${LD_FLAGS} -m32")
@@ -51,7 +51,8 @@ ExternalProject_Add(extlibxml
   BUILD_IN_SOURCE 1
 )
 ExternalProject_Add(extlibusbx
-  URL http://bugvm.com/libusb-1.0.19.tar.bz2
+  URL http://bugvm.com/libusb-1.0.20.tar.bz2
+#  URL http://cznic.dl.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.20/libusb-1.0.20.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --enable-udev=no --prefix=${EXTPREFIX}"
   BUILD_IN_SOURCE 1
 )
@@ -73,7 +74,7 @@ if(MACOSX)
 endif()
 
 ExternalProject_Add(extlibimobiledevice
-  URL http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2
+  URL http://www.libimobiledevice.org/downloads/libimobiledevice-1.2.0.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS}' LDFLAGS='-L${EXTPREFIX}/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml extlibplist extlibusbmuxd
