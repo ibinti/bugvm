@@ -5,6 +5,7 @@ a.out
 *.class
 .*
 /target/
+/ios-sim/build
 /llvm/target.llvm/
 /llvm/extllvm-prefix/
 /llvm/bugvm-llvm.build/
