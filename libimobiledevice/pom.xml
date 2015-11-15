@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.bugvm</groupId>
     <artifactId>bugvm-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>bugvm-libimobiledevice</artifactId>
@@ -62,32 +62,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>empty-sources-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>sources</classifier>
-              <classesDirectory>${basedir}/src/empty</classesDirectory>
-              <excludes><exclude>**</exclude></excludes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>empty-javadoc-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>javadoc</classifier>
-              <classesDirectory>${basedir}/src/empty</classesDirectory>
-              <excludes><exclude>**</exclude></excludes>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
 
