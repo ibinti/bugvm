@@ -15,7 +15,6 @@
  */
 package com.bugvm.apple.coreaudio;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -29,14 +28,8 @@ import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
 import com.bugvm.apple.foundation.*;
 import com.bugvm.apple.corefoundation.*;
-/*</imports>*/
 
-/*<javadoc>*/
-
-/*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AudioFormat/*</name>*/ implements ValuedEnum {
-    /*<values>*/
+public enum AudioFormat implements ValuedEnum {
     LinearPCM(1819304813L),
     AC3(1633889587L),
     _60958AC3(1667326771L),
@@ -73,24 +66,18 @@ public enum /*<name>*/AudioFormat/*</name>*/ implements ValuedEnum {
     DVIIntelIMA(1836253201L),
     MicrosoftGSM(1836253233L),
     AES3(1634038579L);
-    /*</values>*/
-
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
 
     private final long n;
 
-    private /*<name>*/AudioFormat/*</name>*/(long n) { this.n = n; }
+    private AudioFormat(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioFormat/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioFormat/*</name>*/ v : values()) {
+    public static AudioFormat valueOf(long n) {
+        for (AudioFormat v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioFormat/*</name>*/.class.getName());
+            + AudioFormat.class.getName());
     }
 }

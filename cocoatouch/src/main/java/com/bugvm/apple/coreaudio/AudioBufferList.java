@@ -15,7 +15,6 @@
  */
 package com.bugvm.apple.coreaudio;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -29,25 +28,14 @@ import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
 import com.bugvm.apple.foundation.*;
 import com.bugvm.apple.corefoundation.*;
-/*</imports>*/
 
-/*<javadoc>*/
+public class AudioBufferList
+    extends Struct<AudioBufferList>
+     {
 
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioBufferList/*</name>*/ 
-    extends /*<extends>*/Struct<AudioBufferList>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
-
-    /*<ptr>*/public static class AudioBufferListPtr extends Ptr<AudioBufferList, AudioBufferListPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    public static class AudioBufferListPtr extends Ptr<AudioBufferList, AudioBufferListPtr> {}
     public AudioBufferList() {}
     
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
     public int getBufferCount() {
         return getNumberBuffers();
     }
@@ -56,7 +44,7 @@ import com.bugvm.apple.corefoundation.*;
         if (index >= getBufferCount()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        return getBuffers0().next(index).get();
+        return getBuffers0().next(index);
     }
     public AudioBufferList setBuffer(int index, AudioBuffer buffer) {
         return setBuffer(index, buffer.getHandle());
@@ -65,28 +53,19 @@ import com.bugvm.apple.corefoundation.*;
         if (index >= getBufferCount()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        getBuffers0().next(index).set(handle);
+        getBuffers0().next(index).update(Struct.toStruct(AudioBuffer.class, handle));
         return this;
     }
     public AudioBuffer[] getBuffers() {
-        int count = getBufferCount();
-        AudioBuffer[] array = new AudioBuffer[count];
-        AudioBuffer.AudioBufferPtr ptr = getBuffers0();
-        for (int i = 0; i < count; i++) {
-            array[i] = ptr.next(i).get();
-        }
-        return array;
+        return getBuffers0().toArray(getBufferCount());
     }
     public AudioBufferList setBuffers(AudioBuffer[] buffers) {
         this.setNumberBuffers(buffers.length);
-        getBuffers0().set(buffers);
+        getBuffers0().update(buffers);
         return this;
     }
-    /*<members>*/
     @StructMember(0) protected native int getNumberBuffers();
     @StructMember(0) protected native AudioBufferList setNumberBuffers(int numberBuffers);
-    @StructMember(1) protected native AudioBuffer.AudioBufferPtr getBuffers0();
-    @StructMember(1) protected native AudioBufferList setBuffers0(AudioBuffer.AudioBufferPtr buffers0);
-    /*</members>*/
-    /*<methods>*//*</methods>*/
+    @StructMember(1) protected native @Array(1) AudioBuffer getBuffers0();
+    @StructMember(1) protected native AudioBufferList setBuffers0(@Array(1) AudioBuffer buffers0);
 }
