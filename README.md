@@ -1,4 +1,4 @@
-# BugVM 1.0.0
+# BugVM 1.0.3
 
 BugVM is a fork of RoboVM and is a free open source alternative to closed commercial RoboVM.
 
