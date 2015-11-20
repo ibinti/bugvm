@@ -1,5 +1,4 @@
 BugVM compiler
-Copyright (C) 2015 BugVM CD
 Copyright (C) 2012-2014 RoboVM AB
 For license information see the LICENSE.txt file which accompanies this
 NOTICE.txt file.
