@@ -51,7 +51,7 @@ ExternalProject_Add(extlibxml
   BUILD_IN_SOURCE 1
 )
 ExternalProject_Add(extlibusbx
-  URL https://github.com/libusb/libusb/releases/download/v1.0.20/libusb-1.0.20.tar.bz2
+  URL https://github.com/bugvm/bugvm-libusb/releases/download/v1.0.20/libusb-1.0.20.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --enable-udev=no --prefix=${EXTPREFIX}"
   BUILD_IN_SOURCE 1
 )
