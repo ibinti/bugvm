@@ -16,29 +16,13 @@
 package com.bugvm.apple.audiounit;
 
 /*<imports>*/
-import java.io.*;
-import java.nio.*;
-import java.util.*;
-import com.bugvm.objc.*;
-import com.bugvm.objc.annotation.*;
-import com.bugvm.objc.block.*;
-import com.bugvm.rt.*;
-import com.bugvm.rt.annotation.*;
-import com.bugvm.rt.bro.*;
-import com.bugvm.rt.bro.annotation.*;
-import com.bugvm.rt.bro.ptr.*;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.audiotoolbox.*;
-import com.bugvm.apple.corefoundation.*;
-import com.bugvm.apple.coreaudio.*;
-import com.bugvm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUTypeOutput/*</name>*/ implements AUSubType {
+public enum /*<name>*/AUTypeIO/*</name>*/ implements AUSubType {
     /*<values>*/
     GenericOutput(1734700658L),
     RemoteIO(1919512419L),
@@ -52,15 +36,15 @@ public enum /*<name>*/AUTypeOutput/*</name>*/ implements AUSubType {
 
     private final long n;
 
-    private /*<name>*/AUTypeOutput/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUTypeIO/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUTypeOutput/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUTypeOutput/*</name>*/ v : values()) {
+    public static /*<name>*/AUTypeIO/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeIO/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUTypeOutput/*</name>*/.class.getName());
+            + /*<name>*/AUTypeIO/*</name>*/.class.getName());
     }
 }
