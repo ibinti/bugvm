@@ -5,11 +5,11 @@
   <parent>
     <groupId>com.bugvm</groupId>
     <artifactId>bugvm-parent</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.4-SNAPSHOT</version>
   </parent>
 
-  <artifactId>bugvm-objc</artifactId>
-  <name>BugVM Objective-C Bridge</name>
+  <artifactId>bugvm-cocoatouch</artifactId>
+  <name>BugVM Cocoa Touch Bindings</name>
   <packaging>jar</packaging>
 
   <licenses>
@@ -26,6 +26,15 @@
       <artifactId>bugvm-rt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
+    </dependency>  
+    <dependency>
+      <groupId>com.bugvm</groupId>
+      <artifactId>bugvm-objc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 
@@ -41,5 +50,5 @@
       </plugin>
     </plugins>
   </build>
-
+  
 </project>
