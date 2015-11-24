@@ -109,7 +109,4 @@ public class AudioBuffer extends Struct<AudioBuffer> {
     @StructMember(2) public native @Pointer long getDataPointer();
     @StructMember(2) private native void setDataPointer(@Pointer long data);
 
-    //@StructMember(2) public native @Pointer long getDataPointer();
-
-
 }
