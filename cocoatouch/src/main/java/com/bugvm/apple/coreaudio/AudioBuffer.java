@@ -15,42 +15,22 @@
  */
 package com.bugvm.apple.coreaudio;
 
-/*<imports>*/
-import java.io.*;
 import java.nio.*;
-import java.util.*;
-import com.bugvm.objc.*;
-import com.bugvm.objc.annotation.*;
-import com.bugvm.objc.block.*;
 import com.bugvm.rt.*;
-import com.bugvm.rt.annotation.*;
 import com.bugvm.rt.bro.*;
 import com.bugvm.rt.bro.annotation.*;
 import com.bugvm.rt.bro.ptr.*;
-import com.bugvm.apple.foundation.*;
-import com.bugvm.apple.corefoundation.*;
-/*</imports>*/
 
-/*<javadoc>*/
+public class AudioBuffer extends Struct<AudioBuffer> {
 
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioBuffer/*</name>*/ 
-    extends /*<extends>*/Struct<AudioBuffer>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    public static class AudioBufferPtr extends Ptr<AudioBuffer, AudioBufferPtr> {}
 
-    /*<ptr>*/public static class AudioBufferPtr extends Ptr<AudioBuffer, AudioBufferPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     public AudioBuffer(long handle) {
         super(handle);
     }
-    
-    /*<properties>*//*</properties>*/
+
     public AudioBuffer setData(long dataPointer, int length) {
-        setData0(dataPointer);
+        setDataPointer(dataPointer);
         setDataByteSize(length);
         return this;
     }
@@ -72,12 +52,12 @@ import com.bugvm.apple.corefoundation.*;
     }
     public AudioBuffer setData(Buffer data) {
         setDataByteSize(data.capacity());
-        setData0(BufferMarshalers.BufferMarshaler.toNative(data, 0));
+        setDataPointer(BufferMarshalers.BufferMarshaler.toNative(data, 0));
         return this;
     }
     private AudioBuffer setArrayData(Object array, int length) {
         setDataByteSize(length);
-        setData0(VM.getArrayValuesAddress(array));
+        setDataPointer(VM.getArrayValuesAddress(array));
         return this;
     }
     
@@ -121,13 +101,15 @@ import com.bugvm.apple.corefoundation.*;
         getDataAsBuffer(FloatBuffer.class).get(data, 0, length);
         return data;
     }
-    /*<members>*/
+
     @StructMember(0) public native int getNumberChannels();
-    @StructMember(0) public native AudioBuffer setNumberChannels(int numberChannels);
+    @StructMember(0) public native void setNumberChannels(int numberChannels);
     @StructMember(1) private native int getDataByteSize();
-    @StructMember(1) private native AudioBuffer setDataByteSize(int dataByteSize);
-    /*</members>*/
+    @StructMember(1) private native void setDataByteSize(int dataByteSize);
     @StructMember(2) public native @Pointer long getDataPointer();
-    @StructMember(2) private native AudioBuffer setData0(@Pointer long data);
-    /*<methods>*//*</methods>*/
+    @StructMember(2) private native void setDataPointer(@Pointer long data);
+
+    //@StructMember(2) public native @Pointer long getDataPointer();
+
+
 }
