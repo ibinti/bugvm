@@ -85,8 +85,8 @@ set(CMAKE_INSTALL_DO_STRIP YES)
 
 include_directories(${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2} ${EXTPREFIX}/include)
 
-set(LIBS -limobiledevice -lusbmuxd -lplist -lssl -lxml2 -lcrypto)
-set(LDFLAGS -L${EXTPREFIX}/lib)
+set(LIBS -limobiledevice -lusbmuxd -lplist -lssl -lxml2 -lcrypto -lgnutls -lgcrypt -ltasn1)
+set(LDFLAGS -L${EXTPREFIX}/lib -L/usr/local/lib)
 
 if(MACOSX)
   set(LIBS ${LIBS} -liconv)
