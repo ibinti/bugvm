@@ -74,7 +74,7 @@ endif()
 
 ExternalProject_Add(extlibimobiledevice
   URL https://github.com/bugvm/bugvm-ext/releases/download/v1.0.0/libimobiledevice-1.2.0.tar.bz2
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS}' LDFLAGS='-L${EXTPREFIX}/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython --disable-openssl"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml extlibplist extlibusbmuxd
 )
@@ -85,8 +85,8 @@ set(CMAKE_INSTALL_DO_STRIP YES)
 
 include_directories(${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2} ${EXTPREFIX}/include)
 
-set(LIBS -limobiledevice -lusbmuxd -lplist -lssl -lxml2 -lcrypto)
-set(LDFLAGS -L${EXTPREFIX}/lib)
+set(LIBS -limobiledevice -lusbmuxd -lplist -lssl -lxml2 -lcrypto -lgnutls -lgcrypt -ltasn1)
+set(LDFLAGS -L${EXTPREFIX}/lib -L/usr/local/lib)
 
 if(MACOSX)
   set(LIBS ${LIBS} -liconv)
