@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.bugvm</groupId>
-  <version>1.0.5-SNAPSHOT</version>
+  <version>1.0.5</version>
   <artifactId>bugvm-parent</artifactId>
   <name>BugVM</name>
   <packaging>pom</packaging>
@@ -102,7 +102,7 @@
             <configuration>
               <serverId>ossrh</serverId>
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </configuration>
           </plugin>
           <plugin>
