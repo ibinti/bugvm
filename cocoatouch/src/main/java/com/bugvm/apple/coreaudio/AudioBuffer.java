@@ -69,9 +69,9 @@ public class AudioBuffer extends Struct<AudioBuffer> {
         } else if (bufferType == ShortBuffer.class) {
             return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
         } else if (bufferType == IntBuffer.class) {
-            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 3).order(ByteOrder.nativeOrder()).asIntBuffer();
         } else if (bufferType == FloatBuffer.class) {
-            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 3).order(ByteOrder.nativeOrder()).asFloatBuffer();
         } else {
             throw new UnsupportedOperationException("Buffer type not supported: " + bufferType);
         }
@@ -98,7 +98,9 @@ public class AudioBuffer extends Struct<AudioBuffer> {
     public float[] getDataAsFloatArray() {
         int length = getDataByteSize();
         float[] data = new float[length];
+
         getDataAsBuffer(FloatBuffer.class).get(data, 0, length);
+
         return data;
     }
 
@@ -107,6 +109,6 @@ public class AudioBuffer extends Struct<AudioBuffer> {
     @StructMember(1) private native int getDataByteSize();
     @StructMember(1) private native void setDataByteSize(int dataByteSize);
     @StructMember(2) public native @Pointer long getDataPointer();
-    @StructMember(2) private native void setDataPointer(@Pointer long data);
+    @StructMember(2) private native void setDataPointer(@MachineSizedUInt long data);
 
 }

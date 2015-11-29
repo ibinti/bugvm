@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>bugvm-dist</artifactId>
-  <name>BugVM Distribution (tar.gz package)</name>
+  <name>BugVM Package (tar.gz)</name>
   <packaging>pom</packaging>
 
   <properties>
@@ -40,7 +40,7 @@
     </dependency>
     <dependency>
       <groupId>com.bugvm</groupId>
-      <artifactId>bugvm-cacerts-full</artifactId>
+      <artifactId>bugvm-cacerts</artifactId>
       <version>${bugvm.version}</version>
     </dependency>
   </dependencies>
