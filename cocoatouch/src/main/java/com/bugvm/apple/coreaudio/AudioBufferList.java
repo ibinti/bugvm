@@ -33,31 +33,14 @@ public class AudioBufferList extends Struct<AudioBufferList> {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         return getBuffers()[index];
-        //return getBuffers0().next(index);
     }
-//    public AudioBufferList setBuffer(int index, AudioBuffer buffer) {
-//        return setBuffer(index, buffer.getHandle());
-//    }
-//    public AudioBufferList setBuffer(int index, long handle) {
-//        if (index >= getBufferCount()) {
-//            throw new ArrayIndexOutOfBoundsException(index);
-//        }
-//        getBuffers0().next(index).update(Struct.toStruct(AudioBuffer.class, handle));
-//        return this;
-//    }
-    public AudioBuffer[] getBuffers() {
-        //convert BytePtr to AudioBuffer?
-        return getAudioBuffersPtr().as(AudioBuffer.class).toArray(getBufferCount());
 
-        //return getBuffers0().toArray(getBufferCount());
+    public AudioBuffer[] getBuffers() {
+        return getAudioBuffersPtr().as(AudioBuffer.class).toArray(getBufferCount());
     }
-//    public AudioBufferList setBuffers(AudioBuffer[] buffers) {
-//        this.setNumberBuffers(buffers.length);
-//        getBuffers0().update(buffers);
-//        return this;
-//    }
+
     @StructMember(0) protected native int getNumberBuffers();
     @StructMember(0) protected native void setNumberBuffers(int numberBuffers);
     @StructMember(1) protected native @ByVal BytePtr getAudioBuffersPtr();
-    //@StructMember(1) protected native void setBuffers0(@Array(1) AudioBuffer buffers);
+
 }
