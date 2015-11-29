@@ -69,9 +69,9 @@ public class AudioBuffer extends Struct<AudioBuffer> {
         } else if (bufferType == ShortBuffer.class) {
             return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
         } else if (bufferType == IntBuffer.class) {
-            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 3).order(ByteOrder.nativeOrder()).asIntBuffer();
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
         } else if (bufferType == FloatBuffer.class) {
-            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 3).order(ByteOrder.nativeOrder()).asFloatBuffer();
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
         } else {
             throw new UnsupportedOperationException("Buffer type not supported: " + bufferType);
         }
