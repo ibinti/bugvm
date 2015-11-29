@@ -17,7 +17,7 @@ a.out
 /llvm/llvm/bin/
 /vm/target/build
 /compiler/target/
-/compiler-dist/target/
+/dist-compiler/target/
 /llvm/target/
 /llvm/target.llvm/
 /libimobiledevice/target/
@@ -30,13 +30,9 @@ a.out
 /libimobiledevice/extlibusbmuxd-prefix/
 /rt/target/
 /cacerts/target/
-/cacerts/full/target/
 /objc/target/
 /cocoatouch/target/
 /package/target/
-/dist/target/
-/dist/compiler/target/
-/dist/package/target/
 /tests/dalvik/bugvm*.env
 /tests/libcore/target/
 /tests/bugvm/target/
@@ -51,4 +47,4 @@ llvm/cmake_install.cmake
 libimobiledevice/cmake_install.cmake
 libimobiledevice/CMakeCache.txt
 libimobiledevice/Makefile
-compiler-dist/dependency-reduced-pom.xml
+dist-compiler/dependency-reduced-pom.xml
