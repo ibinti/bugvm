@@ -8,13 +8,8 @@
     <version>1.0.6-SNAPSHOT</version>
   </parent>
 
-  <artifactId>bugvm-cacerts-parent</artifactId>
-  <name>BugVM cacerts parent</name>
-  <packaging>pom</packaging>
+  <artifactId>bugvm-cacerts</artifactId>
+  <name>BugVM cacerts</name>
+  <packaging>jar</packaging>
 
-  <modules>
-    <module>full</module>
-<!--    <module>small</module>
-    <module>tiny</module> -->
-  </modules>
 </project>

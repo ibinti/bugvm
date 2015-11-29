@@ -1,0 +1,5 @@
+#surefire
+#Sat Nov 28 19:57:57 PST 2015
+user.dir=/Users/yy/bugvm/bugvm/dist-compiler
+localRepository=/Users/yy/.m2/repository
+basedir=/Users/yy/bugvm/bugvm/dist-compiler
