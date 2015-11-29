@@ -231,7 +231,7 @@
     <module>llvm</module>
     <module>libimobiledevice</module>
     <module>compiler</module>
-    <module>compiler-dist</module>
+    <module>dist-compiler</module>
     <module>cacerts</module>
     <module>objc</module>
     <module>cocoatouch</module>
