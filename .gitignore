@@ -47,4 +47,4 @@ llvm/cmake_install.cmake
 libimobiledevice/cmake_install.cmake
 libimobiledevice/CMakeCache.txt
 libimobiledevice/Makefile
-dist-compiler/dependency-reduced-pom.xml
+dependency-reduced-pom.xml
