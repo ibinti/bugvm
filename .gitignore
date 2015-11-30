@@ -4,6 +4,7 @@
 a.out
 *.class
 .*
+deploy
 /target/
 /ios-sim/build
 /llvm/target.llvm/
