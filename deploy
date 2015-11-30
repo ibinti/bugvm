@@ -1,3 +1,0 @@
-#!/bin/bash
-cd ~/bugvm/bugvm
-mvn clean deploy -P release
