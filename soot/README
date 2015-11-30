@@ -57,5 +57,3 @@ Rules:
    that elements of static arrays are not written, but this may make
    the checker too clumsy; the intent is for the checker to be widely
    used.
-
-EOF
