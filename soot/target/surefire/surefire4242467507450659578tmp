@@ -1,0 +1,23 @@
+#surefire
+#Wed Dec 02 05:44:09 PST 2015
+testClassesDirectory=/Users/yy/bugvm/bugvm/soot/target/test-classes
+forkMode=once
+classPathUrl.3=/Users/yy/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+classPathUrl.2=/Users/yy/.m2/repository/junit/junit/4.12/junit-4.12.jar
+useManifestOnlyJar=true
+classPathUrl.1=/Users/yy/bugvm/bugvm/soot/target/classes
+classPathUrl.0=/Users/yy/bugvm/bugvm/soot/target/test-classes
+reportsDirectory=/Users/yy/bugvm/bugvm/soot/target/surefire-reports
+providerConfiguration=org.apache.maven.surefire.junit4.JUnit4Provider
+testSuiteDefinitionTestSourceDirectory=/Users/yy/bugvm/bugvm/soot/src/test/java
+surefireClassPathUrl.1=/Users/yy/.m2/repository/org/apache/maven/surefire/surefire-api/2.11/surefire-api-2.11.jar
+surefireClassPathUrl.0=/Users/yy/.m2/repository/org/apache/maven/surefire/surefire-junit4/2.11/surefire-junit4-2.11.jar
+runOrder=filesystem
+useSystemClassLoader=true
+excludes0=**/*$*
+isTrimStackTrace=true
+enableAssertions=true
+failIfNoTests=false
+runStatisticsFile=/Users/yy/bugvm/bugvm/soot/.surefire-58702216A88F4FB5A74C1ADE719250F5BB73D378
+includes0=**/*Test.java
+childDelegation=false

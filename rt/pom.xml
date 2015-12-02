@@ -22,18 +22,6 @@
 
   <build>
     <resources>
-      <resource><directory>bugvm/src/main/resources</directory></resource>
-      <resource><directory>libcore/crypto/src/main/resources</directory></resource>
-      <resource><directory>libcore/dalvik/src/main/resources</directory></resource>
-      <resource><directory>libcore/json/src/main/resources</directory></resource>
-      <resource><directory>libcore/libdvm/src/main/resources</directory></resource>
-      <resource><directory>libcore/luni/src/main/resources</directory></resource>
-      <resource><directory>libcore/xml/src/main/resources</directory></resource>
-      <resource><directory>external/apache-xml/src/main/resources</directory></resource>
-      <resource><directory>external/bouncycastle/bcpkix/src/main/resources</directory></resource>
-      <resource><directory>external/bouncycastle/bcprov/src/main/resources</directory></resource>
-      <resource><directory>external/javasqlite/src/main/resources</directory></resource>
-      <resource><directory>external/okhttp/src/main/resources</directory></resource>
       <resource>
         <directory>libcore/luni/src/main/java</directory>
         <includes>
