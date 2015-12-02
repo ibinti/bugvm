@@ -1,6 +1,3 @@
-# BugVM  is a fork of RoboVM.
-
-
 # Build from source
 
 ### Prerequisites
