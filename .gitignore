@@ -6,6 +6,7 @@ a.out
 .*
 deploy
 /target/
+/soot/target/
 /ios-sim/build
 /llvm/target.llvm/
 /llvm/extllvm-prefix/
