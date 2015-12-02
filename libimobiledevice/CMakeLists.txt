@@ -4,11 +4,7 @@ include(ExternalProject)
 
 find_package(JNI REQUIRED)
 
-if(OS STREQUAL "linux")
-  set(LINUX YES)
-elseif(OS STREQUAL "macosx")
-  set(MACOSX YES)
-endif()
+set(MACOSX YES)
 
 if (ARCH STREQUAL "x86")
   set(X86 YES)
