@@ -919,7 +919,7 @@ public class Config {
             libVmDir = new File(homeDir, "lib/vm");
             rtPath = new File(homeDir, "lib/bugvm-rt.jar");
             cacertsPath = new HashMap<Cacerts, File>();
-            cacertsPath.put(Cacerts.full, new File(homeDir, "lib/bugvm-cacerts-full.jar"));
+            cacertsPath.put(Cacerts.full, new File(homeDir, "lib/bugvm-cacerts.jar"));
         }
 
         private Home(File devDir, File binDir, File libVmDir, File rtPath) {
@@ -928,7 +928,7 @@ public class Config {
             this.rtPath = rtPath;
             cacertsPath = new HashMap<Cacerts, File>();
             cacertsPath.put(Cacerts.full, new File(devDir,
-                    "cacerts/full/target/bugvm-cacerts-full-" + Version.getVersion() + ".jar"));
+                    "cacerts/target/bugvm-cacerts-" + Version.getVersion() + ".jar"));
             this.dev = true;
         }
 
