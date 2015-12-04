@@ -78,7 +78,7 @@ public class AppCompiler {
 
     /**
      * Names of root classes. These classes will always be linked in. These are
-     * here because they are either required by the RoboVM specific native VM
+     * here because they are either required by the BugVM specific native VM
      * libraries or by the Android's libcore native code.
      */
     private static final String[] ROOT_CLASSES = {
@@ -193,8 +193,7 @@ public class AppCompiler {
         "com/bugvm/rt/bro/Struct"
     };
 
-    private static final String TRUSTED_CERTIFICATE_STORE_CLASS =
-            "com/android/org/conscrypt/TrustedCertificateStore";
+    private static final String TRUSTED_CERTIFICATE_STORE_CLASS = "com/android/org/conscrypt/TrustedCertificateStore";
 
     /**
      * An {@link Executor} which runs tasks immediately without creating a
@@ -890,7 +889,7 @@ public class AppCompiler {
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
                          + "                        Default is <wd>/<executableName>. Ignored if -run is specified.");
         System.err.println("  -cc <path>            Path to the c compiler binary. gcc and clang are supported.");
-        System.err.println("  -home <dir>           Directory where RoboVM runtime has been installed.\n"
+        System.err.println("  -home <dir>           Directory where BugVM runtime has been installed.\n"
                          + "                        Default is $BUGVM_HOME. If not set the following paths\n"
                          + "                        will be searched: ~/Applications/bugvm/, ~/.bugvm/home/,\n"
                          + "                        /usr/local/lib/bugvm/, /opt/bugvm/, /usr/lib/bugvm/.");
@@ -939,7 +938,7 @@ public class AppCompiler {
                          + "                        file for iOS apps). The archive will be created in the\n" 
                          + "                        install dir specified using -d.");
         System.err.println("  -debug                Generates debug information");
-        System.err.println("  -use-debug-libs       Links against debug versions of the RoboVM VM libraries");
+        System.err.println("  -use-debug-libs       Links against debug versions of the BugVM VM libraries");
         System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
                          + "                        files (.o) and system libraries that should be included\n" 
                          + "                        when linking the final executable.");
@@ -1086,7 +1085,7 @@ public class AppCompiler {
             if (result != null) {
                 String version = (String) result.get("version");
                 if (version != null && Version.isOlderThan(version)) {
-                    config.getLogger().info("A new version of RoboVM is available. "
+                    config.getLogger().info("A new version of BugVM is available. "
                             + "Current version: %s. New version: %s.", Version.getVersion(), version);
                 }
             }

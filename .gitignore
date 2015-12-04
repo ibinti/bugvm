@@ -50,3 +50,5 @@ libimobiledevice/cmake_install.cmake
 libimobiledevice/CMakeCache.txt
 libimobiledevice/Makefile
 dependency-reduced-pom.xml
+
+*.versionsBackup
