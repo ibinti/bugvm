@@ -20,6 +20,6 @@ import com.bugvm.apple.coreaudio.AudioTimeStamp;
 import com.bugvm.apple.corefoundation.OSStatusException;
 
 public interface AURenderCallback {
-    void onRender(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, 
+     void onRender(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp,
             int busNumber, int numberFrames, AudioBufferList data) throws OSStatusException;
 }

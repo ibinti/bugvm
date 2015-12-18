@@ -305,8 +305,11 @@ import com.bugvm.apple.uikit.*;
         
         AURenderCallbackStruct struct = new AURenderCallbackStruct(new FunctionPtr(cbRender), cid);
         setProperty(AUGenericProperty.SetRenderCallback, struct, scope);
+
         synchronized (renderCallbacks) {
+
             renderCallbacks.put(cid, callback);
+
         }
     }
     public void setHostCallback(AUHostCallback callback, AUScope scope) throws OSStatusException {
