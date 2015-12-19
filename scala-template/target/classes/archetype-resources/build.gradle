@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+    dependencies {
+        classpath 'com.bugvm:bugvm-gradle-plugin:__bugvmVersion__'
+    }
+}
+
+ext {
+    bugVMVersion = "__bugvmVersion__"
+}
+
+apply plugin: 'scala'
+apply plugin: 'bugvm'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+bugvm {
+}
+
+dependencies {
+    compile "com.bugvm:bugvm-rt:${bugVMVersion}"
+    compile "com.bugvm:bugvm-cocoatouch:${bugVMVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
+}

@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+    dependencies {
+        classpath 'com.bugvm:bugvm-gradle-plugin:__bugvmVersion__'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'bugvm'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+ext {
+    bugVMVersion = "__bugvmVersion__"
+}
+
+bugvm {
+}
+
+dependencies {
+    compile "com.bugvm:bugvm-rt:${bugVMVersion}"
+    compile "com.bugvm:bugvm-objc:${bugVMVersion}"
+    compile "com.bugvm:bugvm-cocoatouch:${bugVMVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
+}

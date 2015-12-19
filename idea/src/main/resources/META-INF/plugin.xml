@@ -1,0 +1,75 @@
+<idea-plugin version="2">
+    <id>com.bugvm.intellij</id>
+    <name>BugVM</name>
+    <version>${project.version}</version>
+    <vendor email="bug@bugvm.com" url="http://bugvm.com">BugVM</vendor>
+
+    <depends>org.jetbrains.plugins.gradle</depends>
+    <depends>org.jetbrains.android</depends>
+
+    <idea-version since-build="143.1184"/>
+
+    <description><![CDATA[
+     <p>
+     Easily create native iOS apps with Java and Scala, and libGDX native iOS games.
+     </p>
+     <p>
+     BugVM is free and open source.
+     </p>
+     <br/>
+     <p>
+     Requires Xcode 7 on Mac OSX and at least 1GB of heap space for gradle VM.
+     <br/>
+     Scala plugin and SDK setup required if creating Scala native iOS apps.
+     </p>
+     <br/>
+     <p>
+     Developed and tested for IntelliJ IDEA 15.0.2.
+     </p>
+    ]]></description>
+
+    <change-notes><![CDATA[
+
+    ]]>
+    </change-notes>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.bugvm.idea.running.BugVmIOSConfigurationType"/>
+        <programRunner implementation="com.bugvm.idea.running.BugVmRunner"/>
+        <projectTemplatesFactory implementation="com.bugvm.idea.builder.BugVmTemplatesFactory"/>
+        <sdkType implementation="com.bugvm.idea.sdk.BugVmSdkType"/>
+        <buildProcess.parametersProvider implementation="com.bugvm.idea.components.BugVmBuildProcessParametersProvider"/>
+        <applicationConfigurable implementation="com.bugvm.idea.config.BugVmGlobalConfig"></applicationConfigurable>
+    </extensions>
+
+    <application-components>
+        <component>
+            <implementation-class>com.bugvm.idea.components.BugVmApplicationComponent</implementation-class>
+        </component>
+    </application-components>
+
+    <project-components>
+        <component>
+            <implementation-class>com.bugvm.idea.components.BugVmProjectComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <module-components>
+        <component>
+            <implementation-class>com.bugvm.idea.components.BugVmSdkUpdateComponent</implementation-class>
+        </component>
+    </module-components>
+
+    <actions>
+<!--        <group id="com.bugvm.idea.Menu" text="BugVM" description="BugVM Menu">
+            <add-to-group group-id="MainMenu" anchor="last"  />
+            <action id="com.bugvm.idea.open-license-manager" class="com.bugvm.idea.actions.OpenLicenseManagerAction"
+                    text="We are the BugVM."/>
+        </group>-->
+        <action id="com.bugvm.idea.create-ipa" class="com.bugvm.idea.actions.CreateIpaAction" text="BugVM: Create IPA"
+                description="Create an IPA for App Store or ad-hoc distribution">
+            <add-to-group group-id="BuildMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>
