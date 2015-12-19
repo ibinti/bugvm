@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="libraryTable">
+  <library name="Maven: org.simpleframework:simple-xml:2.7">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/simpleframework/simple-xml/2.7/simple-xml-2.7.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/simpleframework/simple-xml/2.7/simple-xml-2.7-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/simpleframework/simple-xml/2.7/simple-xml-2.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

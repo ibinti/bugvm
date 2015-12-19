@@ -1,0 +1,5 @@
+.DS_STORE
+target
+.idea/
+bugvm-idea.iml
+src/main/resources/bugvm-dist

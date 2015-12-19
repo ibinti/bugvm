@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" filepath="$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cocoatouch/bugvm-cocoatouch.iml" filepath="$PROJECT_DIR$/cocoatouch/bugvm-cocoatouch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/bugvm-compiler.iml" filepath="$PROJECT_DIR$/compiler/bugvm-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/package/bugvm-dist.iml" filepath="$PROJECT_DIR$/package/bugvm-dist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dist-compiler/bugvm-dist-compiler.iml" filepath="$PROJECT_DIR$/dist-compiler/bugvm-dist-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idea/bugvm-idea.iml" filepath="$PROJECT_DIR$/idea/bugvm-idea.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java-template/bugvm-java-template.iml" filepath="$PROJECT_DIR$/java-template/bugvm-java-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgdx/bugvm-libgdx.iml" filepath="$PROJECT_DIR$/libgdx/bugvm-libgdx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgdx-template/bugvm-libgdx-template.iml" filepath="$PROJECT_DIR$/libgdx-template/bugvm-libgdx-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libimobiledevice/bugvm-libimobiledevice.iml" filepath="$PROJECT_DIR$/libimobiledevice/bugvm-libimobiledevice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/llvm/bugvm-llvm.iml" filepath="$PROJECT_DIR$/llvm/bugvm-llvm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/objc/bugvm-objc.iml" filepath="$PROJECT_DIR$/objc/bugvm-objc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bugvm-parent.iml" filepath="$PROJECT_DIR$/bugvm-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rt/bugvm-rt.iml" filepath="$PROJECT_DIR$/rt/bugvm-rt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scala-template/bugvm-scala-template.iml" filepath="$PROJECT_DIR$/scala-template/bugvm-scala-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/soot/bugvm-soot.iml" filepath="$PROJECT_DIR$/soot/bugvm-soot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/templater/bugvm-templater.iml" filepath="$PROJECT_DIR$/templater/bugvm-templater.iml" />
+    </modules>
+  </component>
+</project>

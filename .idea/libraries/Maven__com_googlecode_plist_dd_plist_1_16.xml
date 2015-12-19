@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="libraryTable">
+  <library name="Maven: com.googlecode.plist:dd-plist:1.16">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/googlecode/plist/dd-plist/1.16/dd-plist-1.16.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/googlecode/plist/dd-plist/1.16/dd-plist-1.16-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/googlecode/plist/dd-plist/1.16/dd-plist-1.16-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

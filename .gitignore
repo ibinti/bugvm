@@ -3,7 +3,7 @@
 *.iml
 a.out
 *.class
-.*
+.idea
 deploy
 /target/
 /soot/target/
