@@ -62,3 +62,13 @@ libgdx/libs/ios32/libgdx.a.armv7
 libgdx/libs/ios32/libgdx.a.x86_64
 
 libgdx/libs/ios32/libgdx.a
+
+templater/src/main/resources/templates/bugvm-java-template.tar.gz
+
+templater/src/main/resources/templates/bugvm-libgdx-template.tar.gz
+
+templater/src/main/resources/templates/bugvm-scala-template.tar.gz
+
+.idea/workspace.xml
+
+.idea/workspace.xml
