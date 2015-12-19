@@ -42,23 +42,23 @@ endif()
 set(EXTPREFIX "${CMAKE_BINARY_DIR}/ext")
 set(EXTCFLAGS "${C_CXX_FLAGS} -I${EXTPREFIX}/include -I${EXTPREFIX}/include/libusb-1.0 -I${EXTPREFIX}/include/libxml2")
 ExternalProject_Add(extlibxml
-  URL https://github.com/bugvm/bugvm-ext/releases/download/v1.0.0/libxml2-2.9.1.tar.gz
+  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libxml2-2.9.1.tar.gz
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --prefix=${EXTPREFIX} --with-minimum=on --without-python --without-ftp --without-http --without-html --without-docbook --without-xpath --without-xinclude --without-xptr --without-c14n --without-catalog --without-valid --without-schemas --without-schematron --without-modules --without-lzma --without-zlib"
   BUILD_IN_SOURCE 1
 )
 ExternalProject_Add(extlibusbx
-  URL https://github.com/bugvm/bugvm-ext/releases/download/v1.0.0/libusb-1.0.20.tar.bz2
+  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libusb-1.0.20.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --enable-udev=no --prefix=${EXTPREFIX}"
   BUILD_IN_SOURCE 1
 )
 ExternalProject_Add(extlibplist
-  URL https://github.com/bugvm/bugvm-ext/releases/download/v1.0.0/libplist-1.12.tar.bz2
+  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libplist-1.12.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --enable-shared=no --prefix=${EXTPREFIX} --without-cython"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml
 )
 ExternalProject_Add(extlibusbmuxd
-  URL https://github.com/bugvm/bugvm-ext/releases/download/v1.0.0/libusbmuxd-1.0.10.tar.bz2
+  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libusbmuxd-1.0.10.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --enable-shared=no --prefix=${EXTPREFIX}"
   BUILD_IN_SOURCE 1
   DEPENDS extlibusbx extlibplist
@@ -69,7 +69,7 @@ if(MACOSX)
 endif()
 
 ExternalProject_Add(extlibimobiledevice
-  URL https://github.com/bugvm/bugvm-ext/releases/download/v1.0.0/libimobiledevice-1.2.0.tar.bz2
+  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libimobiledevice-1.2.0.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython --disable-openssl"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml extlibplist extlibusbmuxd
