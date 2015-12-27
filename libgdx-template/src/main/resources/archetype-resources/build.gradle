@@ -3,23 +3,21 @@ task wrapper(type: Wrapper) {
 }
 
 buildscript {
+    ext {
+        gdxVersion = '1.7.1'
+        bugVMVersion = '__bugvmVersion__'
+    }
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'com.bugvm:bugvm-gradle-plugin:__bugvmVersion__'
+        classpath "com.bugvm:bugvm-gradle-plugin:$bugVMVersion"
     }
 }
 
 allprojects {
-
-    ext {
-        gdxVersion = '1.7.1'
-        bugVMVersion = '__bugvmVersion__'
-    }
-
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
@@ -42,7 +40,7 @@ project(":ios") {
     dependencies {
         compile project(":core")
         compile "com.bugvm:bugvm-rt:$bugVMVersion"
-        compile "com.bugvm:bugvm-objc:${bugVMVersion}"
+        compile "com.bugvm:bugvm-objc:$bugVMVersion"
         compile "com.bugvm:bugvm-cocoatouch:$bugVMVersion"
         compile "com.bugvm:bugvm-libgdx:$bugVMVersion"
     }

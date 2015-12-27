@@ -1,16 +1,15 @@
 buildscript {
+    ext {
+        bugVMVersion = "__bugvmVersion__"
+    }
     repositories {
         mavenLocal()
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath 'com.bugvm:bugvm-gradle-plugin:__bugvmVersion__'
+        classpath "com.bugvm:bugvm-gradle-plugin:${bugVMVersion}"
     }
-}
-
-ext {
-    bugVMVersion = "__bugvmVersion__"
 }
 
 apply plugin: 'scala'
@@ -20,9 +19,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
-
-bugvm {
 }
 
 dependencies {
