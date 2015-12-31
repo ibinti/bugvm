@@ -1,4 +1,5 @@
 buildscript {
+
     repositories {
         jcenter()
     }
@@ -16,15 +17,15 @@ apply plugin: 'signing'
 
 group = 'com.bugvm'
 archivesBaseName = "bugvm-gradle-plugin"
-version = '1.0.8-SNAPSHOT'
-//version = '1.0.7'
+//version = '1.0.8-SNAPSHOT'
+version = '1.0.8'
+ext {
+    //bugVMVersion = '1.0.9-SNAPSHOT'
+    bugVMVersion = '1.0.8'
+}
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-ext {
-    bugVMVersion = '1.0.8-SNAPSHOT'
-//    bugVMVersion = '1.0.7'
-}
 
 repositories {
     mavenLocal()
