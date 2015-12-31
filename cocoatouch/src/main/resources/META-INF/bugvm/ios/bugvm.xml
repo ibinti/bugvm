@@ -1,0 +1,5 @@
+<config>
+    <libs>
+        <lib>lib/libadmob.a</lib>
+    </libs>
+</config>

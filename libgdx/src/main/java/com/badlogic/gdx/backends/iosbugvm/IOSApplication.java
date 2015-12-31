@@ -174,6 +174,7 @@ public class IOSApplication implements Application {
 		this.uiWindow = new UIWindow(UIScreen.getMainScreen().getBounds());
 		this.uiWindow.setRootViewController(this.navCon);
 		this.uiWindow.makeKeyAndVisible();
+		this.uiApp.addStrongRef(this.uiWindow);
 		Gdx.app.debug("IOSApplication", "created");
 		return true;
 	}
