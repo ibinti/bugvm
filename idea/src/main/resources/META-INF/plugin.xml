@@ -11,7 +11,7 @@
 
     <description><![CDATA[
      <p>
-     Easily create native iOS apps with Java and Scala, and libGDX native iOS games.
+     Easily create native iOS apps with Java and Scala, and libGDX iOS games.
      </p>
      <p>
      BugVM is free and open source.
@@ -24,7 +24,7 @@
      </p>
      <br/>
      <p>
-     Developed and tested for IntelliJ IDEA 15.0.2.
+     Developed and tested with IntelliJ IDEA 15.0.2.
      </p>
     ]]></description>
 
