@@ -417,6 +417,8 @@ public class IOSTarget extends AbstractTarget {
                 new Executor(config.getLogger(), "ln")
                         .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
                         .exec();
+
+
             }
         }
     }
@@ -623,10 +625,12 @@ public class IOSTarget extends AbstractTarget {
         tmpDir.mkdirs();
         super.doInstall(tmpDir, getExecutable(), tmpDir);
         prepareInstall(tmpDir);
+
         packageApplication(tmpDir);
     }
 
     private void packageApplication(File appDir) throws IOException {
+
         File ipaFile = new File(config.getInstallDir(), getExecutable() + ".ipa");
         config.getLogger().info("Packaging IPA %s from %s", ipaFile.getName(), appDir.getName());
 
@@ -867,7 +871,7 @@ public class IOSTarget extends AbstractTarget {
 
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
-            dict.put("MinimumOSVersion", "5.1.1");
+            dict.put("MinimumOSVersion", "6.1.6");
         }
 
         customizeInfoPList(dict);
@@ -988,7 +992,7 @@ public class IOSTarget extends AbstractTarget {
     private void copyToIndexedDir(File dir, String executable, File dsymDir, File exePath) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         final File indexedDir = new File(System.getProperty("user.home"),
-                "Library/Developer/Xcode/DerivedData/RoboVM/Build/Products/"
+                "Library/Developer/Xcode/DerivedData/BugVM/Build/Products/"
                         + FilenameUtils.removeExtension(dir.getName()) + "_"
                         + sdf.format(new Date()));
         indexedDir.mkdirs();
@@ -1029,7 +1033,7 @@ public class IOSTarget extends AbstractTarget {
                 try {
                     FileUtils.deleteDirectory(f);
                 } catch (IOException e) {
-                    config.getLogger().error("Failed to delete diretcory %s",
+                    config.getLogger().error("Failed to delete directory %s",
                             f.getAbsolutePath(), e.getMessage());
                 }
             }

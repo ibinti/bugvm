@@ -17,11 +17,11 @@ apply plugin: 'signing'
 
 group = 'com.bugvm'
 archivesBaseName = "bugvm-gradle-plugin"
-//version = '1.0.8-SNAPSHOT'
-version = '1.0.8'
+//version = '1.0.9-SNAPSHOT'
+version = '1.0.9'
 ext {
-    //bugVMVersion = '1.0.9-SNAPSHOT'
-    bugVMVersion = '1.0.8'
+//    bugVMVersion = '1.0.9-SNAPSHOT'
+    bugVMVersion = '1.0.9'
 }
 
 sourceCompatibility = '1.8'

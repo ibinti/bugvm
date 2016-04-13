@@ -518,8 +518,12 @@ public abstract class AbstractTarget implements Target {
                     output, path.getFile());
             return;
         }
-        
-        config.getLogger().info("Creating stripped archive file %s", output);
+
+
+        //issue #40
+        if(output.getName().contains("bugvm-dist-compiler.jar")) {output.delete(); return;}
+        else config.getLogger().info("Creating stripped archive file %s", output);
+
 
         ZipOutputStream out = null;
         try {
