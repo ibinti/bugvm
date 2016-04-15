@@ -1,3 +1,3 @@
-# BugVM is a fork of [RoboVM](http://robovm.com)
+# BugVM is a fork of RoboVM.
 
 Visit [bugvm.com](http://bugvm.com) for latest news and information.
