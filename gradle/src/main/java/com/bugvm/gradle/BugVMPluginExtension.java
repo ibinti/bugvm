@@ -191,7 +191,7 @@ public class BugVMPluginExtension {
         this.installDir = installDir;
     }
     
-    public void setCachedir(String cacheDir) {
+    public void setCacheDir(String cacheDir) {
         this.cacheDir = cacheDir;
     }
     

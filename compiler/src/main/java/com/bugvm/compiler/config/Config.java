@@ -184,7 +184,7 @@ public class Config {
 
     private Home home = null;
     private File tmpDir;
-    private File cacheDir = new File(System.getProperty("user.home"), ".bugvm/cache");
+    private File cacheDir = getDefaultCacheDir();
     private File ccBinPath = null;
 
     private boolean clean = false;
@@ -227,6 +227,10 @@ public class Config {
                 new LambdaPlugin()
                 ));
         this.loadPluginsFromClassPath();
+    }
+
+    public static File getDefaultCacheDir () {
+        return new File(System.getProperty("user.home"), ".bugvm/cache");
     }
 
     /**

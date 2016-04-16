@@ -167,7 +167,7 @@ abstract public class AbstractBugVMTask extends DefaultTask {
         if(extension.getCacheDir() != null) {
             cacheDir = new File(extension.getCacheDir());
         } else {
-            cacheDir = new File(extension.getCacheDir());//Config.getDefaultCacheDir();
+            cacheDir = Config.getDefaultCacheDir();
         }
         File temporaryDirectory = new File(project.getBuildDir(), "bugvm.tmp");
         try {
@@ -238,7 +238,7 @@ abstract public class AbstractBugVMTask extends DefaultTask {
     abstract public void invoke();
 
     protected File unpack() throws GradleException {
-        final Artifact artifact = resolveArtifact("com.bugvm:bugvm-dist:tar.gz:nocompiler:"
+        final Artifact artifact = resolveArtifact("com.bugvm:bugvm-dist:tar.gz:"
                 + BugVMPlugin.getBugVMVersion());
         final File distTarFile = artifact.getFile();
         final File unpackedDirectory = new File(distTarFile.getParent(), "unpacked");
