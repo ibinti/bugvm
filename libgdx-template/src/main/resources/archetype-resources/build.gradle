@@ -4,7 +4,7 @@ task wrapper(type: Wrapper) {
 
 buildscript {
     ext {
-        gdxVersion = '1.7.1'
+        gdxVersion = '1.9.2'
         bugVMVersion = '__bugvmVersion__'
     }
     repositories {

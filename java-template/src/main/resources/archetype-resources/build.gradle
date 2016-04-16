@@ -15,9 +15,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'bugvm'
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
-
 repositories {
     mavenLocal()
     mavenCentral()
