@@ -1,4 +1,4 @@
-BugVM Gradle Plugin v1.0.3
+BugVM Gradle Plugin v1.0.9
 ====================
 
 # Usage
@@ -12,14 +12,14 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath 'com.bugvm:bugvm-gradle-plugin:1.0.3'
+        classpath 'com.bugvm:bugvm-gradle-plugin:1.0.9'
     }
 }
 ```
 
 Deploy
 ```
-cd ~/bugvm/bugvm-gradle
+cd ~/bugvm/gradle
 ./gradlew clean build install
 ./gradlew uploadArchives
 ```
