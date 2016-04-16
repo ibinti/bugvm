@@ -1,4 +1,8 @@
 buildscript {
+    ext {
+        bugVMVersion = '1.1.0-SNAPSHOT'
+//    bugVMVersion = '1.1.0'
+    }
 
     repositories {
         jcenter()
@@ -17,12 +21,7 @@ apply plugin: 'signing'
 
 group = 'com.bugvm'
 archivesBaseName = "bugvm-gradle-plugin"
-version = '1.1.0-SNAPSHOT'
-//version = '1.0.9'
-ext {
-    bugVMVersion = '1.1.0-SNAPSHOT'
-//    bugVMVersion = '1.0.9'
-}
+version = "${bugVMVersion}"
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -61,8 +60,8 @@ modifyPom {
         }
 
         scm {
-           url 'https://github.com/bugvm/bugvm-gradle.git'
-           connection 'scm:git:git://github.com/bugvm/bugvm-gradle.git'
+           url 'https://github.com/bugvm/bugvm.git'
+           connection 'scm:git:git://github.com/bugvm/bugvm.git'
         }
 
         developers {
