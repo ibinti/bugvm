@@ -1054,7 +1054,7 @@ public class AppCompiler {
     }
 
     /**
-     * Performs an update check. If a newer version of RoboVM is available a
+     * Performs an update check. If a newer version of BugVM is available a
      * message will be printed to the log. The update check is also used to
      * gather some anonymous usage statistics.
      */
