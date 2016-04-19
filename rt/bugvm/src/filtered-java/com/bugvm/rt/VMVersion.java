@@ -20,5 +20,5 @@ package com.bugvm.rt;
  * @version $Id$
  */
 public final class VMVersion {
-    public static final String VERSION = "1.0.6";
+    public static final String VERSION = "1.1.0";
 }
