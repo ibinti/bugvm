@@ -13,6 +13,8 @@
       <module fileurl="file://$PROJECT_DIR$/libgdx-template/bugvm-libgdx-template.iml" filepath="$PROJECT_DIR$/libgdx-template/bugvm-libgdx-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/libimobiledevice/bugvm-libimobiledevice.iml" filepath="$PROJECT_DIR$/libimobiledevice/bugvm-libimobiledevice.iml" />
       <module fileurl="file://$PROJECT_DIR$/llvm/bugvm-llvm.iml" filepath="$PROJECT_DIR$/llvm/bugvm-llvm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven/bugvm-maven.iml" filepath="$PROJECT_DIR$/maven/bugvm-maven.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven-resolver/bugvm-maven-resolver.iml" filepath="$PROJECT_DIR$/maven-resolver/bugvm-maven-resolver.iml" />
       <module fileurl="file://$PROJECT_DIR$/objc/bugvm-objc.iml" filepath="$PROJECT_DIR$/objc/bugvm-objc.iml" />
       <module fileurl="file://$PROJECT_DIR$/bugvm-parent.iml" filepath="$PROJECT_DIR$/bugvm-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/rt/bugvm-rt.iml" filepath="$PROJECT_DIR$/rt/bugvm-rt.iml" />

@@ -37,6 +37,8 @@
         <module name="bugvm-libgdx-template" />
         <module name="bugvm-libimobiledevice" />
         <module name="bugvm-llvm" />
+        <module name="bugvm-maven" />
+        <module name="bugvm-maven-resolver" />
         <module name="bugvm-objc" />
         <module name="bugvm-rt" />
         <module name="bugvm-scala-template" />
@@ -56,6 +58,8 @@
       <module name="bugvm-libgdx-template" target="1.7" />
       <module name="bugvm-libimobiledevice" target="1.7" />
       <module name="bugvm-llvm" target="1.7" />
+      <module name="bugvm-maven" target="1.7" />
+      <module name="bugvm-maven-resolver" target="1.7" />
       <module name="bugvm-objc" target="1.7" />
       <module name="bugvm-parent" target="1.7" />
       <module name="bugvm-rt" target="1.7" />
