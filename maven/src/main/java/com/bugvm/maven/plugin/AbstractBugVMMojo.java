@@ -217,10 +217,10 @@ public abstract class AbstractBugVMMojo extends AbstractMojo {
         }
 
         // Read embedded BugVM <config> if there is one
-        Plugin plugin = project.getPlugin("com.bugvm:bugvm-maven-plugin");
+        Plugin plugin = project.getPlugin("com.bugvm:bugvm-maven");
         MavenProject p = project;
         while (p != null && plugin == null) {
-            plugin = p.getPluginManagement().getPluginsAsMap().get("com.bugvm:bugvm-maven-plugin");
+            plugin = p.getPluginManagement().getPluginsAsMap().get("com.bugvm:bugvm-maven");
             if (plugin == null) p = p.getParent();
         }
         if (plugin != null) {
@@ -380,7 +380,7 @@ public abstract class AbstractBugVMMojo extends AbstractMojo {
 
         MavenArtifactHandler handler = new MavenArtifactHandler("tar.gz");
         Artifact artifact = new DefaultArtifact("com.bugvm", "bugvm-dist",
-                getBugVMVersion(), "", "tar.gz", "nocompiler", handler);
+                getBugVMVersion(), "", "tar.gz", "", handler);
         return resolveArtifact(artifact);
     }
 
