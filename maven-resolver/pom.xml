@@ -15,9 +15,8 @@
     <bugvm.version>${project.version}</bugvm.version>
   </properties>
 
-  <name>BugVM Maven Resolver</name>
-  <groupId>com.bugvm</groupId>
   <artifactId>bugvm-maven-resolver</artifactId>
+  <name>BugVM Maven Resolver</name>
   <packaging>jar</packaging>
 
   <dependencies>
