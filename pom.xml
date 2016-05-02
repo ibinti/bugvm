@@ -224,5 +224,7 @@
     <module>libgdx-template</module>
     <module>templater</module>
     <module>idea</module>
+    <module>maven</module>
+    <module>maven-resolver</module>
   </modules>
 </project>
