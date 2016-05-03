@@ -36,7 +36,7 @@
             </plugin>
             <plugin>
                 <groupId>com.bugvm</groupId>
-                <artifactId>bugvm-maven-plugin</artifactId>
+                <artifactId>bugvm-maven</artifactId>
                 <version>${bugvm.version}</version>
             </plugin>
         </plugins>

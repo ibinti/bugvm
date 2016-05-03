@@ -125,7 +125,7 @@ public class BugVmPlugin {
         String androidBuildToolsVersionString = "";
         File androidSdkDir = getBestAndroidSdkDir();
         if(androidSdkDir == null) {
-            return "23.0.1";
+            return "23.0.3";
         }
         File platformsDir = new File(androidSdkDir, "build-tools");
         for(File file: platformsDir.listFiles()) {
@@ -145,7 +145,7 @@ public class BugVmPlugin {
             }
         }
         if(androidBuildToolsVersion == 0) {
-            return "23.0.1";
+            return "23.0.3";
         } else {
             return androidBuildToolsVersionString;
         }

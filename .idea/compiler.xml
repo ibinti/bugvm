@@ -5,6 +5,7 @@
       <directory url="file://$PROJECT_DIR$/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/scala-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/libgdx-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/playn-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
@@ -34,12 +35,12 @@
         <module name="bugvm-idea" />
         <module name="bugvm-java-template" />
         <module name="bugvm-libgdx" />
-        <module name="bugvm-libgdx-template" />
         <module name="bugvm-libimobiledevice" />
         <module name="bugvm-llvm" />
         <module name="bugvm-maven" />
         <module name="bugvm-maven-resolver" />
         <module name="bugvm-objc" />
+        <module name="bugvm-playn-template" />
         <module name="bugvm-rt" />
         <module name="bugvm-scala-template" />
         <module name="bugvm-soot" />
@@ -62,6 +63,7 @@
       <module name="bugvm-maven-resolver" target="1.7" />
       <module name="bugvm-objc" target="1.7" />
       <module name="bugvm-parent" target="1.7" />
+      <module name="bugvm-playn-template" target="1.7" />
       <module name="bugvm-rt" target="1.7" />
       <module name="bugvm-scala-template" target="1.7" />
       <module name="bugvm-soot" target="1.7" />

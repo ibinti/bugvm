@@ -17,6 +17,8 @@
       <module fileurl="file://$PROJECT_DIR$/maven-resolver/bugvm-maven-resolver.iml" filepath="$PROJECT_DIR$/maven-resolver/bugvm-maven-resolver.iml" />
       <module fileurl="file://$PROJECT_DIR$/objc/bugvm-objc.iml" filepath="$PROJECT_DIR$/objc/bugvm-objc.iml" />
       <module fileurl="file://$PROJECT_DIR$/bugvm-parent.iml" filepath="$PROJECT_DIR$/bugvm-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/playn-template/bugvm-playn-template.iml" filepath="$PROJECT_DIR$/playn-template/bugvm-playn-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/playn-template/bugvm-playn-template.iml" filepath="$PROJECT_DIR$/playn-template/bugvm-playn-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/rt/bugvm-rt.iml" filepath="$PROJECT_DIR$/rt/bugvm-rt.iml" />
       <module fileurl="file://$PROJECT_DIR$/scala-template/bugvm-scala-template.iml" filepath="$PROJECT_DIR$/scala-template/bugvm-scala-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/soot/bugvm-soot.iml" filepath="$PROJECT_DIR$/soot/bugvm-soot.iml" />
