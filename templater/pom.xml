@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>com.bugvm</groupId>
-            <artifactId>bugvm-libgdx-template</artifactId>
+            <artifactId>bugvm-playn-template</artifactId>
             <version>${project.version}</version>
             <type>tar.gz</type>
         </dependency>
@@ -85,7 +85,7 @@
                         </artifactItem>
                         <artifactItem>
                             <groupId>com.bugvm</groupId>
-                            <artifactId>bugvm-libgdx-template</artifactId>
+                            <artifactId>bugvm-playn-template</artifactId>
                             <overWrite>true</overWrite>
                             <type>tar.gz</type>
                             <outputDirectory>src/main/resources/templates</outputDirectory>

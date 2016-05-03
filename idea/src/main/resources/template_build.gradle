@@ -1,10 +1,13 @@
 buildscript {
+    ext {
+        bugVMVersion = "__bugvmVersion__"
+    }
     repositories {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath 'com.bugvm:bugvm-gradle-plugin:__bugvmVersion__'
+        classpath "com.bugvm:bugvm-gradle-plugin:${bugVMVersion}"
     }
 }
 
@@ -16,18 +19,11 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
-ext {
-    bugVMVersion = "__bugvmVersion__"
-}
-
-bugvm {
-}
-
 dependencies {
     compile "com.bugvm:bugvm-rt:${bugVMVersion}"
     compile "com.bugvm:bugvm-cocoatouch:${bugVMVersion}"
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.8'
+    gradleVersion = '2.10'
 }

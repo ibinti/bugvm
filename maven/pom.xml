@@ -11,15 +11,8 @@
   </parent>
 
   <artifactId>bugvm-maven</artifactId>
-
-  <packaging>maven-plugin</packaging>
-
   <name>BugVM Maven</name>
-  <url>https://github.com/bugvm/bugvm</url>
-  <description>
-    The BugVM Maven Plugin provides a way to build BugVM based distribution bundles.
-  </description>
-  <inceptionYear>2016</inceptionYear>
+  <packaging>maven-plugin</packaging>
 
   <properties>
     <bugvm.version>${project.version}</bugvm.version>
