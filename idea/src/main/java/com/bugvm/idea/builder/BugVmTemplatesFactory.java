@@ -62,7 +62,7 @@ public class BugVmTemplatesFactory extends ProjectTemplatesFactory {
         return new ProjectTemplate[] {
                 new BugVmProjectTemplate("BugVM Java iOS App", "A basic Java single view App", new BugVmModuleBuilder("java")),
                 new BugVmProjectTemplate("BugVM Scala iOS App", "A basic Scala single view App", new BugVmModuleBuilder("scala")),
-                new BugVmProjectTemplate("BugVM PlayN iOS Game", "A multi module project with PlayN for iOS with a core project", new BugVmModuleBuilder("playn")),
+                new BugVmProjectTemplate("BugVM PlayN iOS Game - Alpha in development", "A multi module project with PlayN for iOS with a core project", new BugVmModuleBuilder("playn")),
         };
     }
 
