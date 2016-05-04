@@ -20,7 +20,7 @@ apply plugin: 'nexus'
 apply plugin: 'signing'
 
 group = 'com.bugvm'
-archivesBaseName = "bugvm-gradle-plugin"
+archivesBaseName = "bugvm-gradle"
 version = "${bugVMVersion}"
 
 sourceCompatibility = '1.8'
@@ -48,7 +48,7 @@ dependencies {
 
 modifyPom {
     project {
-        name 'bugvm-gradle-plugin'
+        name 'bugvm-gradle'
         description 'bugvm-gradle-plugin'
         url 'http://bugvm.com'
 
