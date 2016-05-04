@@ -14,7 +14,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.bugvm:bugvm-gradle-plugin:$bugVMVersion"
+        classpath "com.bugvm:bugvm-gradle:$bugVMVersion"
     }
 }
 ```
