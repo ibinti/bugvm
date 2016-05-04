@@ -2,6 +2,6 @@
 .DS_Store
 build
 .idea
-bugvm-gradle-plugin.iml
+bugvm-gradle.iml
 target
 deploy

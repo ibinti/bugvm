@@ -10,7 +10,7 @@
       <defaultValue>com.bugvm.app</defaultValue>
     </requiredProperty>
     <requiredProperty key="artifactId">
-      <defaultValue>bugvm-single-view-template</defaultValue>
+      <defaultValue>bugvm-java-template</defaultValue>
     </requiredProperty>
     <requiredProperty key="version">
       <defaultValue>1.0</defaultValue>

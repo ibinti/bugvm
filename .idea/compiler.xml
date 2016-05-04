@@ -2,9 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <excludeFromCompile>
-      <directory url="file://$PROJECT_DIR$/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/scala-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
-      <directory url="file://$PROJECT_DIR$/libgdx-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/playn-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
@@ -56,7 +55,6 @@
       <module name="bugvm-idea" target="1.7" />
       <module name="bugvm-java-template" target="1.7" />
       <module name="bugvm-libgdx" target="1.7" />
-      <module name="bugvm-libgdx-template" target="1.7" />
       <module name="bugvm-libimobiledevice" target="1.7" />
       <module name="bugvm-llvm" target="1.7" />
       <module name="bugvm-maven" target="1.7" />
