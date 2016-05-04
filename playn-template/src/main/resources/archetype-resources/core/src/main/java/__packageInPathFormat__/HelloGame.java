@@ -25,7 +25,6 @@ import playn.core.Pointer;
 import playn.scene.GroupLayer;
 import playn.scene.ImageLayer;
 import playn.scene.SceneGame;
-import playn.scene.SceneGame;
 
 public class HelloGame extends SceneGame {
 
