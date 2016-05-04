@@ -23,7 +23,6 @@ import com.bugvm.apple.uikit.UIScreen;
 import com.bugvm.apple.uikit.UIWindow;
 
 import playn.bugvm.BugPlatform;
-import playn.sample.hello.core.HelloGame;
 
 public class ${mainClass} extends UIApplicationDelegateAdapter {
 
