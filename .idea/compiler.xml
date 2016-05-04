@@ -33,7 +33,6 @@
         <module name="bugvm-dist-compiler" />
         <module name="bugvm-idea" />
         <module name="bugvm-java-template" />
-        <module name="bugvm-libgdx" />
         <module name="bugvm-libimobiledevice" />
         <module name="bugvm-llvm" />
         <module name="bugvm-maven" />
