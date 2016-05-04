@@ -218,7 +218,6 @@
     <module>objc</module>
     <module>cocoatouch</module>
     <module>package</module>
-    <module>libgdx</module>
     <module>java-template</module>
     <module>scala-template</module>
     <module>playn-template</module>
