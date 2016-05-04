@@ -6,40 +6,26 @@
     <groupId>__packageName__</groupId>
     <artifactId>__appName__</artifactId>
     <version>1.0</version>
+    <packaging>pom</packaging>
 
     <properties>
         <bugvm.version>__bugvmVersion__</bugvm.version>
+        <playn.version>2.0-SNAPSHOT</playn.version>
     </properties>
+    <modules>
+        <module>assets</module>
+        <module>core</module>
+    </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.bugvm</groupId>
-            <artifactId>bugvm-rt</artifactId>
-            <version>${bugvm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bugvm</groupId>
-            <artifactId>bugvm-cocoatouch</artifactId>
-            <version>${bugvm.version}</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.bugvm</groupId>
-                <artifactId>bugvm-maven</artifactId>
-                <version>${bugvm.version}</version>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>bugsim</id>
+            <modules><module>bugvm</module></modules>
+        </profile>
+        <profile>
+            <id>bugdev</id>
+            <modules><module>bugvm</module></modules>
+        </profile>
+    </profiles>
 
 </project>

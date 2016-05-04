@@ -4,19 +4,19 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>io.playn.samples</groupId>
-    <artifactId>playn-hello</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>${package}</groupId>
+    <artifactId>${mainClass}</artifactId>
+    <version>1.0</version>
   </parent>
 
-  <artifactId>playn-hello-bugvm</artifactId>
+  <artifactId>${mainClass}-bugvm</artifactId>
   <packaging>jar</packaging>
-  <name>PlayN Hello BugVM</name>
+  <name>${mainClass} BugVM</name>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>playn-hello-core</artifactId>
+      <artifactId>${mainClass}-core</artifactId>
       <version>${project.version}</version>
     </dependency>
 
