@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.bugvm.compiler.config.Config;
-import com.bugvm.compiler.trampoline.Invoke;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
+import com.bugvm.compiler.config.Config;
+import com.bugvm.compiler.trampoline.Invoke;
 import com.bugvm.compiler.clazz.Clazz;
 import com.bugvm.compiler.llvm.Function;
 import com.bugvm.compiler.llvm.FunctionAttribute;
@@ -103,8 +103,7 @@ public class TrampolineCompiler {
         return config.isDebug() ? FunctionAttribute.noinline : FunctionAttribute.alwaysinline;
     }
 
-    public void compile(ModuleBuilder mb, Clazz currentClass, Trampoline t, Set<String> dependencies,
-                        Set<Triple<String, String, String>> methodDependencies) {
+    public void compile(ModuleBuilder mb, Clazz currentClass, Trampoline t, Set<String> dependencies, Set<Triple<String, String, String>> methodDependencies) {
 
         this.mb = mb;
         
@@ -192,8 +191,7 @@ public class TrampolineCompiler {
         } else if (t instanceof Invokeinterface) {
             SootMethod rm = resolveInterfaceMethod(errorFn, (Invokeinterface) t);
             if (rm != null) {
-                methodDependencies.add(new ImmutableTriple<String, String, String>(Types.getInternalName(rm
-                        .getDeclaringClass()), rm.getName(), Types.getDescriptor(rm)));
+                methodDependencies.add(new ImmutableTriple<String, String, String>(Types.getInternalName(rm.getDeclaringClass()), rm.getName(), Types.getDescriptor(rm)));
             }
             if (rm == null || !checkMemberAccessible(errorFn, t, rm)) {
                 mb.addFunction(errorFn);
@@ -203,8 +201,7 @@ public class TrampolineCompiler {
         } else if (t instanceof Invoke) {
             SootMethod method = resolveMethod(errorFn, (Invoke) t);
             if (method != null) {
-                methodDependencies.add(new ImmutableTriple<String, String, String>(Types.getInternalName(method
-                        .getDeclaringClass()), method.getName(), Types.getDescriptor(method)));
+                methodDependencies.add(new ImmutableTriple<String, String, String>(Types.getInternalName(method.getDeclaringClass()), method.getName(), Types.getDescriptor(method)));
             }
             if (method == null || !checkMemberAccessible(errorFn, t, method)) {
                 mb.addFunction(errorFn);
