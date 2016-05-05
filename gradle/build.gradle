@@ -49,7 +49,7 @@ dependencies {
 modifyPom {
     project {
         name 'bugvm-gradle'
-        description 'bugvm-gradle-plugin'
+        description 'bugvm gradle plugin'
         url 'http://bugvm.com'
 
         licenses {

@@ -40,7 +40,7 @@ public class MethodInfo implements Serializable {
     private Map<String, Dependency> dependencies = new HashMap<>();
 
     MethodInfo(ClazzInfo ci, int modifiers, String name, String desc, boolean callback, boolean weaklyLinked,
-            boolean strongyLinked) {
+            boolean stronglyLinked) {
 
         this.ci = ci;
         this.modifiers = modifiers;
@@ -48,7 +48,7 @@ public class MethodInfo implements Serializable {
         this.desc = desc;
         this.callback = callback;
         this.weaklyLinked = weaklyLinked;
-        this.stronglyLinked = strongyLinked;
+        this.stronglyLinked = stronglyLinked;
     }
     
     public void addClassDependency(String className, boolean weak) {
