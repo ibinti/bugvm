@@ -70,7 +70,7 @@ ${project.name}
     <plugins>
       <plugin>
         <groupId>com.bugvm</groupId>
-        <artifactId>bugvm-maven-plugin</artifactId>
+        <artifactId>bugvm-maven</artifactId>
         <version>${project.version}</version>
       </plugin>
       ...
