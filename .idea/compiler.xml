@@ -38,7 +38,6 @@
         <module name="bugvm-maven" />
         <module name="bugvm-maven-resolver" />
         <module name="bugvm-objc" />
-        <module name="bugvm-playn-template" />
         <module name="bugvm-rt" />
         <module name="bugvm-scala-template" />
         <module name="bugvm-soot" />

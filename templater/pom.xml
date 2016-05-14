@@ -35,12 +35,6 @@
             <version>${project.version}</version>
             <type>tar.gz</type>
         </dependency>
-        <dependency>
-            <groupId>com.bugvm</groupId>
-            <artifactId>bugvm-playn-template</artifactId>
-            <version>${project.version}</version>
-            <type>tar.gz</type>
-        </dependency>
     </dependencies>
 
     <build>
@@ -79,13 +73,6 @@
                         <artifactItem>
                             <groupId>com.bugvm</groupId>
                             <artifactId>bugvm-java-template</artifactId>
-                            <overWrite>true</overWrite>
-                            <type>tar.gz</type>
-                            <outputDirectory>src/main/resources/templates</outputDirectory>
-                        </artifactItem>
-                        <artifactItem>
-                            <groupId>com.bugvm</groupId>
-                            <artifactId>bugvm-playn-template</artifactId>
                             <overWrite>true</overWrite>
                             <type>tar.gz</type>
                             <outputDirectory>src/main/resources/templates</outputDirectory>

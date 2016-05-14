@@ -220,7 +220,6 @@
     <module>package</module>
     <module>java-template</module>
     <module>scala-template</module>
-    <module>playn-template</module>
     <module>templater</module>
     <module>idea</module>
     <module>maven</module>

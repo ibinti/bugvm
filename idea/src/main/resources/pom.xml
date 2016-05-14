@@ -10,7 +10,6 @@
 
     <properties>
         <bugvm.version>__bugvmVersion__</bugvm.version>
-        <playn.version>2.0-SNAPSHOT</playn.version>
     </properties>
     <modules>
         <module>assets</module>
