@@ -69,7 +69,7 @@ public class DeviceType implements Comparable<DeviceType> {
     }
 
     /**
-     * @return id as understood by ios-sim, concatentation of type and sdk
+     * @return id as understood by ios-sim, concatenation of type and sdk
      *         version
      */
     public String getDeviceTypeId() {
