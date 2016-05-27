@@ -7,7 +7,7 @@
     <depends>org.jetbrains.plugins.gradle</depends>
     <depends>org.jetbrains.android</depends>
 
-    <idea-version since-build="143.1184"/>
+    <idea-version since-build="141"/>
 
     <description><![CDATA[
      <p>

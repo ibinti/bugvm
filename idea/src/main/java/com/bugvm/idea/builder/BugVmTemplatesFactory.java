@@ -61,7 +61,7 @@ public class BugVmTemplatesFactory extends ProjectTemplatesFactory {
     public ProjectTemplate[] createTemplates(String group, WizardContext context) {
         return new ProjectTemplate[] {
                 new BugVmProjectTemplate("BugVM Java iOS App", "A basic Java single view App", new BugVmModuleBuilder("java")),
-                new BugVmProjectTemplate("BugVM Scala iOS App", "A basic Scala single view App", new BugVmModuleBuilder("scala")),
+                new BugVmProjectTemplate("BugVM Scala iOS App - Experimental", "A basic Scala single view App", new BugVmModuleBuilder("scala")),
         };
     }
 

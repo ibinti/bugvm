@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component>
-  <version eap="false" full="1.0.6" major="1" minor="0" patch="6"/>
+  <version eap="false" full="1.1.0" major="1" minor="1" patch="0"/>
   <company name="BugVM" url="https://bugvm.com"/>
-  <build apiVersion="142.0" date="__BUILD_DATE__" number="BS-1.0.6"/>
+  <build apiVersion="142.0" date="__BUILD_DATE__" number="BS-1.1.0"/>
   <install-over maxbuild="999.999999" minbuild="0.1" version="0"/>
   <logo progressColor="FDA916" progressTailIcon="/bugvm_studio_progress_tail.png" progressY="230" textcolor="aaaaaa" url="/bugvm_studio_logo.png"/>
   <about copyrightForeground="aaaaaa" foreground="aaaaaa" linkColor="ff7f00" logoH="30" logoW="75" logoX="300" logoY="265" url="/bugvm_studio_about.png"/>
