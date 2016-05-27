@@ -2,7 +2,7 @@
     <id>com.bugvm.intellij</id>
     <name>BugVM</name>
     <version>${project.version}</version>
-    <vendor email="bug@bugvm.com" url="http://bugvm.com">BugVM</vendor>
+    <vendor email="bug@bugvm.com" url="https://bugvm.com">BugVM</vendor>
 
     <depends>org.jetbrains.plugins.gradle</depends>
     <depends>org.jetbrains.android</depends>
@@ -11,7 +11,7 @@
 
     <description><![CDATA[
      <p>
-     Easily create native iOS apps with Java and Scala.
+     Easily create native iOS apps with Java.
      </p>
      <p>
      BugVM is free and open source.
@@ -19,14 +19,8 @@
      <br/>
      <p>
      Requires Xcode 7 on Mac OSX and at least 1GB of heap space for gradle VM.
-     <br/>
-     Scala plugin and SDK setup required if creating Scala native iOS apps.
      </p>
-     <br/>
-     <p>
-     Developed and tested with IntelliJ IDEA 2016.1.2.
-     </p>
-    ]]></description>
+     ]]></description>
 
     <change-notes><![CDATA[
 
