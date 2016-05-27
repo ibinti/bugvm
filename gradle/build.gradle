@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        bugVMVersion = '1.1.0-SNAPSHOT'
-//    bugVMVersion = '1.1.0'
+//        bugVMVersion = '1.1.0-SNAPSHOT'
+        bugVMVersion = '1.1.0'
     }
 
     repositories {
@@ -50,7 +50,7 @@ modifyPom {
     project {
         name 'bugvm-gradle'
         description 'bugvm gradle plugin'
-        url 'http://bugvm.com'
+        url 'https://bugvm.com'
 
         licenses {
             license {
@@ -69,7 +69,7 @@ modifyPom {
                id 'bugvm'
                name 'The Bug'
                email 'bug@bugvm.com'
-               url 'http://bugvm.com'
+               url 'https://bugvm.com'
            }
         }
     }
