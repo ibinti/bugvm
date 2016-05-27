@@ -18,5 +18,5 @@ version=$BUGVM_IDEA_PLUGIN_VERSION
 rm -rf bugvm/bugvm-idea
 mkdir bugvm/bugvm-idea
 cd bugvm/bugvm-idea
-wget https://github.com/bugvm/bugvm-idea/releases/download/bugvm-idea-$version/bugvm-idea-$version-plugin-dist.jar
+wget https://github.com/bugvm/bugvm/releases/download/bugvm-$version/bugvm-idea-$version-plugin-dist.jar
 cd ../..
