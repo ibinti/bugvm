@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component>
   <version eap="false" full="1.0.6" major="1" minor="0" patch="6"/>
-  <company name="BugVM" url="http://bugvm.com"/>
-  <build apiVersion="142.0" date="__BUILD_DATE__" number="RS-1.0.6"/>
+  <company name="BugVM" url="https://bugvm.com"/>
+  <build apiVersion="142.0" date="__BUILD_DATE__" number="BS-1.0.6"/>
   <install-over maxbuild="999.999999" minbuild="0.1" version="0"/>
   <logo progressColor="FDA916" progressTailIcon="/bugvm_studio_progress_tail.png" progressY="230" textcolor="aaaaaa" url="/bugvm_studio_logo.png"/>
   <about copyrightForeground="aaaaaa" foreground="aaaaaa" linkColor="ff7f00" logoH="30" logoW="75" logoX="300" logoY="265" url="/bugvm_studio_about.png"/>
-  <icon ico="idea_rvm.ico" size12="/toolwindows/toolWindowProject.png" size128="/icon_rvm_128.png" size16="/icon_rvm_small.png" size32="/icon_rvm.png"/>
+  <icon ico="idea_bvm.ico" size12="/toolwindows/toolWindowProject.png" size128="/icon_bvm_128.png" size16="/icon_bvm_small.png" size32="/icon_bvm.png"/>
   <package code="__PACKAGE_CODE__"/>
   <names fullname="BugVM Studio" product="BugVM Studio" script="bugvm"/>
 
@@ -20,7 +20,7 @@
   <documentation url="https://www.jetbrains.com/idea/documentation"/>
   <support url="https://www.jetbrains.com/support/idea/index.html"/>
   <feedback eap-url="https://youtrack.jetbrains.com/newissue?project=IDEA&amp;clearDraft=true&amp;c=Affected+versions+$BUILD&amp;description=$DESCR" release-url="https://www.jetbrains.com/feedback/feedback.jsp?product=IDEA&amp;build=$BUILD&amp;timezone=$TIMEZONE&amp;eval=$EVAL"/>
-  <whatsnew url="http://bugvm.com/blog"/>
+  <whatsnew url="https://bugvm.com"/>
   <keymap mac="https://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard_Mac.pdf" win="https://www.jetbrains.com/idea/docs/IntelliJIDEA_ReferenceCard.pdf"/>
   <third-party url="http://www.jetbrains.org/"/>
   <jetbrains-tv url="https://www.youtube.com/user/intellijideavideo"/>

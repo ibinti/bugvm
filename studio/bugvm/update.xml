@@ -5,14 +5,14 @@
   <product name="BugVM Studio">
     <code>RS</code>
 
-    <channel id="RS" name="BugVM Studio" status="release"
-             url="http://bugvm.com"
-             feedback="http://bugvm.com"
+    <channel id="BS" name="BugVM Studio" status="release"
+             url="https://bugvm.com"
+             feedback="https://bugvm.com"
              majorVersion="1">
 
-      <build number="RS-1.0.0" version="1.0.0" releaseDate="20151116">
+      <build number="BS-1.0.0" version="1.0.0" releaseDate="20151116">
         <message>BugVM Studio 1.0 is available.</message>
-        <button name="Download" url="http://bugvm.com/bugvm-studio-1.0.0.dmg" download="true"/>
+        <button name="Download" url="https://bugvm.com/bugvm-studio-1.0.0.dmg" download="true"/>
         <button name="What's New" url="https://bugvm.com"/>
       </build>
     </channel>
