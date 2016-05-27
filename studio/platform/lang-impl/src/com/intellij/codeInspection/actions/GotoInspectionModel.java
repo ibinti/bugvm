@@ -1,0 +1,84 @@
+/*
+ * Copyright 2000-2014 JetBrains s.r.o.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.intellij.codeInspection.actions;
+
+import com.intellij.codeInspection.ex.InspectionProfileImpl;
+import com.intellij.codeInspection.ex.InspectionToolWrapper;
+import com.intellij.codeInspection.ex.LocalInspectionToolWrapper;
+import com.intellij.codeInspection.ex.ScopeToolState;
+import com.intellij.ide.IdeBundle;
+import com.intellij.ide.util.gotoByName.SimpleChooseByNameModel;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.profile.codeInspection.InspectionProfileManager;
+import com.intellij.util.ArrayUtil;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author Konstantin Bulenkov
+ */
+public class GotoInspectionModel extends SimpleChooseByNameModel {
+  private static final InspectionToolWrapper[] EMPTY_WRAPPERS_ARRAY = new InspectionToolWrapper[0];
+  private final Map<String, InspectionToolWrapper> myToolNames = new HashMap<String, InspectionToolWrapper>();
+  private final String[] myNames;
+  private final InspectionListCellRenderer myListCellRenderer = new InspectionListCellRenderer();
+
+
+  public GotoInspectionModel(Project project) {
+    super(project, IdeBundle.message("prompt.goto.inspection.enter.name"), "goto.inspection.help.id");
+    final InspectionProfileImpl rootProfile = (InspectionProfileImpl)InspectionProfileManager.getInstance().getRootProfile();
+    for (ScopeToolState state : rootProfile.getAllTools(project)) {
+      InspectionToolWrapper tool = state.getTool();
+      if (tool instanceof LocalInspectionToolWrapper && ((LocalInspectionToolWrapper)tool).isUnfair()) {
+        continue;
+      }
+      final String name = tool.getDisplayName() + " " + StringUtil.join(tool.getGroupPath(), " ");
+      myToolNames.put(name, tool);
+    }
+    myNames = ArrayUtil.toStringArray(myToolNames.keySet());
+  }
+
+  @Override
+  public ListCellRenderer getListCellRenderer() {
+    return myListCellRenderer;
+  }
+
+  @Override
+  public String[] getNames() {
+    return myNames;
+  }
+
+  @Override
+  public Object[] getElementsByName(final String name, final String pattern) {
+    final InspectionToolWrapper tool = myToolNames.get(name);
+    if (tool == null) {
+      return EMPTY_WRAPPERS_ARRAY;
+    }
+    return new InspectionToolWrapper[] {tool};
+  }
+
+  @Override
+  public String getElementName(final Object element) {
+    if (element instanceof InspectionToolWrapper) {
+      InspectionToolWrapper entry = (InspectionToolWrapper)element;
+      return entry.getDisplayName() + " " + StringUtil.join(entry.getGroupPath(), " ");
+    }
+    return null;
+  }
+}

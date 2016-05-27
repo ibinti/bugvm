@@ -1,0 +1,10 @@
+@interface X {
+
+  String foo() <caret>
+}
+-----
+class
+default
+enum
+interface
+trait

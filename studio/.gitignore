@@ -1,0 +1,9 @@
+.jps-build-data/
+/android
+/config
+/system
+.idea/workspace.xml
+/out
+.DS_Store
+/test-system
+/test-config

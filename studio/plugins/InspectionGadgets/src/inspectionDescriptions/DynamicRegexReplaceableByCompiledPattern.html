@@ -1,0 +1,19 @@
+<html>
+<body>
+Reports calls to the regular expression methods of
+<b>java.lang.String</b> using constants arguments.
+Such calls may be profitably replaced with a
+<b>private static final Pattern</b> field so
+that the regular expression does not have to be compiled each time it is used.
+<!-- tooltip end -->
+<p>
+Use the checkbox below to ignore calls to <b>String.split()</b> which are optimized in Java 7 and above.
+  <b>String.split()</b> has optimizations if the regex is either a one-<b>char</b> <b>String</b>
+  and this character is not one of the regex meta characters ".$|()[{^?*+\\", or
+  a two-<b>char</b> <b>String</b> and the first <b>char</b> is the backslash and
+  the second is not an ascii digit or ascii letter.
+
+<p>
+
+</body>
+</html>

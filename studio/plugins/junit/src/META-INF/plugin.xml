@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2000-2007 JetBrains s.r.o.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<idea-plugin>
+  <name>JUnit</name>
+  <description>
+      <![CDATA[
+      This plugin supports <a href="https://github.com/junit-team/junit">JUnit tests</a>.
+      The following features are available:
+        <ul>
+        <li>Ability to create JUnit 3.x or JUnit 4.x tests.</li>
+        <li>Navigation between a test and test subject.</li>
+        <li>Running tests.</li>
+        <li>Viewing test results in the dedicated Test Runner tab of the Run tool window.</li>
+        </ul>
+      ]]>
+   </description>
+  <version>1.0</version>
+  <vendor>JetBrains</vendor>
+  <extensions defaultExtensionNs="com.intellij">
+    <errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>
+    <runConfigurationProducer implementation="com.intellij.execution.junit.AllInDirectoryConfigurationProducer"/>
+    <runConfigurationProducer implementation="com.intellij.execution.junit.AllInPackageConfigurationProducer"/>
+    <runConfigurationProducer implementation="com.intellij.execution.junit.PatternConfigurationProducer"/>
+    <runConfigurationProducer implementation="com.intellij.execution.junit.TestClassConfigurationProducer"/>
+    <runConfigurationProducer implementation="com.intellij.execution.junit.TestMethodConfigurationProducer"/>
+    <deadCode implementation="com.intellij.execution.junit2.inspection.JUnitEntryPoint"/>
+    <cantBeStatic implementation="com.intellij.execution.junit2.inspection.JUnitCantBeStaticExtension" />
+    <testFramework implementation="com.intellij.execution.junit.JUnit3Framework"/>
+    <testFramework implementation="com.intellij.execution.junit.JUnit4Framework"/>
+    <configurationType implementation="com.intellij.execution.junit.JUnitConfigurationType"/>
+    <library.dependencyScopeSuggester implementation="com.intellij.execution.junit.JUnitDependencyScopeSuggester"/>
+
+    <stacktrace.fold substring="at org.junit.internal.runners."/>
+    <stacktrace.fold substring="at org.junit.runners."/>
+    <stacktrace.fold substring="at org.junit.runner.JUnitCore."/>
+    <stacktrace.fold substring="at org.junit.Assert.fail("/>
+    <stacktrace.fold substring="at org.junit.Assert.failNotSame("/>
+    <stacktrace.fold substring="at org.junit.Assert.failSame("/>
+    <stacktrace.fold substring="at org.junit.Assert.internalArrayEquals("/>
+    <stacktrace.fold substring="at org.junit.internal.ComparisonCriteria.arrayEquals("/>
+    <stacktrace.fold substring="at org.junit.Assert.assert"/>
+    <stacktrace.fold substring="at com.intellij.junit3."/>
+    <stacktrace.fold substring="at com.intellij.junit4."/>
+    <stacktrace.fold substring="at junit.framework.TestSuite.run"/>
+    <stacktrace.fold substring="at junit.framework.TestCase.run"/>
+    <stacktrace.fold substring="at junit.framework.TestResult"/>
+
+    <programRunner implementation="com.intellij.execution.junit.JUnitDebuggerRunner"/>
+  </extensions>
+
+  <extensionPoints>
+    <extensionPoint qualifiedName="com.intellij.junitListener" interface="com.intellij.rt.execution.junit.IDEAJUnitListener"/>
+  </extensionPoints>
+
+  <actions>
+    <group>
+      <action class="com.intellij.execution.junit.JUnitExcludeFromRunAction" text="Exclude from suite" id="excludeFromSuite"/>
+      <separator/>
+      <add-to-group relative-to-action="openAssertEqualsDiff" anchor="after" group-id="TestTreePopupMenu"/>
+    </group>
+    <group>
+      <action class="com.intellij.execution.junit.JUnitAddToTestsPatternAction" id="AddToISuite" text="Add to pattern suite"/>
+      <add-to-group anchor="first" group-id="RunContextGroup"/>
+    </group>
+  </actions>
+</idea-plugin>

@@ -1,0 +1,28 @@
+for (i in 1..10)
+#
+-----
+Groovy script
+  For statement
+    PsiElement(for)('for')
+    PsiWhiteSpace(' ')
+    PsiElement(()('(')
+    In clause
+      Parameter
+        Modifiers
+          <empty list>
+        PsiElement(identifier)('i')
+      PsiWhiteSpace(' ')
+      PsiElement(in)('in')
+      PsiWhiteSpace(' ')
+      Range expression
+        Literal
+          PsiElement(Integer)('1')
+        PsiElement(..)('..')
+        Literal
+          PsiElement(Integer)('10')
+    PsiElement())(')')
+    PsiErrorElement:Statement expected
+      <empty list>
+  PsiElement(new line)('\n')
+  PsiErrorElement:Unexpected symbol
+    PsiElement(wrong token)('#')

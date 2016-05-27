@@ -1,0 +1,2 @@
+<!-- "Manually setup external resource" "true" -->
+<!DOCTYPE log4j:configuration SYSTEM "lo<caret>g4j.dtd">

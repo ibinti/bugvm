@@ -1,0 +1,4 @@
+class ARM {
+  void f() {
+  }
+}

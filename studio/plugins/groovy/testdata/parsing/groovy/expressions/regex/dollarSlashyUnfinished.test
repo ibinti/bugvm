@@ -1,0 +1,43 @@
+def dollarSlashy = $/
+    Hello $name,
+    today we're ${date}
+    $ dollar-sign
+    $$ dollar-sign
+    \ backslash
+    / slash
+    $/ slash
+/
+-----
+Groovy script
+  Variable definitions
+    Modifiers
+      PsiElement(def)('def')
+    PsiWhiteSpace(' ')
+    Variable
+      PsiElement(identifier)('dollarSlashy')
+      PsiWhiteSpace(' ')
+      PsiElement(=)('=')
+      PsiWhiteSpace(' ')
+      Compound regular expression
+        PsiElement($/ regex begin)('$/')
+        GrStringContentImpl(GString content element)
+          PsiElement($/ regex content)('\n    Hello ')
+        GString injection
+          PsiElement($)('$')
+          Reference expression
+            PsiElement(identifier)('name')
+        GrStringContentImpl(GString content element)
+          PsiElement($/ regex content)(',\n    today we're ')
+        GString injection
+          PsiElement($)('$')
+          Closable block
+            PsiElement({)('{')
+            Parameter list
+              <empty list>
+            Reference expression
+              PsiElement(identifier)('date')
+            PsiElement(})('}')
+        GrStringContentImpl(GString content element)
+          PsiElement($/ regex content)('\n    $ dollar-sign\n    $$ dollar-sign\n    \ backslash\n    / slash\n    $/ slash\n/')
+        PsiErrorElement:Dollar slash ending expected
+          <empty list>

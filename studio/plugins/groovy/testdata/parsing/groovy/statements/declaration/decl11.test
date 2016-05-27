@@ -1,0 +1,49 @@
+static def plus(Category t, Cate gory other) {}
+-----
+Groovy script
+  Method
+    Modifiers
+      PsiElement(static)('static')
+      PsiWhiteSpace(' ')
+      PsiElement(def)('def')
+    PsiWhiteSpace(' ')
+    PsiElement(identifier)('plus')
+    PsiElement(()('(')
+    Parameter list
+      Parameter
+        Modifiers
+          <empty list>
+        Type element
+          Reference element
+            PsiElement(identifier)('Category')
+        PsiWhiteSpace(' ')
+        PsiElement(identifier)('t')
+      PsiElement(,)(',')
+      PsiWhiteSpace(' ')
+      Parameter
+        Modifiers
+          <empty list>
+        Type element
+          Reference element
+            PsiElement(identifier)('Cate')
+        PsiWhiteSpace(' ')
+        PsiElement(identifier)('gory')
+    PsiErrorElement:')' expected
+      <empty list>
+    Throw clause
+      <empty list>
+  PsiWhiteSpace(' ')
+  Reference expression
+    PsiElement(identifier)('other')
+  PsiErrorElement:';' or new line expected
+    <empty list>
+  PsiErrorElement:Unexpected symbol
+    PsiElement())(')')
+  PsiErrorElement:';' or new line expected
+    <empty list>
+  PsiWhiteSpace(' ')
+  Closable block
+    PsiElement({)('{')
+    Parameter list
+      <empty list>
+    PsiElement(})('}')

@@ -1,0 +1,10 @@
+import javax.swing.*;
+
+public class RenameCollisions {
+	public static class StaticInnerClass {
+		public static void staticContext() {
+			int BOTTOM<caret> = 0;
+			int var1 = SwingConstants.BOTTOM;
+		}
+	}
+}

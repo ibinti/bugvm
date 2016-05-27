@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem>
+    <file>CaseAndNpe.java</file>
+    <line>79</line>
+    <description>Condition 'a != null' is always true</description>
+  </problem>
+  <problem>
+    <file>CaseAndNpe.java</file>
+    <line>26</line>
+    <description>Method invocation 'o.equals(o)' may produce NullPointerException</description>
+  </problem>
+  <problem>
+    <file>CaseAndNpe.java</file>
+    <line>48</line>
+    <description>Switch label 'case 1:' is unreachable</description>
+  </problem>
+  <problem>
+    <file>CaseAndNpe.java</file>
+    <line>49</line>
+    <description>Switch label 'case 2:' is unreachable</description>
+  </problem>
+  <problem>
+    <file>CaseAndNpe.java</file>
+    <line>56</line>
+    <description>Condition &lt;code&gt;i &lt; 5&lt;/code&gt; is always &lt;code&gt;false&lt;/code&gt;</description>
+  </problem>
+  <problem>
+    <file>CaseAndNpe.java</file>
+    <line>80</line>
+    <description>Condition is always true</description>
+  </problem>
+</problems>
+
