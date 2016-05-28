@@ -2,7 +2,7 @@
 <component>
   <version eap="false" full="1.1.0" major="1" minor="1" patch="0"/>
   <company name="BugVM" url="https://bugvm.com"/>
-  <build apiVersion="142.0" date="__BUILD_DATE__" number="BS-1.1.0"/>
+  <build apiVersion="142.0" date="__BUILD_DATE__" number="BS-142.0"/>
   <install-over maxbuild="999.999999" minbuild="0.1" version="0"/>
   <logo progressColor="FDA916" progressTailIcon="/bugvm_studio_progress_tail.png" progressY="230" textcolor="aaaaaa" url="/bugvm_studio_logo.png"/>
   <about copyrightForeground="aaaaaa" foreground="aaaaaa" linkColor="ff7f00" logoH="30" logoW="75" logoX="300" logoY="265" url="/bugvm_studio_about.png"/>
