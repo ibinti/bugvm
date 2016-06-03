@@ -1,5 +1,4 @@
-#!/bin/bash
 mvn install -P release
-cd gradle
+cd bugvm-gradle
 ./gradlew clean build install
 cd .. 
