@@ -276,7 +276,7 @@ mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, 
 %pragma(java) jniclasscode=%{
   private static native void initNative();
   static {
-    NativeLibrary.load();
+    com.bugvm.libimobiledevice.NativeLibrary.load();
     initNative();
   }
 %}

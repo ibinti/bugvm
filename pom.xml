@@ -10,12 +10,12 @@
   </parent>
 
   <groupId>com.bugvm</groupId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.2-SNAPSHOT</version>
   <artifactId>bugvm-parent</artifactId>
   <packaging>pom</packaging>
 
   <name>BugVM</name>
-  <url>http://bugvm.com</url>
+  <url>https://bugvm.com</url>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -31,13 +31,13 @@
       <id>bugvm</id>
       <name>The Bug</name>
       <email>bug@bugvm.com</email>
-      <url>http://bugvm.com</url>
+      <url>https://bugvm.com</url>
     </developer>
   </developers>
 
   <organization>
     <name>BugVM</name>
-    <url>http://bugvm.com</url>
+    <url>https://bugvm.com</url>
   </organization>
 
   <issueManagement>
@@ -113,7 +113,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>2.4</version>
+            <version>3.0.1</version>
             <inherited>true</inherited>
             <configuration>
               <archive>
@@ -157,7 +157,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <version>3.5.1</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
@@ -169,7 +169,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.0.1</version>
         <inherited>true</inherited>
         <configuration>
           <archive>                   

@@ -20,7 +20,7 @@ mkdir -p "$JAVAOUT"
 mkdir -p "$COUT"
 swig -I"$BASE/src/main/swig/include" \
      -outdir "$JAVAOUT" -o "$COUT"/libimobiledevice_wrap.c \
-     -java -package $PACKAGE -fakeversion 2.0.4 \
+     -java -package $PACKAGE -fakeversion 3.0.8 \
      "$BASE/src/main/swig/libimobiledevice.i"
 
 rename SWIGTYPE_p_idevice_private IDeviceRef
