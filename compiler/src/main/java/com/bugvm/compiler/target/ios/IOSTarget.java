@@ -304,10 +304,10 @@ public class IOSTarget extends AbstractTarget {
 
                     public void progress(File path, int percentComplete) {
                         if (first) {
-                            config.getLogger().info("[  0%%] Beginning upload...");
+                            config.getLogger().info("[  0%%] Beginning upload");
                         }
                         first = false;
-                        config.getLogger().info("[%3d%%] Uploading %s...", percentComplete, path);
+                        config.getLogger().info("[%3d%%] Uploading %s", percentComplete, path);
                     }
 
                     public void error(String message) {}
@@ -321,7 +321,7 @@ public class IOSTarget extends AbstractTarget {
 
                     public void progress(String status, int percentComplete) {
                         if (first) {
-                            config.getLogger().info("[  0%%] Beginning installation...");
+                            config.getLogger().info("[  0%%] Beginning installation");
                         }
                         first = false;
                         config.getLogger().info("[%3d%%] %s", percentComplete, status);

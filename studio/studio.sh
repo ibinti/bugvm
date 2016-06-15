@@ -3,7 +3,7 @@
 set -e
 : ${IDEA_HOME?"Need to set IDEA_HOME to point to a valid IntelliJ IDEA installation."}
 
-version=$BUGVM_IDEA_PLUGIN_VERSION
+version=$BUGVM_VERSION
 
 ## Build IntelliJ IDEA using our own build files
 ant -f build-bugvm.xml
