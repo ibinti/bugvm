@@ -1775,16 +1775,6 @@ SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDevice
 }
 
 
-SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1set_1debug_1level(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  int arg1 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = (int)jarg1; 
-  idevice_set_debug_level(arg1);
-}
-
-
 SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_IDeviceEvent_1event_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   idevice_event_t *arg1 = (idevice_event_t *) 0 ;
   enum idevice_event_type arg2 ;
@@ -1900,6 +1890,16 @@ SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDevice
   (void)jcls;
   arg1 = *(idevice_event_t **)&jarg1; 
   free((char *) arg1);
+}
+
+
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1set_1debug_1level(JNIEnv *jenv, jclass jcls, jint jarg1) {
+  int arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (int)jarg1; 
+  idevice_set_debug_level(arg1);
 }
 
 
@@ -3580,6 +3580,59 @@ SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDevice
 }
 
 
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1browse_1with_1callback(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jint jarg4) {
+  jint jresult = 0 ;
+  instproxy_client_t arg1 = (instproxy_client_t) 0 ;
+  plist_t arg2 ;
+  instproxy_status_cb_t arg3 = (instproxy_status_cb_t) 0 ;
+  void *arg4 = (void *) 0 ;
+  plist_t *argp2 ;
+  instproxy_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(instproxy_client_t *)&jarg1; 
+  argp2 = *(plist_t **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return 0;
+  }
+  arg2 = *argp2; 
+  arg3 = *(instproxy_status_cb_t *)&jarg3; 
+  arg4 = *(void **)&jarg4; 
+  result = (instproxy_error_t)instproxy_browse_with_callback(arg1,arg2,arg3,arg4);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1lookup(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jobject jarg4_) {
+  jint jresult = 0 ;
+  instproxy_client_t arg1 = (instproxy_client_t) 0 ;
+  char **arg2 = (char **) 0 ;
+  plist_t arg3 ;
+  plist_t *arg4 = (plist_t *) 0 ;
+  plist_t *argp3 ;
+  instproxy_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg4_;
+  arg1 = *(instproxy_client_t *)&jarg1; 
+  arg2 = *(char ***)&jarg2; 
+  argp3 = *(plist_t **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return 0;
+  }
+  arg3 = *argp3; 
+  arg4 = *(plist_t **)&jarg4; 
+  result = (instproxy_error_t)instproxy_lookup(arg1,(char const **)arg2,arg3,arg4);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1install(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
   jint jresult = 0 ;
   instproxy_client_t arg1 = (instproxy_client_t) 0 ;
@@ -3803,6 +3856,143 @@ SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDevice
 }
 
 
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1check_1capabilities_1match(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jobject jarg4_) {
+  jint jresult = 0 ;
+  instproxy_client_t arg1 = (instproxy_client_t) 0 ;
+  char **arg2 = (char **) 0 ;
+  plist_t arg3 ;
+  plist_t *arg4 = (plist_t *) 0 ;
+  plist_t *argp3 ;
+  instproxy_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg4_;
+  arg1 = *(instproxy_client_t *)&jarg1; 
+  arg2 = *(char ***)&jarg2; 
+  argp3 = *(plist_t **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return 0;
+  }
+  arg3 = *argp3; 
+  arg4 = *(plist_t **)&jarg4; 
+  result = (instproxy_error_t)instproxy_check_capabilities_match(arg1,(char const **)arg2,arg3,arg4);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1command_1get_1name(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  plist_t arg1 ;
+  char **arg2 = (char **) 0 ;
+  plist_t *argp1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  argp1 = *(plist_t **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return ;
+  }
+  arg1 = *argp1; 
+  arg2 = *(char ***)&jarg2; 
+  instproxy_command_get_name(arg1,arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1status_1get_1name(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  plist_t arg1 ;
+  char **arg2 = (char **) 0 ;
+  plist_t *argp1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  argp1 = *(plist_t **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return ;
+  }
+  arg1 = *argp1; 
+  arg2 = *(char ***)&jarg2; 
+  instproxy_status_get_name(arg1,arg2);
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1status_1get_1error(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jobject jarg4_) {
+  jint jresult = 0 ;
+  plist_t arg1 ;
+  char **arg2 = (char **) 0 ;
+  char **arg3 = (char **) 0 ;
+  uint64_t *arg4 = (uint64_t *) 0 ;
+  plist_t *argp1 ;
+  instproxy_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg4_;
+  argp1 = *(plist_t **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return 0;
+  }
+  arg1 = *argp1; 
+  arg2 = *(char ***)&jarg2; 
+  arg3 = *(char ***)&jarg3; 
+  arg4 = *(uint64_t **)&jarg4; 
+  result = (instproxy_error_t)instproxy_status_get_error(arg1,arg2,arg3,arg4);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1status_1get_1current_1list(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_) {
+  plist_t arg1 ;
+  uint64_t *arg2 = (uint64_t *) 0 ;
+  uint64_t *arg3 = (uint64_t *) 0 ;
+  uint64_t *arg4 = (uint64_t *) 0 ;
+  plist_t *arg5 = (plist_t *) 0 ;
+  plist_t *argp1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg4_;
+  (void)jarg5_;
+  argp1 = *(plist_t **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return ;
+  }
+  arg1 = *argp1; 
+  arg2 = *(uint64_t **)&jarg2; 
+  arg3 = *(uint64_t **)&jarg3; 
+  arg4 = *(uint64_t **)&jarg4; 
+  arg5 = *(plist_t **)&jarg5; 
+  instproxy_status_get_current_list(arg1,arg2,arg3,arg4,arg5);
+}
+
+
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1status_1get_1percent_1complete(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+  plist_t arg1 ;
+  int *arg2 = (int *) 0 ;
+  plist_t *argp1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  argp1 = *(plist_t **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return ;
+  }
+  arg1 = *argp1; 
+  arg2 = *(int **)&jarg2; 
+  instproxy_status_get_percent_complete(arg1,arg2);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1options_1new(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   plist_t result;
@@ -3816,6 +4006,23 @@ SWIGEXPORT jlong JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDevic
     *(plist_t **)&jresult = resultptr;
   }
   return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_bugvm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1options_1set_1return_1attributes(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  plist_t arg1 ;
+  void *arg2 = 0 ;
+  plist_t *argp1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  argp1 = *(plist_t **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null plist_t");
+    return ;
+  }
+  arg1 = *argp1; 
+  instproxy_client_options_set_return_attributes(arg1,arg2);
 }
 
 

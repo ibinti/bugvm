@@ -59,7 +59,7 @@ import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 
 /**
- * Launches an application on a device using the {@code com.apple.debuserver}
+ * Launches an application on a device using the {@code com.apple.debugserver}
  * service. The app must have the {@code get-task-allow} entitlement set to 
  * {@code true} in order to be allowed to be launched by the debug server.
  */
@@ -765,7 +765,7 @@ public class AppLauncher {
             String cmd = String.format("QEnvironment:%s=%s", entry.getKey(), entry.getValue());
             sendReceivePacket(conn, encode(cmd), "OK", false);
         }
-        // Tell the debuserver to send threads:xxx,yyy,... in stop replies
+        // Tell the debugserver to send threads:xxx,yyy,... in stop replies
         sendReceivePacket(conn, encode("QListThreadsInStopReply"), "OK", false);
         // Initialize argv with the app path and args
         sendReceivePacket(conn, encode("A" + encodeArgs(appPath)), "OK", false);
