@@ -18,8 +18,8 @@ endif()
 
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fdata-sections -ffunction-sections")
 if(MACOSX AND X86_64)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.11")
-  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.11")
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.7")
+  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.7")
 elseif(LINUX AND X86)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32 -fPIC")
   set(LD_FLAGS "${LD_FLAGS} -m32")
@@ -30,7 +30,7 @@ endif()
 
 if(MACOSX)
   exec_program(xcode-select ARGS --print-path OUTPUT_VARIABLE XCODE_PATH)
-  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
+  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
   if(NOT IS_DIRECTORY ${SYSROOT})
     message(FATAL_ERROR "No supported MacOSX SDK found")
   endif()
@@ -67,8 +67,8 @@ if(MACOSX)
 endif()
 
 ExternalProject_Add(extlibimobiledevice
-  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libimobiledevice-1.2.0.tar.bz2
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython --disable-openssl"
+  URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libimobiledevice-1.1.7.tar.bz2
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml extlibplist extlibusbmuxd
 )

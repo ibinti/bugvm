@@ -679,6 +679,9 @@ public class AppLauncher {
             
             try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
                 appPath = getAppPath(lockdowndClient, appId);
+
+
+
                 String productVersion = lockdowndClient.getValue(null, "ProductVersion").toString(); // E.g. 7.0.2
                 String buildVersion = lockdowndClient.getValue(null, "BuildVersion").toString(); // E.g. 11B508
                 if(appLauncherCallback != null) {
