@@ -30,7 +30,7 @@ endif()
 
 if(MACOSX)
   exec_program(xcode-select ARGS --print-path OUTPUT_VARIABLE XCODE_PATH)
-  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
+  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
   if(NOT IS_DIRECTORY ${SYSROOT})
     message(FATAL_ERROR "No supported MacOSX SDK found")
   endif()
@@ -68,7 +68,7 @@ endif()
 
 ExternalProject_Add(extlibimobiledevice
   URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libimobiledevice-1.1.7.tar.bz2
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include -I/usr/local/opt/openssl/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -L/usr/local/opt/openssl/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml extlibplist extlibusbmuxd
 )
@@ -80,7 +80,7 @@ set(CMAKE_INSTALL_DO_STRIP YES)
 include_directories(${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2} ${EXTPREFIX}/include)
 
 set(LIBS -limobiledevice -lusbmuxd -lplist -lssl -lxml2 -lcrypto)
-set(LDFLAGS -L${EXTPREFIX}/lib -L/usr/local/lib)
+set(LDFLAGS -L${EXTPREFIX}/lib -L/usr/local/lib -L/usr/local/lib -L/usr/local/opt/openssl/lib)
 
 if(MACOSX)
   set(LIBS ${LIBS} -liconv)
