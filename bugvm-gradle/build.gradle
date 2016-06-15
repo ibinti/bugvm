@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugVMVersion = '1.1.1-SNAPSHOT'
+        bugVMVersion = '1.1.2-SNAPSHOT'
 //        bugVMVersion = '1.1.0'
     }
 
@@ -23,7 +23,7 @@ group = 'com.bugvm'
 archivesBaseName = "bugvm-gradle"
 version = "${bugVMVersion}"
 
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 repositories {
