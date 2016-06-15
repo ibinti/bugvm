@@ -333,14 +333,6 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_browse(InstproxyClientRef.getCPtr(client), PlistRef.getCPtr(client_options), PlistRefOut.getCPtr(result), result));
   }
 
-  public static InstProxyError instproxy_browse_with_callback(InstproxyClientRef client, PlistRef client_options, long status_cb, int user_data) {
-    return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_browse_with_callback(InstproxyClientRef.getCPtr(client), PlistRef.getCPtr(client_options), status_cb, user_data));
-  }
-
-  public static InstProxyError instproxy_lookup(InstproxyClientRef client, SWIGTYPE_p_p_char appids, PlistRef client_options, PlistRefOut result) {
-    return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_lookup(InstproxyClientRef.getCPtr(client), SWIGTYPE_p_p_char.getCPtr(appids), PlistRef.getCPtr(client_options), PlistRefOut.getCPtr(result), result));
-  }
-
   public static InstProxyError instproxy_install(InstproxyClientRef client, String pkg_path, PlistRef client_options, long status_cb, int user_data) {
     return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_install(InstproxyClientRef.getCPtr(client), pkg_path, PlistRef.getCPtr(client_options), status_cb, user_data));
   }
@@ -369,36 +361,8 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_remove_archive(InstproxyClientRef.getCPtr(client), appid, PlistRef.getCPtr(client_options), status_cb, user_data));
   }
 
-  public static InstProxyError instproxy_check_capabilities_match(InstproxyClientRef client, SWIGTYPE_p_p_char capabilities, PlistRef client_options, PlistRefOut result) {
-    return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_check_capabilities_match(InstproxyClientRef.getCPtr(client), SWIGTYPE_p_p_char.getCPtr(capabilities), PlistRef.getCPtr(client_options), PlistRefOut.getCPtr(result), result));
-  }
-
-  public static void instproxy_command_get_name(PlistRef command, SWIGTYPE_p_p_char name) {
-    LibIMobileDeviceJNI.instproxy_command_get_name(PlistRef.getCPtr(command), SWIGTYPE_p_p_char.getCPtr(name));
-  }
-
-  public static void instproxy_status_get_name(PlistRef status, SWIGTYPE_p_p_char name) {
-    LibIMobileDeviceJNI.instproxy_status_get_name(PlistRef.getCPtr(status), SWIGTYPE_p_p_char.getCPtr(name));
-  }
-
-  public static InstProxyError instproxy_status_get_error(PlistRef status, SWIGTYPE_p_p_char name, SWIGTYPE_p_p_char description, LongOut code) {
-    return InstProxyError.swigToEnum(LibIMobileDeviceJNI.instproxy_status_get_error(PlistRef.getCPtr(status), SWIGTYPE_p_p_char.getCPtr(name), SWIGTYPE_p_p_char.getCPtr(description), LongOut.getCPtr(code), code));
-  }
-
-  public static void instproxy_status_get_current_list(PlistRef status, LongOut total, LongOut current_index, LongOut current_amount, PlistRefOut list) {
-    LibIMobileDeviceJNI.instproxy_status_get_current_list(PlistRef.getCPtr(status), LongOut.getCPtr(total), total, LongOut.getCPtr(current_index), current_index, LongOut.getCPtr(current_amount), current_amount, PlistRefOut.getCPtr(list), list);
-  }
-
-  public static void instproxy_status_get_percent_complete(PlistRef status, IntOut percent) {
-    LibIMobileDeviceJNI.instproxy_status_get_percent_complete(PlistRef.getCPtr(status), IntOut.getCPtr(percent), percent);
-  }
-
   public static PlistRef instproxy_client_options_new() {
     return new PlistRef(LibIMobileDeviceJNI.instproxy_client_options_new(), true);
-  }
-
-  public static void instproxy_client_options_set_return_attributes(PlistRef client_options) {
-    LibIMobileDeviceJNI.instproxy_client_options_set_return_attributes(PlistRef.getCPtr(client_options));
   }
 
   public static void instproxy_client_options_free(PlistRef client_options) {
