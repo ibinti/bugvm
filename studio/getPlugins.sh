@@ -14,7 +14,7 @@ git pull
 git checkout $ANDROID_TOOLS_BASE_COMMIT
 cd ../..
 
-version=$BUGVM_IDEA_PLUGIN_VERSION
+version=$BUGVM_VERSION
 rm -rf bugvm/bugvm-idea
 mkdir bugvm/bugvm-idea
 cd bugvm/bugvm-idea

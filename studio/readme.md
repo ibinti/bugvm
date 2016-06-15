@@ -36,8 +36,8 @@ The build needs to be executed on Mac OS X as we also generate a DMG
 You need to set two environment variables:
 
 ```bash
-export IDEA_HOME="/Applications/IntelliJ IDEA 15 CE.app/Contents"
-export BUGVM_IDEA_PLUGIN_VERSION="1.0.6"
+export IDEA_HOME="/Applications/IntelliJ IDEA CE.app/Contents"
+export BUGVM_VERSION="1.1.4"
 ```
 
 Once the environment variables are set, execute:
