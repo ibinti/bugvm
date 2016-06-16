@@ -28,7 +28,7 @@ This is used to create a DMG from the output of the build process.
 
 The build scripts are located in `build-bugvm`, and are a heavily modified copy of what you find in `build`, the standard IDEA build scripts. Instead of community-main, it references the bugvm-studio-main module. Instead of community-resources it references bugvm-studio-branding, which contains all BugVM Studio relevant branding and app info.
 
-You also need IntelliJ IDEA 15+ installed somewhere, e.g. `/Applications/IntelliJ IDEA 15 CE.app/`
+You also need IntelliJ IDEA 15+ installed somewhere, e.g. `/Applications/IntelliJ IDEA CE.app/`
 
 ### Build
 The build needs to be executed on Mac OS X as we also generate a DMG 
@@ -36,8 +36,8 @@ The build needs to be executed on Mac OS X as we also generate a DMG
 You need to set two environment variables:
 
 ```bash
-export IDEA_HOME="/Applications/IntelliJ IDEA 15 CE.app/Contents"
-export BUGVM_IDEA_PLUGIN_VERSION="1.0.6"
+export IDEA_HOME="/Applications/IntelliJ IDEA CE.app/Contents"
+export BUGVM_VERSION="1.1.4"
 ```
 
 Once the environment variables are set, execute:
