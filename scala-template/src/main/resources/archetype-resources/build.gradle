@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
     compile "com.bugvm:bugvm-rt:${bugVMVersion}"
+    compile "com.bugvm:bugvm-objc:${bugVMVersion}"
     compile "com.bugvm:bugvm-cocoatouch:${bugVMVersion}"
 }
 
