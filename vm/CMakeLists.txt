@@ -5,7 +5,7 @@ set(MACOSX_MIN_VERSION 10.7)
 # The iOS SDK version required when building the VM libs
 set(IOS_SDK_VERSION 9.3)
 # The minimum iOS version needed by apps built by BugVM
-set(IOS_MIN_VERSION 6.0)
+set(IOS_MIN_VERSION 6.1)
 
 cmake_minimum_required(VERSION 2.8.8)
 project(build)
@@ -251,7 +251,7 @@ if (IOS)
   endif()
 endif()
 ExternalProject_Add(libatomic_ops 
-  GIT_REPOSITORY git://github.com/bugvm/bugvm-libatomic_ops.git
+  GIT_REPOSITORY git://github.com/ibinti/bugvm-libatomic_ops.git
   GIT_TAG 4e22546e8a161b6bab93e43c115a22151daf45c5
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND "" 
@@ -261,7 +261,7 @@ ExternalProject_Add(libatomic_ops
 )
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
-  GIT_REPOSITORY git://github.com/bugvm/bugvm-bdwgc.git
+  GIT_REPOSITORY git://github.com/ibinti/bugvm-bdwgc.git
   GIT_TAG 0458ff8c3cc04376bb4584de7729e6dbb6384bad
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
