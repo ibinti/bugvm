@@ -14,9 +14,4 @@ git pull
 git checkout $ANDROID_TOOLS_BASE_COMMIT
 cd ../..
 
-version=$BUGVM_IDEA_PLUGIN_VERSION
-rm -rf bugvm/bugvm-idea
-mkdir bugvm/bugvm-idea
-cd bugvm/bugvm-idea
-wget https://github.com/bugvm/bugvm/releases/download/bugvm-$version/bugvm-idea-$version-plugin-dist.jar
-cd ../..
+./plugin-dist.sh
