@@ -37,7 +37,6 @@ You need to set two environment variables:
 
 ```bash
 export IDEA_HOME="/Applications/IntelliJ IDEA CE.app/Contents"
-export BUGVM_VERSION="1.1.4"
 ```
 
 Once the environment variables are set, execute:
@@ -48,7 +47,6 @@ Once the environment variables are set, execute:
 
 This will build BugVM Studio for Mac OS X as follows:
 * Pull in the latest changes to the Android plugin
-* Pull in the specified bugvm-idea plugin (`bugvm/bugvm-idea`)
 * Build BugVM Studio, integrate the branding and IDEA plugin
 * Create a DMG
 
