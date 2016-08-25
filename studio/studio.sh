@@ -1,6 +1,5 @@
 #!/bin/bash
 #./getAndroid.sh
-#./getDist.sh
 set -e
 : ${IDEA_HOME?"Need to set IDEA_HOME to point to a valid IntelliJ IDEA installation."}
 

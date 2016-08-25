@@ -13,5 +13,3 @@ cd android/tools-base
 git pull
 git checkout $ANDROID_TOOLS_BASE_COMMIT
 cd ../..
-
-./plugin-dist.sh
