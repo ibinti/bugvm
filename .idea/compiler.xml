@@ -54,14 +54,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-maven-resolver" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-maven" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-maven" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-rt" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />

@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.bugvm</groupId>
-  <version>1.1.5</version>
+  <version>1.1.6-SNAPSHOT</version>
   <artifactId>bugvm-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -222,7 +222,5 @@
     <module>scala-template</module>
     <module>templater</module>
     <module>idea</module>
-    <module>maven</module>
-    <module>maven-resolver</module>
   </modules>
 </project>
