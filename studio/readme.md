@@ -28,7 +28,7 @@ This is used to create a DMG from the output of the build process.
 
 The build scripts are located in `build-bugvm`, and are a heavily modified copy of what you find in `build`, the standard IDEA build scripts. Instead of community-main, it references the bugvm-studio-main module. Instead of community-resources it references bugvm-studio-branding, which contains all BugVM Studio relevant branding and app info.
 
-You also need Android Studio installed somewhere, e.g. `/Applications/Android Studio.app/`
+You also need BugVM Studio installed somewhere, e.g. `/Applications/BugVM Studio.app/`
 
 ### Build
 The build needs to be executed on Mac OS X as we also generate a DMG 
@@ -36,7 +36,7 @@ The build needs to be executed on Mac OS X as we also generate a DMG
 You need to set two environment variables:
 
 ```bash
-export IDEA_HOME="/Applications/Android Studio.app/Contents"
+export IDEA_HOME="/Applications/BugVM Studio.app/Contents"
 ```
 
 Once the environment variables are set, execute:
@@ -53,4 +53,4 @@ This will build BugVM Studio for Mac OS X as follows:
 The build output will be located in `out/bugvm` and will not be signed (see [this issue](https://github.com/bugvm/bugvm-studio/issues/3)).
 
 ### Update/Patch URLs
-IntelliJ IDEA has a mechanism to inform users about new releases of the IDE. These are specified in `bugvm/bugvm-studio-branding/src/idea/IdeaApplicationInfo.xml`.
+BugVM Studio has a mechanism to inform users about new releases of the IDE. These are specified in `bugvm/bugvm-studio-branding/src/idea/IdeaApplicationInfo.xml`.

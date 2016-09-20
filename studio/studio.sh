@@ -1,7 +1,7 @@
 #!/bin/bash
 #./getAndroid.sh
 set -e
-: ${IDEA_HOME?"Need to set IDEA_HOME to point to a valid Android Studio installation."}
+: ${IDEA_HOME?"Need to set IDEA_HOME to point to a valid BugVM Studio installation."}
 
 ## Build BugVM Studio using our own build files
 ant -f build-bugvm.xml
