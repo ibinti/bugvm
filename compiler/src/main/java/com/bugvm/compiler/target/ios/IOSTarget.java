@@ -115,8 +115,8 @@ public class IOSTarget extends AbstractTarget {
     public static synchronized File getIosSimPath() {
         if (iosSimPath == null) {
             try {
-                File path = File.createTempFile("ios-sim", "");
-                FileUtils.copyURLToFile(IOSTarget.class.getResource("/ios-sim"), path);
+                File path = File.createTempFile("bugvm-sim", "");
+                FileUtils.copyURLToFile(IOSTarget.class.getResource("/bugvm-sim"), path);
                 path.setExecutable(true);
                 path.deleteOnExit();
                 iosSimPath = path;
@@ -158,19 +158,20 @@ public class IOSTarget extends AbstractTarget {
 
         File dir = getAppDir();
 
-        String iosSimPath = new File(config.getHome().getBinDir(), "ios-sim").getAbsolutePath();
+        String iosSimPath = new File(config.getHome().getBinDir(), "bugvm-sim").getAbsolutePath();
 
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
+        args.add("com.mycompany.myapp");
+        if (((IOSSimulatorLaunchParameters) launchParameters).getDeviceType() != null) {
+            DeviceType deviceType = ((IOSSimulatorLaunchParameters) launchParameters).getDeviceType();
+            //args.add("--devicetypeid");
+            args.add(deviceType.getDeviceTypeId());
+        }
 //        args.add("--timeout");
 //        args.add("90");
 //        args.add("--unbuffered");
-        if (((IOSSimulatorLaunchParameters) launchParameters).getDeviceType() != null) {
-            DeviceType deviceType = ((IOSSimulatorLaunchParameters) launchParameters).getDeviceType();
-            args.add("--devicetypeid");
-            args.add(deviceType.getDeviceTypeId());
-        }
 //        if (launchParameters.getStdoutFifo() != null) {
 //            args.add("--stdout");
 //            args.add(launchParameters.getStdoutFifo());
@@ -195,7 +196,7 @@ public class IOSTarget extends AbstractTarget {
         Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
         
         // See issue https://github.com/bugvm/bugvm/issues/1150, we need
-        // to swallow the error message by ios-sim on Xcode 7. We need
+        // to swallow the error message by bugvm-sim on Xcode 7. We need
         // to remove this
         Logger proxyLogger = new Logger() {
             boolean skipWarningsAndErrors = false;
