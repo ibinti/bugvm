@@ -1,4 +1,4 @@
-mvn install -P release
+mvn clean install -P release
 cd bugvm-gradle
 ./gradlew clean build install
 cd .. 

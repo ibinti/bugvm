@@ -163,7 +163,7 @@ public class IOSTarget extends AbstractTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
-        args.add("com.mycompany.myapp");
+        //args.add("com.mycompany.myapp");
         if (((IOSSimulatorLaunchParameters) launchParameters).getDeviceType() != null) {
             DeviceType deviceType = ((IOSSimulatorLaunchParameters) launchParameters).getDeviceType();
             //args.add("--devicetypeid");
