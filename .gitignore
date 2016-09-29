@@ -54,3 +54,11 @@ templater/src/main/resources/templates/bugvm-java-template.tar.gz
 templater/src/main/resources/templates/bugvm-scala-template.tar.gz
 .idea/workspace.xml
 .DS_Store
+
+compiler/.DS_Store
+
+rt/.DS_Store
+
+soot/.DS_Store
+
+compiler/.DS_Store

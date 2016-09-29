@@ -163,38 +163,16 @@ public class IOSTarget extends AbstractTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
-        //args.add("com.mycompany.myapp");
         if (((IOSSimulatorLaunchParameters) launchParameters).getDeviceType() != null) {
             DeviceType deviceType = ((IOSSimulatorLaunchParameters) launchParameters).getDeviceType();
-            //args.add("--devicetypeid");
             args.add(deviceType.getDeviceTypeId());
         }
-//        args.add("--timeout");
-//        args.add("90");
-//        args.add("--unbuffered");
-//        if (launchParameters.getStdoutFifo() != null) {
-//            args.add("--stdout");
-//            args.add(launchParameters.getStdoutFifo());
-//        }
-//        if (launchParameters.getStderrFifo() != null) {
-//            args.add("--stderr");
-//            args.add(launchParameters.getStderrFifo());
-//        }
-//        if (launchParameters.getEnvironment() != null) {
-//            for (Entry<String, String> entry : launchParameters.getEnvironment().entrySet()) {
-//                args.add("--setenv");
-//                args.add(entry.getKey() + "=" + entry.getValue());
-//            }
-//        }
-//
-//        if (!launchParameters.getArguments().isEmpty()) {
-//            args.add("--args");
-//            args.addAll(launchParameters.getArguments());
-//        }
 
         File xcodePath = new File(ToolchainUtil.findXcodePath());
         Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
-        
+
+        //BugVM: Please cleanup this outdated mess!
+        //
         // See issue https://github.com/bugvm/bugvm/issues/1150, we need
         // to swallow the error message by bugvm-sim on Xcode 7. We need
         // to remove this
