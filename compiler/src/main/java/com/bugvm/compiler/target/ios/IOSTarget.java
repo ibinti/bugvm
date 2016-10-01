@@ -149,7 +149,7 @@ public class IOSTarget extends AbstractTarget {
         if (isSimulatorArch(arch)) {
             return createIOSSimLauncher(launchParameters);
         } else {
-            return createIOSDevLauncher(launchParameters);
+            return createIOSDeviceLauncher(launchParameters);
         }
     }
 
@@ -223,6 +223,76 @@ public class IOSTarget extends AbstractTarget {
             }
         };
         
+        return new Executor(proxyLogger, iosSimPath)
+                .args(args)
+                .wd(launchParameters.getWorkingDirectory())
+                .inheritEnv(false)
+                .env(env);
+    }
+
+    private Launcher createIOSDeviceLauncher(LaunchParameters launchParameters)
+            throws IOException {
+
+        File dir = getAppDir();
+
+        String iosSimPath = new File(config.getHome().getBinDir(), "ideviceinstaller").getAbsolutePath();
+
+        List<Object> args = new ArrayList<Object>();
+        args.add("-i");
+        args.add(dir);
+
+        Logger proxyLogger = new Logger() {
+            boolean skipWarningsAndErrors = false;
+
+            @Override
+            public void debug(String format, Object... args) {
+                config.getLogger().debug(format, args);
+            }
+
+            @Override
+            public void info(String format, Object... args) {
+                config.getLogger().info(format, args);
+            }
+
+            @Override
+            public void warn(String format, Object... args) {
+                // we swallow the first warning message, then
+                // error() will turn on skipWarningsAndErrors until
+                // we get another warning.
+                if (format.toString().contains("DVTPlugInManager.m:257")) {
+                    config.getLogger().info(format, args);
+                    return;
+                }
+
+                // received the "closing" warning, enable
+                // logging of warnings and errors again
+                if (skipWarningsAndErrors) {
+                    skipWarningsAndErrors = false;
+                    config.getLogger().info(format, args);
+                } else {
+                    config.getLogger().warn(format, args);
+                }
+            }
+
+            @Override
+            public void error(String format, Object... args) {
+                if (format.contains(
+                        "Requested but did not find extension point with identifier Xcode.DVTFoundation.DevicePlatformMapping")) {
+                    skipWarningsAndErrors = true;
+                }
+                if (skipWarningsAndErrors) {
+                    config.getLogger().info(format, args);
+                } else {
+                    config.getLogger().error(format, args);
+                }
+            }
+        };
+
+        Map<String, String> env = launchParameters.getEnvironment();
+        if (env == null) {
+            env = new HashMap<>();
+        }
+
         return new Executor(proxyLogger, iosSimPath)
                 .args(args)
                 .wd(launchParameters.getWorkingDirectory())
@@ -850,7 +920,7 @@ public class IOSTarget extends AbstractTarget {
 
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
-            dict.put("MinimumOSVersion", "6.1.6");
+            dict.put("MinimumOSVersion", "7.0");
         }
 
         customizeInfoPList(dict);

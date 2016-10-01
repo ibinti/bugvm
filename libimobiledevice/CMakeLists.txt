@@ -70,7 +70,7 @@ endif()
 
 ExternalProject_Add(extlibimobiledevice
   URL https://github.com/bugvm/bugvm/releases/download/bugvm-ext/libimobiledevice-1.2.0.tar.bz2
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include -I/usr/local/opt/openssl/include' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -L/usr/local/opt/openssl/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS} -I/usr/local/include e' LDFLAGS='-L${EXTPREFIX}/lib -L/usr/local/lib -L/usr/local/opt/openssl/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
   BUILD_IN_SOURCE 1
   DEPENDS extlibxml extlibplist extlibusbmuxd
 )
