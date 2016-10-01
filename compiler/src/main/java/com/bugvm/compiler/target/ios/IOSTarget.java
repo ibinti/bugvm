@@ -55,11 +55,6 @@ import com.bugvm.compiler.target.ios.ProvisioningProfile.Type;
 import com.bugvm.compiler.util.Executor;
 import com.bugvm.compiler.util.ToolchainUtil;
 import com.bugvm.compiler.util.io.OpenOnWriteFileOutputStream;
-import com.bugvm.libimobiledevice.AfcClient.UploadProgressCallback;
-import com.bugvm.libimobiledevice.IDevice;
-import com.bugvm.libimobiledevice.InstallationProxyClient.StatusCallback;
-import com.bugvm.libimobiledevice.util.AppLauncher;
-import com.bugvm.libimobiledevice.util.AppLauncherCallback;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -82,7 +77,6 @@ public class IOSTarget extends AbstractTarget {
     private File entitlementsPList;
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;
-    private IDevice device;
     private File partialPListDir;
 
     public IOSTarget() {}
@@ -135,15 +129,6 @@ public class IOSTarget extends AbstractTarget {
         }
     }
 
-    /**
-     * Returns the {@link IDevice} when an app has been launched on a device.
-     * Returns {@code null} before {@link #launch(LaunchParameters)} has been
-     * called or if the app was launched in the simulator.
-     */
-    public IDevice getDevice() {
-        return device;
-    }
-
     @Override
     protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
         if (isSimulatorArch(arch)) {
@@ -157,8 +142,6 @@ public class IOSTarget extends AbstractTarget {
             throws IOException {
 
         File dir = getAppDir();
-
-        String iosSimPath = new File(config.getHome().getBinDir(), "bugvm-sim").getAbsolutePath();
 
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
@@ -222,8 +205,9 @@ public class IOSTarget extends AbstractTarget {
                 }
             }
         };
-        
-        return new Executor(proxyLogger, iosSimPath)
+
+        File bugvmSimPath = new File(config.getHome().getBinDir(), "bugvm-sim");
+        return new Executor(proxyLogger, bugvmSimPath)
                 .args(args)
                 .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
@@ -235,7 +219,7 @@ public class IOSTarget extends AbstractTarget {
 
         File dir = getAppDir();
 
-        String iosSimPath = new File(config.getHome().getBinDir(), "ideviceinstaller").getAbsolutePath();
+
 
         List<Object> args = new ArrayList<Object>();
         args.add("-i");
@@ -293,93 +277,12 @@ public class IOSTarget extends AbstractTarget {
             env = new HashMap<>();
         }
 
-        return new Executor(proxyLogger, iosSimPath)
+        File ideviceinstallerPath = new File(config.getHome().getBinDir(), "bugvm-device");
+        return new Executor(proxyLogger, ideviceinstallerPath)
                 .args(args)
                 .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
                 .env(env);
-    }
-
-    private Launcher createIOSDevLauncher(LaunchParameters launchParameters)
-            throws IOException {
-
-        IOSDeviceLaunchParameters deviceLaunchParameters = (IOSDeviceLaunchParameters) launchParameters;
-        String deviceId = deviceLaunchParameters.getDeviceId();
-        int forwardPort = deviceLaunchParameters.getForwardPort();
-        AppLauncherCallback callback = deviceLaunchParameters.getAppPathCallback();
-        if (deviceId == null) {
-            String[] udids = IDevice.listUdids();
-            if (udids.length == 0) {
-                throw new RuntimeException("No devices connected");
-            }
-            if (udids.length > 1) {
-                config.getLogger().warn("More than 1 device connected (%s). "
-                        + "Using %s.", Arrays.asList(udids), udids[0]);
-            }
-            deviceId = udids[0];
-        }
-        device = new IDevice(deviceId);
-
-        OutputStream out = null;
-        if (launchParameters.getStdoutFifo() != null) {
-            out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
-        } else {
-            out = System.out;
-        }
-
-        Map<String, String> env = launchParameters.getEnvironment();
-        if (env == null) {
-            env = new HashMap<>();
-        }
-
-        AppLauncher launcher = new AppLauncher(device, getAppDir()) {
-            protected void log(String s, Object... args) {
-                config.getLogger().info(s, args);
-            }
-        }
-                .stdout(out)
-                .closeOutOnExit(true)
-                .args(launchParameters.getArguments().toArray(new String[0]))
-                .env(env)
-                .forward(forwardPort)
-                .appLauncherCallback(callback)
-                .xcodePath(ToolchainUtil.findXcodePath())
-                .uploadProgressCallback(new UploadProgressCallback() {
-                    boolean first = true;
-
-                    public void success() {
-                        config.getLogger().info("[100%%] Upload complete");
-                    }
-
-                    public void progress(File path, int percentComplete) {
-                        if (first) {
-                            config.getLogger().info("[  0%%] Beginning upload");
-                        }
-                        first = false;
-                        config.getLogger().info("[%3d%%] Uploading %s", percentComplete, path);
-                    }
-
-                    public void error(String message) {}
-                })
-                .installStatusCallback(new StatusCallback() {
-                    boolean first = true;
-
-                    public void success() {
-                        config.getLogger().info("[100%%] Install complete");
-                    }
-
-                    public void progress(String status, int percentComplete) {
-                        if (first) {
-                            config.getLogger().info("[  0%%] Beginning installation");
-                        }
-                        first = false;
-                        config.getLogger().info("[%3d%%] %s", percentComplete, status);
-                    }
-
-                    public void error(String message) {}
-                });
-
-        return new AppLauncherProcess(config.getLogger(), launcher, launchParameters);
     }
 
     @Override

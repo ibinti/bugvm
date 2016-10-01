@@ -17,38 +17,18 @@
 package com.bugvm.compiler.target.ios;
 
 import com.bugvm.compiler.target.LaunchParameters;
-import com.bugvm.libimobiledevice.util.AppLauncherCallback;
 
 /**
  * {@link LaunchParameters} implementation used by {@link IOSTarget} when
  * launching on device. Also used to receive the remote app path from a device.
  */
 public class IOSDeviceLaunchParameters extends LaunchParameters {
-    private AppLauncherCallback appPathCallback;
     private String deviceId;
-    private int forwardPort = -1;
-
     public String getDeviceId() {
         return deviceId;
     }
-
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 
-    public int getForwardPort() {
-        return forwardPort;
-    }
-
-    public void setForwardPort(int forwardPort) {
-        this.forwardPort = forwardPort;
-    }
-
-    public AppLauncherCallback getAppPathCallback() {
-        return appPathCallback;
-    }
-
-    public void setAppLauncherCallback(AppLauncherCallback appPathCallback) {
-        this.appPathCallback = appPathCallback;
-    }
 }
