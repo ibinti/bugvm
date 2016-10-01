@@ -9,7 +9,6 @@
       <module fileurl="file://$PROJECT_DIR$/dist-compiler/bugvm-dist-compiler.iml" filepath="$PROJECT_DIR$/dist-compiler/bugvm-dist-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/bugvm-idea.iml" filepath="$PROJECT_DIR$/idea/bugvm-idea.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-template/bugvm-java-template.iml" filepath="$PROJECT_DIR$/java-template/bugvm-java-template.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libimobiledevice/bugvm-libimobiledevice.iml" filepath="$PROJECT_DIR$/libimobiledevice/bugvm-libimobiledevice.iml" />
       <module fileurl="file://$PROJECT_DIR$/llvm/bugvm-llvm.iml" filepath="$PROJECT_DIR$/llvm/bugvm-llvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/objc/bugvm-objc.iml" filepath="$PROJECT_DIR$/objc/bugvm-objc.iml" />
       <module fileurl="file://$PROJECT_DIR$/bugvm-parent.iml" filepath="$PROJECT_DIR$/bugvm-parent.iml" />
