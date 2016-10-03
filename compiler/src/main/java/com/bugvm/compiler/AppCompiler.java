@@ -1011,7 +1011,7 @@ public class AppCompiler {
         System.err.println("iOS simulator launch options:");
         System.err.println("  -printdevicetypes     The device type ids that can be used to launch a specific\n"
                          + "                        simulator via the -devicetype flag.");
-        System.err.println("  -devicetype <type>    The device type to use to launch the simulator e.g. \"iPhone-6, 8.0\"\n"
+        System.err.println("  -devicetype <type>    The device type to use to launch the simulator e.g. \"iPhone-7, 10.0\"\n"
                          + "                        (defaults to an iPhone simulator using the latest SDK).");
         
         if(plugins != null) {
@@ -1073,7 +1073,7 @@ public class AppCompiler {
             String osName = System.getProperty("os.name", "Unknown");
             String osArch = System.getProperty("os.arch", "Unknown");
             String osVersion = System.getProperty("os.version", "Unknown");
-            UpdateChecker t = new UpdateChecker("http://download.bugvm.com/version?"
+            UpdateChecker t = new UpdateChecker("https://download.bugvm.com/version?"
                     + "uuid=" + URLEncoder.encode(uuid, "UTF-8") + "&"
                     + "version=" + URLEncoder.encode(Version.getVersion(), "UTF-8") + "&"
                     + "osName=" + URLEncoder.encode(osName, "UTF-8") + "&"

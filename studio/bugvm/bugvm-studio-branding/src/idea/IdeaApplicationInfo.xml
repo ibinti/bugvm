@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component>
-  <version eap="false" full="1.1.6" major="1" minor="1" patch="6"/>
+  <version eap="false" full="1.1.10" major="1" minor="1" patch="6"/>
   <company name="BugVM" url="https://bugvm.com"/>
   <build apiVersion="142.0" date="__BUILD_DATE__" number="BS-142.0"/>
   <install-over maxbuild="999.999999" minbuild="0.1" version="0"/>
