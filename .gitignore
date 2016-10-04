@@ -70,3 +70,7 @@ cocoatouch/.DS_Store
 llvm/.DS_Store
 
 package/.DS_Store
+
+vm/.DS_Store
+
+vm/target/.DS_Store
