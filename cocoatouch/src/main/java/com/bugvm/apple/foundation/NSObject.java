@@ -59,6 +59,7 @@ import com.bugvm.apple.dispatch.*;
     
     protected static class SkipInit {}
 
+
     /*<ptr>*/public static class NSObjectPtr extends Ptr<NSObject, NSObjectPtr> {}/*</ptr>*/
     
     public static class Marshaler {
