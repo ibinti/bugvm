@@ -18,7 +18,7 @@
      </p>
      <br/>
      <p>
-     Requires Xcode 7 on Mac OSX and at least 1GB of heap space for gradle VM.
+     Requires macOS and Xcode 8.
      </p>
      ]]></description>
 
