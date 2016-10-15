@@ -74,3 +74,13 @@ package/.DS_Store
 vm/.DS_Store
 
 vm/target/.DS_Store
+
+.gradle/3.1/taskArtifacts/cache.properties
+
+.gradle/3.1/taskArtifacts/cache.properties.lock
+
+.gradle/3.1/taskArtifacts/fileHashes.bin
+
+.gradle/3.1/taskArtifacts/taskArtifacts.bin
+
+.gradle/3.1/taskArtifacts/fileSnapshots.bin
