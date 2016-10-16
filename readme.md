@@ -1,6 +1,6 @@
-# BugVM is a fork of RoboVM.
+# BugVM is a free open source native App builder.
 
-BugVM is a free open source native App builder. It compiles Java bytecode to native machine code and then links the compiled native code with other native library or frameworks to produce targeted platform Apps. 
+BugVM compiles Java bytecode to native machine code and then links the compiled native code with other native library or frameworks to produce targeted platform Apps. 
 
 BugVM is composed by:
 
