@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugVMVersion = '1.1.11-SNAPSHOT'
+        bugVMVersion = '1.1.12-SNAPSHOT'
     }
 
     repositories {
