@@ -324,6 +324,7 @@ com/bugvm/apple/contacts/CNSocialProfilePropertyKey$Marshaler.class
 com/bugvm/apple/spritekit/SKRegion.class
 com/bugvm/apple/foundation/NSKeyValueChangeInfo.class
 com/bugvm/apple/avfoundation/AVAudioUnitEQFilterParameters$AVAudioUnitEQFilterParametersPtr.class
+com/.DS_Store
 com/bugvm/apple/corefoundation/CFTimeZone$CFTimeZonePtr.class
 com/bugvm/apple/coretext/CTFrameAttributes$AsListMarshaler.class
 com/bugvm/apple/corefoundation/CFNumberFormatterPadPosition.class
@@ -2312,6 +2313,7 @@ com/bugvm/apple/uikit/UIImagePickerControllerEditingInfo$Keys.class
 com/bugvm/apple/addressbook/ABGroup.class
 com/bugvm/apple/uikit/UICollectionViewDelegateFlowLayoutAdapter.class
 com/bugvm/apple/coremedia/CMTimeMapping$CMTimeMappingPtr.class
+com/bugvm/.DS_Store
 com/bugvm/apple/healthkit/HKSource$HKSourcePtr.class
 com/bugvm/apple/mapkit/MKMapCamera$MKMapCameraPtr.class
 com/bugvm/apple/safariservices/SSReadingList.class
@@ -6179,6 +6181,7 @@ com/bugvm/apple/uikit/UIPickerViewDataSource.class
 com/bugvm/apple/coreaudio/AudioChannelCoordinate.class
 com/bugvm/apple/uikit/UITableViewCellStateMask.class
 com/bugvm/apple/uikit/UIControl$UIControlPtr.class
+.DS_Store
 com/bugvm/apple/quicklook/QLPreviewControllerDataSource.class
 com/bugvm/apple/foundation/NSDictionary$Entry.class
 com/bugvm/apple/foundation/NSURLSessionTaskDelegateAdapter.class

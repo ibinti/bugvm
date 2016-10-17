@@ -123,8 +123,16 @@
         <processorPath useClasspath="true" />
         <module name="bugvm-cocoatouch" />
       </profile>
+      <profile default="false" name="Annotation profile for bugvm-apple" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="bugvm-apple" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="bugvm-apple" target="1.7" />
       <module name="bugvm-cacerts" target="1.7" />
       <module name="bugvm-cocoatouch" target="1.7" />
       <module name="bugvm-compiler" target="1.7" />
