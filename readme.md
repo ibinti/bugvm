@@ -4,9 +4,14 @@ BugVM compiles Java bytecode to native machine code and then links the compiled 
 
 BugVM is composed by:
 
-* Cocoa Touch Bindings API Library: bugvm-cocoatouch.jar;
-* ObjectiveC Runtime Bindings API Library: bugvm-objc.jar;
-* Compiler Library: bugvm-dist-compiler.jar;
-* Native Library libbugvm-llvm.dylib for LLVM C-bingings; 
+* Apple iOS Bindings: bugvm-apple.jar;
+* LLVM Compiler : bugvm-dist-compiler.jar
+* Android based Virtual Machine Runtime : bugvm-rt.jar
+
+Target Platform Apps:
+
+* iOS App
+* macOS Console
+* Ubuntu Console
 
 Visit [bugvm.com](https://bugvm.com) for latest news and information.
