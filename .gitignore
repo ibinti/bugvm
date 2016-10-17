@@ -31,8 +31,7 @@ deploy
 /libimobiledevice/extlibusbmuxd-prefix/
 /rt/target/
 /cacerts/target/
-/objc/target/
-/cocoatouch/target/
+/apple/target/
 /package/target/
 /tests/dalvik/bugvm*.env
 /tests/libcore/target/
