@@ -318,6 +318,7 @@ public class IOSTarget extends AbstractTarget {
                 ccArgs.add("-Wl,-no_pie");
             }
         }
+
         if (majorVersionNumber >= 7) {
             // On iOS 7 and higher the linker will default to link against
             // libc++ which is needed for C++11 support. We need the older
@@ -326,6 +327,7 @@ public class IOSTarget extends AbstractTarget {
             // to link against /usr/lib/libc++.dylib explicitly.
             ccArgs.add("-stdlib=libstdc++");
         }
+
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
         

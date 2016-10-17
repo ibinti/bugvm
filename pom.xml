@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.bugvm</groupId>
-  <version>1.1.14-SNAPSHOT</version>
+  <version>1.1.17-SNAPSHOT</version>
   <artifactId>bugvm-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -214,8 +214,7 @@
     <module>compiler</module>
     <module>dist-compiler</module>
     <module>cacerts</module>
-    <module>objc</module>
-    <module>cocoatouch</module>
+    <module>apple</module>
     <module>package</module>
     <module>java-template</module>
     <module>scala-template</module>
