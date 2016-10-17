@@ -8,4 +8,10 @@ BugVM is composed by:
 * LLVM Compiler : bugvm-dist-compiler.jar
 * Android based Virtual Machine Runtime : bugvm-rt.jar
 
+Target Platform Apps:
+
+* iOS App
+* macOS Console
+* Ubuntu 64-bit Console
+
 Visit [bugvm.com](https://bugvm.com) for latest news and information.
