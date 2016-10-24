@@ -180,8 +180,8 @@ public class BugVmCompileTask implements CompileTask {
             applyPluginArguments(args, builder);
 
             // set build dir and install dir, pattern
-            // module-basedir/bugvm-build/tmp/module-name/runconfig-name/os/arch.
-            // module-basedir/bugvm-build/app/module-name/runconfig-name/os/arch.
+            // module-basedir/build-bugvm/tmp/module-name/runconfig-name/os/arch.
+            // module-basedir/build-bugvm/app/module-name/runconfig-name/os/arch.
             File buildDir = BugVmPlugin.getModuleBuildDir(module, runConfig.getName(), os, arch);
             builder.tmpDir(buildDir);
             builder.skipInstall(true);

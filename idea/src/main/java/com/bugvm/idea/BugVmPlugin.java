@@ -550,7 +550,7 @@ public class BugVmPlugin {
     }
 
     public static File getModuleLogDir(Module module) {
-        File logDir = new File(getModuleBaseDir(module), "bugvm-build/logs/");
+        File logDir = new File(getModuleBaseDir(module), "build-bugvm/logs/");
         if (!logDir.exists()) {
             if (!logDir.mkdirs()) {
                 throw new RuntimeException("Couldn't create log dir '" + logDir.getAbsolutePath() + "'");
@@ -560,7 +560,7 @@ public class BugVmPlugin {
     }
 
     public static File getModuleXcodeDir(Module module) {
-        File buildDir = new File(getModuleBaseDir(module), "bugvm-build/xcode/");
+        File buildDir = new File(getModuleBaseDir(module), "build-bugvm/xcode/");
         if (!buildDir.exists()) {
             if (!buildDir.mkdirs()) {
                 throw new RuntimeException("Couldn't create build dir '" + buildDir.getAbsolutePath() + "'");
@@ -570,7 +570,7 @@ public class BugVmPlugin {
     }
 
     public static File getModuleBuildDir(Module module, String runConfigName, com.bugvm.compiler.config.OS os, Arch arch) {
-        File buildDir = new File(getModuleBaseDir(module), "bugvm-build/tmp/" + runConfigName + "/" + os + "/" + arch);
+        File buildDir = new File(getModuleBaseDir(module), "build-bugvm/tmp/" + runConfigName + "/" + os + "/" + arch);
         if (!buildDir.exists()) {
             if (!buildDir.mkdirs()) {
                 throw new RuntimeException("Couldn't create build dir '" + buildDir.getAbsolutePath() + "'");
@@ -580,7 +580,7 @@ public class BugVmPlugin {
     }
 
     public static File getModuleClassesDir(String moduleBaseDir) {
-        File classesDir = new File(moduleBaseDir, "bugvm-build/classes/");
+        File classesDir = new File(moduleBaseDir, "build-bugvm/classes/");
         if(!classesDir.exists()) {
             if (!classesDir.mkdirs()) {
                 throw new RuntimeException("Couldn't create classes dir '" + classesDir.getAbsolutePath() + "'");
@@ -670,8 +670,7 @@ public class BugVmPlugin {
         String name = new File(path).getName();
 
         return name.startsWith("bugvm-rt") ||
-                name.startsWith("bugvm-objc") ||
-                name.startsWith("bugvm-cocoatouch") ||
+                name.startsWith("bugvm-apple") ||
                 name.startsWith("bugvm-cacerts");
     }
 
