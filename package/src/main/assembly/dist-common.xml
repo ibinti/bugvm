@@ -27,58 +27,35 @@
     </fileSet>
     <fileSet>
       <directory>${bugvmdir}/compiler</directory>
-      <outputDirectory>modules/licenses/dist-compiler/compiler</outputDirectory>
+      <outputDirectory>modules/licenses/compiler</outputDirectory>
       <includes>
         <include>NOTICE.txt</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}</directory>
-      <outputDirectory>modules/licenses/dist-compiler/compiler</outputDirectory>
+      <outputDirectory>modules/licenses/compiler</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${bugvmdir}/llvm</directory>
-      <outputDirectory>modules/licenses/dist-compiler/llvm</outputDirectory>
+      <outputDirectory>modules/licenses/llvm</outputDirectory>
       <includes>
         <include>NOTICE.txt</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}</directory>
-      <outputDirectory>modules/licenses/dist-compiler/llvm</outputDirectory>
+      <outputDirectory>modules/licenses/llvm</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${bugvmdir}/libimobiledevice</directory>
-      <outputDirectory>modules/licenses/dist-compiler/libimobiledevice</outputDirectory>
-      <includes>
-        <include>${project.build.directory}/LICENSE.txt</include>
-        <include>NOTICE.txt</include>
-      </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${project.build.directory}</directory>
-      <outputDirectory>modules/licenses/dist-compiler/libimobiledevice</outputDirectory>
-      <includes>
-        <include>LICENSE.txt</include>
-      </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${bugvmdir}/cocoatouch</directory>
-      <outputDirectory>modules/licenses/cocoatouch</outputDirectory>
-      <includes>
-        <include>LICENSE.txt</include>
-        <include>NOTICE.txt</include>
-      </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${bugvmdir}/objc</directory>
-      <outputDirectory>modules/licenses/objc</outputDirectory>
+      <directory>${bugvmdir}/apple</directory>
+      <outputDirectory>modules/licenses/apple</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
         <include>NOTICE.txt</include>
