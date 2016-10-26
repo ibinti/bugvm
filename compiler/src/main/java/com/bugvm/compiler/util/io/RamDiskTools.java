@@ -87,7 +87,7 @@ public class RamDiskTools {
                     config.getLogger().warn("BugVM has detected that you are running on a slow HDD. Please consider mounting a RAM disk.\n" +
                                             "To create a 2GB RAM disk, run this in your terminal:\n" +
                                             "SIZE=2048 ; diskutil erasevolume HFS+ 'BugVM RAM Disk' `hdiutil attach -nomount ram://$((SIZE * 2048))`\n" +
-                                            "See http://docs.bugvm.com/ for more info");
+                                            "See https://bugvm.com/ for more info");
                     // @formatter:on
                 }
             } catch (Throwable t) {

@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" filepath="$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/bugvm-compiler.iml" filepath="$PROJECT_DIR$/compiler/bugvm-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/package/bugvm-dist.iml" filepath="$PROJECT_DIR$/package/bugvm-dist.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dist-compiler/bugvm-dist-compiler.iml" filepath="$PROJECT_DIR$/dist-compiler/bugvm-dist-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea/bugvm-idea.iml" filepath="$PROJECT_DIR$/idea/bugvm-idea.iml" />
       <module fileurl="file://$PROJECT_DIR$/java-template/bugvm-java-template.iml" filepath="$PROJECT_DIR$/java-template/bugvm-java-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/llvm/bugvm-llvm.iml" filepath="$PROJECT_DIR$/llvm/bugvm-llvm.iml" />
