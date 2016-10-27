@@ -27,6 +27,23 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.bugvm</groupId>
+      <artifactId>bugvm-soot</artifactId>
+      <version>${bugvm.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.bugvm</groupId>
+      <artifactId>bugvm-rt</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.bugvm</groupId>
+      <artifactId>bugvm-llvm</artifactId>
+      <version>${bugvm.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.googlecode.plist</groupId>
       <artifactId>dd-plist</artifactId>
     </dependency>
@@ -41,26 +58,10 @@
       <version>5.0.3</version>
     </dependency>
     <dependency>
-      <groupId>com.bugvm</groupId>
-      <artifactId>bugvm-rt</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.zeroturnaround</groupId>
       <artifactId>zt-zip</artifactId>
       <version>1.7</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.bugvm</groupId>
-      <artifactId>bugvm-llvm</artifactId>
-      <version>${bugvm.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.bugvm</groupId>
-      <artifactId>bugvm-soot</artifactId>
-      <version>${bugvm.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>

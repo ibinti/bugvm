@@ -1,22 +1,20 @@
 apply plugin: 'java'
-apply plugin: 'maven'
 
 group = 'com.bugvm'
-version = '1.1.11-SNAPSHOT'
+version = '1.1.19-SNAPSHOT'
 
 description = """BugVM Soot"""
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
-}
 
-configurations.all {
-}
+sourceSets {
 
-repositories {
-        
-     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-     maven { url "http://repo.maven.apache.org/maven2" }
+     main {
+          java {
+               srcDirs = ['src', 'generated/options']
+               exclude('**/AntTask.java')
+          }
+     }
+
 }

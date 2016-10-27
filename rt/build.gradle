@@ -1,22 +1,52 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-
 group = 'com.bugvm'
-version = '1.1.11-SNAPSHOT'
+version = '1.1.19-SNAPSHOT'
 
 description = """BugVM Runtime Library"""
+
+buildscript {
+     repositories {
+          jcenter()
+     }
+     dependencies {
+          classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+     }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
+     options.encoding = 'UTF-8'
 }
 
-configurations.all {
+sourceSets {
+
+     main {
+          java {
+               srcDirs = ['src', 'libcore', 'external']
+          }
+     }
+
+     shadowJar {
+          relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
+          relocate 'org.conscrypt', 'com.android.org.conscrypt'
+          relocate 'com.squareup', 'com.android.com.squareup'
+     }
+
 }
 
-repositories {
-        
-     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-     maven { url "http://repo.maven.apache.org/maven2" }
+
+jar.doFirst{
+     manifest {
+          attributes("Manifest-Version" : "1.0", "Implementation-Version" : project.version)
+     }
 }
+
+task jarSources(type:Jar){
+     from sourceSets.main.getAllSource()
+     classifier = 'source'
+}
+
+jar.dependsOn jarSources

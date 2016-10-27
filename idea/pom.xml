@@ -33,7 +33,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>com.bugvm</groupId>
-                    <artifactId>bugvm-cacerts-full</artifactId>
+                    <artifactId>bugvm-cacerts</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
