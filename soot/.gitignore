@@ -1,6 +1,4 @@
-.gradle
 .DS_Store
 build
-.idea
 *.iml
 target
