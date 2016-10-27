@@ -5,7 +5,7 @@ BugVM compiles Java bytecode to native machine code and then links the compiled 
 BugVM is composed by:
 
 * Apple iOS Bindings: bugvm-apple.jar;
-* LLVM Compiler : bugvm-dist-compiler.jar
+* LLVM Compiler : bugvm-compiler.jar
 * Android based Virtual Machine Runtime : bugvm-rt.jar
 
 Target Platform Apps:
