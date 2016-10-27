@@ -1,0 +1,21 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.bugvm'
+version = '1.1.19-SNAPSHOT'
+
+description = """BugVM Soot"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+sourceSets {
+
+     main {
+          java {
+               srcDirs = ['src', 'generated/options']
+               exclude('**/AntTask.java')
+          }
+     }
+
+}
