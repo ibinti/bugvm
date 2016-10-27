@@ -1,0 +1,80 @@
+apply plugin: 'java'
+apply plugin: 'distribution'
+
+group = 'com.bugvm'
+version = '1.1.20-SNAPSHOT'
+
+description = """BugVM Package (tar.gz)"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    compile project(':compiler')
+    compile project(':rt')
+    compile project(':apple')
+    compile project(':cacerts')
+//    compile "com.bugvm:bugvm-compiler:$project.version"
+//    compile "com.bugvm:bugvm-rt:$project.version"
+//    compile "com.bugvm:bugvm-apple:$project.version"
+//    compile "com.bugvm:bugvm-cacerts:$project.version"
+}
+
+
+
+task dist( type: Tar) {
+    baseName = "bugvm"
+
+    into ("bugvm-${version}/bin") {
+        from ("../bin")
+    }
+
+    into("bugvm-${version}/lib") {
+        from  "../compiler/build/libs/compiler-${version}.jar" rename { String fileName -> fileName.replace("compiler-${version}.jar", "bugvm-compiler.jar") }
+        from("../rt/build/libs/rt-${version}.jar") rename { String fileName -> fileName.replace("rt-${version}.jar", "bugvm-rt.jar") }
+        from("../apple/build/libs/apple-${version}.jar") rename { String fileName -> fileName.replace("apple-${version}.jar", "bugvm-apple.jar") }
+        from("../cacerts/build/libs/cacerts-${version}.jar") rename { String fileName -> fileName.replace("cacerts-${version}.jar", "bugvm-cacerts.jar") }
+
+    }
+
+    into ("bugvm-${version}/lib/vm") {
+        from ("../vm/target/binaries")
+    }
+
+    into ("bugvm-${version}/modules/licenses/apple") {
+        from ("../apple/NOTICE.txt")
+        from ("../apple/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/llvm") {
+        from ("../llvm/NOTICE.txt")
+        from ("../llvm/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/rt") {
+        from ("../rt/NOTICE.txt")
+        from ("../rt/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/compiler") {
+        from ("../compiler/NOTICE.txt")
+        from ("../compiler/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/vm") {
+        from ("../vm/NOTICE.txt")
+        from ("../vm/LICENSE.txt")
+    }
+
+    extension = 'tar.gz'
+    compression = Compression.GZIP
+}

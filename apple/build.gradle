@@ -1,0 +1,24 @@
+apply plugin: 'java'
+
+group = 'com.bugvm'
+archivesBaseName = "bugvm-apple"
+version = '1.1.20-SNAPSHOT'
+
+description = """BugVM Apple Bindings"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    compile project(':rt')
+//    compile "com.bugvm:bugvm-rt:$project.version"
+}

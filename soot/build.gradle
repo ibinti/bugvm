@@ -1,7 +1,8 @@
 apply plugin: 'java'
 
 group = 'com.bugvm'
-version = '1.1.19-SNAPSHOT'
+archivesBaseName = "bugvm-soot"
+version = '1.1.20-SNAPSHOT'
 
 description = """BugVM Soot"""
 

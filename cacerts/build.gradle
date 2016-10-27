@@ -1,13 +1,11 @@
 apply plugin: 'java'
 
 group = 'com.bugvm'
-archivesBaseName = "bugvm-llvm"
+archivesBaseName = "bugvm-cacerts"
 version = '1.1.20-SNAPSHOT'
 
-description = """BugVM LLVM Bindings"""
+description = """BugVM cacerts"""
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
@@ -15,9 +13,6 @@ tasks.withType(JavaCompile) {
 sourceSets {
 
     main {
-        java {
-            srcDirs = ['src/java']
-        }
         resources {
             srcDirs = ['src/resources']
         }
