@@ -16,11 +16,11 @@
  */
 package com.bugvm.compiler;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * Reads the compiler version from auto generated <code>version.properties</code> file.
@@ -28,30 +28,32 @@ import org.apache.commons.io.IOUtils;
 public class Version {
 
     private static String version = null;
-    private static String PROPERTIES_RESOURCE = "/META-INF/bugvm/version.properties";
+    private static String MANIFEST_RESOURCE = "/META-INF/MANIFEST.MF";
 
     /**
-     * Returns the version number of the compiler by reading the <code>version.properties</code>
+     * Returns the version number of the compiler by reading the MANIFEST.MF
      * file.
      * 
      * @return the version.
      */
     public static String getVersion() {
+
         if (version != null) {
             return version;
         }
         InputStream is = null;
         try {
-            is = Version.class.getResourceAsStream(PROPERTIES_RESOURCE);
+            is = Version.class.getResourceAsStream(MANIFEST_RESOURCE);
             Properties props = new Properties();
             props.load(is);
-            version = props.getProperty("version");
+            version = props.getProperty("bugvm-version");
             return version;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             IOUtils.closeQuietly(is);
         }
+
     }
     
     /**

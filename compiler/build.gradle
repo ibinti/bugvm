@@ -35,7 +35,10 @@ sourceSets {
 
     main {
         java {
-            srcDirs = ['src/main/java', 'src/main/resources']
+            srcDirs = ['src/java']
+        }
+        resources {
+            srcDirs = ['src/resources']
         }
     }
 
@@ -43,10 +46,9 @@ sourceSets {
 
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA','META-INF/maven/**'
     manifest {
         attributes 'Main-Class': 'com.bugvm.compiler.AppCompiler'
+        attributes 'bugvm-version': project.version
     }
 }
-
-
