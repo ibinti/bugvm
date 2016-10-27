@@ -20,5 +20,4 @@ repositories {
 
 dependencies {
     compile project(':rt')
-//    compile "com.bugvm:bugvm-rt:$project.version"
 }

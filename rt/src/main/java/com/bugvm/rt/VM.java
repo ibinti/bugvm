@@ -15,12 +15,20 @@
  */
 package com.bugvm.rt;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
+import java.util.Properties;
 
 import libcore.util.EmptyArray;
 
@@ -64,7 +72,18 @@ public final class VM {
      * Returns the VM's version.
      */
     public static String vmVersion() {
-        return VMVersion.VERSION;
+
+        InputStream is = null;
+        try {
+            is = VM.class.getResourceAsStream("/META-INF/MANIFEST.MF");
+            Properties props = new Properties();
+            props.load(is);
+            return props.getProperty("vm-version");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
     }
 
     /**

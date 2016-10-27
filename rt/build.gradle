@@ -22,6 +22,16 @@ tasks.withType(JavaCompile) {
      options.encoding = 'UTF-8'
 }
 
+repositories {
+     mavenLocal()
+     mavenCentral()
+     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+     compile "commons-io:commons-io:2.4"
+}
+
 sourceSets {
 
      main {
@@ -41,7 +51,8 @@ sourceSets {
 
 jar.doFirst{
      manifest {
-          attributes("Manifest-Version" : "1.0", "Implementation-Version" : project.version)
+          attributes "Implementation-Version" : project.version
+          attributes 'vm-version': '1.0.0'
      }
 }
 

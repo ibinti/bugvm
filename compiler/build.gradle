@@ -19,15 +19,10 @@ repositories {
 }
 
 dependencies {
-//    compile "com.bugvm:bugvm-soot:$project.version"
     compile project(':soot')
     compile project(':rt')
     compile project(':llvm')
-    compile project(':compiler')
-    compile project(':apple')
-    compile project(':cacerts')
 
-//    compile "com.bugvm:bugvm-llvm:$project.version"
     compile "com.googlecode.plist:dd-plist:1.16"
     compile "org.bouncycastle:bcpkix-jdk15on:1.49"
     compile "org.ow2.asm:asm-debug-all:5.0.3"
@@ -43,10 +38,10 @@ sourceSets {
 
     main {
         java {
-            srcDirs = ['src/java']
+            srcDirs = ['src/main/java']
         }
         resources {
-            srcDirs = ['src/resources']
+            srcDirs = ['src/main/resources']
         }
     }
 
@@ -57,6 +52,6 @@ jar {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA','META-INF/maven/**'
     manifest {
         attributes 'Main-Class': 'com.bugvm.compiler.AppCompiler'
-        attributes 'bugvm-version': project.version
+        attributes "Implementation-Version" : project.version
     }
 }

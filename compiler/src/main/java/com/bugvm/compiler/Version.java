@@ -16,19 +16,22 @@
  */
 package com.bugvm.compiler;
 
+import com.bugvm.compiler.config.Config;
+
 import org.apache.commons.io.IOUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
-/**
- * Reads the compiler version from auto generated <code>version.properties</code> file.
- */
 public class Version {
-
-    private static String version = null;
-    private static String MANIFEST_RESOURCE = "/META-INF/MANIFEST.MF";
 
     /**
      * Returns the version number of the compiler by reading the MANIFEST.MF
@@ -38,21 +41,33 @@ public class Version {
      */
     public static String getVersion() {
 
-        if (version != null) {
-            return version;
-        }
-        InputStream is = null;
+         File compilerPath = Config.Home.find().getCompilerPath();
+        String compilerVersion = null;
+
         try {
-            is = Version.class.getResourceAsStream(MANIFEST_RESOURCE);
-            Properties props = new Properties();
-            props.load(is);
-            version = props.getProperty("bugvm-version");
-            return version;
+            compilerVersion = Config.getImplementationVersion(compilerPath);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(is);
+            e.printStackTrace();
         }
+
+        return compilerVersion;
+
+//        InputStream is = null;
+//        try {
+//            is = Version.class.getResourceAsStream("/META-INF/MANIFEST.MF");
+//
+//            Manifest mf = new Manifest();
+//            mf.read(is);
+//
+//            Map<Object, Object> attrs = new HashMap<Object, Object>(mf.getMainAttributes());
+//
+//            return attrs.get("bugvm-version").toString();
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            IOUtils.closeQuietly(is);
+//        }
 
     }
     

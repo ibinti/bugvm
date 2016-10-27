@@ -1,2 +1,1 @@
-rootProject.name = 'bugvm'
-include ':soot', ':rt', ':llvm', ':compiler', ':apple', ':cacerts', ':package'
+include 'soot', 'rt', 'llvm', 'compiler', 'apple', 'cacerts', 'package'
