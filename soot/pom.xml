@@ -13,11 +13,6 @@
   <artifactId>bugvm-soot</artifactId>
   <name>BugVM Soot</name>
   <packaging>jar</packaging>
-  <url>http://bugvm.com</url>
-  <description>
-    BugVM fork of Soot - A Java optimization framework
-  </description>
-  <inceptionYear>2015</inceptionYear>
 
   <build>
     <plugins>
