@@ -1,13 +1,5 @@
-apply plugin: 'java'
-
-group = 'com.bugvm'
 archivesBaseName = "bugvm-soot"
-version = "$bugVMVersion"
-
 description = """BugVM Soot"""
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 sourceSets {
 

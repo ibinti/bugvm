@@ -7,26 +7,10 @@ buildscript {
      }
 }
 
-apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-group = 'com.bugvm'
 archivesBaseName = "bugvm-rt"
-version = "$bugVMVersion"
-
 description = """BugVM Runtime Library"""
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-tasks.withType(JavaCompile) {
-     options.encoding = 'UTF-8'
-}
-
-repositories {
-     mavenLocal()
-     mavenCentral()
-     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
 
 dependencies {
      compile "commons-io:commons-io:2.4"

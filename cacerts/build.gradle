@@ -1,20 +1,11 @@
-apply plugin: 'java'
-
-group = 'com.bugvm'
 archivesBaseName = "bugvm-cacerts"
-version = "$bugVMVersion"
-
 description = """BugVM cacerts"""
-
-tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
-}
 
 sourceSets {
 
     main {
         resources {
-            srcDirs = ['src/resources']
+            srcDirs = ['src/main/resources']
         }
     }
 

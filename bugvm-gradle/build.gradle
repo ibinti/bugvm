@@ -8,24 +8,13 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'nexus'
 apply plugin: 'signing'
 
-group = 'com.bugvm'
 archivesBaseName = "bugvm-gradle"
-version = "$bugVMVersion"
-
-sourceCompatibility = '1.7'
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
+description = """BugVM Gradle Plugin"""
 
 dependencies {
     compile gradleApi()
@@ -67,8 +56,4 @@ modifyPom {
            }
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.1'
 }

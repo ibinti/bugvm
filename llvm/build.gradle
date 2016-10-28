@@ -1,16 +1,5 @@
-apply plugin: 'java'
-
-group = 'com.bugvm'
 archivesBaseName = "bugvm-llvm"
-version = "$bugVMVersion"
-
 description = """BugVM LLVM Bindings"""
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
-}
 
 sourceSets {
 

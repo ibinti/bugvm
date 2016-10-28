@@ -1,22 +1,6 @@
-apply plugin: 'java'
 apply plugin: 'distribution'
 
-group = 'com.bugvm'
-version = "$bugVMVersion"
-
 description = """BugVM Package (tar.gz)"""
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
 
 dependencies {
     compile project(':compiler')
