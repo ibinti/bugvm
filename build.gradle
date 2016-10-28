@@ -1,3 +1,13 @@
+allprojects {
+
+    buildscript {
+        ext {
+            bugVMVersion = '1.1.21-SNAPSHOT'
+        }
+    }
+
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = "3.1"
 }

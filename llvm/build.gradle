@@ -2,7 +2,7 @@ apply plugin: 'java'
 
 group = 'com.bugvm'
 archivesBaseName = "bugvm-llvm"
-version = '1.1.20-SNAPSHOT'
+version = "$bugVMVersion"
 
 description = """BugVM LLVM Bindings"""
 

@@ -1,8 +1,4 @@
 buildscript {
-    ext {
-        bugVMVersion = '1.1.19-SNAPSHOT'
-    }
-
     repositories {
         jcenter()
     }
@@ -20,7 +16,7 @@ apply plugin: 'signing'
 
 group = 'com.bugvm'
 archivesBaseName = "bugvm-gradle"
-version = "${bugVMVersion}"
+version = "$bugVMVersion"
 
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'

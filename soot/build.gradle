@@ -2,7 +2,7 @@ apply plugin: 'java'
 
 group = 'com.bugvm'
 archivesBaseName = "bugvm-soot"
-version = '1.1.20-SNAPSHOT'
+version = "$bugVMVersion"
 
 description = """BugVM Soot"""
 
