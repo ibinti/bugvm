@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/apple/bugvm-apple.iml" filepath="$PROJECT_DIR$/apple/bugvm-apple.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" filepath="$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/bugvm-compiler.iml" filepath="$PROJECT_DIR$/compiler/bugvm-compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/package/bugvm-dist.iml" filepath="$PROJECT_DIR$/package/bugvm-dist.iml" />
-      <module fileurl="file://$PROJECT_DIR$/idea/bugvm-idea.iml" filepath="$PROJECT_DIR$/idea/bugvm-idea.iml" />
-      <module fileurl="file://$PROJECT_DIR$/java-template/bugvm-java-template.iml" filepath="$PROJECT_DIR$/java-template/bugvm-java-template.iml" />
-      <module fileurl="file://$PROJECT_DIR$/llvm/bugvm-llvm.iml" filepath="$PROJECT_DIR$/llvm/bugvm-llvm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bugvm-parent.iml" filepath="$PROJECT_DIR$/bugvm-parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rt/bugvm-rt.iml" filepath="$PROJECT_DIR$/rt/bugvm-rt.iml" />
-      <module fileurl="file://$PROJECT_DIR$/scala-template/bugvm-scala-template.iml" filepath="$PROJECT_DIR$/scala-template/bugvm-scala-template.iml" />
-      <module fileurl="file://$PROJECT_DIR$/soot/bugvm-soot.iml" filepath="$PROJECT_DIR$/soot/bugvm-soot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/templater/bugvm-templater.iml" filepath="$PROJECT_DIR$/templater/bugvm-templater.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apple/apple.iml" filepath="$PROJECT_DIR$/.idea/modules/apple/apple.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bugvm.iml" filepath="$PROJECT_DIR$/.idea/modules/bugvm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bugvm-gradle/bugvm-gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/bugvm-gradle/bugvm-gradle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cacerts/cacerts.iml" filepath="$PROJECT_DIR$/.idea/modules/cacerts/cacerts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/compiler/compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/compiler/compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/llvm/llvm.iml" filepath="$PROJECT_DIR$/.idea/modules/llvm/llvm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/package/package.iml" filepath="$PROJECT_DIR$/.idea/modules/package/package.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rt/rt.iml" filepath="$PROJECT_DIR$/.idea/modules/rt/rt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/soot/soot.iml" filepath="$PROJECT_DIR$/.idea/modules/soot/soot.iml" />
     </modules>
   </component>
 </project>
