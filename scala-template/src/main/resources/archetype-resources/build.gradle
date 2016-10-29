@@ -8,12 +8,16 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath "com.bugvm:bugvm-gradle:${bugVMVersion}"
+        classpath "com.bugvm:bugvm-gradle:$bugVMVersion"
     }
+
 }
 
 apply plugin: 'scala'
 apply plugin: 'bugvm'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     mavenLocal()
@@ -22,8 +26,9 @@ repositories {
 }
 
 dependencies {
-    compile "com.bugvm:bugvm-rt:${bugVMVersion}"
-    compile "com.bugvm:bugvm-apple:${bugVMVersion}"
+    compile "com.bugvm:bugvm-rt:$bugVMVersion"
+    compile "com.bugvm:bugvm-apple:$bugVMVersion"
+    compile "org.scala-lang:scala-library:2.11.8"
 }
 
 task wrapper(type: Wrapper) {

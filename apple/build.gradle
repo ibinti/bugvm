@@ -4,3 +4,19 @@ description = """BugVM Apple Bindings"""
 dependencies {
     compile project(':rt')
 }
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            from components.java
+        }
+    }
+}
+publishing {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+}

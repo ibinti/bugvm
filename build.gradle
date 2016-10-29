@@ -4,11 +4,13 @@ allprojects {
         ext {
             bugVMVersion = '1.1.21-SNAPSHOT'
         }
+
     }
     group = 'com.bugvm'
     version = "$bugVMVersion"
 
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -28,3 +30,4 @@ allprojects {
     }
 
 }
+
