@@ -17,6 +17,7 @@
         <idea.home>/Applications/BugVM Studio.app/Contents/</idea.home>
     </properties>
 
+    <localRepository>~./m2/repo</localRepository>
 
     <dependencies>
         <dependency>
@@ -96,7 +97,31 @@
             <artifactId>commons-compress</artifactId>
             <version>1.5</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.bugvm</groupId>
+            <artifactId>bugvm-dist</artifactId>
+            <version>${project.version}</version>
+            <type>tar.gz</type>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.bugvm</groupId>
+                    <artifactId>bugvm-compiler</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.bugvm</groupId>
+                    <artifactId>bugvm-rt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.bugvm</groupId>
+                    <artifactId>bugvm-apple</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.bugvm</groupId>
+                    <artifactId>bugvm-cacerts</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.bugvm</groupId>
             <artifactId>bugvm-templater</artifactId>
@@ -206,7 +231,36 @@
                 </dependencies>
 
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <stripVersion>true</stripVersion>
+                    <stripClassifier>true</stripClassifier>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.bugvm</groupId>
+                            <artifactId>bugvm-dist</artifactId>
 
+                            <type>tar.gz</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>src/main/resources</outputDirectory>
+                            <!-- Intellij idea has problems with tar.gz as resources -->
+                            <destFileName>bugvm-dist</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>

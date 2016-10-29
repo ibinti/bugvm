@@ -1,5 +1,5 @@
 apply plugin: 'distribution'
-
+archivesBaseName = "bugvm-dist"
 description = """BugVM Package (tar.gz)"""
 
 dependencies {
@@ -9,7 +9,7 @@ dependencies {
 }
 
 task dist(type: Tar) {
-    baseName = "bugvm-dist"
+    baseName = archivesBaseName
 
     into ("bugvm-${version}/bin") {
         from ("../bin")
@@ -56,15 +56,31 @@ task dist(type: Tar) {
     compression = Compression.GZIP
 }
 
+//copyIdea.dependsOn dist
 //gradle package:copyIdea --rerun-tasks
-task copyIdea(type: Copy, overwrite: true) {
+task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
     from('build/distributions'){
         rename 'bugvm-(.*).tar.gz', 'bugvm-dist'
     }
 
     into '../idea/src/main/resources'
 
+    outputs.upToDateWhen { false }
 }
 
-copyIdea.dependsOn dist
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            artifact dist
+        }
+
+    }
+}
+publishing {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+}
