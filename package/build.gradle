@@ -8,8 +8,8 @@ dependencies {
     compile project(':cacerts')
 }
 
-task dist( type: Tar) {
-    baseName = "bugvm"
+task dist(type: Tar) {
+    baseName = "bugvm-dist"
 
     into ("bugvm-${version}/bin") {
         from ("../bin")
@@ -55,3 +55,16 @@ task dist( type: Tar) {
     extension = 'tar.gz'
     compression = Compression.GZIP
 }
+
+//gradle package:copyIdea --rerun-tasks
+task copyIdea(type: Copy, overwrite: true) {
+    from('build/distributions'){
+        rename 'bugvm-(.*).tar.gz', 'bugvm-dist'
+    }
+
+    into '../idea/src/main/resources'
+
+}
+
+copyIdea.dependsOn dist
+
