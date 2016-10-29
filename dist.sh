@@ -1,1 +1,1 @@
-gradle clean dist publishToMavenLocal
+./gradlew clean dist publishToMavenLocal
