@@ -15,11 +15,8 @@
  */
 package com.bugvm.rt;
 
-//import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,9 +24,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import libcore.util.EmptyArray;
 
@@ -69,37 +63,12 @@ public final class VM {
      */
     public static native String[] staticLibs();
 
-    private static Map<Object, Object> getManifestAttributes(File jarFile) throws IOException {
-        JarFile jf = null;
-        try {
-            jf = new JarFile(jarFile);
-            return new HashMap<Object, Object>(jf.getManifest().getMainAttributes());
-        } finally {
-            jf.close();
-        }
-    }
-
-    public static String getImplementationVersion(File jarFile) throws IOException {
-        return (String) getManifestAttributes(jarFile).get(Attributes.Name.IMPLEMENTATION_VERSION);
-    }
-
     /**
      * Returns the VM's version.
      */
     public static String vmVersion() {
 
-        String vmVersion = "0.0.0";
-        if (System.getenv("BUGVM_HOME") != null) {
-            File homeDir = new File(System.getenv("BUGVM_HOME"));
-            File rtPath = new File(homeDir, "lib/bugvm-rt.jar");
-            try {
-                vmVersion = getImplementationVersion(rtPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return  vmVersion;
+        return VMVersion.VERSION;
 
     }
 

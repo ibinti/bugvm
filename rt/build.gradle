@@ -36,7 +36,6 @@ sourceSets {
 jar {
      manifest {
           attributes "Implementation-Version" : project.version
-          attributes 'vm-version': '1.0.0'
      }
 }
 
