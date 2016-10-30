@@ -5,11 +5,11 @@
   <parent>
     <groupId>com.bugvm</groupId>
     <artifactId>bugvm-parent</artifactId>
-    <version>1.1.25-SNAPSHOT</version>
+    <version>1.1.10-SNAPSHOT</version>
   </parent>
 
-  <artifactId>bugvm-java-template</artifactId>
-  <name>BugVM java-template</name>
+  <artifactId>bugvm-scala-template</artifactId>
+  <name>BugVM scala-template</name>
   <packaging>maven-archetype</packaging>
 
   <build>

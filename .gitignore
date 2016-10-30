@@ -42,5 +42,5 @@ templater/src/main/resources/templates/bugvm-java-template.tar.gz
 templater/src/main/resources/templates/bugvm-scala-template.tar.gz
 .idea/workspace.xml
 .DS_Store
-
+build
 local.properties

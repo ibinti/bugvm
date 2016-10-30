@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <excludeFromCompile>
-      <directory url="file://$PROJECT_DIR$/scala-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
-      <directory url="file://$PROJECT_DIR$/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugin/scala-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugin/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>

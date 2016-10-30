@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.bugvm</groupId>
         <artifactId>bugvm-parent</artifactId>
-        <version>1.1.25-SNAPSHOT</version>
+        <version>1.1.10-SNAPSHOT</version>
     </parent>
 
     <groupId>com.bugvm</groupId>
@@ -229,36 +229,7 @@
                 </dependencies>
 
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <stripVersion>true</stripVersion>
-                    <stripClassifier>true</stripClassifier>
-                    <artifactItems>
-                        <artifactItem>
-                            <groupId>com.bugvm</groupId>
-                            <artifactId>bugvm-dist</artifactId>
 
-                            <type>tar.gz</type>
-                            <overWrite>true</overWrite>
-                            <outputDirectory>src/main/resources</outputDirectory>
-                            <!-- Intellij idea has problems with tar.gz as resources -->
-                            <destFileName>bugvm-dist</destFileName>
-                        </artifactItem>
-                    </artifactItems>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
 
     </build>

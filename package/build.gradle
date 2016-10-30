@@ -1,5 +1,5 @@
 apply plugin: 'distribution'
-archivesBaseName = "bugvm-dist"
+archivesBaseName = "bugvm"
 description = """BugVM Package (tar.gz)"""
 
 dependencies {
@@ -114,7 +114,7 @@ task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
         rename 'bugvm-(.*).tar.gz', 'bugvm-dist'
     }
 
-    into '../idea/src/main/resources'
+    into '../plugin/idea/src/main/resources'
 
     outputs.upToDateWhen { false }
 }
