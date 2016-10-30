@@ -100,6 +100,14 @@ task devvm(type: Copy, overwrite: true) {
     outputs.upToDateWhen { false }
 }
 
+task env << {
+
+    ["bash", "-c", """echo 'export BUGVM_VERSION="$bugVMVersion"' > bash_profile.txt"""].execute();
+    ["bash", "-c", """tail -n +2 ~/.bash_profile | cat >> bash_profile.txt"""].execute();
+    ["bash", "-c", """mv -f bash_profile.txt  ~/.bash_profile"""].execute();
+
+}
+
 task dev  {
 
     println 'copying dev binaries'

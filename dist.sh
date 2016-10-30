@@ -1,4 +1,4 @@
-./gradlew clean build dist dev publishToMavenLocal
+./gradlew clean build dist dev env publishToMavenLocal
 ./gradlew copyIdea
 cd plugin
 mvn clean install
