@@ -3,11 +3,11 @@ buildscript {
           jcenter()
      }
      dependencies {
-          classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+          classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
      }
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "com.github.johnrengelman.shadow"
 
 archivesBaseName = "bugvm-rt"
 description = """BugVM Runtime Library"""
@@ -33,21 +33,12 @@ sourceSets {
 
 }
 
-
-jar.doFirst{
+jar {
      manifest {
           attributes "Implementation-Version" : project.version
           attributes 'vm-version': '1.0.0'
      }
 }
-
-task jarSources(type:Jar){
-     from sourceSets.main.getAllSource()
-     classifier = 'source'
-}
-
-jar.dependsOn jarSources
-
 
 publishing {
      publications {
@@ -64,8 +55,5 @@ publishing {
                url 'https://oss.sonatype.org/content/repositories/snapshots'
           }
 
-
      }
-
 }
-

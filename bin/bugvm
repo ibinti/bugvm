@@ -6,7 +6,7 @@ if [ -f "$COMPILER_JAR" ]; then
     export BUGVM_HOME="$BASE"
 else
     if [ "x$BUGVM_DEV_ROOT" != 'x' ]; then
-        COMPILER_JAR=$(ls "$BUGVM_DEV_ROOT"/../bugvm-dist/compiler/target/bugvm-compiler*.jar | egrep -v 'javadoc|sources' 2> /dev/null)
+        COMPILER_JAR=$(ls "$BUGVM_DEV_ROOT"/compiler/build/libs/bugvm-compiler*.jar | egrep -v 'javadoc|sources' 2> /dev/null)
     fi
 fi
 if [ ! -f "$COMPILER_JAR" ]; then
