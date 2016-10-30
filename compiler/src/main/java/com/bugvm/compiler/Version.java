@@ -31,6 +31,8 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import static com.bugvm.compiler.config.Config.getImplementationVersion;
+
 public class Version {
 
     /**
@@ -41,33 +43,18 @@ public class Version {
      */
     public static String getVersion() {
 
-         File compilerPath = Config.Home.find().getCompilerPath();
-        String compilerVersion = null;
-
-        try {
-            compilerVersion = Config.getImplementationVersion(compilerPath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        String compilerVersion = "0.0.0";
+        if (System.getenv("BUGVM_HOME") != null) {
+            File homeDir = new File(System.getenv("BUGVM_HOME"));
+            File rtPath = new File(homeDir, "lib/bugvm-compiler.jar");
+            try {
+                compilerVersion = getImplementationVersion(rtPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        return compilerVersion;
-
-//        InputStream is = null;
-//        try {
-//            is = Version.class.getResourceAsStream("/META-INF/MANIFEST.MF");
-//
-//            Manifest mf = new Manifest();
-//            mf.read(is);
-//
-//            Map<Object, Object> attrs = new HashMap<Object, Object>(mf.getMainAttributes());
-//
-//            return attrs.get("bugvm-version").toString();
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } finally {
-//            IOUtils.closeQuietly(is);
-//        }
+        return  compilerVersion;
 
     }
     

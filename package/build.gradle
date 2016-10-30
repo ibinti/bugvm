@@ -54,6 +54,57 @@ task dist(type: Tar) {
 
     extension = 'tar.gz'
     compression = Compression.GZIP
+
+    outputs.upToDateWhen { false }
+}
+
+task devbin(type: Copy, overwrite: true) {
+
+    println 'copying bin binaries'
+
+    from('../bin')
+    into "/Users/yy/.bugvm-sdks/bugvm-${version}/bin"
+
+    outputs.upToDateWhen { false }
+}
+
+task devlib(type: Copy, overwrite: true) {
+
+    println 'copying lib binaries'
+
+    from('../compiler/build/libs') {
+        rename 'bugvm-compiler(.*).jar', 'bugvm-compiler.jar'
+    }
+    from('../rt/build/libs') {
+        rename 'bugvm-rt(.*).jar', 'bugvm-rt.jar'
+    }
+    from('../apple/build/libs') {
+        rename 'bugvm-apple(.*).jar', 'bugvm-apple.jar'
+    }
+    from('../cacerts/build/libs') {
+        rename 'bugvm-cacerts(.*).jar', 'bugvm-cacerts.jar'
+    }
+
+    into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib"
+
+    outputs.upToDateWhen { false }
+}
+
+task devvm(type: Copy, overwrite: true) {
+
+    println 'copying vm binaries'
+
+    from('../vm/target/binaries')
+    into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib/vm"
+
+    outputs.upToDateWhen { false }
+}
+
+task dev  {
+
+    println 'copying dev binaries'
+    dependsOn devbin, devlib, devvm
+
 }
 
 //copyIdea.dependsOn dist
@@ -68,7 +119,6 @@ task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
     outputs.upToDateWhen { false }
 }
 
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -76,9 +126,9 @@ publishing {
 
             artifact dist
         }
-
     }
 }
+
 publishing {
     repositories {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }

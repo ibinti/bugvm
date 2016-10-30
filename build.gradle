@@ -2,7 +2,7 @@ allprojects {
 
     buildscript {
         ext {
-            bugVMVersion = '1.1.22-SNAPSHOT'
+            bugVMVersion = '1.1.24-SNAPSHOT'
         }
 
     }
