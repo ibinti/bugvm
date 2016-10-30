@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.bugvm</groupId>
         <artifactId>bugvm-parent</artifactId>
-        <version>1.1.22-SNAPSHOT</version>
+        <version>1.1.25-SNAPSHOT</version>
     </parent>
 
     <groupId>com.bugvm</groupId>
@@ -16,8 +16,6 @@
         <ij.plugin>true</ij.plugin>
         <idea.home>/Applications/BugVM Studio.app/Contents/</idea.home>
     </properties>
-
-    <localRepository>~./m2/repo</localRepository>
 
     <dependencies>
         <dependency>
