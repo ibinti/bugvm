@@ -16,7 +16,7 @@
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>true</unpack>
             <excludes>
-                <exclude>com.bugvm:bugvm-dist</exclude>
+                <exclude>com.bugvm:bugvm</exclude>
             </excludes>
         </dependencySet>
         <dependencySet>
@@ -24,7 +24,7 @@
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>false</unpack>
             <includes>
-                <include>com.bugvm:bugvm-dist</include>
+                <include>com.bugvm:bugvm</include>
             </includes>
         </dependencySet>
     </dependencySets>

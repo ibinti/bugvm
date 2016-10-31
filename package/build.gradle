@@ -9,7 +9,6 @@ dependencies {
 }
 
 task dist(type: Tar) {
-    baseName = archivesBaseName
 
     into ("bugvm-${version}/bin") {
         from ("../bin")
@@ -119,7 +118,7 @@ task dev  {
 //gradle package:copyIdea --rerun-tasks
 task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
     from('build/distributions'){
-        rename 'bugvm-(.*).tar.gz', 'bugvm-dist'
+        rename 'bugvm-(.*).tar.gz', 'bugvm'
     }
 
     into '../plugin/idea/src/main/resources'

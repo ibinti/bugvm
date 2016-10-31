@@ -377,7 +377,7 @@ public class BugVmPlugin {
                 throw new RuntimeException("Couldn't create sdk dir in " + sdkHome.getAbsolutePath());
             }
         }
-        extractArchive("bugvm-dist", sdkHome);
+        extractArchive("bugvm", sdkHome);
 
         // create an SDK if it doesn't exist yet
         BugVmSdkType.createSdkIfNotExists();

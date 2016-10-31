@@ -39,7 +39,7 @@ public class XcodeSetupDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("BugVM Setup");
-        infoText.setText("<html>BugVM requires Xcode 7 or higher.<br><br>" +
+        infoText.setText("<html>BugVM requires Xcode 8 or higher.<br><br>" +
                 "Once installed <ol><li>Open Xcode</li><li>Agree to the TOS.</li><li>Agree to install the command line " +
                 "tools</li></ol><br>" +
                 "<strong>Note</strong>: to deploy to a device, you will need to signup for an <strong>Apple Developer Account</strong> " +
