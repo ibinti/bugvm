@@ -2,7 +2,7 @@ allprojects {
 
     buildscript {
         ext {
-            bugVMVersion = '1.1.28-SNAPSHOT'
+            bugVMVersion = '1.1.32-SNAPSHOT'
         }
 
     }
@@ -30,3 +30,10 @@ allprojects {
     }
 
 }
+
+task newMvn(type:Exec) {
+    workingDir 'plugin'
+
+    commandLine "bash", "-c", """mvn versions:set -DnewVersion=$bugVMVersion -DgenerateBackupPoms=false"""
+}
+

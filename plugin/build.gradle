@@ -1,0 +1,7 @@
+description = """Plugin"""
+
+task runMvn(type:Exec) {
+
+    commandLine "bash", "-c", """mvn clean install"""
+
+}

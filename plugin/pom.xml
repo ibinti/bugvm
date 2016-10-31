@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.bugvm</groupId>
-  <version>1.1.10-SNAPSHOT</version>
+  <version>1.1.32-SNAPSHOT</version>
   <artifactId>bugvm-parent</artifactId>
   <packaging>pom</packaging>
 
