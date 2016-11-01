@@ -59,7 +59,7 @@ task dist(type: Tar) {
 
 task devbin(type: Copy, overwrite: true) {
 
-    println 'copying bin binaries'
+//    println 'copying bin binaries'
 
     from('../bin')
     into "/Users/yy/.bugvm-sdks/bugvm-${version}/bin"
@@ -69,7 +69,7 @@ task devbin(type: Copy, overwrite: true) {
 
 task devlib(type: Copy, overwrite: true) {
 
-    println 'copying lib binaries'
+//    println 'copying lib binaries'
 
     from('../compiler/build/libs') {
         rename 'bugvm-compiler(.*).jar', 'bugvm-compiler.jar'
@@ -91,7 +91,7 @@ task devlib(type: Copy, overwrite: true) {
 
 task devvm(type: Copy, overwrite: true) {
 
-    println 'copying vm binaries'
+//    println 'copying vm binaries'
 
     from('../vm/target/binaries')
     into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib/vm"
@@ -109,7 +109,7 @@ task env << {
 
 task dev  {
 
-    println 'copying dev binaries'
+//    println 'copying dev binaries'
     dependsOn devbin, devlib, devvm
 
 }

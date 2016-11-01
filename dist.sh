@@ -1,4 +1,2 @@
-./gradlew clean build dist dev env publishToMavenLocal
-./gradlew copyIdea
-./gradlew newMvn
-./gradlew runMvn
+#!/usr/bin/env bash
+./gradlew clean build dist dev env publishToMavenLocal copyIdea newMvn runMvn
