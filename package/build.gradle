@@ -121,7 +121,7 @@ task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
         rename 'bugvm-(.*).tar.gz', 'bugvm'
     }
 
-    into '../plugin/idea/src/main/resources'
+    into '../plugin-idea/idea/src/main/resources'
 
     outputs.upToDateWhen { false }
 }
