@@ -35,7 +35,7 @@
         </includes>
       </resource>
       <resource>
-        <directory>bugvm/src/filtered-java/</directory>
+        <directory>src/filtered-java/</directory>
         <targetPath>${project.build.directory}/generated-sources/filtered-java</targetPath>
         <filtering>true</filtering>
         <includes>
@@ -69,7 +69,7 @@
             <configuration>
               <sources>
                 <source>${project.build.directory}/generated-sources/filtered-java</source>
-                <source>bugvm/src/main/java</source>
+                <source>src/main/java</source>
                 <source>libcore/crypto/src/main/java</source>
                 <source>libcore/dalvik/src/main/java</source>
                 <source>libcore/json/src/main/java</source>

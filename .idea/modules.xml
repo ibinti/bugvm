@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bugvm.iml" filepath="$PROJECT_DIR$/.idea/modules/bugvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/apple/bugvm-apple.iml" filepath="$PROJECT_DIR$/apple/bugvm-apple.iml" />
       <module fileurl="file://$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" filepath="$PROJECT_DIR$/cacerts/bugvm-cacerts.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/bugvm-compiler.iml" filepath="$PROJECT_DIR$/compiler/bugvm-compiler.iml" />
