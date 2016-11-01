@@ -1,1 +1,1 @@
-include 'soot', 'rt', 'llvm', 'compiler', 'apple', 'cacerts', 'package', 'bugvm-gradle', 'plugin'
+include 'soot', 'rt', 'llvm', 'compiler', 'apple', 'cacerts', 'package', 'plugin-gradle', 'plugin-idea'

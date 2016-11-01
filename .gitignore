@@ -6,7 +6,7 @@ a.out
 .idea/
 .gradle
 deploy
-/plugin/target/
+/plugin-idea/target/
 /target/
 /soot/target/
 /llvm/target.llvm/

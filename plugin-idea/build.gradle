@@ -1,4 +1,4 @@
-description = """Plugin"""
+description = """BugVM IDEA Plugin"""
 
 task runMvn(type:Exec) {
 

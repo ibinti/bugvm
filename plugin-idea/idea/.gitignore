@@ -2,4 +2,4 @@
 target
 .idea/
 bugvm-idea.iml
-src/main/resources/bugvm-dist
+/src/main/resources/bugvm
