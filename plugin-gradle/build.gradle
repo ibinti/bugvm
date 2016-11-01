@@ -1,4 +1,5 @@
 buildscript {
+
     repositories {
         jcenter()
     }
@@ -58,11 +59,10 @@ modifyPom {
     }
 }
 
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId project.archivesBaseName
+            artifactId archivesBaseName
 
             from components.java
         }
@@ -72,6 +72,7 @@ publishing {
 
     }
 }
+
 /*
 gradle -Pbugvm.arch=x86_64 -Pbugvm.device.name=iPhone-5s launchIPhoneSimulator
  */

@@ -431,10 +431,13 @@ public class BugVmPlugin {
 
             // make all files in bin executable
             for (File file : new File(getSdkHome(), "bin").listFiles()) {
+
                 file.setExecutable(true);
+
             }
         } catch (Throwable t) {
             logError(null, "Couldn't extract SDK to %s", dest.getAbsolutePath());
+
             throw new RuntimeException("Couldn't extract SDK to " + dest.getAbsolutePath(), t);
         } finally {
             IOUtils.closeQuietly(in);
