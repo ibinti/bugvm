@@ -4,8 +4,8 @@
 
   <parent>
     <groupId>com.bugvm</groupId>
-    <artifactId>bugvm-parent</artifactId>
-    <version>1.1.37-SNAPSHOT</version>
+    <artifactId>plugin-idea</artifactId>
+    <version>1.1.19-SNAPSHOT</version>
   </parent>
 
   <artifactId>bugvm-java-template</artifactId>

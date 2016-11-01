@@ -72,3 +72,6 @@ publishing {
 
     }
 }
+/*
+gradle -Pbugvm.arch=x86_64 -Pbugvm.device.name=iPhone-5s launchIPhoneSimulator
+ */
