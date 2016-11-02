@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.bugvm</groupId>
-  <version>1.1.28-SNAPSHOT</version>
+  <version>1.1.30-SNAPSHOT</version>
   <artifactId>plugin-idea</artifactId>
   <packaging>pom</packaging>
 

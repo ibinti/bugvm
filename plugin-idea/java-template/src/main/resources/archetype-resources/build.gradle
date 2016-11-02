@@ -3,12 +3,11 @@ buildscript {
         bugVMVersion = "__bugvmVersion__"
     }
     repositories {
-        mavenLocal()
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath "com.bugvm:bugvm-gradle:${bugVMVersion}"
+        classpath "com.bugvm:bugvm-gradle:$bugVMVersion"
     }
 }
 
@@ -19,14 +18,13 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
-    compile "com.bugvm:bugvm-rt:${bugVMVersion}"
-    compile "com.bugvm:bugvm-apple:${bugVMVersion}"
+    compile "com.bugvm:bugvm-rt:$bugVMVersion"
+    compile "com.bugvm:bugvm-apple:$bugVMVersion"
 }
 
 task wrapper(type: Wrapper) {

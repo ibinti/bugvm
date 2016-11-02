@@ -1,6 +1,6 @@
 description = """BugVM IDEA Plugin"""
 
-task runMvn(type:Exec) {
+task idea(type:Exec, dependsOn: 'newMvn') {
 
     commandLine "bash", "-c", """mvn clean install"""
 
