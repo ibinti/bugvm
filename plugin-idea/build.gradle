@@ -5,3 +5,9 @@ task runMvn(type:Exec) {
     commandLine "bash", "-c", """mvn clean install"""
 
 }
+
+task newMvn(type:Exec) {
+//    workingDir 'plugin-idea'
+
+    commandLine "bash", "-c", """mvn versions:set -DnewVersion=$bugVMVersion -DgenerateBackupPoms=false"""
+}

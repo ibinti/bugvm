@@ -2,12 +2,12 @@ allprojects {
 
     buildscript {
         ext {
-            bugVMVersion = '1.1.27-SNAPSHOT'
+            bugVMVersion = '1.1.29-SNAPSHOT'
         }
 
     }
     group = 'com.bugvm'
-    version = "$bugVMVersion"
+    version = bugVMVersion
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -29,10 +29,4 @@ allprojects {
         gradleVersion = "3.1"
     }
 
-}
-
-task newMvn(type:Exec) {
-    workingDir 'plugin-idea'
-
-    commandLine "bash", "-c", """mvn versions:set -DnewVersion=$bugVMVersion -DgenerateBackupPoms=false"""
 }
