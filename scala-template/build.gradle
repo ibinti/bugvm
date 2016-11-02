@@ -1,0 +1,15 @@
+apply plugin: 'distribution'
+archivesBaseName = "scala-template"
+description = """bugvm-scala-template (tar.gz)"""
+
+task dist(type: Tar) {
+
+    into ("bugvm-scala-template") {
+        from ("src/main/resources/archetype-resources")
+    }
+
+    extension = 'tar.gz'
+    compression = Compression.GZIP
+
+    outputs.upToDateWhen { false }
+}

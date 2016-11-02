@@ -1,0 +1,22 @@
+archivesBaseName = "bugvm-templater"
+description = """BugVM Template Generator"""
+
+//dependencies {
+//    compile project(':java-template')
+//    compile project(':scala-template')
+//}
+
+task template(type: Copy, overwrite: true) {
+
+    from('../java-template/build/distributions') {
+        rename 'bugvm-java-template(.*).tar.gz', 'bugvm-java-template.tar.gz'
+    }
+    from('../scala-template/build/distributions') {
+        rename 'bugvm-scala-template(.*).tar.gz', 'bugvm-scala-template.tar.gz'
+    }
+    into "src/main/resources/templates"
+
+    outputs.upToDateWhen { false }
+
+    dependsOn java-template, scala-template
+}

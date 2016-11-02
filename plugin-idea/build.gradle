@@ -1,13 +1,31 @@
+archivesBaseName = "bugvm-idea"
 description = """BugVM IDEA Plugin"""
 
-task idea(type:Exec, dependsOn: 'newMvn') {
+sourceSets {
 
-    commandLine "bash", "-c", """mvn clean install"""
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
 
 }
 
-task newMvn(type:Exec) {
-//    workingDir 'plugin-idea'
 
-    commandLine "bash", "-c", """mvn versions:set -DnewVersion=$bugVMVersion -DgenerateBackupPoms=false"""
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            from components.java
+        }
+    }
+}
+publishing {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
 }

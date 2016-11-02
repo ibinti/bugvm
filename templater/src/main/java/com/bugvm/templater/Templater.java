@@ -37,15 +37,14 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 /**
- * The RoboVM {@code Templater} generates a new RoboVM project from a template.
+ * The BugVM {@code Templater} generates a new BugVM project from a template.
  *
  * @author BlueRiver Interactive
  */
 public class Templater {
     private static final String PACKAGE_FOLDER_PLACEHOLDER = "__packageInPathFormat__";
     private static final String MAIN_CLASS_FILE_PLACEHOLDER = "__mainClass__";
-    private static final Set<String> SUBSTITUTED_PLACEHOLDER_FILES_EXTENSIONS = new HashSet<>(Arrays.asList("xml",
-            "java","scala"));
+    private static final Set<String> SUBSTITUTED_PLACEHOLDER_FILES_EXTENSIONS = new HashSet<>(Arrays.asList("xml","java","scala"));
     private static final String DOLLAR_SYMBOL_PLACEHOLDER = Pattern.quote("${symbol_dollar}");
     private static final String PACKAGE_PLACEHOLDER = Pattern.quote("${package}");
     private static final String MAIN_CLASS_PLACEHOLDER = Pattern.quote("${mainClass}");

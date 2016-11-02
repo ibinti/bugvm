@@ -1,0 +1,15 @@
+apply plugin: 'distribution'
+archivesBaseName = "java-template"
+description = """bugvm-java-template (tar.gz)"""
+
+task dist(type: Tar) {
+
+    into ("bugvm-java-template") {
+        from ("src/main/resources/archetype-resources")
+    }
+
+    extension = 'tar.gz'
+    compression = Compression.GZIP
+
+    outputs.upToDateWhen { false }
+}
