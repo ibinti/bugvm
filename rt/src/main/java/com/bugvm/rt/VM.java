@@ -15,12 +15,15 @@
  */
 package com.bugvm.rt;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
+import java.util.Map;
 
 import libcore.util.EmptyArray;
 
@@ -64,7 +67,9 @@ public final class VM {
      * Returns the VM's version.
      */
     public static String vmVersion() {
+
         return VMVersion.VERSION;
+
     }
 
     /**

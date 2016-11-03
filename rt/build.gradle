@@ -1,24 +1,20 @@
-group = 'com.bugvm'
-version = '1.1.19-SNAPSHOT'
-
-description = """BugVM Runtime Library"""
-
 buildscript {
      repositories {
           jcenter()
      }
      dependencies {
-          classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+          classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
      }
 }
 
-apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "com.github.johnrengelman.shadow"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-tasks.withType(JavaCompile) {
-     options.encoding = 'UTF-8'
+archivesBaseName = "bugvm-rt"
+description = """BugVM Runtime Library"""
+
+dependencies {
+     compile "commons-io:commons-io:2.4"
+     compile gradleApi()
 }
 
 sourceSets {
@@ -37,16 +33,26 @@ sourceSets {
 
 }
 
-
-jar.doFirst{
+jar {
      manifest {
-          attributes("Manifest-Version" : "1.0", "Implementation-Version" : project.version)
+          attributes "Implementation-Version" : project.version
      }
 }
 
-task jarSources(type:Jar){
-     from sourceSets.main.getAllSource()
-     classifier = 'source'
-}
+publishing {
+     publications {
+          mavenJava(MavenPublication) {
+               artifactId project.archivesBaseName
 
-jar.dependsOn jarSources
+               from components.java
+          }
+     }
+
+     repositories {
+
+          maven {
+               url 'https://oss.sonatype.org/content/repositories/snapshots'
+          }
+
+     }
+}

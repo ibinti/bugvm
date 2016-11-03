@@ -1,0 +1,143 @@
+apply plugin: 'distribution'
+archivesBaseName = "bugvm"
+description = """BugVM Package (tar.gz)"""
+
+dependencies {
+    compile project(':compiler')
+    compile project(':apple')
+    compile project(':cacerts')
+}
+
+task dist(type: Tar) {
+
+    into ("bugvm-${version}/bin") {
+        from ("../bin")
+    }
+
+    into("bugvm-${version}/lib") {
+        from  "../compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
+        from("../rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
+        from("../apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
+        from("../cacerts/build/libs/bugvm-cacerts-${version}.jar") rename { String fileName -> fileName.replace("bugvm-cacerts-${version}.jar", "bugvm-cacerts.jar") }
+
+    }
+
+    into ("bugvm-${version}/lib/vm") {
+        from ("../vm/target/binaries")
+    }
+
+    into ("bugvm-${version}/modules/licenses/apple") {
+        from ("../apple/NOTICE.txt")
+        from ("../apple/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/llvm") {
+        from ("../llvm/NOTICE.txt")
+        from ("../llvm/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/rt") {
+        from ("../rt/NOTICE.txt")
+        from ("../rt/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/compiler") {
+        from ("../compiler/NOTICE.txt")
+        from ("../compiler/LICENSE.txt")
+    }
+
+    into ("bugvm-${version}/modules/licenses/vm") {
+        from ("../vm/NOTICE.txt")
+        from ("../vm/LICENSE.txt")
+    }
+
+    extension = 'tar.gz'
+    compression = Compression.GZIP
+
+    outputs.upToDateWhen { false }
+}
+
+task devbin(type: Copy, overwrite: true) {
+
+//    println 'copying bin binaries'
+
+    from('../bin')
+    into "/Users/yy/.bugvm-sdks/bugvm-${version}/bin"
+
+    outputs.upToDateWhen { false }
+}
+
+task devlib(type: Copy, overwrite: true) {
+
+//    println 'copying lib binaries'
+
+    from('../compiler/build/libs') {
+        rename 'bugvm-compiler(.*).jar', 'bugvm-compiler.jar'
+    }
+    from('../rt/build/libs') {
+        rename 'bugvm-rt(.*).jar', 'bugvm-rt.jar'
+    }
+    from('../apple/build/libs') {
+        rename 'bugvm-apple(.*).jar', 'bugvm-apple.jar'
+    }
+    from('../cacerts/build/libs') {
+        rename 'bugvm-cacerts(.*).jar', 'bugvm-cacerts.jar'
+    }
+
+    into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib"
+
+    outputs.upToDateWhen { false }
+}
+
+task devvm(type: Copy, overwrite: true) {
+
+//    println 'copying vm binaries'
+
+    from('../vm/target/binaries')
+    into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib/vm"
+
+    outputs.upToDateWhen { false }
+}
+
+task env << {
+
+    ["bash", "-c", """echo 'export BUGVM_VERSION="$bugVMVersion"' > bash_profile.txt"""].execute();
+    ["bash", "-c", """tail -n +2 ~/.bash_profile | cat >> bash_profile.txt"""].execute();
+    ["bash", "-c", """mv -f bash_profile.txt  ~/.bash_profile"""].execute();
+
+}
+
+task dev  {
+
+//    println 'copying dev binaries'
+    dependsOn devbin, devlib, devvm
+
+}
+
+//copyIdea.dependsOn dist
+//gradle package:copyIdea --rerun-tasks
+task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
+    from('build/distributions'){
+        rename 'bugvm-(.*).tar.gz', 'bugvm-dist'
+    }
+
+    into '../plugin-idea/src/main/resources'
+
+    outputs.upToDateWhen { false }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            artifact dist
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+}

@@ -1,12 +1,5 @@
-apply plugin: 'java'
-
-group = 'com.bugvm'
-version = '1.1.19-SNAPSHOT'
-
+archivesBaseName = "bugvm-soot"
 description = """BugVM Soot"""
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 sourceSets {
 
@@ -17,4 +10,19 @@ sourceSets {
           }
      }
 
+}
+
+publishing {
+     publications {
+          mavenJava(MavenPublication) {
+               artifactId project.archivesBaseName
+
+               from components.java
+          }
+     }
+}
+publishing {
+     repositories {
+          maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+     }
 }

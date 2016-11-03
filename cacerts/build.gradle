@@ -1,0 +1,12 @@
+archivesBaseName = "bugvm-cacerts"
+description = """BugVM cacerts"""
+
+sourceSets {
+
+    main {
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+
+}

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <excludeFromCompile>
-      <directory url="file://$PROJECT_DIR$/scala-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
-      <directory url="file://$PROJECT_DIR$/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugin/scala-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/plugin/java-template/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
@@ -26,28 +26,24 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-scala-template" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-java-template" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-java-template" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-idea" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-idea" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-templater" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-templater" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-maven-resolver" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -66,14 +62,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-rt" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-soot" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-soot" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-libimobiledevice" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -87,7 +81,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-llvm" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-dist-compiler" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -100,7 +93,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-compiler" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-objc" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -113,7 +105,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-cacerts" />
       </profile>
       <profile default="false" name="Annotation profile for bugvm-cocoatouch" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -127,7 +118,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="bugvm-apple" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

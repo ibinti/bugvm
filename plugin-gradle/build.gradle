@@ -1,0 +1,74 @@
+buildscript {
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7.1'
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'nexus'
+apply plugin: 'signing'
+
+archivesBaseName = "bugvm-gradle"
+description = """BugVM Gradle Plugin"""
+
+dependencies {
+    compile project(':compiler')
+
+    compile gradleApi()
+    compile localGroovy()
+    compile "org.apache.commons:commons-compress:1.5"
+    compile 'org.sonatype.aether:aether:1.13.1'
+    compile 'org.sonatype.aether:aether-connector-wagon:1.13.1'
+    compile 'org.apache.maven:maven-aether-provider:3.0.4'
+    compile 'org.apache.maven.wagon:wagon-provider-api:2.4'
+    compile 'org.apache.maven.wagon:wagon-http:2.4'
+}
+
+modifyPom {
+    project {
+        name 'bugvm-gradle'
+        description 'bugvm gradle plugin'
+        url 'https://bugvm.com'
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+
+        scm {
+           url 'https://github.com/bugvm/bugvm.git'
+           connection 'scm:git:git://github.com/bugvm/bugvm.git'
+        }
+
+        developers {
+           developer {
+               id 'bugvm'
+               name 'The Bug'
+               email 'bug@bugvm.com'
+               url 'https://bugvm.com'
+           }
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId archivesBaseName
+
+            from components.java
+        }
+    }
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+
+    }
+}
