@@ -45,3 +45,5 @@ templater/src/main/resources/templates/bugvm-scala-template.tar.gz
 .DS_Store
 build
 local.properties
+
+*.hprof
