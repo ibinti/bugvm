@@ -23,8 +23,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin-gradle/plugin-gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin-gradle/plugin-gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rt/rt.iml" filepath="$PROJECT_DIR$/.idea/modules/rt/rt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/soot/soot.iml" filepath="$PROJECT_DIR$/.idea/modules/soot/soot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-template/template-java.iml" filepath="$PROJECT_DIR$/.idea/modules/java-template/template-java.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-template/template-scala.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-template/template-scala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/template-java/template-java.iml" filepath="$PROJECT_DIR$/.idea/modules/template-java/template-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/template-scala/template-scala.iml" filepath="$PROJECT_DIR$/.idea/modules/template-scala/template-scala.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/templater/templater.iml" filepath="$PROJECT_DIR$/.idea/modules/templater/templater.iml" />
     </modules>
   </component>

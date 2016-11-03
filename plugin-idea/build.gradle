@@ -1,8 +1,6 @@
 description = """BugVM IDEA"""
 
 def ideahome = "/Applications/BugVM Studio.app/Contents"
-//def ideahome = "/Users/yy/GitHub/intellij-community"
-def javahome = "/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home"
 
 dependencies {
     compile project(':compiler')
@@ -20,10 +18,4 @@ dependencies {
 //    compile files("$ideahome/lib/slf4j-api-1.7.10.jar")
 //    compile files("$ideahome/lib/slf4j-log4j12-1.7.10.jar")
     compile fileTree(dir: "$ideahome", include: "**/*.jar")
-//    compile group: 'com.intellij', name: 'openapi', version: '6.0.5'
-
-
-    compile files("$javahome/lib/tools.jar")
-
-
 }
