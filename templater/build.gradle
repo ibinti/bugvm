@@ -1,22 +1,22 @@
 archivesBaseName = "bugvm-templater"
 description = """BugVM Template Generator"""
 
-//dependencies {
-//    compile project(':java-template')
-//    compile project(':scala-template')
-//}
+dependencies {
+    compile "commons-io:commons-io:2.4"
+    compile group: 'org.apache.commons', name: 'commons-compress', version:'1.5'
+}
 
 task template(type: Copy, overwrite: true) {
 
     from('../java-template/build/distributions') {
-        rename 'bugvm-java-template(.*).tar.gz', 'bugvm-java-template.tar.gz'
+        rename 'java-template(.*).tar.gz', 'java-template.tar.gz'
     }
     from('../scala-template/build/distributions') {
-        rename 'bugvm-scala-template(.*).tar.gz', 'bugvm-scala-template.tar.gz'
+        rename 'scala-template(.*).tar.gz', 'scala-template.tar.gz'
     }
     into "src/main/resources/templates"
 
     outputs.upToDateWhen { false }
 
-    dependsOn java-template, scala-template
+    dependsOn ':scala-template:dist', ':java-template:dist'
 }

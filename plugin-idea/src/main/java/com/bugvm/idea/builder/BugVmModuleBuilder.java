@@ -191,7 +191,9 @@ public class BugVmModuleBuilder extends JavaModuleBuilder {
             if (buildSystem == BuildSystem.Gradle) {
                 final File buildFile = new File(project.getBasePath() + "/" + bugvmDir + "/build.gradle");
                 if (buildFile.exists()) {
+
                     String template = FileUtils.readFileToString(buildFile, StandardCharsets.UTF_8);
+
                     template = template.replaceAll(BUGVM_VERSION_PLACEHOLDER, Version.getVersion());
                     FileUtils.write(buildFile, template);
                 } else {

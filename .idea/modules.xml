@@ -18,12 +18,15 @@
       <module fileurl="file://$PROJECT_DIR$/templater/bugvm-templater.iml" filepath="$PROJECT_DIR$/templater/bugvm-templater.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cacerts/cacerts.iml" filepath="$PROJECT_DIR$/.idea/modules/cacerts/cacerts.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/compiler/compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/compiler/compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-template/java-template.iml" filepath="$PROJECT_DIR$/.idea/modules/java-template/java-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/llvm/llvm.iml" filepath="$PROJECT_DIR$/.idea/modules/llvm/llvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/package/package.iml" filepath="$PROJECT_DIR$/.idea/modules/package/package.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin-gradle/plugin-gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin-gradle/plugin-gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin-idea/plugin-idea.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin-idea/plugin-idea.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rt/rt.iml" filepath="$PROJECT_DIR$/.idea/modules/rt/rt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scala-template/scala-template.iml" filepath="$PROJECT_DIR$/.idea/modules/scala-template/scala-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/soot/soot.iml" filepath="$PROJECT_DIR$/.idea/modules/soot/soot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/templater/templater.iml" filepath="$PROJECT_DIR$/.idea/modules/templater/templater.iml" />
     </modules>
   </component>
 </project>

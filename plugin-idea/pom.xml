@@ -1,20 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.bugvm</groupId>
-        <artifactId>plugin-idea</artifactId>
-        <version>1.1.30-SNAPSHOT</version>
-    </parent>
-
     <groupId>com.bugvm</groupId>
     <artifactId>bugvm-idea</artifactId>
+    <version>1.2.3</version>
     <name>BugVM IDEA</name>
     <packaging>jar</packaging>
 
     <properties>
         <ij.plugin>true</ij.plugin>
         <idea.home>/Applications/BugVM Studio.app/Contents/</idea.home>
+        <java.home>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/</java.home>
     </properties>
 
     <dependencies>
@@ -223,7 +219,7 @@
                         <artifactId>tools</artifactId>
                         <version>1.7.0</version>
                         <scope>system</scope>
-                        <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+                        <systemPath>${java.home}/lib/tools.jar</systemPath>
                     </dependency>
                 </dependencies>
 
