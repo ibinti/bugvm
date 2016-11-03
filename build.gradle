@@ -2,15 +2,18 @@ allprojects {
 
     buildscript {
         ext {
-            bugVMVersion = '1.2.0-SNAPSHOT'
+            bugVMVersion = '1.2.1-SNAPSHOT'
         }
 
     }
+
     group = 'com.bugvm'
     version = bugVMVersion
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
+    apply plugin: 'maven'
+    apply plugin: 'signing'
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -25,8 +28,15 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
+    publishing {
+        repositories {
+            maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        }
+    }
+
     task wrapper(type: Wrapper) {
         gradleVersion = "3.1"
     }
+
 
 }

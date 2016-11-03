@@ -1,18 +1,4 @@
-buildscript {
-
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7.1'
-    }
-}
-
 apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'nexus'
-apply plugin: 'signing'
 
 archivesBaseName = "bugvm-gradle"
 description = """BugVM Gradle Plugin"""
@@ -30,35 +16,6 @@ dependencies {
     compile 'org.apache.maven.wagon:wagon-http:2.4'
 }
 
-modifyPom {
-    project {
-        name 'bugvm-gradle'
-        description 'bugvm gradle plugin'
-        url 'https://bugvm.com'
-
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            }
-        }
-
-        scm {
-           url 'https://github.com/bugvm/bugvm.git'
-           connection 'scm:git:git://github.com/bugvm/bugvm.git'
-        }
-
-        developers {
-           developer {
-               id 'bugvm'
-               name 'The Bug'
-               email 'bug@bugvm.com'
-               url 'https://bugvm.com'
-           }
-        }
-    }
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -67,8 +24,43 @@ publishing {
             from components.java
         }
     }
-    repositories {
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name project.archivesBaseName
+                description project.description
+                url 'https://bugvm.com'
+                packaging 'jar'
+
+                scm {
+                    url 'https://github.com/bugvm/bugvm.git'
+                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'bugvm'
+                        name 'The Bug'
+                        email 'bug@bugvm.com'
+                        url 'https://bugvm.com'
+                    }
+                }
+            }
+        }
     }
 }
