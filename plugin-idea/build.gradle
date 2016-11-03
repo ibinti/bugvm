@@ -1,15 +1,13 @@
 description = """BugVM IDEA"""
 
 def ideahome = "/Applications/BugVM Studio.app/Contents"
+//def ideahome = "/Users/yy/GitHub/intellij-community"
 def javahome = "/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home"
 
 dependencies {
     compile project(':compiler')
     compile project(':templater')
-    compile ("commons-io:commons-io:2.4") {
-        //in case of versions conflict '2.4' version of commons-io wins:
-        force = true
-    }
+    compile ("commons-io:commons-io:2.4")
     compile ("org.apache.commons:commons-compress:1.5")
     compile(group: 'org.zeroturnaround', name: 'zt-zip', version:'1.7') {
         exclude(module: 'slf4j-api')
@@ -22,6 +20,8 @@ dependencies {
 //    compile files("$ideahome/lib/slf4j-api-1.7.10.jar")
 //    compile files("$ideahome/lib/slf4j-log4j12-1.7.10.jar")
     compile fileTree(dir: "$ideahome", include: "**/*.jar")
+//    compile group: 'com.intellij', name: 'openapi', version: '6.0.5'
+
 
     compile files("$javahome/lib/tools.jar")
 
