@@ -123,20 +123,10 @@
     <bytecodeTargetLevel>
       <module name="bugvm-apple" target="1.7" />
       <module name="bugvm-cacerts" target="1.7" />
-      <module name="bugvm-cocoatouch" target="1.7" />
       <module name="bugvm-compiler" target="1.7" />
-      <module name="bugvm-dist" target="1.7" />
-      <module name="bugvm-dist-compiler" target="1.7" />
       <module name="bugvm-idea" target="1.7" />
-      <module name="bugvm-java-template" target="1.7" />
-      <module name="bugvm-libimobiledevice" target="1.7" />
       <module name="bugvm-llvm" target="1.7" />
-      <module name="bugvm-maven" target="1.7" />
-      <module name="bugvm-maven-resolver" target="1.7" />
-      <module name="bugvm-objc" target="1.7" />
-      <module name="bugvm-parent" target="1.7" />
       <module name="bugvm-rt" target="1.7" />
-      <module name="bugvm-scala-template" target="1.7" />
       <module name="bugvm-soot" target="1.7" />
       <module name="bugvm-templater" target="1.7" />
     </bytecodeTargetLevel>
