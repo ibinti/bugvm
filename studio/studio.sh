@@ -13,4 +13,4 @@ cp out/artifacts/*.mac.zip out/bugvm-studio/bugvm-studio.zip
 cd out/bugvm-studio
 unzip bugvm-studio.zip
 cd ../..
-appdmg bugvm/bugvm-studio-dmg/dmg.json out/bugvm-studio/bugvm-studio-1.1.10-SNAPSHOT.dmg
+appdmg bugvm/bugvm-studio-dmg/dmg.json out/bugvm-studio/bugvm-studio-1.2.1-SNAPSHOT.dmg

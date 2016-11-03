@@ -269,7 +269,7 @@ def layoutFull(String home, String targetDirectory, String patchedDescriptorDir 
     dir("plugins") {
       dir("bugvm") {
         dir("lib") {
-          fileset(dir: "${home}/../idea/target/", includes: "bugvm-idea-*-plugin-dist.jar");
+          fileset(dir: "${home}/../plugin-idea/build/distributions/", includes: "bugvm-idea-*-plugin-dist.jar");
         }
       }
     }
