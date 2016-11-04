@@ -1,5 +1,3 @@
-#!/bin/bash
-
 SELF=$(basename $0)
 BASE=$(cd $(dirname $0); pwd -P)
 CLEAN=0

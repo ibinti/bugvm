@@ -38,5 +38,35 @@ allprojects {
         gradleVersion = "3.1"
     }
 
+}
+
+task buildVM(type:Exec) {
+    workingDir 'vm'
+
+    commandLine "bash", "-c", """. build.sh --clean --build=release"""
 
 }
+
+task buildLLVM(type:Exec) {
+    workingDir 'llvm'
+
+    commandLine "bash", "-c", """. build.sh --clean"""
+
+}
+
+task buildJars {
+
+    dependsOn publishToMavenLocal, build, clean
+
+}
+
+task All {
+
+    dependsOn buildJars, buildLLVM, buildVM
+
+}
+
+buildLLVM.shouldRunAfter buildVM
+buildJars.shouldRunAfter buildLLVM
+build.shouldRunAfter clean
+publishToMavenLocal.shouldRunAfter build
