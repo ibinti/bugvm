@@ -1,3 +1,2 @@
 .DS_STORE
-target
-bugvm-java-template.iml
+*.iml
