@@ -7,8 +7,6 @@
     <file url="file://$PROJECT_DIR$/compiler" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/llvm" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/package" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/plugin/idea" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/plugin/templater" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/soot" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />

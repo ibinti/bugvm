@@ -7,7 +7,7 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
-        classpath "com.bugvm:bugvm-gradle:$bugVMVersion"
+        classpath "com.bugvm:bugvm-gradle:1.1.19-SNAPSHOT"
     }
 
 }
