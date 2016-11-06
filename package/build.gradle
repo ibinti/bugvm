@@ -109,9 +109,9 @@ export PATH=$BUGVM_HOME/bin:$PATH
 #...
  */
 
-    ["bash", "-c", """echo 'export BUGVM_VERSION=$bugVMVersion' > bash_profile.txt"""].execute()
-    ["bash", "-c", """tail -n +2 ~/.bash_profile | cat >> bash_profile.txt"""].execute()
-    ["bash", "-c", """mv -f bash_profile.txt  ~/.bash_profile"""].execute()
+//    ["bash", "-c", """echo 'export BUGVM_VERSION=$bugVMVersion' > bash_profile.txt"""].execute()
+//    ["bash", "-c", """tail -n +2 ~/.bash_profile | cat >> bash_profile.txt"""].execute()
+//    ["bash", "-c", """mv -f bash_profile.txt  ~/.bash_profile"""].execute()
 
 }
 
