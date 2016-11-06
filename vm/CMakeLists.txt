@@ -207,7 +207,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "debug")
   set(LIB_SUFFIX "-dbg.a")
 endif()
 
-set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/target/binaries/${OS}/${ARCH})
+set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/binaries/${OS}/${ARCH})
 
 message(STATUS "ARCH: ${ARCH}")
 message(STATUS "OS: ${OS}")
