@@ -23,7 +23,7 @@ task dist(type: Tar) {
     }
 
     into ("bugvm-${version}/lib/vm") {
-        from ("../vm/target/binaries")
+        from ("../vm/binaries")
     }
 
     into ("bugvm-${version}/modules/licenses/apple") {
