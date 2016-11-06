@@ -2,10 +2,7 @@
 .gradle
 .idea
 build
+target
 local.properties
 *.iml
-*.class
-target
-templater/src/main/resources/templates/template-java.tar.gz
-templater/src/main/resources/templates/template-scala.tar.gz
 *.hprof
