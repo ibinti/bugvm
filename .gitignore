@@ -7,3 +7,4 @@ local.properties
 *.iml
 *.hprof
 /plugin-idea/src/main/resources/bugvm-dist
+/.nb-gradle/

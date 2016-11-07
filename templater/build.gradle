@@ -3,7 +3,7 @@ description = """BugVM Template Generator"""
 
 dependencies {
     compile "commons-io:commons-io:2.4"
-    compile group: 'org.apache.commons', name: 'commons-compress', version:'1.5'
+    compile "org.apache.commons:commons-compress:1.5"
 }
 
 task template(type: Copy, overwrite: true) {

@@ -1,5 +1,5 @@
 apply plugin: 'distribution'
-archivesBaseName = "bugvm"
+archivesBaseName = "bugvm-dist"
 description = """BugVM Package (tar.gz)"""
 
 dependencies {
@@ -93,7 +93,7 @@ task devvm(type: Copy, overwrite: true) {
 
 //    println 'copying vm binaries'
 
-    from('../vm/target/binaries')
+    from('../vm/binaries')
     into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib/vm"
 
     outputs.upToDateWhen { false }
@@ -133,13 +133,13 @@ task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
 
     outputs.upToDateWhen { false }
 }
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId project.archivesBaseName
-
-            artifact dist
-        }
-    }
-}
+//
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            artifactId project.archivesBaseName
+//
+//            artifact dist
+//        }
+//    }
+//}
