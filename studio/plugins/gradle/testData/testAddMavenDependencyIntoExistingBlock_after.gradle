@@ -1,4 +1,0 @@
-dependencies{
-  compile 'someGroupId:someArtifactId:1.0'
-compile 'testGroupId:testArtifactId:1.0'
-}

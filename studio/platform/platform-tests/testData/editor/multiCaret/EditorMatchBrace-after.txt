@@ -1,4 +1,0 @@
-{ a }<caret>
-{<caret> b }
-{<caret> c }
-text

@@ -1,8 +1,0 @@
-Types:
-PsiField:f1 : int
-
-Conversions:
-
-New expression type changes:
-Fails:
-{0}->int
