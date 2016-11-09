@@ -1,1 +1,0 @@
-public class <warning descr="Intention must have 'before.*.template' and 'after.*.template' beside 'description.html'">MyIntentionActionWithoutBeforeAfter</warning> implements com.intellij.codeInsight.intention.IntentionAction {}

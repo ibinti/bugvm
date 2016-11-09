@@ -1,1 +1,0 @@
-public class <warning descr="Intention does not have a description">MyIntentionAction</warning> implements com.intellij.codeInsight.intention.IntentionAction {}

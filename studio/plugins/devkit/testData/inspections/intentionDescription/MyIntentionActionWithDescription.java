@@ -1,1 +1,0 @@
-public class MyIntentionActionWithDescription implements com.intellij.codeInsight.intention.IntentionAction {}

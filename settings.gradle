@@ -1,1 +1,1 @@
-include 'soot', 'rt', 'llvm', 'compiler', 'apple', 'cacerts', 'package', 'plugin-gradle','templater','template-java','template-scala'
+include 'soot', 'rt', 'llvm', 'compiler', 'apple', 'cacerts', 'package', 'plugin-gradle'

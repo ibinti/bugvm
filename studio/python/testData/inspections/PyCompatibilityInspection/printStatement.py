@@ -1,1 +1,0 @@
-<warning descr="Python version >= 3.0 do not support this syntax. The print statement has been replaced with a print() function">print "One value"</warning>

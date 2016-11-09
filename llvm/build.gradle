@@ -43,18 +43,10 @@ uploadArchives {
                 name project.archivesBaseName
                 description project.description
                 url 'https://bugvm.com'
-                packaging 'jar'
 
                 scm {
                     url 'https://github.com/bugvm/bugvm.git'
                     connection 'scm:git:git://github.com/bugvm/bugvm.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
                 }
 
                 developers {
