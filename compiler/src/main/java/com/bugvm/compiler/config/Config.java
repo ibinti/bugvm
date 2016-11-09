@@ -46,6 +46,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.bugvm.compiler.Version;
 import com.bugvm.compiler.target.ios.SigningIdentity;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -53,7 +54,6 @@ import com.bugvm.compiler.DependencyGraph;
 import com.bugvm.compiler.ITable;
 import com.bugvm.compiler.MarshalerLookup;
 import com.bugvm.compiler.VTable;
-import com.bugvm.compiler.Version;
 import com.bugvm.compiler.clazz.Clazz;
 import com.bugvm.compiler.clazz.Clazzes;
 import com.bugvm.compiler.clazz.Path;
@@ -632,7 +632,7 @@ public class Config {
         }
     }
 
-    private static String getImplementationVersion(File jarFile) throws IOException {
+    public static String getImplementationVersion(File jarFile) throws IOException {
         return (String) getManifestAttributes(jarFile).get(Attributes.Name.IMPLEMENTATION_VERSION);
     }
 
@@ -908,6 +908,7 @@ public class Config {
         private File binDir = null;
         private File libVmDir = null;
         private File rtPath = null;
+        private File compilerPath = null;
         private Map<Cacerts, File> cacertsPath = null;
         private boolean dev = false;
 
@@ -922,6 +923,7 @@ public class Config {
             binDir = new File(homeDir, "bin");
             libVmDir = new File(homeDir, "lib/vm");
             rtPath = new File(homeDir, "lib/bugvm-rt.jar");
+            compilerPath = new File(homeDir, "lib/bugvm-compiler.jar");
             cacertsPath = new HashMap<Cacerts, File>();
             cacertsPath.put(Cacerts.full, new File(homeDir, "lib/bugvm-cacerts.jar"));
         }
@@ -950,6 +952,10 @@ public class Config {
 
         public File getRtPath() {
             return rtPath;
+        }
+
+        public File getCompilerPath() {
+            return compilerPath;
         }
 
         public File getCacertsPath(Cacerts cacerts) {
@@ -1020,11 +1026,16 @@ public class Config {
                 throw new IllegalArgumentException(error
                         + "lib/bugvm-rt.jar missing or invalid");
             }
+            File compileJarFile = new File(libDir, "bugvm-compiler.jar");
+            if (!compileJarFile.exists() || !compileJarFile.isFile()) {
+                throw new IllegalArgumentException(error
+                        + "lib/bugvm-compiler.jar missing or invalid");
+            }
 
             // Compare the version of this compiler with the version of the
             // bugvm-rt.jar in the home dir. They have to match.
             try {
-                String thisVersion = Version.getVersion();
+                String thisVersion = getImplementationVersion(compileJarFile);
                 String thatVersion = getImplementationVersion(rtJarFile);
                 if (thisVersion == null || thatVersion == null || !thisVersion.equals(thatVersion)) {
                     throw new IllegalArgumentException(error + "version mismatch (expected: "
@@ -1055,8 +1066,25 @@ public class Config {
             if (!binDir.exists() || !binDir.isDirectory()) {
                 throw new IllegalArgumentException(error + "bin/ missing or invalid");
             }
+            File libDir = new File(dir, "lib");
+            if (!libDir.exists() || !libDir.isDirectory()) {
+                throw new IllegalArgumentException(error + "lib/ missing or invalid");
+            }
+            File rtJarFile = new File(libDir, "bugvm-rt.jar");
+            if (!rtJarFile.exists() || !rtJarFile.isFile()) {
+                throw new IllegalArgumentException(error
+                        + "lib/bugvm-rt.jar missing or invalid");
+            }
 
-            String rtJarName = "bugvm-rt-" + Version.getVersion() + ".jar";
+            String rtVersion = "";
+
+            try {
+                rtVersion = getImplementationVersion(rtJarFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String rtJarName = "bugvm-rt-" + rtVersion + ".jar";
             File rtJar = new File(dir, "rt/target/" + rtJarName);
             File rtClasses = new File(dir, "rt/target/classes/");
             File rtSource = rtJar;

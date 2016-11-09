@@ -1,0 +1,49 @@
+archivesBaseName = "bugvm-apple"
+description = """BugVM Apple Bindings"""
+
+dependencies {
+    compile project(':rt')
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            from components.java
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name project.archivesBaseName
+                description project.description
+                url 'https://bugvm.com'
+
+                scm {
+                    url 'https://github.com/bugvm/bugvm.git'
+                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                }
+
+                developers {
+                    developer {
+                        id 'bugvm'
+                        name 'The Bug'
+                        email 'bug@bugvm.com'
+                        url 'https://bugvm.com'
+                    }
+                }
+            }
+        }
+    }
+}
+

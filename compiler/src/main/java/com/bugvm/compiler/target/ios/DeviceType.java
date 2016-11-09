@@ -31,15 +31,15 @@ import com.bugvm.compiler.util.Executor;
 
 /**
  * Simulator device types, consisting of the device type id and SDK version as
- * listed by ios-sim.
+ * listed by bugvm-sim.
  * 
  * @author badlogic
  *
  */
 public class DeviceType implements Comparable<DeviceType> {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
-    public static final String PREFERRED_IPHONE_SIM_NAME = PREFIX + "iPhone-6";
-    public static final String PREFERRED_IPAD_SIM_NAME = PREFIX + "iPad-Air";
+    public static final String PREFERRED_IPHONE_SIM_NAME = PREFIX + "iPhone-7";
+    public static final String PREFERRED_IPAD_SIM_NAME = PREFIX + "iPad-Air-2";
 
     public static enum DeviceFamily {
         iPhone,
@@ -69,7 +69,7 @@ public class DeviceType implements Comparable<DeviceType> {
     }
 
     /**
-     * @return id as understood by ios-sim, concatenation of type and sdk
+     * @return id as understood by bugvm-sim, concatenation of type and sdk
      *         version
      */
     public String getDeviceTypeId() {

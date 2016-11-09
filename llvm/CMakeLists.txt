@@ -1,3 +1,8 @@
+# The Mac OS X SDK version required when building the LLVM libs
+set(MACOSX_SDK_VERSION 10.12)
+# The minimum Mac OS X version needed by apps built by BugVM
+set(MACOSX_MIN_VERSION 10.7)
+
 cmake_minimum_required(VERSION 2.8)
 
 include(ExternalProject)
@@ -15,7 +20,7 @@ if (WINDOWS)
   set(CMAKE_SYSTEM_NAME Windows)
 
   #should be passed from build.sh, just here to prevent warning
-  set(CMAKE_RC_COMPILER "/usr/bin/x86_64-w64-mingw32-windres")
+  set(CMAKE_RC_COMPILER "/usr/local/bin/x86_64-w64-mingw32-windres")
   
   #these are not actually used by com_bugvm but find_package does not always resolve them, use JAVA_HOME env var to prevent paths?
   set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libawt.so")
@@ -44,8 +49,8 @@ endif()
 
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-sections")
 if(MACOSX AND X86_64)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=10.7")
-  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=10.7")
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=${MACOSX_MIN_VERSION}")
+  set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=${MACOSX_MIN_VERSION}")
 elseif(LINUX AND X86)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32")
   set(LD_FLAGS "${LD_FLAGS} -m32")
@@ -62,10 +67,7 @@ endif()
 
 if(MACOSX)
   exec_program(xcode-select ARGS --print-path OUTPUT_VARIABLE XCODE_PATH)
-  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
-  if(NOT IS_DIRECTORY ${SYSROOT})
-    set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
-  endif()
+  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${MACOSX_SDK_VERSION}.sdk")
   if(NOT IS_DIRECTORY ${SYSROOT})
     message(FATAL_ERROR "No supported MacOSX SDK found")
   endif()

@@ -1,0 +1,82 @@
+buildscript {
+     repositories {
+          jcenter()
+     }
+     dependencies {
+          classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
+     }
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+archivesBaseName = "bugvm-rt"
+description = """BugVM Runtime Library"""
+
+dependencies {
+     compile "commons-io:commons-io:2.4"
+     compile gradleApi()
+}
+
+sourceSets {
+
+     main {
+          java {
+               srcDirs = ['src', 'libcore', 'external']
+          }
+     }
+
+     shadowJar {
+          relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
+          relocate 'org.conscrypt', 'com.android.org.conscrypt'
+          relocate 'com.squareup', 'com.android.com.squareup'
+     }
+
+}
+
+jar {
+     manifest {
+          attributes "Implementation-Version" : project.version
+     }
+}
+
+publishing {
+     publications {
+          mavenJava(MavenPublication) {
+               artifactId project.archivesBaseName
+
+               from components.java
+          }
+     }
+
+}
+
+uploadArchives {
+     repositories {
+          mavenDeployer {
+
+               snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+               }
+
+               pom.project {
+                    name project.archivesBaseName
+                    description project.description
+                    url 'https://bugvm.com'
+
+                    scm {
+                         url 'https://github.com/bugvm/bugvm.git'
+                         connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                    }
+
+                    developers {
+                         developer {
+                              id 'bugvm'
+                              name 'The Bug'
+                              email 'bug@bugvm.com'
+                              url 'https://bugvm.com'
+                         }
+                    }
+               }
+          }
+     }
+}

@@ -1,11 +1,11 @@
 # The Mac OS X SDK version required when building the VM libs
-set(MACOSX_SDK_VERSION 10.11)
+set(MACOSX_SDK_VERSION 10.12)
 # The minimum Mac OS X version needed by apps built by BugVM
 set(MACOSX_MIN_VERSION 10.7)
 # The iOS SDK version required when building the VM libs
-set(IOS_SDK_VERSION 9.3)
+set(IOS_SDK_VERSION 10.1)
 # The minimum iOS version needed by apps built by BugVM
-set(IOS_MIN_VERSION 6.1)
+set(IOS_MIN_VERSION 6.0)
 
 cmake_minimum_required(VERSION 2.8.8)
 project(build)
@@ -207,7 +207,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "debug")
   set(LIB_SUFFIX "-dbg.a")
 endif()
 
-set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/target/binaries/${OS}/${ARCH})
+set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/binaries/${OS}/${ARCH})
 
 message(STATUS "ARCH: ${ARCH}")
 message(STATUS "OS: ${OS}")

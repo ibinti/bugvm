@@ -16,42 +16,46 @@
  */
 package com.bugvm.compiler;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.bugvm.compiler.config.Config;
 
 import org.apache.commons.io.IOUtils;
 
-/**
- * Reads the compiler version from auto generated <code>version.properties</code> file.
- */
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+
+import static com.bugvm.compiler.config.Config.getImplementationVersion;
+
 public class Version {
 
-    private static String version = null;
-    private static String PROPERTIES_RESOURCE = "/META-INF/bugvm/version.properties";
-
     /**
-     * Returns the version number of the compiler by reading the <code>version.properties</code>
+     * Returns the version number of the compiler by reading the MANIFEST.MF
      * file.
      * 
      * @return the version.
      */
     public static String getVersion() {
-        if (version != null) {
-            return version;
+
+        String compilerVersion = "0.0.0";
+        if (System.getenv("BUGVM_HOME") != null) {
+            File homeDir = new File(System.getenv("BUGVM_HOME"));
+            File rtPath = new File(homeDir, "lib/bugvm-compiler.jar");
+            try {
+                compilerVersion = getImplementationVersion(rtPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        InputStream is = null;
-        try {
-            is = Version.class.getResourceAsStream(PROPERTIES_RESOURCE);
-            Properties props = new Properties();
-            props.load(is);
-            version = props.getProperty("version");
-            return version;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(is);
-        }
+
+        return  compilerVersion;
+
     }
     
     /**

@@ -1,5 +1,0 @@
-print(unicode())
-print(unicode(''))
-print(unicode('', 'utf-8'))
-print(unicode('', 'utf-8', 'ignore'))
-print(unicode('', 'utf-8', 'ignore', <warning descr="Unexpected argument">foo</warning>))

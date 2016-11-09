@@ -1,2 +1,0 @@
-BugVM Maven Plugin
-====================

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 SELF=$(basename $0)
 BASE=$(cd $(dirname $0); pwd -P)
 CLEAN=0
@@ -53,7 +51,7 @@ if [ "x$TARGETS" = 'x' ]; then
     TARGETS="ios-thumbv7 ios-arm64 ios-x86_64 ios-x86 macosx-x86_64"
     ;;
   Linux)
-    TARGETS="linux-x86_64"
+    TARGETS="linux-x86_64" # "linux-x86_64 linux-x86"
     ;;
   *)
     echo "Unsupported OS: $OS"
@@ -65,7 +63,7 @@ if [ "x$BUILDS" = 'x' ]; then
   BUILDS="debug release"
 fi
 
-# Validate targets
+# Validate targets #linux-(x86_64|x86)
 for T in $TARGETS; do
   if ! [[ $T =~ (macosx-(x86_64))|(ios-(x86_64|x86|thumbv7|arm64))|(linux-(x86_64)) ]] ; then
     echo "Unsupported target: $T"

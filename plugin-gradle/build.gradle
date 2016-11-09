@@ -1,0 +1,60 @@
+apply plugin: 'groovy'
+
+archivesBaseName = "bugvm-gradle"
+description = """BugVM Gradle Plugin"""
+
+dependencies {
+    compile project(':compiler')
+
+    compile gradleApi()
+    compile localGroovy()
+    //compile 'org.codehaus.groovy:groovy-all:2.4.7'
+
+    compile "org.apache.commons:commons-compress:1.5"
+    compile 'org.sonatype.aether:aether:1.13.1'
+    compile 'org.sonatype.aether:aether-connector-wagon:1.13.1'
+    compile 'org.apache.maven:maven-aether-provider:3.0.4'
+    compile 'org.apache.maven.wagon:wagon-provider-api:2.4'
+    compile 'org.apache.maven.wagon:wagon-http:2.4'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId archivesBaseName
+
+            from components.java
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name project.archivesBaseName
+                description project.description
+                url 'https://bugvm.com'
+
+                scm {
+                    url 'https://github.com/bugvm/bugvm.git'
+                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                }
+
+                developers {
+                    developer {
+                        id 'bugvm'
+                        name 'The Bug'
+                        email 'bug@bugvm.com'
+                        url 'https://bugvm.com'
+                    }
+                }
+            }
+        }
+    }
+}

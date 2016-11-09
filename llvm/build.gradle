@@ -1,0 +1,63 @@
+archivesBaseName = "bugvm-llvm"
+description = """BugVM LLVM Bindings"""
+
+sourceSets {
+
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            from components.java
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name project.archivesBaseName
+                description project.description
+                url 'https://bugvm.com'
+
+                scm {
+                    url 'https://github.com/bugvm/bugvm.git'
+                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                }
+
+                developers {
+                    developer {
+                        id 'bugvm'
+                        name 'The Bug'
+                        email 'bug@bugvm.com'
+                        url 'https://bugvm.com'
+                    }
+                }
+            }
+        }
+    }
+}

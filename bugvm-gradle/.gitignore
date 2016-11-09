@@ -1,7 +1,0 @@
-.gradle
-.DS_Store
-build
-.idea
-bugvm-gradle.iml
-target
-deploy
