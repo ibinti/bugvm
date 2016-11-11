@@ -1,0 +1,6 @@
+#!/bin/bash
+
+BASE=$(cd "$(dirname "$0")"; pwd -P)
+SIM="$BASE/bugvm-sim $@"
+
+bash -c "$SIM"

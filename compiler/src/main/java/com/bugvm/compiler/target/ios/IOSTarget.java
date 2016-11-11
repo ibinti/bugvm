@@ -107,7 +107,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     public static synchronized File getIosSimPath() {
-//        if (iosSimPath == null) {
+        if (iosSimPath == null) {
             try {
                 File path = File.createTempFile("bugvm-sim", "");
                 FileUtils.copyURLToFile(IOSTarget.class.getResource("/bugvm-sim"), path);
@@ -117,7 +117,7 @@ public class IOSTarget extends AbstractTarget {
             } catch (IOException e) {
                 throw new Error(e);
             }
-//        }
+        }
         return iosSimPath;
     }
 
@@ -209,7 +209,8 @@ public class IOSTarget extends AbstractTarget {
         File bugvmSimPath = new File(config.getHome().getBinDir(), "bugvm-sim");
         return new Executor(proxyLogger, bugvmSimPath)
                 .args(args)
-                .wd(launchParameters.getWorkingDirectory())
+                .wd(config.getHome().getBinDir())
+                // .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
                 .env(env);
     }
