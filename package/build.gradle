@@ -133,13 +133,13 @@ task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
 
     outputs.upToDateWhen { false }
 }
-//
-//publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            artifactId project.archivesBaseName
-//
-//            artifact dist
-//        }
-//    }
-//}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
+
+            artifact dist
+        }
+    }
+}

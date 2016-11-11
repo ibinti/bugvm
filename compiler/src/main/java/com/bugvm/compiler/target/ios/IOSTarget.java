@@ -70,7 +70,7 @@ import com.dd.plist.PropertyListParser;
 public class IOSTarget extends AbstractTarget {
     public static final String TYPE = "ios";
 
-    private static File iosSimPath;
+    private static File iosSimPath = null;
 
     private Arch arch;
     private SDK sdk;    
@@ -107,7 +107,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     public static synchronized File getIosSimPath() {
-        if (iosSimPath == null) {
+//        if (iosSimPath == null) {
             try {
                 File path = File.createTempFile("bugvm-sim", "");
                 FileUtils.copyURLToFile(IOSTarget.class.getResource("/bugvm-sim"), path);
@@ -117,7 +117,7 @@ public class IOSTarget extends AbstractTarget {
             } catch (IOException e) {
                 throw new Error(e);
             }
-        }
+//        }
         return iosSimPath;
     }
 

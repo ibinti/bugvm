@@ -40,6 +40,8 @@ public class ConsoleTask extends AbstractBugVMTask {
             Config config = compiler.getConfig();
             LaunchParameters launchParameters = config.getTarget().createLaunchParameters();
             compiler.launch(launchParameters);
+
+
         } catch (Throwable t) {
             throw new GradleException("Failed to launch console application", t);
         }
