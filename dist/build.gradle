@@ -1,6 +1,6 @@
 apply plugin: 'distribution'
 archivesBaseName = "bugvm-dist"
-description = """BugVM Package (tar.gz)"""
+description = """BugVM Dist Package (tar.gz)"""
 
 dependencies {
     compile project(':compiler')
@@ -57,12 +57,14 @@ task dist(type: Tar) {
     outputs.upToDateWhen { false }
 }
 
+def home = System.properties.get('user.home')
+
 task devbin(type: Copy, overwrite: true) {
 
 //    println 'copying bin binaries'
 
     from('../bin')
-    into "/Users/yy/.bugvm-sdks/bugvm-${version}/bin"
+    into "$home/.bugvm-sdks/bugvm-${version}/bin"
 
     outputs.upToDateWhen { false }
 }
@@ -84,7 +86,7 @@ task devlib(type: Copy, overwrite: true) {
         rename 'bugvm-cacerts(.*).jar', 'bugvm-cacerts.jar'
     }
 
-    into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib"
+    into "$home/.bugvm-sdks/bugvm-${version}/lib"
 
     outputs.upToDateWhen { false }
 }
@@ -94,7 +96,7 @@ task devvm(type: Copy, overwrite: true) {
 //    println 'copying vm binaries'
 
     from('../vm/binaries')
-    into "/Users/yy/.bugvm-sdks/bugvm-${version}/lib/vm"
+    into "$home/.bugvm-sdks/bugvm-${version}/lib/vm"
 
     outputs.upToDateWhen { false }
 }
@@ -119,20 +121,19 @@ task dev {
 
 //    println 'copying dev binaries'
     dependsOn devbin, devlib, devvm
-
 }
 
 //copyIdea.dependsOn dist
 //gradle package:copyIdea --rerun-tasks
-task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
-    from('build/distributions'){
-        rename 'bugvm-(.*).tar.gz', 'bugvm-dist'
-    }
-
-    into '../plugin-idea/src/main/resources'
-
-    outputs.upToDateWhen { false }
-}
+//task copyIdea(type: Copy, overwrite: true, dependsOn: 'dist') {
+//    from('build/distributions'){
+//        rename 'bugvm-dist-(.*).tar.gz', 'bugvm-dist'
+//    }
+//
+//    into '../plugin-idea/src/main/resources'
+//
+//    outputs.upToDateWhen { false }
+//}
 
 publishing {
     publications {
