@@ -14,4 +14,6 @@ Target Platform Apps:
 * macOS Console
 * Ubuntu Console
 
-Visit [bugvm.com](https://bugvm.com) for latest news and information.
+Visit 
+[bugvm.com](https://bugvm.com) for latest news and information.
+[forum.bugvm.com](https://forum.bugvm.com) to ask a question.
