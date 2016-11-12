@@ -15,3 +15,5 @@ Target Platform Apps:
 * Ubuntu Console
 
 Visit [bugvm.com](https://bugvm.com) for latest news and information.
+
+If you have a question or message, post it to the forum at [https://forum.bugvm.com](https://forum.bugvm.com).
