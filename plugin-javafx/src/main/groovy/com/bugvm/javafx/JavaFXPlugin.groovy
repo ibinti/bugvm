@@ -50,7 +50,7 @@ import javax.inject.Inject
  *
  * @author joeri
  */
-class JFXMobilePlugin implements Plugin<Project> {
+class JavaFXPlugin implements Plugin<Project> {
 
     private static def RETROLAMBDA_COMPILE = 'net.orfjackal.retrolambda:retrolambda:2.3.0'
 
@@ -62,7 +62,7 @@ class JFXMobilePlugin implements Plugin<Project> {
     List<Task> embeddedTasks = []
 
     @Inject
-    JFXMobilePlugin(Instantiator instantiator) {
+    JavaFXPlugin(Instantiator instantiator) {
         this.instantiator = instantiator
     }
 
@@ -106,9 +106,9 @@ class JFXMobilePlugin implements Plugin<Project> {
             }
         }
 
-        project.extensions.create("jfxmobile", JFXMobileExtension, project, instantiator)
+        project.extensions.create("jfxmobile", JavaFXExtension, project, instantiator)
 
-        JFXMobileConvention pluginConvention = new JFXMobileConvention(project)
+        JavaFXConvention pluginConvention = new JavaFXConvention(project)
         project.convention.plugins.'org.javafxports.jfxmobile' = pluginConvention
 
         project.configurations {

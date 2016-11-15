@@ -29,40 +29,40 @@ abstract class BaseIosTask extends DefaultTask {
         if (project.jfxmobile.ios.propertiesFile != null) {
             File propertiesFile = project.file(project.jfxmobile.ios.propertiesFile)
             if (!propertiesFile.exists()) {
-                throw new GradleException("Invalid 'propertiesFile' specified for RoboVM compile: ${propertiesFile}")
+                throw new GradleException("Invalid 'propertiesFile' specified for BugVM compile: ${propertiesFile}")
             }
 
             try {
-                project.logger.debug("Including properties file in RoboVM compiler config: ${propertiesFile}")
+                project.logger.debug("Including properties file in BugVM compiler config: ${propertiesFile}")
                 builder.addProperties(propertiesFile)
             } catch (IOException ex) {
-                throw new GradleException("Failed to add properties file to RoboVM config: ${propertiesFile}")
+                throw new GradleException("Failed to add properties file to BugVM config: ${propertiesFile}")
             }
         } else {
             try {
                 builder.readProjectProperties(project.rootDir, false)
             } catch (IOException ex) {
-                throw new GradleException("Failed to read RoboVM project properties file(s) in ${project.rootDir}", ex)
+                throw new GradleException("Failed to read BugVM project properties file(s) in ${project.rootDir}", ex)
             }
         }
 
         if (project.jfxmobile.ios.configFile != null) {
             File configFile = project.file(project.jfxmobile.ios.configFile)
             if (!configFile.exists()) {
-                throw new GradleException("Invalid 'configFile' specified for RoboVM compile: ${configFile}")
+                throw new GradleException("Invalid 'configFile' specified for BugVM compile: ${configFile}")
             }
 
             try {
-                project.logger.debug("Loading config file for RoboVM compiler: ${configFile}")
+                project.logger.debug("Loading config file for BugVM compiler: ${configFile}")
                 builder.read(configFile)
             } catch (IOException ex) {
-                throw new GradleException("Failed to read RoboVM config file: ${configFile}")
+                throw new GradleException("Failed to read BugVM config file: ${configFile}")
             }
         } else {
             try {
                 builder.readProjectConfig(project.rootDir, false)
             } catch (IOException ex) {
-                throw new GradleException("Failed to read RoboVM config file in ${project.rootDir}", ex)
+                throw new GradleException("Failed to read BugVM config file in ${project.rootDir}", ex)
             }
         }
 

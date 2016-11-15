@@ -9,7 +9,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import com.bugvm.javafx.BasicTest
-import com.bugvm.javafx.JFXMobileExtension
+import com.bugvm.javafx.JavaFXExtension
 import org.junit.After
 import static org.junit.Assert.*
 import org.junit.Before
@@ -46,7 +46,7 @@ class ForceMinimalBuildToolsVersion extends BasicTest {
 
         project = ProjectBuilder.builder().build()
 
-        project.extensions.create("jfxmobile", JFXMobileExtension, project, DirectInstantiator.INSTANCE)
+        project.extensions.create("jfxmobile", JavaFXExtension, project, DirectInstantiator.INSTANCE)
         project.jfxmobile.android.androidSdk = androidHome.absolutePath
     }
 
