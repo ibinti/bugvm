@@ -6,7 +6,7 @@ import org.gradle.api.Project
 import org.gradle.internal.reflect.DirectInstantiator
 import org.gradle.testfixtures.ProjectBuilder
 import com.bugvm.javafx.BasicTest
-import com.bugvm.javafx.JFXMobileExtension
+import com.bugvm.javafx.JavaFXExtension
 import static org.junit.Assert.*
 import org.junit.Test
 
@@ -19,7 +19,7 @@ class ValidateSigningTest extends BasicTest {
     void testValidateWithNullStoreFile() {
         Project project = ProjectBuilder.builder().build()
 
-        project.extensions.create("jfxmobile", JFXMobileExtension, project, DirectInstantiator.INSTANCE)
+        project.extensions.create("jfxmobile", JavaFXExtension, project, DirectInstantiator.INSTANCE)
 
         project.jfxmobile.android.signingConfig.setStoreFile(null)
 
@@ -41,7 +41,7 @@ class ValidateSigningTest extends BasicTest {
 
         Project project = ProjectBuilder.builder().build()
 
-        project.extensions.create("jfxmobile", JFXMobileExtension, project, DirectInstantiator.INSTANCE)
+        project.extensions.create("jfxmobile", JavaFXExtension, project, DirectInstantiator.INSTANCE)
 
         String uuid = UUID.randomUUID().toString()
         File storeFile = project.file("${AndroidLocation.folder}/debug.keystore")

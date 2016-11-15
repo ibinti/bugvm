@@ -17,10 +17,6 @@ allprojects {
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
 
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -34,7 +30,7 @@ allprojects {
     }
 
     task wrapper(type: Wrapper) {
-        gradleVersion = '3.1'
+        gradleVersion = '3.2'
     }
 
 }
