@@ -3,14 +3,14 @@ package org.javafxports.jfxmobile.ios;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.application.Preloader;
-import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.uikit.*;
+import com.bugvm.apple.foundation.NSAutoreleasePool;
+import com.bugvm.apple.uikit.*;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * Default RoboVM Launcher class to launch JavaFX applications on iOS.
+ * Default BugVM Launcher class to launch JavaFX applications on iOS.
  *
  * NOTE: This file should not be edited as it will be overwritten each time you
  * run an iOS specific gradle task. If you want to create a custom Launcher, you

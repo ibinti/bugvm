@@ -1,15 +1,14 @@
-# javafxmobile-plugin #
+# plugin-javafx#
 
-The javafxmobile-plugin is a gradle plugin that unifies the building of JavaFX applications for three different target platforms:
+The plugin-javafx is a gradle plugin that unifies the building of JavaFX applications for three different target platforms:
 
 * desktop
 * android
 * ios
 
-The currently published version is `1.1.0`.
-
 ### Getting started ###
 
+The plugin-javafx is a fork of javafxmobile gradle plugin.
 If you need information about how to get started with the javafxmobile gradle plugin, we refer you to [Getting Started](http://javafxports.org/page/Getting_Started) page on the [javafxports.org](http://javafxports.org) website.
 
 ### External dependencies ###
