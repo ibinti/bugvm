@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugVMVersion = "1.2.6-SNAPSHOT"
+        bugVMVersion = '1.2.6-SNAPSHOT'
     }
 }
 
@@ -34,7 +34,7 @@ allprojects {
     }
 
     task wrapper(type: Wrapper) {
-        gradleVersion = "3.1"
+        gradleVersion = '3.1'
     }
 
 }
@@ -42,14 +42,14 @@ allprojects {
 task buildVM(type:Exec) {
     workingDir 'vm'
 
-    commandLine "bash", "-c", """. build.sh --clean --build=release"""
+    commandLine 'bash', '-c', '. build.sh --clean --build=release'
 
 }
 
 task buildLLVM(type:Exec) {
     workingDir 'llvm'
 
-    commandLine "bash", "-c", """. build.sh --clean"""
+    commandLine 'bash', '-c', '. build.sh --clean'
 
 }
 

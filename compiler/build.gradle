@@ -2,6 +2,8 @@ archivesBaseName = "bugvm-compiler"
 description = """BugVM Compiler"""
 
 dependencies {
+    compile project(':llvm')
+    compile project(':soot')
 
     compile "com.googlecode.plist:dd-plist:1.16"
     compile "commons-io:commons-io:2.4"
@@ -17,9 +19,6 @@ dependencies {
         exclude(module: 'xpp3')
         exclude(module: 'stax')
     }
-    compile project(':llvm')
-    compile project(':soot')
-
 }
 
 sourceSets {

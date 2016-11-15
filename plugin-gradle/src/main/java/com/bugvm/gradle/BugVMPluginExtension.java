@@ -169,10 +169,6 @@ public class BugVMPluginExtension {
     }
     
     public String getArchs() {
-        if (project.hasProperty("bugvm.ipaArchs")) {
-            // Kept for backwards compatibility
-            return project.getProperties().get("bugvm.ipaArchs").toString();
-        }
         if (project.hasProperty("bugvm.archs")) {
             return project.getProperties().get("bugvm.archs").toString();
         }

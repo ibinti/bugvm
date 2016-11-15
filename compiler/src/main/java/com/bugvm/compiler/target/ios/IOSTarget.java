@@ -70,7 +70,7 @@ import com.dd.plist.PropertyListParser;
 public class IOSTarget extends AbstractTarget {
     public static final String TYPE = "ios";
 
-    private static File iosSimPath;
+    private static File iosSimPath = null;
 
     private Arch arch;
     private SDK sdk;    
@@ -209,7 +209,8 @@ public class IOSTarget extends AbstractTarget {
         File bugvmSimPath = new File(config.getHome().getBinDir(), "bugvm-sim");
         return new Executor(proxyLogger, bugvmSimPath)
                 .args(args)
-                .wd(launchParameters.getWorkingDirectory())
+                .wd(config.getHome().getBinDir())
+                // .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
                 .env(env);
     }

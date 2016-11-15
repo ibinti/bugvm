@@ -212,9 +212,9 @@ public class DeviceType implements Comparable<DeviceType> {
         if (deviceName == null && family == null) {
             family = DeviceFamily.iPhone;
         }
-        String preferredDeciveName = PREFERRED_IPHONE_SIM_NAME;
+        String preferredDeviceName = PREFERRED_IPHONE_SIM_NAME;
         if (family == DeviceFamily.iPad) {
-            preferredDeciveName = PREFERRED_IPAD_SIM_NAME;
+            preferredDeviceName = PREFERRED_IPAD_SIM_NAME;
         }
 
         DeviceType best = null;
@@ -222,7 +222,7 @@ public class DeviceType implements Comparable<DeviceType> {
             if (best == null) {
                 best = type;
             } else if (type.getSdk().compareTo(best.getSdk()) > 0 ||
-                    type.getSdk().compareTo(best.getSdk()) == 0 && type.getDeviceName().equals(preferredDeciveName)) {
+                    type.getSdk().compareTo(best.getSdk()) == 0 && type.getDeviceName().equals(preferredDeviceName)) {
                 best = type;
             }
         }

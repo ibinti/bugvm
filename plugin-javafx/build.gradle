@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile 'com.android.tools.build:gradle:1.1.3'
+    compile "com.bugvm:bugvm-compiler:$bugVMVersion"
+    testCompile localGroovy()
+    testCompile 'junit:junit:4.8.2'
+}
+
+configurations {
+    published
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task groovydocJar(type: Jar, dependsOn: groovydoc) {
+    from groovydoc.destinationDir
+    classifier = 'javadoc'
+}
+
+artifacts {
+    archives sourceJar, groovydocJar
+}

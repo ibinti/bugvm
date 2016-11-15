@@ -1,16 +1,15 @@
-apply plugin: 'groovy'
+archivesBaseName = 'bugvm-gradle'
+description = 'BugVM Gradle Plugin'
 
-archivesBaseName = "bugvm-gradle"
-description = """BugVM Gradle Plugin"""
+apply plugin: 'groovy'
 
 dependencies {
     compile project(':compiler')
 
     compile gradleApi()
     compile localGroovy()
-    //compile 'org.codehaus.groovy:groovy-all:2.4.7'
 
-    compile "org.apache.commons:commons-compress:1.5"
+    compile 'org.apache.commons:commons-compress:1.5'
     compile 'org.sonatype.aether:aether:1.13.1'
     compile 'org.sonatype.aether:aether-connector-wagon:1.13.1'
     compile 'org.apache.maven:maven-aether-provider:3.0.4'
@@ -32,7 +31,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
