@@ -131,7 +131,7 @@ class JFXMobilePlugin implements Plugin<Project> {
             androidSdk
             dalvikSdk
             iosSdk
-            robovmSdk
+            bugvmSdk
             sshAntTask
         }
 
@@ -173,9 +173,9 @@ class JFXMobilePlugin implements Plugin<Project> {
             project.dependencies {
                 androidCompile "org.javafxports:jfxdvk:${project.jfxmobile.javafxportsVersion}"
 
-                iosCompile "com.mobidevelop.robovm:robovm-cocoatouch:${project.jfxmobile.ios.robovmVersion}"
+                iosCompile "com.bugvm:bugvm-apple:${project.jfxmobile.ios.bugvmVersion}"
 
-                iosBootclasspath "com.mobidevelop.robovm:robovm-rt:${project.jfxmobile.ios.robovmVersion}"
+                iosBootclasspath "com.bugvm:bugvm-rt:${project.jfxmobile.ios.bugvmVersion}"
 
                 dalvikSdk "org.javafxports:dalvik-sdk:${project.jfxmobile.javafxportsVersion}@zip"
                 iosSdk "org.javafxports:ios-sdk:${project.jfxmobile.javafxportsVersion}@zip"
