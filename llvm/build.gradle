@@ -14,6 +14,11 @@ sourceSets {
 
 }
 
+task nativeLib(type:Exec) {
+
+    commandLine 'bash', '-c', '. build.sh --clean'
+
+}
 
 publishing {
     publications {
@@ -23,11 +28,14 @@ publishing {
             from components.java
         }
     }
-}
-
-publishing {
     repositories {
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven {
+            url mavenUrlSnapshot
+            credentials {
+                username = mavenUsername
+                password = mavenPassword
+            }
+        }
     }
 }
 
@@ -35,8 +43,8 @@ uploadArchives {
     repositories {
         mavenDeployer {
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
+            snapshotRepository(url: mavenUrlSnapshot) {
+                authentication(userName: mavenUsername, password: mavenPassword)
             }
 
             pom.project {
