@@ -5,10 +5,13 @@ description = """BugVM Dist Package (tar.gz)"""
 dependencies {
     compile project(':compiler')
     compile project(':apple')
-    compile project(':cacerts')
+    compile project(':rt')
 }
 
-task dist(type: Tar) {
+ task dist(type: Tar, dependsOn: build) {
+
+    extension = 'tar.gz'
+    compression = Compression.GZIP
 
     into ("bugvm-${version}/bin") {
         from ("../bin")
@@ -19,11 +22,10 @@ task dist(type: Tar) {
         from("../rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
         from("../apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
         from("../cacerts/build/libs/bugvm-cacerts-${version}.jar") rename { String fileName -> fileName.replace("bugvm-cacerts-${version}.jar", "bugvm-cacerts.jar") }
-
     }
 
     into ("bugvm-${version}/lib/vm") {
-        from ("../vm/binaries")
+        from ("../rt/vm/binaries")
     }
 
     into ("bugvm-${version}/modules/licenses/apple") {
@@ -51,57 +53,10 @@ task dist(type: Tar) {
         from ("../vm/LICENSE.txt")
     }
 
-    extension = 'tar.gz'
-    compression = Compression.GZIP
-
     outputs.upToDateWhen { false }
 }
 
-def home = System.properties.get('user.home')
-
-task devbin(type: Copy, overwrite: true) {
-
-//    println 'copying bin binaries'
-
-    from('../bin')
-    into "$home/.bugvm-sdks/bugvm-${version}/bin"
-
-    outputs.upToDateWhen { false }
-}
-
-task devlib(type: Copy, overwrite: true) {
-
-//    println 'copying lib binaries'
-
-    from('../compiler/build/libs') {
-        rename 'bugvm-compiler(.*).jar', 'bugvm-compiler.jar'
-    }
-    from('../rt/build/libs') {
-        rename 'bugvm-rt(.*).jar', 'bugvm-rt.jar'
-    }
-    from('../apple/build/libs') {
-        rename 'bugvm-apple(.*).jar', 'bugvm-apple.jar'
-    }
-    from('../cacerts/build/libs') {
-        rename 'bugvm-cacerts(.*).jar', 'bugvm-cacerts.jar'
-    }
-
-    into "$home/.bugvm-sdks/bugvm-${version}/lib"
-
-    outputs.upToDateWhen { false }
-}
-
-task devvm(type: Copy, overwrite: true) {
-
-//    println 'copying vm binaries'
-
-    from('../vm/binaries')
-    into "$home/.bugvm-sdks/bugvm-${version}/lib/vm"
-
-    outputs.upToDateWhen { false }
-}
-
-task env {
+//task env {
 /*First four lines of ~/.bash_profile should be
 export BUGVM_VERSION=1.2.1-SNAPSHOT
 export BUGVM_HOME=~/.bugvm-sdks/bugvm-$BUGVM_VERSION
@@ -115,12 +70,37 @@ export PATH=$BUGVM_HOME/bin:$PATH
 //    ["bash", "-c", """tail -n +2 ~/.bash_profile | cat >> bash_profile.txt"""].execute()
 //    ["bash", "-c", """mv -f bash_profile.txt  ~/.bash_profile"""].execute()
 
-}
+//}
 
 task dev {
+    doLast {
+        def home = System.properties.get('user.home')
+        copy {
+            from('../bin')
+            into "$home/.bugvm-sdks/bugvm-${version}/bin"
+        }
+        copy {
+            from('../compiler/build/libs') {
+                rename 'bugvm-compiler(.*).jar', 'bugvm-compiler.jar'
+            }
+            from('../rt/build/libs') {
+                rename 'bugvm-rt(.*).jar', 'bugvm-rt.jar'
+            }
+            from('../apple/build/libs') {
+                rename 'bugvm-apple(.*).jar', 'bugvm-apple.jar'
+            }
+            from('../cacerts/build/libs') {
+                rename 'bugvm-cacerts(.*).jar', 'bugvm-cacerts.jar'
+            }
 
-//    println 'copying dev binaries'
-    dependsOn devbin, devlib, devvm
+            into "$home/.bugvm-sdks/bugvm-${version}/lib"
+        }
+        copy {
+            from('../rt/vm/binaries')
+            into "$home/.bugvm-sdks/bugvm-${version}/lib/vm"
+        }
+    }
+    outputs.upToDateWhen { false }
 }
 
 //copyIdea.dependsOn dist
@@ -135,23 +115,32 @@ task dev {
 //    outputs.upToDateWhen { false }
 //}
 
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId project.archivesBaseName
 
-            artifact dist
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url mavenUrlSnapshot
+            credentials {
+                username = mavenUsername
+                password = mavenPassword
+            }
         }
     }
 }
-
 
 uploadArchives {
     repositories {
         mavenDeployer {
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
+            snapshotRepository(url: mavenUrlSnapshot) {
+                authentication(userName: mavenUsername, password: mavenPassword)
             }
 
             pom.project {

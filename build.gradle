@@ -35,33 +35,23 @@ allprojects {
 
 }
 
-task buildVM(type:Exec) {
-    workingDir 'vm'
-
-    commandLine 'bash', '-c', '. build.sh --clean --build=release'
-
-}
-
-task buildLLVM(type:Exec) {
-    workingDir 'llvm'
-
-    commandLine 'bash', '-c', '. build.sh --clean'
-
-}
-
 task buildJars {
 
     dependsOn publishToMavenLocal, build, clean
 
 }
 
-task All {
+task buildNativeLib {
 
-    dependsOn buildJars, buildLLVM, buildVM
+    dependsOn ':llvm:nativeLib', ':rt:nativeLib'
 
 }
 
-buildLLVM.shouldRunAfter buildVM
-buildJars.shouldRunAfter buildLLVM
-build.shouldRunAfter clean
-publishToMavenLocal.shouldRunAfter build
+task All  {
+
+    dependsOn buildJars, buildNativeLib
+    buildJars.mustRunAfter buildNativeLib
+
+}
+
+
