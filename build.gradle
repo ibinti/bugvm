@@ -23,9 +23,15 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
+    ext {
+        mavenUrlSnapshot = 'https://oss.sonatype.org/content/repositories/snapshots'
+        mavenUsername = ''
+        mavenPassword = ''
+    }
+
     publishing {
         repositories {
-            maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+            maven { url mavenUrlSnapshot }
         }
     }
 
@@ -53,5 +59,3 @@ task All  {
     buildJars.mustRunAfter buildNativeLib
 
 }
-
-
