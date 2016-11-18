@@ -4,7 +4,7 @@ buildscript {
     }
 }
 
-allprojects {
+subprojects {
 
     group = 'com.bugvm'
     version = bugVMVersion
@@ -35,31 +35,32 @@ allprojects {
         }
     }
 
-    task wrapper(type: Wrapper) {
-        gradleVersion = '3.2'
+    task buildJars {
+
+        dependsOn publishToMavenLocal
+
+        publishToMavenLocal.mustRunAfter build
+        build.mustRunAfter clean
     }
 
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    task buildNativeLib {
+
+        dependsOn ':llvm:nativeLib', ':rt:nativeLib'
+
+    }
+
+    task All  {
+
+        dependsOn buildJars, buildNativeLib
+        buildJars.mustRunAfter buildNativeLib
+
+    }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-task buildJars {
-
-    dependsOn publishToMavenLocal, build, clean
-
-}
-
-task buildNativeLib {
-
-    dependsOn ':llvm:nativeLib', ':rt:nativeLib'
-
-}
-
-task All  {
-
-    dependsOn buildJars, buildNativeLib
-    buildJars.mustRunAfter buildNativeLib
-
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
 }
