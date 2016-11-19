@@ -40,8 +40,6 @@ public class BugVMPlugin implements Plugin<Project> {
 
     public static String getBugVMVersion() {
 
-        String Version = "0.0.0";
-
         Class clazz = BugVMPlugin.class;
         String className = clazz.getSimpleName() + ".class";
         String classPath = clazz.getResource(className).toString();
@@ -54,9 +52,8 @@ public class BugVMPlugin implements Plugin<Project> {
             e.printStackTrace();
         }
         Attributes attr = manifest.getMainAttributes();
-        Version = attr.getValue("Implementation-Version");
 
-        return  Version;
+        return  attr.getValue("Implementation-Version");
 
     }
 

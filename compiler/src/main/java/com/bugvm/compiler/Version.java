@@ -43,8 +43,6 @@ public class Version {
      */
     public static String getVersion() {
 
-        String compilerVersion = "0.0.0";
-
         Class clazz = Version.class;
         String className = clazz.getSimpleName() + ".class";
         String classPath = clazz.getResource(className).toString();
@@ -57,9 +55,7 @@ public class Version {
             e.printStackTrace();
         }
         Attributes attr = manifest.getMainAttributes();
-        compilerVersion = attr.getValue("Implementation-Version");
-
-        return  compilerVersion;
+        return attr.getValue("Implementation-Version");
 
     }
     
@@ -107,9 +103,5 @@ public class Version {
      */
     public static boolean isOlderThan(String otherVersion) {
         return toLong(getVersion()) < toLong(otherVersion);
-    }
-    
-    public static void main(String[] args) {
-        System.out.println(toLong("1.0.0-alpha-01"));
     }
 }

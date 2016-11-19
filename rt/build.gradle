@@ -20,15 +20,10 @@ sourceSets {
 
      main {
           java {
-               srcDirs = ['src', 'libcore', 'external']
+               srcDirs = ['src']
           }
      }
 
-     shadowJar {
-          relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
-          relocate 'org.conscrypt', 'com.android.org.conscrypt'
-          relocate 'com.squareup', 'com.android.com.squareup'
-     }
 
 }
 
@@ -36,6 +31,25 @@ jar {
      manifest {
           attributes "Implementation-Version" : project.version
      }
+     enabled = false
+
+}
+//jar.enabled = false
+
+shadowJar {
+     classifier = null
+//     manifest {
+//          attributes "Implementation-Version" : project.version
+//     }
+     relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
+     relocate 'org.conscrypt', 'com.android.org.conscrypt'
+     relocate 'com.squareup', 'com.android.com.squareup'
+}
+
+build.dependsOn shadowJar
+
+artifacts {
+     shadowJar;
 }
 
 task nativeLib(type:Exec) {
