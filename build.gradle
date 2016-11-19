@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugVMVersion = '1.2.12-SNAPSHOT'
+        bugVMVersion = '1.2.0-SNAPSHOT'
     }
 }
 
@@ -157,62 +157,3 @@ uploadArchives {
         }
     }
 }
-
-//task env {
-/*First four lines of ~/.bash_profile should be
-export BUGVM_VERSION=1.2.1-SNAPSHOT
-export BUGVM_HOME=~/.bugvm-sdks/bugvm-$BUGVM_VERSION
-export BUGVM_STUDIO="/Applications/BugVM Studio.app/Contents"
-export PATH=$BUGVM_HOME/bin:$PATH
-#other settings should come after
-#...
- */
-
-//    ["bash", "-c", """echo 'export BUGVM_VERSION=$bugVMVersion' > bash_profile.txt"""].execute()
-//    ["bash", "-c", """tail -n +2 ~/.bash_profile | cat >> bash_profile.txt"""].execute()
-//    ["bash", "-c", """mv -f bash_profile.txt  ~/.bash_profile"""].execute()
-
-//}
-//
-//task dev {
-//    doLast {
-//        def home = System.properties.get('user.home')
-//        copy {
-//            from('bin')
-//            into "$home/.bugvm-sdks/bugvm-${version}/bin"
-//        }
-//        copy {
-//            from('compiler/build/libs') {
-//                rename 'bugvm-compiler(.*).jar', 'bugvm-compiler.jar'
-//            }
-//            from('rt/build/libs') {
-//                rename 'bugvm-rt(.*).jar', 'bugvm-rt.jar'
-//            }
-//            from('apple/build/libs') {
-//                rename 'bugvm-apple(.*).jar', 'bugvm-apple.jar'
-//            }
-//            from('cacerts/build/libs') {
-//                rename 'bugvm-cacerts(.*).jar', 'bugvm-cacerts.jar'
-//            }
-//
-//            into "$home/.bugvm-sdks/bugvm-${version}/lib"
-//        }
-//        copy {
-//            from('rt/vm/binaries')
-//            into "$home/.bugvm-sdks/bugvm-${version}/lib/vm"
-//        }
-//    }
-//    outputs.upToDateWhen { false }
-//}
-
-//copyIdea.dependsOn dist
-//gradle package:copyIdea --rerun-tasks
-//task copyIdea(type: Copy, overwrite: true, dependsOn: 'targz') {
-//    from('build/distributions'){
-//        rename 'bugvm-dist-(.*).tar.gz', 'bugvm-dist'
-//    }
-//
-//    into 'plugin-idea/src/main/resources'
-//
-//    outputs.upToDateWhen { false }
-//}
