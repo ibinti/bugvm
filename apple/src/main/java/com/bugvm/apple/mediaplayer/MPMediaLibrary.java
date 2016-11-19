@@ -76,4 +76,13 @@ import com.bugvm.apple.coregraphics.*;
     @Method(selector = "defaultMediaLibrary")
     public static native MPMediaLibrary getDefaultMediaLibrary();
     /*</methods>*/
+
+//    + (MPMediaLibraryAuthorizationStatus)authorizationStatus NS_AVAILABLE_IOS(9_3);
+    @Method(selector = "authorizationStatus")
+    public static native MPMediaLibraryAuthorizationStatus getAuthorizationStatus();
+
+//+ (void)requestAuthorization:(void (^)(MPMediaLibraryAuthorizationStatus status))handler NS_AVAILABLE_IOS(9_3);
+    @Method(selector = "requestAuthorization")
+    public static native void requestAuthorization(@Block VoidBlock1<MPMediaLibraryAuthorizationStatus> status);
+
 }
