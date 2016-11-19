@@ -27,7 +27,7 @@ shadowJar {
      classifier = null
      relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
      relocate 'org.conscrypt', 'com.android.org.conscrypt'
-     relocate 'com.squareup', 'com.android.com.squareup'
+     relocate 'com.squareup', 'com.android'
 }
 
 jar.dependsOn shadowJar
