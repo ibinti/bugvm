@@ -43,16 +43,16 @@ public class Version {
      */
     public static String getVersion() {
 
-        String compilerVersion = "0.0.0";
-        if (System.getenv("BUGVM_HOME") != null) {
-            File homeDir = new File(System.getenv("BUGVM_HOME"));
-            File rtPath = new File(homeDir, "lib/bugvm-compiler.jar");
-            try {
-                compilerVersion = getImplementationVersion(rtPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        String compilerVersion = "1.2.9-SNAPSHOT";
+//        if (System.getenv("BUGVM_HOME") != null) {
+//            File homeDir = new File(System.getenv("BUGVM_HOME"));
+//            File rtPath = new File(homeDir, "lib/bugvm-compiler.jar");
+//            try {
+//                compilerVersion = getImplementationVersion(rtPath);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         return  compilerVersion;
 

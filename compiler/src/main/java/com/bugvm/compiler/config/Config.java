@@ -940,6 +940,7 @@ public class Config {
             return cacertsPath.get(cacerts);
         }
 
+        // DO NOT USE ENV ANYMORE
         public static Home find() {
 
             if (System.getenv("BUGVM_HOME") != null) {

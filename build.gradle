@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugVMVersion = '1.2.7-SNAPSHOT'
+        bugVMVersion = '1.2.9-SNAPSHOT'
     }
 }
 
@@ -157,7 +157,6 @@ uploadArchives {
         }
     }
 }
-
 
 //task env {
 /*First four lines of ~/.bash_profile should be
