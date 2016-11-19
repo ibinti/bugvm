@@ -17,6 +17,12 @@ dependencies {
     compile 'org.apache.maven.wagon:wagon-http:2.4'
 }
 
+jar {
+    manifest {
+        attributes "Implementation-Version" : project.version
+    }
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

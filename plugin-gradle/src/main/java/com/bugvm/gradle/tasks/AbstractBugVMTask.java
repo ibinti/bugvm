@@ -238,8 +238,7 @@ abstract public class AbstractBugVMTask extends DefaultTask {
     abstract public void invoke();
 
     protected File unpack() throws GradleException {
-        final Artifact artifact = resolveArtifact("com.bugvm:bugvm-dist:tar.gz:"
-                + BugVMPlugin.getBugVMVersion());
+        final Artifact artifact = resolveArtifact("com.bugvm:bugvm-dist:tar.gz:" + BugVMPlugin.getBugVMVersion());
         final File distTarFile = artifact.getFile();
         final File unpackedDirectory = new File(distTarFile.getParent(), "unpacked");
         final File unpackedDistDirectory = new File(unpackedDirectory, "bugvm-" + BugVMPlugin.getBugVMVersion());

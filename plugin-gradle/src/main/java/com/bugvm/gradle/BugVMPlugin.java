@@ -15,7 +15,11 @@
  */
 package com.bugvm.gradle;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -35,7 +39,25 @@ import com.bugvm.gradle.tasks.InstallTask;
 public class BugVMPlugin implements Plugin<Project> {
 
     public static String getBugVMVersion() {
-        return Version.getVersion();
+
+        String Version = "0.0.0";
+
+        Class clazz = BugVMPlugin.class;
+        String className = clazz.getSimpleName() + ".class";
+        String classPath = clazz.getResource(className).toString();
+        String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +
+                "/META-INF/MANIFEST.MF";
+        Manifest manifest = null;
+        try {
+            manifest = new Manifest(new URL(manifestPath).openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Attributes attr = manifest.getMainAttributes();
+        Version = attr.getValue("Implementation-Version");
+
+        return  Version;
+
     }
 
     @Override

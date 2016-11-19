@@ -43,16 +43,21 @@ public class Version {
      */
     public static String getVersion() {
 
-        String compilerVersion = "1.2.9-SNAPSHOT";
-//        if (System.getenv("BUGVM_HOME") != null) {
-//            File homeDir = new File(System.getenv("BUGVM_HOME"));
-//            File rtPath = new File(homeDir, "lib/bugvm-compiler.jar");
-//            try {
-//                compilerVersion = getImplementationVersion(rtPath);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        String compilerVersion = "0.0.0";
+
+        Class clazz = Version.class;
+        String className = clazz.getSimpleName() + ".class";
+        String classPath = clazz.getResource(className).toString();
+        String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +
+                "/META-INF/MANIFEST.MF";
+        Manifest manifest = null;
+        try {
+            manifest = new Manifest(new URL(manifestPath).openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Attributes attr = manifest.getMainAttributes();
+        compilerVersion = attr.getValue("Implementation-Version");
 
         return  compilerVersion;
 

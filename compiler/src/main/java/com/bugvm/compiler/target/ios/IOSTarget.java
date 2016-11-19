@@ -209,8 +209,8 @@ public class IOSTarget extends AbstractTarget {
         File bugvmSimPath = new File(config.getHome().getBinDir(), "bugvm-sim");
         return new Executor(proxyLogger, bugvmSimPath)
                 .args(args)
-                .wd(config.getHome().getBinDir())
-                // .wd(launchParameters.getWorkingDirectory())
+                //.wd(config.getHome().getBinDir())
+                .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
                 .env(env);
     }
