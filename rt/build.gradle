@@ -16,41 +16,21 @@ dependencies {
      compile "commons-io:commons-io:2.4"
 }
 
-sourceSets {
-
-     main {
-          java {
-               srcDirs = ['src']
-          }
-     }
-
-
-}
-
 jar {
      manifest {
           attributes "Implementation-Version" : project.version
      }
      enabled = false
-
 }
-//jar.enabled = false
 
 shadowJar {
      classifier = null
-//     manifest {
-//          attributes "Implementation-Version" : project.version
-//     }
      relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
      relocate 'org.conscrypt', 'com.android.org.conscrypt'
      relocate 'com.squareup', 'com.android.com.squareup'
 }
 
-build.dependsOn shadowJar
-
-artifacts {
-     shadowJar;
-}
+jar.dependsOn shadowJar
 
 task nativeLib(type:Exec) {
      workingDir 'vm'
@@ -85,7 +65,6 @@ uploadArchives {
                snapshotRepository(url: mavenUrlSnapshot) {
                     authentication(userName: mavenUsername, password: mavenPassword)
                }
-
 
                pom.project {
                     name project.archivesBaseName
