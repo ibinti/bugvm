@@ -368,43 +368,35 @@ public class Config {
     }
 
     public List<String> getForceLinkClasses() {
-        return forceLinkClasses == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(forceLinkClasses);
+        return forceLinkClasses == null ? Collections.<String> emptyList() : Collections.unmodifiableList(forceLinkClasses);
     }
 
     public List<String> getExportedSymbols() {
-        return exportedSymbols == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(exportedSymbols);
+        return exportedSymbols == null ? Collections.<String> emptyList() : Collections.unmodifiableList(exportedSymbols);
     }
 
     public List<String> getUnhideSymbols() {
-        return unhideSymbols == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(unhideSymbols);
+        return unhideSymbols == null ? Collections.<String> emptyList() : Collections.unmodifiableList(unhideSymbols);
     }
     
     public List<Lib> getLibs() {
-        return libs == null ? Collections.<Lib> emptyList()
-                : Collections.unmodifiableList(libs);
+        return libs == null ? Collections.<Lib> emptyList() : Collections.unmodifiableList(libs);
     }
 
     public List<String> getFrameworks() {
-        return frameworks == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(frameworks);
+        return frameworks == null ? Collections.<String> emptyList() : Collections.unmodifiableList(frameworks);
     }
 
     public List<String> getWeakFrameworks() {
-        return weakFrameworks == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(weakFrameworks);
+        return weakFrameworks == null ? Collections.<String> emptyList() : Collections.unmodifiableList(weakFrameworks);
     }
 
     public List<File> getFrameworkPaths() {
-        return frameworkPaths == null ? Collections.<File> emptyList()
-                : Collections.unmodifiableList(frameworkPaths);
+        return frameworkPaths == null ? Collections.<File> emptyList() : Collections.unmodifiableList(frameworkPaths);
     }
 
     public List<Resource> getResources() {
-        return resources == null ? Collections.<Resource> emptyList()
-                : Collections.unmodifiableList(resources);
+        return resources == null ? Collections.<Resource> emptyList() : Collections.unmodifiableList(resources);
     }
 
     public File getOsArchDepLibDir() {
@@ -462,18 +454,15 @@ public class Config {
     }
 
     public List<String> getPluginArguments() {
-        return pluginArguments == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(pluginArguments);
+        return pluginArguments == null ? Collections.<String> emptyList() : Collections.unmodifiableList(pluginArguments);
     }
 
     public List<File> getBootclasspath() {
-        return bootclasspath == null ? Collections.<File> emptyList()
-                : Collections.unmodifiableList(bootclasspath);
+        return bootclasspath == null ? Collections.<File> emptyList() : Collections.unmodifiableList(bootclasspath);
     }
 
     public List<File> getClasspath() {
-        return classpath == null ? Collections.<File> emptyList()
-                : Collections.unmodifiableList(classpath);
+        return classpath == null ? Collections.<File> emptyList() : Collections.unmodifiableList(classpath);
     }
 
     public Properties getProperties() {
@@ -873,8 +862,7 @@ public class Config {
         sliceArch = target.getArch();
         dataLayout = new DataLayout(getTriple());
 
-        osArchDepLibDir = new File(new File(home.libVmDir, os.toString()),
-                sliceArch.toString());
+        osArchDepLibDir = new File(new File(home.libVmDir, os.toString()), sliceArch.toString());
 
         if (treeShakerMode != null && treeShakerMode != TreeShakerMode.none 
                 && os.getFamily() == Family.darwin && sliceArch == Arch.x86) {
@@ -928,16 +916,6 @@ public class Config {
             cacertsPath.put(Cacerts.full, new File(homeDir, "lib/bugvm-cacerts.jar"));
         }
 
-        private Home(File devDir, File binDir, File libVmDir, File rtPath) {
-            this.binDir = binDir;
-            this.libVmDir = libVmDir;
-            this.rtPath = rtPath;
-            cacertsPath = new HashMap<Cacerts, File>();
-            cacertsPath.put(Cacerts.full, new File(devDir,
-                    "cacerts/target/bugvm-cacerts-" + Version.getVersion() + ".jar"));
-            this.dev = true;
-        }
-
         public boolean isDev() {
             return dev;
         }
@@ -963,16 +941,6 @@ public class Config {
         }
 
         public static Home find() {
-            // Check if BUGVM_DEV_ROOT has been set. If set it should be
-            // pointing at the root of a complete BugVM source tree.
-            if (System.getenv("BUGVM_DEV_ROOT") != null) {
-                File dir = new File(System.getenv("BUGVM_DEV_ROOT"));
-                return validateDevRootDir(dir);
-            }
-            if (System.getProperty("BUGVM_DEV_ROOT") != null) {
-                File dir = new File(System.getProperty("BUGVM_DEV_ROOT"));
-                return validateDevRootDir(dir);
-            }
 
             if (System.getenv("BUGVM_HOME") != null) {
                 File dir = new File(System.getenv("BUGVM_HOME"));
@@ -983,9 +951,6 @@ public class Config {
             File userHome = new File(System.getProperty("user.home"));
             candidates.add(new File(userHome, "Applications/bugvm"));
             candidates.add(new File(userHome, ".bugvm/home"));
-            candidates.add(new File("/usr/local/lib/bugvm"));
-            candidates.add(new File("/opt/bugvm"));
-            candidates.add(new File("/usr/lib/bugvm"));
 
             for (File dir : candidates) {
                 if (dir.exists()) {
@@ -1047,58 +1012,6 @@ public class Config {
             }
         }
 
-        private static Home validateDevRootDir(File dir) {
-            String error = "Path " + dir + " is not a valid BugVM source tree: ";
-            // Check for required dirs.
-            if (!dir.exists()) {
-                throw new IllegalArgumentException(error + "no such path");
-            }
-
-            if (!dir.isDirectory()) {
-                throw new IllegalArgumentException(error + "not a directory");
-            }
-
-            File vmBinariesDir = new File(dir, "vm/target/binaries");
-            if (!vmBinariesDir.exists() || !vmBinariesDir.isDirectory()) {
-                throw new IllegalArgumentException(error + "vm/target/binaries/ missing or invalid");
-            }
-            File binDir = new File(dir, "bin");
-            if (!binDir.exists() || !binDir.isDirectory()) {
-                throw new IllegalArgumentException(error + "bin/ missing or invalid");
-            }
-            File libDir = new File(dir, "lib");
-            if (!libDir.exists() || !libDir.isDirectory()) {
-                throw new IllegalArgumentException(error + "lib/ missing or invalid");
-            }
-            File rtJarFile = new File(libDir, "bugvm-rt.jar");
-            if (!rtJarFile.exists() || !rtJarFile.isFile()) {
-                throw new IllegalArgumentException(error
-                        + "lib/bugvm-rt.jar missing or invalid");
-            }
-
-            String rtVersion = "";
-
-            try {
-                rtVersion = getImplementationVersion(rtJarFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            String rtJarName = "bugvm-rt-" + rtVersion + ".jar";
-            File rtJar = new File(dir, "rt/target/" + rtJarName);
-            File rtClasses = new File(dir, "rt/target/classes/");
-            File rtSource = rtJar;
-            if (!rtJar.exists() || rtJar.isDirectory()) {
-                if (!rtClasses.exists() || rtClasses.isFile()) {
-                    throw new IllegalArgumentException(error
-                            + "rt/target/" + rtJarName + " missing or invalid");
-                } else {
-                    rtSource = rtClasses;
-                }
-            }
-
-            return new Home(dir, binDir, vmBinariesDir, rtSource);
-        }
     }
 
     public static class Builder {
@@ -1597,16 +1510,7 @@ public class Config {
             } catch (Exception e) {
                 throw (IOException) new IOException().initCause(e);
             }
-            // <roots> was renamed to <forceLinkClasses> but we still support
-            // <roots>. We need to copy <roots> to <forceLinkClasses> and set
-            // <roots> to null.
-            if (config.roots != null && !config.roots.isEmpty()) {
-                if (config.forceLinkClasses == null) {
-                    config.forceLinkClasses = new ArrayList<String>();
-                }
-                config.forceLinkClasses.addAll(config.roots);
-                config.roots = null;
-            }
+
         }
 
         public void write(File file) throws IOException {
@@ -1641,8 +1545,7 @@ public class Config {
 
             Registry registry = new Registry();
             RegistryStrategy registryStrategy = new RegistryStrategy(registry);
-            Serializer serializer = new Persister(registryStrategy,
-                    new PlatformFilter(config.properties), new Format(2));
+            Serializer serializer = new Persister(registryStrategy, new PlatformFilter(config.properties), new Format(2));
 
             registry.bind(File.class, fileConverter);
             registry.bind(Lib.class, new RelativeLibConverter(fileConverter));
