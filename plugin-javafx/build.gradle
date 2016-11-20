@@ -4,6 +4,7 @@ description = 'JavaFX Gradle Plugin'
 apply plugin: 'groovy'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
     compile project(':compiler')
@@ -12,24 +13,4 @@ dependencies {
     compile localGroovy()
     compile 'com.android.tools.build:gradle:1.1.3'
 
-    testCompile localGroovy()
-    testCompile 'junit:junit:4.8.2'
-}
-
-configurations {
-    published
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-task groovydocJar(type: Jar, dependsOn: groovydoc) {
-    from groovydoc.destinationDir
-    classifier = 'javadoc'
-}
-
-artifacts {
-    archives sourceJar, groovydocJar
 }

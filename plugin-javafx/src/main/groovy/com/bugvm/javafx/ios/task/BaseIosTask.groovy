@@ -66,7 +66,7 @@ abstract class BaseIosTask extends DefaultTask {
             }
         }
 
-        builder.home(new Config.Home(project.file(project.jfxmobile.ios.robovmSdk)))
+        builder.home(new Config.Home(project.file(project.jfxmobile.ios.bugvmSdk)))
                 .tmpDir(project.jfxmobile.ios.temporaryDirectory)
                 .skipInstall(true)
                 .installDir(project.jfxmobile.ios.installDirectory)
@@ -288,10 +288,10 @@ abstract class BaseIosTask extends DefaultTask {
         return defaultInfoPList
     }
 
-    private Logger robovmLogger
+    private Logger bugvmLogger
     private Logger createLogger() {
-        if (robovmLogger == null) {
-            robovmLogger = new Logger() {
+        if (bugvmLogger == null) {
+            bugvmLogger = new Logger() {
                 @Override
                 void debug(String log, Object...objs) {
                     logger.debug(String.format(log, objs))
@@ -313,7 +313,7 @@ abstract class BaseIosTask extends DefaultTask {
                 }
             }
         }
-        return robovmLogger
+        return bugvmLogger
     }
 
 }

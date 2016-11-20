@@ -109,7 +109,7 @@ class JavaFXPlugin implements Plugin<Project> {
         project.extensions.create("jfxmobile", JavaFXExtension, project, instantiator)
 
         JavaFXConvention pluginConvention = new JavaFXConvention(project)
-        project.convention.plugins.'org.javafxports.jfxmobile' = pluginConvention
+        project.convention.plugins.'com.bugvm.javafx' = pluginConvention
 
         project.configurations {
             retrolambdaConfig
@@ -495,11 +495,11 @@ class JavaFXPlugin implements Plugin<Project> {
     }
 
     private void createIosTasks() {
-        if (project.jfxmobile.ios.launcherClassName == 'org.javafxports.jfxmobile.ios.BasicLauncher') {
+        if (project.jfxmobile.ios.launcherClassName == 'com.bugvm.javafx.ios.BasicLauncher') {
             CreateDefaultLauncher createDefaultLauncherTask = project.tasks.create('createDefaultIOSLauncher', CreateDefaultLauncher)
             createDefaultLauncherTask.conventionMapping.map('mainClassName') { project.mainClassName }
             createDefaultLauncherTask.conventionMapping.map('preloaderClassName') { project.preloaderClassName }
-            createDefaultLauncherTask.outputFile = project.file("${project.jfxmobile.ios.temporaryDirectory}/sources/org/javafxports/jfxmobile/ios/BasicLauncher.java")
+            createDefaultLauncherTask.outputFile = project.file("${project.jfxmobile.ios.temporaryDirectory}/sources/com/bugvm/javafx/ios/BasicLauncher.java")
 
             project.tasks.compileIosJava {
                 dependsOn createDefaultLauncherTask

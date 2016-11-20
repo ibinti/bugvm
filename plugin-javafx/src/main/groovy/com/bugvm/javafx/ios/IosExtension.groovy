@@ -15,9 +15,9 @@ class IosExtension {
     /**
      * The fully qualified name of the iOS Launcher class.
      */
-    String launcherClassName = 'org.javafxports.jfxmobile.ios.BasicLauncher'
+    String launcherClassName = 'com.bugvm.javafx.ios.BasicLauncher'
 
-    String bugvmVersion = '1.2.6'
+    String bugvmVersion = '1.2.1-SNAPSHOT'
 
     String os = OS.ios.name()
     String arch = Arch.thumbv7.name()

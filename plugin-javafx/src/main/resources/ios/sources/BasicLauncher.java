@@ -1,4 +1,4 @@
-package org.javafxports.jfxmobile.ios;
+package com.bugvm.javafx.ios;
 
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
