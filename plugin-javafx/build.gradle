@@ -14,3 +14,35 @@ dependencies {
     compile 'com.android.tools.build:gradle:1.1.3'
 
 }
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            snapshotRepository(url: mavenUrlSnapshot) {
+                authentication(userName: mavenUsername, password: mavenPassword)
+            }
+
+            pom.project {
+                name project.archivesBaseName
+                description project.description
+                url 'https://bugvm.com'
+
+                scm {
+                    url 'https://github.com/bugvm/bugvm.git'
+                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                }
+
+                developers {
+                    developer {
+                        id 'bugvm'
+                        name 'The Bug'
+                        email 'bug@bugvm.com'
+                        url 'https://bugvm.com'
+                    }
+                }
+            }
+        }
+    }
+}
