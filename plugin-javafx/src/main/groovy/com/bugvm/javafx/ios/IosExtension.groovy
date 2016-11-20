@@ -1,5 +1,6 @@
 package com.bugvm.javafx.ios
 
+import com.bugvm.javafx.Version
 import org.gradle.api.Project
 import com.bugvm.compiler.config.Arch
 import com.bugvm.compiler.config.OS
@@ -17,7 +18,7 @@ class IosExtension {
      */
     String launcherClassName = 'com.bugvm.javafx.ios.BasicLauncher'
 
-    String bugvmVersion = '1.2.1-SNAPSHOT'
+    String bugvmVersion
 
     String os = OS.ios.name()
     String arch = Arch.thumbv7.name()
@@ -54,12 +55,16 @@ class IosExtension {
     public IosExtension(Project project) {
         this.project = project
 
+        bugvmVersion = Version.getVersion()
+
         installDirectory = new File(project.buildDir, "javafxports/ios")
         project.logger.info("iOS install directory: " + installDirectory)
 
         temporaryDirectory = new File(project.buildDir, "javafxports/tmp/ios")
         project.logger.info("iOS temporary output directory: " + temporaryDirectory)
     }
+
+
 
     boolean isIosSkipSigning() {
         return project.hasProperty("bugvm.iosSkipSigning") ?

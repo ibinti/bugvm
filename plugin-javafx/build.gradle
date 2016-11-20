@@ -15,6 +15,11 @@ dependencies {
 
 }
 
+jar {
+    manifest {
+        attributes "Implementation-Version" : project.version
+    }
+}
 
 uploadArchives {
     repositories {
