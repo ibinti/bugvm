@@ -1,24 +1,21 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/auth/NTCredentials.java $
- * $Revision: 658430 $
- * $Date: 2008-05-20 14:04:27 -0700 (Tue, 20 May 2008) $
- *
  * ====================================================================
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
@@ -27,46 +24,49 @@
  * <http://www.apache.org/>.
  *
  */
-
 package org.apache.http.auth;
 
+import java.io.Serializable;
 import java.security.Principal;
 import java.util.Locale;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 import org.apache.http.util.LangUtils;
 
-/** {@link Credentials} specific to the Windows platform.
+/**
+ * {@link Credentials} implementation for Microsoft Windows platforms that includes
+ * Windows specific attributes such as name of the domain the user belongs to.
  *
- * @author <a href="mailto:adrian@ephox.com">Adrian Sutton</a>
- * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @since 2.0
+ * @since 4.0
  */
-public class NTCredentials implements Credentials {
+@Immutable
+public class NTCredentials implements Credentials, Serializable {
+
+    private static final long serialVersionUID = -7385699315228907265L;
 
     /** The user principal  */
     private final NTUserPrincipal principal;
 
     /** Password */
     private final String password;
-    
+
     /** The host the authentication request is originating from.  */
     private final String workstation;
 
     /**
-     * The constructor with the fully qualified username and password combined 
+     * The constructor with the fully qualified username and password combined
      * string argument.
      *
      * @param usernamePassword the domain/username:password formed string
+     * @deprecated (4.5) will be replaced with {@code String}, {@code char[]} in 5.0
      */
-    public NTCredentials(String usernamePassword) {
+    @Deprecated
+    public NTCredentials(final String usernamePassword) {
         super();
-        if (usernamePassword == null) {
-            throw new IllegalArgumentException("Username:password string may not be null");            
-        }
-        String username;
-        int atColon = usernamePassword.indexOf(':');
+        Args.notNull(usernamePassword, "Username:password string");
+        final String username;
+        final int atColon = usernamePassword.indexOf(':');
         if (atColon >= 0) {
             username = usernamePassword.substring(0, atColon);
             this.password = usernamePassword.substring(atColon + 1);
@@ -74,10 +74,10 @@ public class NTCredentials implements Credentials {
             username = usernamePassword;
             this.password = null;
         }
-        int atSlash = username.indexOf('/');
+        final int atSlash = username.indexOf('/');
         if (atSlash >= 0) {
             this.principal = new NTUserPrincipal(
-                    username.substring(0, atSlash).toUpperCase(Locale.ENGLISH),
+                    username.substring(0, atSlash).toUpperCase(Locale.ROOT),
                     username.substring(atSlash + 1));
         } else {
             this.principal = new NTUserPrincipal(
@@ -90,38 +90,38 @@ public class NTCredentials implements Credentials {
     /**
      * Constructor.
      * @param userName The user name.  This should not include the domain to authenticate with.
-     * For example: "user" is correct whereas "DOMAIN\\user" is not.
+     * For example: "user" is correct whereas "DOMAIN&#x5c;user" is not.
      * @param password The password.
-     * @param workstation The workstation the authentication request is originating from. 
+     * @param workstation The workstation the authentication request is originating from.
      * Essentially, the computer name for this machine.
      * @param domain The domain to authenticate within.
      */
     public NTCredentials(
-            final String userName, 
-            final String password, 
+            final String userName,
+            final String password,
             final String workstation,
             final String domain) {
         super();
-        if (userName == null) {
-            throw new IllegalArgumentException("User name may not be null");
-        }
+        Args.notNull(userName, "User name");
         this.principal = new NTUserPrincipal(domain, userName);
         this.password = password;
         if (workstation != null) {
-            this.workstation = workstation.toUpperCase(Locale.ENGLISH);
+            this.workstation = workstation.toUpperCase(Locale.ROOT);
         } else {
             this.workstation = null;
         }
     }
 
+    @Override
     public Principal getUserPrincipal() {
         return this.principal;
     }
-    
+
     public String getUserName() {
         return this.principal.getUsername();
     }
-    
+
+    @Override
     public String getPassword() {
         return this.password;
     }
@@ -143,7 +143,7 @@ public class NTCredentials implements Credentials {
     public String getWorkstation() {
         return this.workstation;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = LangUtils.HASH_SEED;
@@ -153,11 +153,12 @@ public class NTCredentials implements Credentials {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null) return false;
-        if (this == o) return true;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o instanceof NTCredentials) {
-            NTCredentials that = (NTCredentials) o;
+            final NTCredentials that = (NTCredentials) o;
             if (LangUtils.equals(this.principal, that.principal)
                     && LangUtils.equals(this.workstation, that.workstation)) {
                 return true;
@@ -168,7 +169,7 @@ public class NTCredentials implements Credentials {
 
     @Override
     public String toString() {
-        StringBuilder buffer = new StringBuilder();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append("[principal: ");
         buffer.append(this.principal);
         buffer.append("][workstation: ");

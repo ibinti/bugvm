@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicStatusLine.java $
- * $Revision: 604625 $
- * $Date: 2007-12-16 06:11:11 -0800 (Sun, 16 Dec 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,26 +27,22 @@
 
 package org.apache.http.message;
 
-import org.apache.http.HttpStatus;
+import java.io.Serializable;
+
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
-
-
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
- * Represents a status line as returned from a HTTP server.
- * See <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a> section 6.1.
- * This class is immutable and therefore inherently thread safe.
+ * Basic implementation of {@link StatusLine}
  *
- * @see HttpStatus
- * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
- *
- * @version $Id: BasicStatusLine.java 604625 2007-12-16 14:11:11Z olegk $
- * 
  * @since 4.0
  */
-public class BasicStatusLine implements StatusLine, Cloneable {
+@Immutable
+public class BasicStatusLine implements StatusLine, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -2443303766890459269L;
 
     // ----------------------------------------------------- Instance Variables
 
@@ -70,55 +62,42 @@ public class BasicStatusLine implements StatusLine, Cloneable {
      * @param version           the protocol version of the response
      * @param statusCode        the status code of the response
      * @param reasonPhrase      the reason phrase to the status code, or
-     *                          <code>null</code>
+     *                          {@code null}
      */
-    public BasicStatusLine(final ProtocolVersion version, int statusCode,
+    public BasicStatusLine(final ProtocolVersion version, final int statusCode,
                            final String reasonPhrase) {
         super();
-        if (version == null) {
-            throw new IllegalArgumentException
-                ("Protocol version may not be null.");
-        }
-        if (statusCode < 0) {
-            throw new IllegalArgumentException
-                ("Status code may not be negative.");
-        }
-        this.protoVersion = version;
-        this.statusCode   = statusCode;
+        this.protoVersion = Args.notNull(version, "Version");
+        this.statusCode = Args.notNegative(statusCode, "Status code");
         this.reasonPhrase = reasonPhrase;
     }
 
     // --------------------------------------------------------- Public Methods
 
-    /**
-     * @return the Status-Code
-     */
+    @Override
     public int getStatusCode() {
         return this.statusCode;
     }
 
-    /**
-     * @return the HTTP-Version
-     */
+    @Override
     public ProtocolVersion getProtocolVersion() {
         return this.protoVersion;
     }
 
-    /**
-     * @return the Reason-Phrase
-     */
+    @Override
     public String getReasonPhrase() {
         return this.reasonPhrase;
     }
 
+    @Override
     public String toString() {
         // no need for non-default formatting in toString()
-        return BasicLineFormatter.DEFAULT
-            .formatStatusLine(null, this).toString();
+        return BasicLineFormatter.INSTANCE.formatStatusLine(null, this).toString();
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-    
+
 }

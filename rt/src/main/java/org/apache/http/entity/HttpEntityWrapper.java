@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/HttpEntityWrapper.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,6 +33,8 @@ import java.io.OutputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
 /**
  * Base class for wrapping entities.
@@ -45,10 +43,9 @@ import org.apache.http.HttpEntity;
  * from this class and need to override only those methods that
  * should not be delegated to the wrapped entity.
  *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class HttpEntityWrapper implements HttpEntity {
 
     /** The wrapped entity. */
@@ -56,58 +53,62 @@ public class HttpEntityWrapper implements HttpEntity {
 
     /**
      * Creates a new entity wrapper.
-     *
-     * @param wrapped   the entity to wrap
      */
-    public HttpEntityWrapper(HttpEntity wrapped) {
+    public HttpEntityWrapper(final HttpEntity wrappedEntity) {
         super();
-
-        if (wrapped == null) {
-            throw new IllegalArgumentException
-                ("wrapped entity must not be null");
-        }
-        wrappedEntity = wrapped;
-
+        this.wrappedEntity = Args.notNull(wrappedEntity, "Wrapped entity");
     } // constructor
 
-
+    @Override
     public boolean isRepeatable() {
         return wrappedEntity.isRepeatable();
     }
 
+    @Override
     public boolean isChunked() {
         return wrappedEntity.isChunked();
     }
 
+    @Override
     public long getContentLength() {
         return wrappedEntity.getContentLength();
     }
 
+    @Override
     public Header getContentType() {
         return wrappedEntity.getContentType();
     }
 
+    @Override
     public Header getContentEncoding() {
         return wrappedEntity.getContentEncoding();
     }
 
+    @Override
     public InputStream getContent()
         throws IOException {
         return wrappedEntity.getContent();
     }
 
-    public void writeTo(OutputStream outstream)
+    @Override
+    public void writeTo(final OutputStream outstream)
         throws IOException {
         wrappedEntity.writeTo(outstream);
     }
 
+    @Override
     public boolean isStreaming() {
         return wrappedEntity.isStreaming();
     }
 
-    public void consumeContent()
-        throws IOException {
+    /**
+     * @deprecated (4.1) Either use {@link #getContent()} and call {@link java.io.InputStream#close()} on that;
+     * otherwise call {@link #writeTo(OutputStream)} which is required to free the resources.
+     */
+    @Override
+    @Deprecated
+    public void consumeContent() throws IOException {
         wrappedEntity.consumeContent();
     }
 
-} // class HttpEntityWrapper
+}

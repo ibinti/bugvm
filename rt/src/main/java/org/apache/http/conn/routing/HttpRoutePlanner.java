@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/routing/HttpRoutePlanner.java $
- * $Revision: 613654 $
- * $Date: 2008-01-20 11:00:19 -0800 (Sun, 20 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,34 +32,37 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.protocol.HttpContext;
 
-
-
 /**
  * Encapsulates logic to compute a {@link HttpRoute} to a target host.
  * Implementations may for example be based on parameters, or on the
  * standard Java system properties.
+ * <p>
+ * Implementations of this interface must be thread-safe. Access to shared
+ * data must be synchronized as methods of this interface may be executed
+ * from multiple threads.
+ * </p>
+ *
+ * @since 4.0
  */
 public interface HttpRoutePlanner {
-    
+
     /**
      * Determines the route for a request.
      *
      * @param target    the target host for the request.
-     *                  Implementations may accept <code>null</code>
+     *                  Implementations may accept {@code null}
      *                  if they can still determine a route, for example
      *                  to a default target or by inspecting the request.
      * @param request   the request to execute
      * @param context   the context to use for the subsequent execution.
-     *                  Implementations may accept <code>null</code>.
+     *                  Implementations may accept {@code null}.
      *
      * @return  the route that the request should take
      *
      * @throws HttpException    in case of a problem
-     */        
+     */
     public HttpRoute determineRoute(HttpHost target,
                                     HttpRequest request,
-                                    HttpContext context)
-        throws HttpException
-        ;
-    
+                                    HttpContext context) throws HttpException;
+
 }

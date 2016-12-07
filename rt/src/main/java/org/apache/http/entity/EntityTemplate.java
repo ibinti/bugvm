@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/EntityTemplate.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,56 +27,55 @@
 
 package org.apache.http.entity;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.http.util.Args;
+
 /**
- * Entity that delegates the process of content generation to an abstract
- * content producer.
+ * Entity that delegates the process of content generation
+ * to a {@link ContentProducer}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
 public class EntityTemplate extends AbstractHttpEntity {
 
     private final ContentProducer contentproducer;
-    
+
     public EntityTemplate(final ContentProducer contentproducer) {
         super();
-        if (contentproducer == null) {
-            throw new IllegalArgumentException("Content producer may not be null");
-        }
-        this.contentproducer = contentproducer; 
+        this.contentproducer = Args.notNull(contentproducer, "Content producer");
     }
 
+    @Override
     public long getContentLength() {
         return -1;
     }
 
-    public InputStream getContent() {
-        throw new UnsupportedOperationException("Entity template does not implement getContent()");
+    @Override
+    public InputStream getContent() throws IOException {
+        final ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        writeTo(buf);
+        return new ByteArrayInputStream(buf.toByteArray());
     }
 
+    @Override
     public boolean isRepeatable() {
         return true;
     }
 
+    @Override
     public void writeTo(final OutputStream outstream) throws IOException {
-        if (outstream == null) {
-            throw new IllegalArgumentException("Output stream may not be null");
-        }
+        Args.notNull(outstream, "Output stream");
         this.contentproducer.writeTo(outstream);
     }
 
+    @Override
     public boolean isStreaming() {
-        return true;
+        return false;
     }
 
-    public void consumeContent() throws IOException {
-    }
-    
 }

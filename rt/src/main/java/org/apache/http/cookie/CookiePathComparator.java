@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/CookiePathComparator.java $
- * $Revision: 653041 $
- * $Date: 2008-05-03 03:39:28 -0700 (Sat, 03 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,21 +30,27 @@ package org.apache.http.cookie;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.apache.http.annotation.Immutable;
+
 /**
- * This cookie comparator ensures that multiple cookies satisfying 
- * a common criteria are ordered in the <tt>Cookie</tt> header such
+ * This cookie comparator ensures that multiple cookies satisfying
+ * a common criteria are ordered in the {@code Cookie} header such
  * that those with more specific Path attributes precede those with
  * less specific.
- *  
+ *
  * <p>
- * This comparator assumes that Path attributes of two cookies 
+ * This comparator assumes that Path attributes of two cookies
  * path-match a commmon request-URI. Otherwise, the result of the
  * comparison is undefined.
  * </p>
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ *
+ *
+ * @since 4.0
  */
+@Immutable
 public class CookiePathComparator implements Serializable, Comparator<Cookie> {
+
+    public static final CookiePathComparator INSTANCE = new CookiePathComparator();
 
     private static final long serialVersionUID = 7523645369616405818L;
 
@@ -62,10 +64,11 @@ public class CookiePathComparator implements Serializable, Comparator<Cookie> {
         }
         return path;
     }
-    
+
+    @Override
     public int compare(final Cookie c1, final Cookie c2) {
-        String path1 = normalizePath(c1);
-        String path2 = normalizePath(c2);
+        final String path1 = normalizePath(c1);
+        final String path2 = normalizePath(c2);
         if (path1.equals(path2)) {
             return 0;
         } else if (path1.startsWith(path2)) {

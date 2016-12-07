@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpUriRequest.java $
- * $Revision: 659191 $
- * $Date: 2008-05-22 11:26:53 -0700 (Thu, 22 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,45 +32,54 @@ import java.net.URI;
 import org.apache.http.HttpRequest;
 
 /**
- * Extended version of the {@link HttpRequest} interface that provides 
+ * Extended version of the {@link HttpRequest} interface that provides
  * convenience methods to access request properties such as request URI
  * and method type.
- *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version   $Revision: 659191 $
  *
  * @since 4.0
  */
 public interface HttpUriRequest extends HttpRequest {
-    
+
     /**
-     * Returns the HTTP method this request uses, such as <code>GET</code>,
-     * <code>PUT</code>, <code>POST</code>, or other.
+     * Returns the HTTP method this request uses, such as {@code GET},
+     * {@code PUT}, {@code POST}, or other.
      */
     String getMethod();
 
     /**
      * Returns the URI this request uses, such as
-     * <code>http://example.org/path/to/file</code>.
+     * {@code http://example.org/path/to/file}.
+     * <p>
+     * Note that the URI may be absolute URI (as above) or may be a relative URI.
+     * </p>
+     * <p>
+     * Implementations are encouraged to return
+     * the URI that was initially requested.
+     * </p>
+     * <p>
+     * To find the final URI after any redirects have been processed,
+     * please see the section entitled
+     * <a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fundamentals.html#d4e205">HTTP execution context</a>
+     * in the
+     * <a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html">HttpClient Tutorial</a>
+     * </p>
      */
     URI getURI();
-    
+
     /**
-     * Aborts execution of the request. 
-     * 
-     * @throws UnsupportedOperationException if the abort operation 
+     * Aborts execution of the request.
+     *
+     * @throws UnsupportedOperationException if the abort operation
      *   is not supported / cannot be implemented.
      */
     void abort() throws UnsupportedOperationException;
-    
+
     /**
      * Tests if the request execution has been aborted.
-     * 
-     * @return <code>true</code> if the request execution has been aborted,
-     *   <code>false</code> otherwise.
+     *
+     * @return {@code true} if the request execution has been aborted,
+     *   {@code false} otherwise.
      */
     boolean isAborted();
-    
+
 }

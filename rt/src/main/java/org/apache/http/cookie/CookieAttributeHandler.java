@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/CookieAttributeHandler.java $
- * $Revision: 558519 $
- * $Date: 2007-07-22 11:19:49 -0700 (Sun, 22 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,16 +27,15 @@
 package org.apache.http.cookie;
 
 /**
- * Ths interface represents a cookie attribute handler responsible
- * for parsing, validating, and matching a specific cookie attribute, 
+ * This interface represents a cookie attribute handler responsible
+ * for parsing, validating, and matching a specific cookie attribute,
  * such as path, domain, port, etc.
  *
  * Different cookie specifications can provide a specific
  * implementation for this class based on their cookie handling
  * rules.
  *
- * @author jain.samit@gmail.com (Samit Jain)
- * 
+ *
  * @since 4.0
  */
 public interface CookieAttributeHandler {
@@ -71,7 +66,7 @@ public interface CookieAttributeHandler {
    *
    * @param cookie {@link org.apache.http.cookie.Cookie} to match
    * @param origin the cookie source to match against
-   * @return <tt>true</tt> if the match is successful; <tt>false</tt> otherwise
+   * @return {@code true} if the match is successful; {@code false} otherwise
    */
   boolean match(Cookie cookie, CookieOrigin origin);
 

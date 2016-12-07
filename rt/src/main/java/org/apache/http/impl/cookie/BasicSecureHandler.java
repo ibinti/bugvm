@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/BasicSecureHandler.java $
- * $Revision: 653041 $
- * $Date: 2008-05-03 03:39:28 -0700 (Sat, 03 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,37 +23,46 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  *
- */ 
+ */
 package org.apache.http.impl.cookie;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.cookie.ClientCookie;
+import org.apache.http.cookie.CommonCookieAttributeHandler;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.cookie.CookieOrigin;
 import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.cookie.SetCookie;
+import org.apache.http.util.Args;
 
-public class BasicSecureHandler extends AbstractCookieAttributeHandler {
+/**
+ *
+ * @since 4.0
+ */
+@Immutable
+public class BasicSecureHandler extends AbstractCookieAttributeHandler implements CommonCookieAttributeHandler {
 
     public BasicSecureHandler() {
         super();
     }
-    
-    public void parse(final SetCookie cookie, final String value) 
+
+    @Override
+    public void parse(final SetCookie cookie, final String value)
             throws MalformedCookieException {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
+        Args.notNull(cookie, "Cookie");
         cookie.setSecure(true);
     }
-    
+
     @Override
     public boolean match(final Cookie cookie, final CookieOrigin origin) {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
-        if (origin == null) {
-            throw new IllegalArgumentException("Cookie origin may not be null");
-        }
+        Args.notNull(cookie, "Cookie");
+        Args.notNull(origin, "Cookie origin");
         return !cookie.isSecure() || origin.isSecure();
     }
-    
+
+    @Override
+    public String getAttributeName() {
+        return ClientCookie.SECURE_ATTR;
+    }
+
 }

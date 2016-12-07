@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/io/HttpMessageWriter.java $
- * $Revision: 567370 $
- * $Date: 2007-08-19 01:13:21 -0700 (Sun, 19 Aug 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,17 +33,22 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpMessage;
 
 /**
- * Generic message writer interface.
+ * Abstract message writer intended to serialize HTTP messages to an arbitrary
+ * data sink.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 567370 $
- * 
  * @since 4.0
  */
-public interface HttpMessageWriter {
-    
-    void write(HttpMessage message)
+public interface HttpMessageWriter<T extends HttpMessage> {
+
+    /**
+     * Serializes an instance of {@link HttpMessage} to the underlying data
+     * sink.
+     *
+     * @param message HTTP message
+     * @throws IOException in case of an I/O error
+     * @throws HttpException in case of HTTP protocol violation
+     */
+    void write(T message)
         throws IOException, HttpException;
-    
+
 }

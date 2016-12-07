@@ -1,24 +1,21 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/auth/NTUserPrincipal.java $
- * $Revision: 658430 $
- * $Date: 2008-05-20 14:04:27 -0700 (Tue, 20 May 2008) $
- *
  * ====================================================================
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
@@ -27,21 +24,25 @@
  * <http://www.apache.org/>.
  *
  */
-
 package org.apache.http.auth;
 
+import java.io.Serializable;
 import java.security.Principal;
 import java.util.Locale;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 import org.apache.http.util.LangUtils;
 
-/**  NT (MS Windows specific) user principal used for HTTP authentication
+/**
+ * Microsoft Windows specific user principal implementation.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
  * @since 4.0
  */
-public class NTUserPrincipal implements Principal {
+@Immutable
+public class NTUserPrincipal implements Principal, Serializable {
+
+    private static final long serialVersionUID = -6870169797924406894L;
 
     private final String username;
     private final String domain;
@@ -51,19 +52,17 @@ public class NTUserPrincipal implements Principal {
             final String domain,
             final String username) {
         super();
-        if (username == null) {
-            throw new IllegalArgumentException("User name may not be null");
-        }
+        Args.notNull(username, "User name");
         this.username = username;
         if (domain != null) {
-            this.domain = domain.toUpperCase(Locale.ENGLISH);
+            this.domain = domain.toUpperCase(Locale.ROOT);
         } else {
             this.domain = null;
         }
-        if (this.domain != null && this.domain.length() > 0) {
-            StringBuilder buffer = new StringBuilder();
+        if (this.domain != null && !this.domain.isEmpty()) {
+            final StringBuilder buffer = new StringBuilder();
             buffer.append(this.domain);
-            buffer.append('/');
+            buffer.append('\\');
             buffer.append(this.username);
             this.ntname = buffer.toString();
         } else {
@@ -71,10 +70,11 @@ public class NTUserPrincipal implements Principal {
         }
     }
 
+    @Override
     public String getName() {
         return this.ntname;
     }
-    
+
     public String getDomain() {
         return this.domain;
     }
@@ -92,11 +92,12 @@ public class NTUserPrincipal implements Principal {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null) return false;
-        if (this == o) return true;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o instanceof NTUserPrincipal) {
-            NTUserPrincipal that = (NTUserPrincipal) o;
+            final NTUserPrincipal that = (NTUserPrincipal) o;
             if (LangUtils.equals(this.username, that.username)
                     && LangUtils.equals(this.domain, that.domain)) {
                 return true;

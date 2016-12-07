@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/DefaultHttpClientConnection.java $
- * $Revision: 561083 $
- * $Date: 2007-07-30 11:31:17 -0700 (Mon, 30 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,54 +30,39 @@ package org.apache.http.impl;
 import java.io.IOException;
 import java.net.Socket;
 
-import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.Args;
 
 /**
  * Default implementation of a client-side HTTP connection.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 561083 $
- * 
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link DefaultBHttpClientConnection}
  */
+@Deprecated
 public class DefaultHttpClientConnection extends SocketHttpClientConnection {
 
     public DefaultHttpClientConnection() {
         super();
     }
-    
+
+    @Override
     public void bind(
-            final Socket socket, 
+            final Socket socket,
             final HttpParams params) throws IOException {
-        if (socket == null) {
-            throw new IllegalArgumentException("Socket may not be null");
-        }
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+        Args.notNull(socket, "Socket");
+        Args.notNull(params, "HTTP parameters");
         assertNotOpen();
-        socket.setTcpNoDelay(HttpConnectionParams.getTcpNoDelay(params));
-        socket.setSoTimeout(HttpConnectionParams.getSoTimeout(params));
-        
-        int linger = HttpConnectionParams.getLinger(params);
+        socket.setTcpNoDelay(params.getBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true));
+        socket.setSoTimeout(params.getIntParameter(CoreConnectionPNames.SO_TIMEOUT, 0));
+        socket.setKeepAlive(params.getBooleanParameter(CoreConnectionPNames.SO_KEEPALIVE, false));
+        final int linger = params.getIntParameter(CoreConnectionPNames.SO_LINGER, -1);
         if (linger >= 0) {
             socket.setSoLinger(linger > 0, linger);
         }
         super.bind(socket, params);
     }
 
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("[");
-        if (isOpen()) {
-            buffer.append(getRemotePort());
-        } else {
-            buffer.append("closed");
-        }
-        buffer.append("]");
-        return buffer.toString();
-    }
-    
 }

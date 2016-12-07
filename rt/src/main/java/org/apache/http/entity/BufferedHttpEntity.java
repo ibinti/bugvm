@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/BufferedHttpEntity.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,12 +28,14 @@
 package org.apache.http.entity;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
 /**
  * A wrapping entity that buffers it content if necessary.
@@ -46,75 +44,85 @@ import org.apache.http.util.EntityUtils;
  * If the wrapped entity is not repeatable, the content is read into a
  * buffer once and provided from there as often as required.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class BufferedHttpEntity extends HttpEntityWrapper {
-      
+
     private final byte[] buffer;
-      
+
+    /**
+     * Creates a new buffered entity wrapper.
+     *
+     * @param entity   the entity to wrap, not null
+     * @throws IllegalArgumentException if wrapped is null
+     */
     public BufferedHttpEntity(final HttpEntity entity) throws IOException {
         super(entity);
         if (!entity.isRepeatable() || entity.getContentLength() < 0) {
-            this.buffer = EntityUtils.toByteArray(entity);
+            final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            entity.writeTo(out);
+            out.flush();
+            this.buffer = out.toByteArray();
         } else {
             this.buffer = null;
         }
     }
 
+    @Override
     public long getContentLength() {
         if (this.buffer != null) {
             return this.buffer.length;
         } else {
-            return wrappedEntity.getContentLength();
+            return super.getContentLength();
         }
     }
-    
+
+    @Override
     public InputStream getContent() throws IOException {
         if (this.buffer != null) {
             return new ByteArrayInputStream(this.buffer);
         } else {
-            return wrappedEntity.getContent();
+            return super.getContent();
         }
     }
 
     /**
      * Tells that this entity does not have to be chunked.
      *
-     * @return  <code>false</code>
+     * @return  {@code false}
      */
+    @Override
     public boolean isChunked() {
-        return (buffer == null) && wrappedEntity.isChunked();
+        return (buffer == null) && super.isChunked();
     }
-    
+
     /**
      * Tells that this entity is repeatable.
      *
-     * @return  <code>true</code>
+     * @return  {@code true}
      */
+    @Override
     public boolean isRepeatable() {
         return true;
     }
 
-    
+
+    @Override
     public void writeTo(final OutputStream outstream) throws IOException {
-        if (outstream == null) {
-            throw new IllegalArgumentException("Output stream may not be null");
-        }
+        Args.notNull(outstream, "Output stream");
         if (this.buffer != null) {
             outstream.write(this.buffer);
         } else {
-            wrappedEntity.writeTo(outstream);
+            super.writeTo(outstream);
         }
     }
 
 
     // non-javadoc, see interface HttpEntity
+    @Override
     public boolean isStreaming() {
-        return (buffer == null) && wrappedEntity.isStreaming();
+        return (buffer == null) && super.isStreaming();
     }
-    
+
 } // class BufferedHttpEntity

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/util/ExceptionUtils.java $
- * $Revision: 613003 $
- * $Date: 2008-01-17 15:00:42 -0800 (Thu, 17 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,46 +30,47 @@ import java.lang.reflect.Method;
 
 /**
  * The home for utility methods that handle various exception-related tasks.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * @author <a href="mailto:laura@lwerner.org">Laura Werner</a>
- * 
+ *
+ *
  * @since 4.0
+ *
+ * @deprecated (4.2) no longer used
  */
+@Deprecated
 public final class ExceptionUtils {
 
     /** A reference to Throwable's initCause method, or null if it's not there in this JVM */
     static private final Method INIT_CAUSE_METHOD = getInitCauseMethod();
 
     /**
-     * Returns a <code>Method<code> allowing access to
+     * Returns a {@code Method} allowing access to
      * {@link Throwable#initCause(Throwable) initCause} method of {@link Throwable},
-     * or <code>null</code> if the method
+     * or {@code null} if the method
      * does not exist.
-     * 
-     * @return A <code>Method<code> for <code>Throwable.initCause</code>, or
-     * <code>null</code> if unavailable.
-     */ 
+     *
+     * @return A {@code Method} for {@code Throwable.initCause}, or
+     * {@code null} if unavailable.
+     */
     static private Method getInitCauseMethod() {
         try {
-            Class[] paramsClasses = new Class[] { Throwable.class };
+            final Class<?>[] paramsClasses = new Class[] { Throwable.class };
             return Throwable.class.getMethod("initCause", paramsClasses);
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             return null;
         }
     }
-    
-    /** 
+
+    /**
      * If we're running on JDK 1.4 or later, initialize the cause for the given throwable.
-     * 
+     *
      * @param  throwable The throwable.
      * @param  cause     The cause of the throwable.
      */
-    public static void initCause(Throwable throwable, Throwable cause) {
+    public static void initCause(final Throwable throwable, final Throwable cause) {
         if (INIT_CAUSE_METHOD != null) {
             try {
-                INIT_CAUSE_METHOD.invoke(throwable, new Object[] { cause });
-            } catch (Exception e) {
+                INIT_CAUSE_METHOD.invoke(throwable, cause);
+            } catch (final Exception e) {
                 // Well, with no logging, the only option is to munch the exception
             }
         }
@@ -81,5 +78,5 @@ public final class ExceptionUtils {
 
     private ExceptionUtils() {
     }
-    
+
 }

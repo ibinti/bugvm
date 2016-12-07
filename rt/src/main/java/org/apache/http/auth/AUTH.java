@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/auth/AUTH.java $
- * $Revision: 618365 $
- * $Date: 2008-02-04 10:20:08 -0800 (Mon, 04 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,13 +27,15 @@
 
 package org.apache.http.auth;
 
+import org.apache.http.annotation.Immutable;
+
 /**
  * Constants and static helpers related to the HTTP authentication.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ *
  *
  * @since 4.0
  */
+@Immutable
 public final class AUTH {
 
     /**
@@ -59,8 +57,8 @@ public final class AUTH {
      * The proxy authenticate response header.
      */
     public static final String PROXY_AUTH_RESP = "Proxy-Authorization";
-    
+
     private AUTH() {
     }
-       
+
 }

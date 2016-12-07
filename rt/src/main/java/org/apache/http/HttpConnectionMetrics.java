@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpConnectionMetrics.java $
- * $Revision: 548035 $
- * $Date: 2007-06-17 05:17:03 -0700 (Sun, 17 Jun 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,47 +29,49 @@ package org.apache.http;
 
 /**
  * The point of access to the statistics of an {@link HttpConnection}.
+ *
+ * @since 4.0
  */
 public interface HttpConnectionMetrics {
 
     /**
-     * Returns the number of requests transferred over the connection, 
+     * Returns the number of requests transferred over the connection,
      * 0 if not available.
-     */ 
+     */
     long getRequestCount();
-    
+
     /**
-     * Returns the number of responses transferred over the connection, 
+     * Returns the number of responses transferred over the connection,
      * 0 if not available.
-     */ 
+     */
     long getResponseCount();
-    
+
     /**
-     * Returns the number of bytes transferred over the connection, 
+     * Returns the number of bytes transferred over the connection,
      * 0 if not available.
-     */ 
+     */
     long getSentBytesCount();
-    
+
     /**
-     * Returns the number of bytes transferred over the connection, 
+     * Returns the number of bytes transferred over the connection,
      * 0 if not available.
-     */ 
-    long getReceivedBytesCount(); 
-    
+     */
+    long getReceivedBytesCount();
+
     /**
      * Return the value for the specified metric.
      *
      *@param metricName the name of the metric to query.
      *
      *@return the object representing the metric requested,
-     *        <code>null</code> if the metric cannot not found.
+     *        {@code null} if the metric cannot not found.
      */
     Object getMetric(String metricName);
-    
+
     /**
      * Resets the counts
      *
      */
     void reset();
-    
+
 }

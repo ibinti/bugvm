@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpInetConnection.java $
- * $Revision: 613298 $
- * $Date: 2008-01-18 14:09:22 -0800 (Fri, 18 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,10 +32,6 @@ import java.net.InetAddress;
 /**
  * An HTTP connection over the Internet Protocol (IP).
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 613298 $
- * 
  * @since 4.0
  */
 public interface HttpInetConnection extends HttpConnection {
@@ -47,9 +39,9 @@ public interface HttpInetConnection extends HttpConnection {
     InetAddress getLocalAddress();
 
     int getLocalPort();
-    
+
     InetAddress getRemoteAddress();
 
     int getRemotePort();
-    
+
 }

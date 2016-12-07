@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/RFC2965DiscardAttributeHandler.java $
- * $Revision: 590695 $
- * $Date: 2007-10-31 07:55:41 -0700 (Wed, 31 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,36 +27,49 @@
 
 package org.apache.http.impl.cookie;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.cookie.ClientCookie;
+import org.apache.http.cookie.CommonCookieAttributeHandler;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.cookie.CookieAttributeHandler;
 import org.apache.http.cookie.CookieOrigin;
 import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.cookie.SetCookie;
 import org.apache.http.cookie.SetCookie2;
 
 /**
-   * <tt>"Discard"</tt> cookie attribute handler for RFC 2965 cookie spec.
-   */
-  public class RFC2965DiscardAttributeHandler implements CookieAttributeHandler {
+ * {@code "Discard"} cookie attribute handler for RFC 2965 cookie spec.
+ *
+ * @since 4.0
+ */
+@Immutable
+public class RFC2965DiscardAttributeHandler implements CommonCookieAttributeHandler {
 
       public RFC2965DiscardAttributeHandler() {
           super();
       }
-      
+
+      @Override
       public void parse(final SetCookie cookie, final String commenturl)
               throws MalformedCookieException {
           if (cookie instanceof SetCookie2) {
-              SetCookie2 cookie2 = (SetCookie2) cookie;
+              final SetCookie2 cookie2 = (SetCookie2) cookie;
               cookie2.setDiscard(true);
           }
       }
 
+      @Override
       public void validate(final Cookie cookie, final CookieOrigin origin)
               throws MalformedCookieException {
       }
 
+      @Override
       public boolean match(final Cookie cookie, final CookieOrigin origin) {
           return true;
       }
-      
-  }
+
+    @Override
+    public String getAttributeName() {
+        return ClientCookie.DISCARD_ATTR;
+    }
+
+}

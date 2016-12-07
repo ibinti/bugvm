@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/IdentityOutputStream.java $
- * $Revision: 560343 $
- * $Date: 2007-07-27 11:18:19 -0700 (Fri, 27 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,19 +30,25 @@ package org.apache.http.impl.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.io.SessionOutputBuffer;
+import org.apache.http.util.Args;
 
 /**
- * A stream for writing with an "identity" transport encoding.
+ * Output stream that writes data without any transformation. The end of
+ * the content entity is demarcated by closing the underlying connection
+ * (EOF condition). Entities transferred using this input stream can be of
+ * unlimited length.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, the stream will be marked as closed and no further
+ * output will be permitted.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 560343 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class IdentityOutputStream extends OutputStream {
-    
+
     /**
      * Wrapped session output buffer.
      */
@@ -57,17 +59,15 @@ public class IdentityOutputStream extends OutputStream {
 
     public IdentityOutputStream(final SessionOutputBuffer out) {
         super();
-        if (out == null) {
-            throw new IllegalArgumentException("Session output buffer may not be null");
-        }
-        this.out = out;
+        this.out = Args.notNull(out, "Session output buffer");
     }
 
     /**
      * <p>Does not close the underlying socket output.</p>
-     * 
+     *
      * @throws IOException If an I/O problem occurs.
      */
+    @Override
     public void close() throws IOException {
         if (!this.closed) {
             this.closed = true;
@@ -75,26 +75,30 @@ public class IdentityOutputStream extends OutputStream {
         }
     }
 
+    @Override
     public void flush() throws IOException {
         this.out.flush();
     }
 
-    public void write(byte[] b, int off, int len) throws IOException {
+    @Override
+    public void write(final byte[] b, final int off, final int len) throws IOException {
         if (this.closed) {
             throw new IOException("Attempted write to closed stream.");
         }
         this.out.write(b, off, len);
     }
 
-    public void write(byte[] b) throws IOException {
+    @Override
+    public void write(final byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
-    public void write(int b) throws IOException {
+    @Override
+    public void write(final int b) throws IOException {
         if (this.closed) {
             throw new IOException("Attempted write to closed stream.");
         }
         this.out.write(b);
     }
-    
+
 }

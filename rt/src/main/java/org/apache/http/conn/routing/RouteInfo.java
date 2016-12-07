@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/routing/RouteInfo.java $
- * $Revision: 652200 $
- * $Date: 2008-04-29 17:22:43 -0700 (Tue, 29 Apr 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,15 +31,8 @@ import java.net.InetAddress;
 
 import org.apache.http.HttpHost;
 
-
 /**
  * Read-only interface for route information.
- * 
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version $Revision: 652200 $
  *
  * @since 4.0
  */
@@ -51,7 +40,7 @@ public interface RouteInfo {
 
     /**
      * The tunnelling type of a route.
-     * Plain routes are established by connecting to the target or
+     * Plain routes are established by   connecting to the target or
      * the first proxy.
      * Tunnelled routes are established by connecting to the first proxy
      * and tunnelling through all proxies to the target.
@@ -66,34 +55,29 @@ public interface RouteInfo {
      * over an existing connection.
      * Protocols can only be layered over a tunnel to the target, or
      * or over a direct connection without proxies.
-     * <br/>
+     * <p>
      * Layering a protocol
      * over a direct connection makes little sense, since the connection
      * could be established with the new protocol in the first place.
      * But we don't want to exclude that use case.
+     * </p>
      */
     public enum LayerType  { PLAIN, LAYERED }
 
-
-
     /**
      * Obtains the target host.
-     * 
+     *
      * @return the target host
      */
-    HttpHost getTargetHost()
-        ;
-
+    HttpHost getTargetHost();
 
     /**
      * Obtains the local address to connect from.
-     * 
+     *
      * @return  the local address,
-     *          or <code>null</code>
+     *          or {@code null}
      */
-    InetAddress getLocalAddress()
-        ;
-
+    InetAddress getLocalAddress();
 
     /**
      * Obtains the number of hops in this route.
@@ -102,9 +86,7 @@ public interface RouteInfo {
      *
      * @return  the number of hops in this route
      */
-    int getHopCount()
-        ;
-
+    int getHopCount();
 
     /**
      * Obtains the target of a hop in this route.
@@ -122,19 +104,15 @@ public interface RouteInfo {
      *  if the argument is negative or not less than
      *  {@link #getHopCount getHopCount()}
      */
-    HttpHost getHopTarget(int hop)
-        ;
-
+    HttpHost getHopTarget(int hop);
 
     /**
      * Obtains the first proxy host.
-     * 
+     *
      * @return the first proxy in the proxy chain, or
-     *         <code>null</code> if this route is direct
+     *         {@code null} if this route is direct
      */
-    HttpHost getProxyHost()
-        ;
-
+    HttpHost getProxyHost();
 
     /**
      * Obtains the tunnel type of this route.
@@ -142,21 +120,17 @@ public interface RouteInfo {
      *
      * @return  the tunnelling type
      */
-    TunnelType getTunnelType()
-        ;
-
+    TunnelType getTunnelType();
 
     /**
      * Checks whether this route is tunnelled through a proxy.
      * If there is a proxy chain, only end-to-end tunnels are considered.
      *
-     * @return  <code>true</code> if tunnelled end-to-end through at least
+     * @return  {@code true} if tunnelled end-to-end through at least
      *          one proxy,
-     *          <code>false</code> otherwise
+     *          {@code false} otherwise
      */
-    boolean isTunnelled()
-        ;
-
+    boolean isTunnelled();
 
     /**
      * Obtains the layering type of this route.
@@ -165,30 +139,24 @@ public interface RouteInfo {
      *
      * @return  the layering type
      */
-    LayerType getLayerType()
-        ;
-
+    LayerType getLayerType();
 
     /**
      * Checks whether this route includes a layered protocol.
      * In the presence of proxies, only layering over an end-to-end tunnel
      * is considered.
      *
-     * @return  <code>true</code> if layered,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if layered,
+     *          {@code false} otherwise
      */
-    boolean isLayered()
-        ;
-
+    boolean isLayered();
 
     /**
      * Checks whether this route is secure.
      *
-     * @return  <code>true</code> if secure,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if secure,
+     *          {@code false} otherwise
      */
-    boolean isSecure()
-        ;
+    boolean isSecure();
 
-
-} // interface RouteInfo
+}

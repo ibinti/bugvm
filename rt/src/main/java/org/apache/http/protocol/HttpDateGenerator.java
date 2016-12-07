@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpDateGenerator.java $
- * $Revision: 548066 $
- * $Date: 2007-06-17 09:51:55 -0700 (Sun, 17 Jun 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,16 +33,15 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.http.annotation.GuardedBy;
+import org.apache.http.annotation.ThreadSafe;
 
 /**
  * Generates a date in the format required by the HTTP protocol.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 548066 $
- * 
  * @since 4.0
  */
+@ThreadSafe
 public class HttpDateGenerator {
 
     /** Date format pattern used to generate the header in RFC 1123 format. */
@@ -56,10 +51,11 @@ public class HttpDateGenerator {
     /** The time zone to use in the date header. */
     public static final TimeZone GMT = TimeZone.getTimeZone("GMT");
 
-
+    @GuardedBy("this")
     private final DateFormat dateformat;
-    
+    @GuardedBy("this")
     private long dateAsLong = 0L;
+    @GuardedBy("this")
     private String dateAsText = null;
 
     public HttpDateGenerator() {
@@ -67,9 +63,9 @@ public class HttpDateGenerator {
         this.dateformat = new SimpleDateFormat(PATTERN_RFC1123, Locale.US);
         this.dateformat.setTimeZone(GMT);
     }
-    
+
     public synchronized String getCurrentDate() {
-        long now = System.currentTimeMillis();
+        final long now = System.currentTimeMillis();
         if (now - this.dateAsLong > 1000) {
             // Generate new date string
             this.dateAsText = this.dateformat.format(new Date(now));
@@ -77,5 +73,5 @@ public class HttpDateGenerator {
         }
         return this.dateAsText;
     }
-    
+
 }

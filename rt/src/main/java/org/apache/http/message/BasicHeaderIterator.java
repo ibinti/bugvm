@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicHeaderIterator.java $
- * $Revision: 581981 $
- * $Date: 2007-10-04 11:26:26 -0700 (Thu, 04 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,18 +27,19 @@
 
 package org.apache.http.message;
 
-
 import java.util.NoSuchElementException;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
-
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
 /**
  * Basic implementation of a {@link HeaderIterator}.
- * 
- * @version $Revision: 581981 $
+ *
+ * @since 4.0
  */
+@NotThreadSafe
 public class BasicHeaderIterator implements HeaderIterator {
 
     /**
@@ -63,7 +60,7 @@ public class BasicHeaderIterator implements HeaderIterator {
 
     /**
      * The header name to filter by.
-     * <code>null</code> to iterate over all headers in the array.
+     * {@code null} to iterate over all headers in the array.
      */
     protected String headerName;
 
@@ -74,15 +71,11 @@ public class BasicHeaderIterator implements HeaderIterator {
      *
      * @param headers   an array of headers over which to iterate
      * @param name      the name of the headers over which to iterate, or
-     *                  <code>null</code> for any
+     *                  {@code null} for any
      */
-    public BasicHeaderIterator(Header[] headers, String name) {
-        if (headers == null) {
-            throw new IllegalArgumentException
-                ("Header array must not be null.");
-        }
-
-        this.allHeaders = headers;
+    public BasicHeaderIterator(final Header[] headers, final String name) {
+        super();
+        this.allHeaders = Args.notNull(headers, "Header array");
         this.headerName = name;
         this.currentIndex = findNext(-1);
     }
@@ -91,15 +84,17 @@ public class BasicHeaderIterator implements HeaderIterator {
     /**
      * Determines the index of the next header.
      *
-     * @param from      one less than the index to consider first,
+     * @param pos      one less than the index to consider first,
      *                  -1 to search for the first header
      *
      * @return  the index of the next header that matches the filter name,
      *          or negative if there are no more headers
      */
-    protected int findNext(int from) {
-        if (from < -1)
+    protected int findNext(final int pos) {
+        int from = pos;
+        if (from < -1) {
             return -1;
+        }
 
         final int to = this.allHeaders.length-1;
         boolean found = false;
@@ -116,16 +111,17 @@ public class BasicHeaderIterator implements HeaderIterator {
      *
      * @param index     the index of the header to check
      *
-     * @return  <code>true</code> if the header should be part of the
-     *          iteration, <code>false</code> to skip
+     * @return  {@code true} if the header should be part of the
+     *          iteration, {@code false} to skip
      */
-    protected boolean filterHeader(int index) {
+    protected boolean filterHeader(final int index) {
         return (this.headerName == null) ||
             this.headerName.equalsIgnoreCase(this.allHeaders[index].getName());
     }
 
 
     // non-javadoc, see interface HeaderIterator
+    @Override
     public boolean hasNext() {
         return (this.currentIndex >= 0);
     }
@@ -138,6 +134,7 @@ public class BasicHeaderIterator implements HeaderIterator {
      *
      * @throws NoSuchElementException   if there are no more headers
      */
+    @Override
     public Header nextHeader()
         throws NoSuchElementException {
 
@@ -160,6 +157,7 @@ public class BasicHeaderIterator implements HeaderIterator {
      *
      * @throws NoSuchElementException   if there are no more headers
      */
+    @Override
     public final Object next()
         throws NoSuchElementException {
         return nextHeader();
@@ -171,6 +169,7 @@ public class BasicHeaderIterator implements HeaderIterator {
      *
      * @throws UnsupportedOperationException    always
      */
+    @Override
     public void remove()
         throws UnsupportedOperationException {
 

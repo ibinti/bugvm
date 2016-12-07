@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpRequestExecutor.java $
- * $Revision: 576073 $
- * $Date: 2007-09-16 03:53:13 -0700 (Sun, 16 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,7 +28,6 @@
 package org.apache.http.protocol;
 
 import java.io.IOException;
-import java.net.ProtocolException;
 
 import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -41,37 +36,52 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
+import org.apache.http.ProtocolException;
 import org.apache.http.ProtocolVersion;
-import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
- * Sends HTTP requests and receives the responses.
- * Takes care of request preprocessing and response postprocessing
- * by the respective interceptors.
+ * {@code HttpRequestExecutor} is a client side HTTP protocol handler based
+ * on the blocking (classic) I/O model.
+ * <p>
+ * {@code HttpRequestExecutor} relies on {@link HttpProcessor} to generate
+ * mandatory protocol headers for all outgoing messages and apply common,
+ * cross-cutting message transformations to all incoming and outgoing messages.
+ * Application specific processing can be implemented outside
+ * {@code HttpRequestExecutor} once the request has been executed and
+ * a response has been received.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 576073 $
- * 
  * @since 4.0
  */
+@Immutable
 public class HttpRequestExecutor {
 
+    public static final int DEFAULT_WAIT_FOR_CONTINUE = 3000;
+
+    private final int waitForContinue;
+
     /**
-     * Create a new request executor.
+     * Creates new instance of HttpRequestExecutor.
+     *
+     * @since 4.3
      */
-    public HttpRequestExecutor() {
+    public HttpRequestExecutor(final int waitForContinue) {
         super();
+        this.waitForContinue = Args.positive(waitForContinue, "Wait for continue time");
+    }
+
+    public HttpRequestExecutor() {
+        this(DEFAULT_WAIT_FOR_CONTINUE);
     }
 
     /**
      * Decide whether a response comes with an entity.
      * The implementation in this class is based on RFC 2616.
-     * Unknown methods and response codes are supposed to
-     * indicate responses with an entity.
-     * <br/>
+     * <p>
      * Derived executors can override this method to handle
      * methods and response codes not specified in RFC 2616.
+     * </p>
      *
      * @param request   the request, to obtain the executed method
      * @param response  the response, to obtain the status code
@@ -82,86 +92,83 @@ public class HttpRequestExecutor {
         if ("HEAD".equalsIgnoreCase(request.getRequestLine().getMethod())) {
             return false;
         }
-        int status = response.getStatusLine().getStatusCode(); 
-        return status >= HttpStatus.SC_OK 
-            && status != HttpStatus.SC_NO_CONTENT 
+        final int status = response.getStatusLine().getStatusCode();
+        return status >= HttpStatus.SC_OK
+            && status != HttpStatus.SC_NO_CONTENT
             && status != HttpStatus.SC_NOT_MODIFIED
-            && status != HttpStatus.SC_RESET_CONTENT; 
+            && status != HttpStatus.SC_RESET_CONTENT;
     }
 
     /**
-     * Synchronously send a request and obtain the response.
+     * Sends the request and obtain a response.
      *
-     * @param request   the request to send. It will be preprocessed.
-     * @param conn      the open connection over which to send
+     * @param request   the request to execute.
+     * @param conn      the connection over which to execute the request.
      *
-     * @return  the response to the request, postprocessed
+     * @return  the response to the request.
      *
-     * @throws HttpException      in case of a protocol or processing problem
-     * @throws IOException        in case of an I/O problem
-     */    
+     * @throws IOException in case of an I/O error.
+     * @throws HttpException in case of HTTP protocol violation or a processing
+     *   problem.
+     */
     public HttpResponse execute(
             final HttpRequest request,
             final HttpClientConnection conn,
-            final HttpContext context) 
-                throws IOException, HttpException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
-        if (conn == null) {
-            throw new IllegalArgumentException("Client connection may not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
-
+            final HttpContext context) throws IOException, HttpException {
+        Args.notNull(request, "HTTP request");
+        Args.notNull(conn, "Client connection");
+        Args.notNull(context, "HTTP context");
         try {
             HttpResponse response = doSendRequest(request, conn, context);
             if (response == null) {
                 response = doReceiveResponse(request, conn, context);
             }
             return response;
-        } catch (IOException ex) {
-            conn.close();
+        } catch (final IOException ex) {
+            closeConnection(conn);
             throw ex;
-        } catch (HttpException ex) {
-            conn.close();
+        } catch (final HttpException ex) {
+            closeConnection(conn);
             throw ex;
-        } catch (RuntimeException ex) {
-            conn.close();
+        } catch (final RuntimeException ex) {
+            closeConnection(conn);
             throw ex;
         }
     }
 
+    private static void closeConnection(final HttpClientConnection conn) {
+        try {
+            conn.close();
+        } catch (final IOException ignore) {
+        }
+    }
+
     /**
-     * Prepare a request for sending.
+     * Pre-process the given request using the given protocol processor and
+     * initiates the process of request execution.
      *
      * @param request   the request to prepare
      * @param processor the processor to use
      * @param context   the context for sending the request
      *
-     * @throws HttpException      in case of a protocol or processing problem
-     * @throws IOException        in case of an I/O problem
+     * @throws IOException in case of an I/O error.
+     * @throws HttpException in case of HTTP protocol violation or a processing
+     *   problem.
      */
     public void preProcess(
             final HttpRequest request,
             final HttpProcessor processor,
-            final HttpContext context)
-                throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
-        if (processor == null) {
-            throw new IllegalArgumentException("HTTP processor may not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
+            final HttpContext context) throws HttpException, IOException {
+        Args.notNull(request, "HTTP request");
+        Args.notNull(processor, "HTTP processor");
+        Args.notNull(context, "HTTP context");
+        context.setAttribute(HttpCoreContext.HTTP_REQUEST, request);
         processor.process(request, context);
     }
 
     /**
-     * Send a request over a connection.
+     * Send the given request over the given connection.
+     * <p>
      * This method also handles the expect-continue handshake if necessary.
      * If it does not have to handle an expect-continue handshake, it will
      * not use the connection for reading or anything else that depends on
@@ -175,28 +182,24 @@ public class HttpRequestExecutor {
      *
      * @return  a terminal response received as part of an expect-continue
      *          handshake, or
-     *          <code>null</code> if the expect-continue handshake is not used
+     *          {@code null} if the expect-continue handshake is not used
      *
-     * @throws HttpException      in case of a protocol or processing problem
-     * @throws IOException        in case of an I/O problem
+     * @throws IOException in case of an I/O error.
+     * @throws HttpException in case of HTTP protocol violation or a processing
+     *   problem.
      */
     protected HttpResponse doSendRequest(
             final HttpRequest request,
             final HttpClientConnection conn,
-            final HttpContext context)
-                throws IOException, HttpException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
-        if (conn == null) {
-            throw new IllegalArgumentException("HTTP connection may not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
+            final HttpContext context) throws IOException, HttpException {
+        Args.notNull(request, "HTTP request");
+        Args.notNull(conn, "Client connection");
+        Args.notNull(context, "HTTP context");
 
         HttpResponse response = null;
-        context.setAttribute(ExecutionContext.HTTP_REQ_SENT, Boolean.FALSE);
+
+        context.setAttribute(HttpCoreContext.HTTP_CONNECTION, conn);
+        context.setAttribute(HttpCoreContext.HTTP_REQ_SENT, Boolean.FALSE);
 
         conn.sendRequestHeader(request);
         if (request instanceof HttpEntityEnclosingRequest) {
@@ -212,15 +215,12 @@ public class HttpRequestExecutor {
                 conn.flush();
                 // As suggested by RFC 2616 section 8.2.3, we don't wait for a
                 // 100-continue response forever. On timeout, send the entity.
-                int tms = request.getParams().getIntParameter(
-                        CoreProtocolPNames.WAIT_FOR_CONTINUE, 2000);
-                
-                if (conn.isResponseAvailable(tms)) {
+                if (conn.isResponseAvailable(this.waitForContinue)) {
                     response = conn.receiveResponseHeader();
                     if (canResponseHaveBody(request, response)) {
                         conn.receiveResponseEntity(response);
                     }
-                    int status = response.getStatusLine().getStatusCode();
+                    final int status = response.getStatusLine().getStatusCode();
                     if (status < 200) {
                         if (status != HttpStatus.SC_CONTINUE) {
                             throw new ProtocolException(
@@ -238,12 +238,12 @@ public class HttpRequestExecutor {
             }
         }
         conn.flush();
-        context.setAttribute(ExecutionContext.HTTP_REQ_SENT, Boolean.TRUE);
+        context.setAttribute(HttpCoreContext.HTTP_REQ_SENT, Boolean.TRUE);
         return response;
-    } 
+    }
 
     /**
-     * Wait for and receive a response.
+     * Waits for and receives a response.
      * This method will automatically ignore intermediate responses
      * with status code 1xx.
      *
@@ -251,71 +251,61 @@ public class HttpRequestExecutor {
      * @param conn      the connection over which the request was sent
      * @param context   the context for receiving the response
      *
-     * @return  the final response, not yet post-processed
+     * @return  the terminal response, not yet post-processed
      *
-     * @throws HttpException      in case of a protocol or processing problem
-     * @throws IOException        in case of an I/O problem
+     * @throws IOException in case of an I/O error.
+     * @throws HttpException in case of HTTP protocol violation or a processing
+     *   problem.
      */
     protected HttpResponse doReceiveResponse(
-            final HttpRequest          request,
+            final HttpRequest request,
             final HttpClientConnection conn,
-            final HttpContext          context)
-                throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
-        if (conn == null) {
-            throw new IllegalArgumentException("HTTP connection may not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
-
+            final HttpContext context) throws HttpException, IOException {
+        Args.notNull(request, "HTTP request");
+        Args.notNull(conn, "Client connection");
+        Args.notNull(context, "HTTP context");
         HttpResponse response = null;
-        int statuscode = 0;
+        int statusCode = 0;
 
-        while (response == null || statuscode < HttpStatus.SC_OK) {
+        while (response == null || statusCode < HttpStatus.SC_OK) {
 
             response = conn.receiveResponseHeader();
             if (canResponseHaveBody(request, response)) {
                 conn.receiveResponseEntity(response);
             }
-            statuscode = response.getStatusLine().getStatusCode();
+            statusCode = response.getStatusLine().getStatusCode();
 
         } // while intermediate response
 
         return response;
-
     }
 
     /**
-     * Finish a response.
-     * This includes post-processing of the response object.
-     * It does <i>not</i> read the response entity, if any.
-     * It does <i>not</i> allow for immediate re-use of the
-     * connection over which the response is coming in.
+     * Post-processes the given response using the given protocol processor and
+     * completes the process of request execution.
+     * <p>
+     * This method does <i>not</i> read the response entity, if any.
+     * The connection over which content of the response entity is being
+     * streamed from cannot be reused until
+     * {@link org.apache.http.util.EntityUtils#consume(org.apache.http.HttpEntity)}
+     * has been invoked.
      *
-     * @param response  the response object to finish
+     * @param response  the response object to post-process
      * @param processor the processor to use
      * @param context   the context for post-processing the response
      *
-     * @throws HttpException      in case of a protocol or processing problem
-     * @throws IOException        in case of an I/O problem
+     * @throws IOException in case of an I/O error.
+     * @throws HttpException in case of HTTP protocol violation or a processing
+     *   problem.
      */
     public void postProcess(
             final HttpResponse response,
             final HttpProcessor processor,
-            final HttpContext context)
-                throws HttpException, IOException {
-        if (response == null) {
-            throw new IllegalArgumentException("HTTP response may not be null");
-        }
-        if (processor == null) {
-            throw new IllegalArgumentException("HTTP processor may not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
+            final HttpContext context) throws HttpException, IOException {
+        Args.notNull(response, "HTTP response");
+        Args.notNull(processor, "HTTP processor");
+        Args.notNull(context, "HTTP context");
+        context.setAttribute(HttpCoreContext.HTTP_RESPONSE, response);
         processor.process(response, context);
     }
 

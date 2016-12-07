@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpResponseFactory.java $
- * $Revision: 573864 $
- * $Date: 2007-09-08 08:53:25 -0700 (Sat, 08 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,14 +29,9 @@ package org.apache.http;
 
 import org.apache.http.protocol.HttpContext;
 
-
 /**
  * A factory for {@link HttpResponse HttpResponse} objects.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 573864 $
- * 
  * @since 4.0
  */
 public interface HttpResponseFactory {
@@ -52,13 +43,13 @@ public interface HttpResponseFactory {
      * @param status    the status code
      * @param context   the context from which to determine the locale
      *                  for looking up a reason phrase to the status code, or
-     *                  <code>null</code> to use the default locale
+     *                  {@code null} to use the default locale
      *
      * @return  the new response with an initialized status line
-     */    
+     */
     HttpResponse newHttpResponse(ProtocolVersion ver, int status,
                                  HttpContext context);
-    
+
     /**
      * Creates a new response from a status line.
      *
@@ -66,11 +57,11 @@ public interface HttpResponseFactory {
      * @param context    the context from which to determine the locale
      *                   for looking up a reason phrase if the status code
      *                   is updated, or
-     *                   <code>null</code> to use the default locale
+     *                   {@code null} to use the default locale
      *
      * @return  the new response with the argument status line
-     */    
+     */
     HttpResponse newHttpResponse(StatusLine statusline,
                                  HttpContext context);
-    
+
 }

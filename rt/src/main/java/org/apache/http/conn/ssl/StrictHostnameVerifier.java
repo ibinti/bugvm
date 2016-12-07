@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ssl/StrictHostnameVerifier.java $
- * $Revision: 617642 $
- * $Date: 2008-02-01 12:54:07 -0800 (Fri, 01 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,37 +29,47 @@ package org.apache.http.conn.ssl;
 
 import javax.net.ssl.SSLException;
 
+import org.apache.http.annotation.Immutable;
+
 /**
  * The Strict HostnameVerifier works the same way as Sun Java 1.4, Sun
- * Java 5, Sun Java 6-rc.  It's also pretty close to IE6.  This
- * implementation appears to be compliant with RFC 2818 for dealing with
- * wildcards.
- * <p/>
+ * Java 5, Sun Java 6.  It's also pretty close to IE6.  This implementation
+ * appears to be compliant with RFC 2818 for dealing with wildcards.
+ * <p>
  * The hostname must match either the first CN, or any of the subject-alts.
  * A wildcard can occur in the CN, and in any of the subject-alts.  The
  * one divergence from IE6 is how we only check the first CN.  IE6 allows
  * a match against any of the CNs present.  We decided to follow in
  * Sun Java 1.4's footsteps and only check the first CN.  (If you need
  * to check all the CN's, feel free to write your own implementation!).
- * <p/>
+ * </p>
+ * <p>
  * A wildcard such as "*.foo.com" matches only subdomains in the same
  * level, for example "a.foo.com".  It does not match deeper subdomains
  * such as "a.b.foo.com".
- * 
- * @author Julius Davies
+ * </p>
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.4) Use {@link org.apache.http.conn.ssl.DefaultHostnameVerifier}
  */
+@Immutable
+@Deprecated
 public class StrictHostnameVerifier extends AbstractVerifier {
 
+    public static final StrictHostnameVerifier INSTANCE = new StrictHostnameVerifier();
+
+    @Override
     public final void verify(
-            final String host, 
+            final String host,
             final String[] cns,
             final String[] subjectAlts) throws SSLException {
         verify(host, cns, subjectAlts, true);
     }
 
     @Override
-    public final String toString() { 
-        return "STRICT"; 
+    public final String toString() {
+        return "STRICT";
     }
-    
+
 }

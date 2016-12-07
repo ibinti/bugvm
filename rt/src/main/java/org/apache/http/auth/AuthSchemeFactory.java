@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/auth/AuthSchemeFactory.java $
- * $Revision: 527900 $
- * $Date: 2007-04-12 05:35:25 -0700 (Thu, 12 Apr 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,13 +30,22 @@ package org.apache.http.auth;
 import org.apache.http.params.HttpParams;
 
 /**
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * Factory for {@link AuthScheme} implementations.
  *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link AuthSchemeProvider}
  */
-public interface AuthSchemeFactory {    
+@Deprecated
+public interface AuthSchemeFactory {
 
+    /**
+     * Creates an instance of {@link AuthScheme} using given HTTP parameters.
+     *
+     * @param params HTTP parameters.
+     *
+     * @return auth scheme.
+     */
     AuthScheme newInstance(HttpParams params);
 
 }

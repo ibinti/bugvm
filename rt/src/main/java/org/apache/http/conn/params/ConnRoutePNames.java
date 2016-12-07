@@ -1,24 +1,21 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/params/ConnRoutePNames.java $
- * $Revision: 613656 $
- * $Date: 2008-01-20 11:06:56 -0800 (Sun, 20 Jan 2008) $
- *
  * ====================================================================
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
@@ -27,16 +24,16 @@
  * <http://www.apache.org/>.
  *
  */
-
 package org.apache.http.conn.params;
 
 /**
- * Parameter names for routing in HttpConn.
- * 
- * @version $Revision: 613656 $
- * 
+ * Parameter names for connection routing.
+ *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link org.apache.http.client.config.RequestConfig}.
  */
+@Deprecated
 public interface ConnRoutePNames {
 
     /**
@@ -49,7 +46,6 @@ public interface ConnRoutePNames {
      * </p>
      */
     public static final String DEFAULT_PROXY = "http.route.default-proxy";
-
 
     /**
      * Parameter for the local address.
@@ -64,7 +60,6 @@ public interface ConnRoutePNames {
      * </p>
      */
     public static final String LOCAL_ADDRESS = "http.route.local-address";
-
 
     /**
      * Parameter for an forced route.

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/RequestContent.java $
- * $Revision: 573864 $
- * $Date: 2007-09-08 08:53:25 -0700 (Sat, 08 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -39,43 +35,74 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
 import org.apache.http.ProtocolException;
+import org.apache.http.ProtocolVersion;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
- * A request interceptor that decides about the transport encoding.
+ * RequestContent is the most important interceptor for outgoing requests.
+ * It is responsible for delimiting content length by adding
+ * {@code Content-Length} or {@code Transfer-Content} headers based
+ * on the properties of the enclosed entity and the protocol version.
+ * This interceptor is required for correct functioning of client side protocol
+ * processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 573864 $
- * 
  * @since 4.0
  */
+@Immutable
 public class RequestContent implements HttpRequestInterceptor {
 
+    private final boolean overwrite;
+
+    /**
+     * Default constructor. The {@code Content-Length} or {@code Transfer-Encoding}
+     * will cause the interceptor to throw {@link ProtocolException} if already present in the
+     * response message.
+     */
     public RequestContent() {
-        super();
+        this(false);
     }
-    
-    public void process(final HttpRequest request, final HttpContext context) 
+
+    /**
+     * Constructor that can be used to fine-tune behavior of this interceptor.
+     *
+     * @param overwrite If set to {@code true} the {@code Content-Length} and
+     * {@code Transfer-Encoding} headers will be created or updated if already present.
+     * If set to {@code false} the {@code Content-Length} and
+     * {@code Transfer-Encoding} headers will cause the interceptor to throw
+     * {@link ProtocolException} if already present in the response message.
+     *
+     * @since 4.2
+     */
+     public RequestContent(final boolean overwrite) {
+         super();
+         this.overwrite = overwrite;
+    }
+
+    @Override
+    public void process(final HttpRequest request, final HttpContext context)
             throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
+        Args.notNull(request, "HTTP request");
         if (request instanceof HttpEntityEnclosingRequest) {
-            if (request.containsHeader(HTTP.TRANSFER_ENCODING)) {
-                throw new ProtocolException("Transfer-encoding header already present");
+            if (this.overwrite) {
+                request.removeHeaders(HTTP.TRANSFER_ENCODING);
+                request.removeHeaders(HTTP.CONTENT_LEN);
+            } else {
+                if (request.containsHeader(HTTP.TRANSFER_ENCODING)) {
+                    throw new ProtocolException("Transfer-encoding header already present");
+                }
+                if (request.containsHeader(HTTP.CONTENT_LEN)) {
+                    throw new ProtocolException("Content-Length header already present");
+                }
             }
-            if (request.containsHeader(HTTP.CONTENT_LEN)) {
-                throw new ProtocolException("Content-Length header already present");
-            }
-            ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
-            HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
+            final ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
+            final HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
             if (entity == null) {
                 request.addHeader(HTTP.CONTENT_LEN, "0");
                 return;
             }
-            // Must specify a transfer encoding or a content length 
+            // Must specify a transfer encoding or a content length
             if (entity.isChunked() || entity.getContentLength() < 0) {
                 if (ver.lessEquals(HttpVersion.HTTP_1_0)) {
                     throw new ProtocolException(
@@ -88,14 +115,14 @@ public class RequestContent implements HttpRequestInterceptor {
             // Specify a content type if known
             if (entity.getContentType() != null && !request.containsHeader(
                     HTTP.CONTENT_TYPE )) {
-                request.addHeader(entity.getContentType()); 
+                request.addHeader(entity.getContentType());
             }
             // Specify a content encoding if known
             if (entity.getContentEncoding() != null && !request.containsHeader(
                     HTTP.CONTENT_ENCODING)) {
-                request.addHeader(entity.getContentEncoding()); 
+                request.addHeader(entity.getContentEncoding());
             }
         }
     }
-    
+
 }

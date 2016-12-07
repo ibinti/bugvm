@@ -1,8 +1,4 @@
 /*
- * $HeadURL:https://svn.apache.org/repos/asf/jakarta/httpcomponents/trunk/coyote-httpconnector/src/java/org/apache/http/tcconnector/UnsupportedHttpVersionException.java $
- * $Revision:379772 $
- * $Date:2006-02-22 14:52:29 +0100 (Wed, 22 Feb 2006) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,20 +27,17 @@
 
 package org.apache.http;
 
-import org.apache.http.ProtocolException;
 
 /**
- * Indicates an unsupported version of the HTTP protocol.
+ * Signals an unsupported version of the HTTP protocol.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision:379772 $
+ * @since 4.0
  */
 public class UnsupportedHttpVersionException extends ProtocolException {
 
     private static final long serialVersionUID = -1348448090193107031L;
 
-    
+
     /**
      * Creates an exception without a detail message.
      */
@@ -54,8 +47,8 @@ public class UnsupportedHttpVersionException extends ProtocolException {
 
     /**
      * Creates an exception with the specified detail message.
-     * 
-     * @param message The exception detail message 
+     *
+     * @param message The exception detail message
      */
     public UnsupportedHttpVersionException(final String message) {
         super(message);

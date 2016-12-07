@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpEntityEnclosingRequestBase.java $
- * $Revision: 674186 $
- * $Date: 2008-07-05 05:18:54 -0700 (Sat, 05 Jul 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,46 +30,48 @@ package org.apache.http.client.methods;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.client.utils.CloneUtils;
 import org.apache.http.protocol.HTTP;
 
 /**
- * Basic implementation of an HTTP request that can be modified.
+ * Basic implementation of an entity enclosing HTTP request
+ * that can be modified
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 674186 $
- * 
  * @since 4.0
  */
-public abstract class HttpEntityEnclosingRequestBase 
+@NotThreadSafe // HttpRequestBase is @NotThreadSafe
+public abstract class HttpEntityEnclosingRequestBase
     extends HttpRequestBase implements HttpEntityEnclosingRequest {
-    
+
     private HttpEntity entity;
-    
+
     public HttpEntityEnclosingRequestBase() {
         super();
     }
 
+    @Override
     public HttpEntity getEntity() {
         return this.entity;
     }
 
+    @Override
     public void setEntity(final HttpEntity entity) {
         this.entity = entity;
     }
-    
+
+    @Override
     public boolean expectContinue() {
-        Header expect = getFirstHeader(HTTP.EXPECT_DIRECTIVE);
+        final Header expect = getFirstHeader(HTTP.EXPECT_DIRECTIVE);
         return expect != null && HTTP.EXPECT_CONTINUE.equalsIgnoreCase(expect.getValue());
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        HttpEntityEnclosingRequestBase clone = 
+        final HttpEntityEnclosingRequestBase clone =
             (HttpEntityEnclosingRequestBase) super.clone();
         if (this.entity != null) {
-            clone.entity = (HttpEntity) CloneUtils.clone(this.entity);
+            clone.entity = CloneUtils.cloneObject(this.entity);
         }
         return clone;
     }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/client/EntityEnclosingRequestWrapper.java $
- * $Revision: 674186 $
- * $Date: 2008-07-05 05:18:54 -0700 (Sat, 05 Jul 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,53 +27,91 @@
 
 package org.apache.http.impl.client;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.ProtocolException;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.protocol.HTTP;
 
 /**
- * A wrapper class for {@link HttpEntityEnclosingRequest}s that can 
- * be used to change properties of the current request without 
+ * A wrapper class for {@link HttpEntityEnclosingRequest}s that can
+ * be used to change properties of the current request without
  * modifying the original object.
- * </p>
+ * <p>
  * This class is also capable of resetting the request headers to
  * the state of the original request.
+ * </p>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 674186 $
- * 
  * @since 4.0
+ *
+ * @deprecated (4.3) do not use.
  */
-public class EntityEnclosingRequestWrapper extends RequestWrapper 
+@Deprecated
+@NotThreadSafe // e.g. [gs]etEntity()
+public class EntityEnclosingRequestWrapper extends RequestWrapper
     implements HttpEntityEnclosingRequest {
-    
+
     private HttpEntity entity;
-    
-    public EntityEnclosingRequestWrapper(final HttpEntityEnclosingRequest request) 
+    private boolean consumed;
+
+    public EntityEnclosingRequestWrapper(final HttpEntityEnclosingRequest request)
         throws ProtocolException {
         super(request);
-        this.entity = request.getEntity();
+        setEntity(request.getEntity());
     }
 
+    @Override
     public HttpEntity getEntity() {
         return this.entity;
     }
 
+    @Override
     public void setEntity(final HttpEntity entity) {
-        this.entity = entity;
+        this.entity = entity != null ? new EntityWrapper(entity) : null;
+        this.consumed = false;
     }
-    
+
+    @Override
     public boolean expectContinue() {
-        Header expect = getFirstHeader(HTTP.EXPECT_DIRECTIVE);
+        final Header expect = getFirstHeader(HTTP.EXPECT_DIRECTIVE);
         return expect != null && HTTP.EXPECT_CONTINUE.equalsIgnoreCase(expect.getValue());
     }
 
     @Override
     public boolean isRepeatable() {
-        return this.entity == null || this.entity.isRepeatable();
+        return this.entity == null || this.entity.isRepeatable() || !this.consumed;
     }
-    
+
+    class EntityWrapper extends HttpEntityWrapper {
+
+        EntityWrapper(final HttpEntity entity) {
+            super(entity);
+        }
+
+        @Override
+        public void consumeContent() throws IOException {
+            consumed = true;
+            super.consumeContent();
+        }
+
+        @Override
+        public InputStream getContent() throws IOException {
+            consumed = true;
+            return super.getContent();
+        }
+
+        @Override
+        public void writeTo(final OutputStream outstream) throws IOException {
+            consumed = true;
+            super.writeTo(outstream);
+        }
+
+    }
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/IdentityInputStream.java $
- * $Revision: 560358 $
- * $Date: 2007-07-27 12:30:42 -0700 (Fri, 27 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,43 +30,55 @@ package org.apache.http.impl.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.io.BufferInfo;
 import org.apache.http.io.SessionInputBuffer;
+import org.apache.http.util.Args;
 
 /**
- * A stream for reading from a {@link SessionInputBuffer session input buffer}.
+ * Input stream that reads data without any transformation. The end of the
+ * content entity is demarcated by closing the underlying connection
+ * (EOF condition). Entities transferred using this input stream can be of
+ * unlimited length.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, it will read until the end of the stream (until
+ * {@code -1} is returned).
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 560358 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class IdentityInputStream extends InputStream {
-    
+
     private final SessionInputBuffer in;
-    
+
     private boolean closed = false;
-    
+
+    /**
+     * Wraps session input stream and reads input until the the end of stream.
+     *
+     * @param in The session input buffer
+     */
     public IdentityInputStream(final SessionInputBuffer in) {
         super();
-        if (in == null) {
-            throw new IllegalArgumentException("Session input buffer may not be null");
-        }
-        this.in = in;
+        this.in = Args.notNull(in, "Session input buffer");
     }
-    
+
+    @Override
     public int available() throws IOException {
-        if (!this.closed && this.in.isDataAvailable(10)) {
-            return 1;
+        if (this.in instanceof BufferInfo) {
+            return ((BufferInfo) this.in).length();
         } else {
             return 0;
         }
     }
-    
+
+    @Override
     public void close() throws IOException {
         this.closed = true;
     }
 
+    @Override
     public int read() throws IOException {
         if (this.closed) {
             return -1;
@@ -78,13 +86,14 @@ public class IdentityInputStream extends InputStream {
             return this.in.read();
         }
     }
-    
-    public int read(final byte[] b, int off, int len) throws IOException {
+
+    @Override
+    public int read(final byte[] b, final int off, final int len) throws IOException {
         if (this.closed) {
             return -1;
         } else {
             return this.in.read(b, off, len);
         }
     }
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpDelete.java $
- * $Revision: 664505 $
- * $Date: 2008-06-08 06:21:20 -0700 (Sun, 08 Jun 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,6 +29,8 @@ package org.apache.http.client.methods;
 
 import java.net.URI;
 
+import org.apache.http.annotation.NotThreadSafe;
+
 /**
  * HTTP DELETE method
  * <p>
@@ -45,12 +43,15 @@ import java.net.URI;
  * status code returned from the origin server indicates that the action
  * has been completed successfully.
  * </blockquote>
+ *
+ * @since 4.0
  */
+@NotThreadSafe // HttpRequestBase is @NotThreadSafe
 public class HttpDelete extends HttpRequestBase {
 
     public final static String METHOD_NAME = "DELETE";
 
-    
+
     public HttpDelete() {
         super();
     }
@@ -61,7 +62,7 @@ public class HttpDelete extends HttpRequestBase {
     }
 
     /**
-     * @throws IllegalArgumentException if the uri is invalid. 
+     * @throws IllegalArgumentException if the uri is invalid.
      */
     public HttpDelete(final String uri) {
         super();

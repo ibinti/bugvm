@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/NoHttpResponseException.java $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,24 +30,20 @@ package org.apache.http;
 import java.io.IOException;
 
 /**
- * <p>
  * Signals that the target server failed to respond with a valid HTTP response.
- * </p>
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @version $Revision: 618017 $
+ *
+ * @since 4.0
  */
 public class NoHttpResponseException extends IOException {
 
     private static final long serialVersionUID = -7658940387386078766L;
-    
+
     /**
      * Creates a new NoHttpResponseException with the specified detail message.
      *
      * @param message exception message
      */
-    public NoHttpResponseException(String message) {
+    public NoHttpResponseException(final String message) {
         super(message);
     }
 

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/ReasonPhraseCatalog.java $
- * $Revision: 505744 $
- * $Date: 2007-02-10 10:58:45 -0800 (Sat, 10 Feb 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,16 +29,9 @@ package org.apache.http;
 
 import java.util.Locale;
 
-
 /**
  * Interface for obtaining reason phrases for HTTP status codes.
  *
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines above to avoid 'svn diff' context problems -->
- * @version $Revision: 505744 $
- * 
  * @since 4.0
  */
 public interface ReasonPhraseCatalog {
@@ -55,9 +44,8 @@ public interface ReasonPhraseCatalog {
      * @param status    the status code, in the range 100-599
      * @param loc       the preferred locale for the reason phrase
      *
-     * @return  the reason phrase, or <code>null</code> if unknown
+     * @return  the reason phrase, or {@code null} if unknown
      */
-    public String getReason(int status, Locale loc)
-        ;
+    String getReason(int status, Locale loc);
 
 }

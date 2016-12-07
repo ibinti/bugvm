@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/AbstractHttpMessage.java $
- * $Revision: 620287 $
- * $Date: 2008-02-10 07:15:53 -0800 (Sun, 10 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,29 +27,32 @@
 
 package org.apache.http.message;
 
-import java.util.Iterator;
-
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
 import org.apache.http.HttpMessage;
-import org.apache.http.params.HttpParams;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.Args;
 
 /**
- * Basic implementation of an HTTP message that can be modified.
+ * Basic implementation of {@link HttpMessage}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 620287 $
- * 
  * @since 4.0
  */
+@SuppressWarnings("deprecation")
+@NotThreadSafe
 public abstract class AbstractHttpMessage implements HttpMessage {
-    
+
     protected HeaderGroup headergroup;
-    
+
+    @Deprecated
     protected HttpParams params;
-    
+
+    /**
+     * @deprecated (4.3) use {@link AbstractHttpMessage#AbstractHttpMessage()}
+     */
+    @Deprecated
     protected AbstractHttpMessage(final HttpParams params) {
         super();
         this.headergroup = new HeaderGroup();
@@ -65,102 +64,117 @@ public abstract class AbstractHttpMessage implements HttpMessage {
     }
 
     // non-javadoc, see interface HttpMessage
-    public boolean containsHeader(String name) {
+    @Override
+    public boolean containsHeader(final String name) {
         return this.headergroup.containsHeader(name);
     }
-    
+
     // non-javadoc, see interface HttpMessage
+    @Override
     public Header[] getHeaders(final String name) {
         return this.headergroup.getHeaders(name);
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public Header getFirstHeader(final String name) {
         return this.headergroup.getFirstHeader(name);
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public Header getLastHeader(final String name) {
         return this.headergroup.getLastHeader(name);
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public Header[] getAllHeaders() {
         return this.headergroup.getAllHeaders();
     }
-    
+
     // non-javadoc, see interface HttpMessage
+    @Override
     public void addHeader(final Header header) {
         this.headergroup.addHeader(header);
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public void addHeader(final String name, final String value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Header name may not be null");
-        }
+        Args.notNull(name, "Header name");
         this.headergroup.addHeader(new BasicHeader(name, value));
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public void setHeader(final Header header) {
         this.headergroup.updateHeader(header);
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public void setHeader(final String name, final String value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Header name may not be null");
-        }
+        Args.notNull(name, "Header name");
         this.headergroup.updateHeader(new BasicHeader(name, value));
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public void setHeaders(final Header[] headers) {
         this.headergroup.setHeaders(headers);
     }
 
     // non-javadoc, see interface HttpMessage
+    @Override
     public void removeHeader(final Header header) {
         this.headergroup.removeHeader(header);
     }
-    
+
     // non-javadoc, see interface HttpMessage
+    @Override
     public void removeHeaders(final String name) {
         if (name == null) {
             return;
         }
-        for (Iterator i = this.headergroup.iterator(); i.hasNext(); ) {
-            Header header = (Header) i.next();
+        for (final HeaderIterator i = this.headergroup.iterator(); i.hasNext(); ) {
+            final Header header = i.nextHeader();
             if (name.equalsIgnoreCase(header.getName())) {
                 i.remove();
             }
         }
     }
-    
+
     // non-javadoc, see interface HttpMessage
+    @Override
     public HeaderIterator headerIterator() {
         return this.headergroup.iterator();
     }
 
     // non-javadoc, see interface HttpMessage
-    public HeaderIterator headerIterator(String name) {
+    @Override
+    public HeaderIterator headerIterator(final String name) {
         return this.headergroup.iterator(name);
     }
-    
-    // non-javadoc, see interface HttpMessage
+
+    /**
+     * @deprecated (4.3) use constructor parameters of configuration API provided by HttpClient
+     */
+    @Override
+    @Deprecated
     public HttpParams getParams() {
         if (this.params == null) {
             this.params = new BasicHttpParams();
         }
         return this.params;
     }
-    
-    // non-javadoc, see interface HttpMessage
+
+    /**
+     * @deprecated (4.3) use constructor parameters of configuration API provided by HttpClient
+     */
+    @Override
+    @Deprecated
     public void setParams(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        this.params = params;
+        this.params = Args.notNull(params, "HTTP parameters");
     }
 }

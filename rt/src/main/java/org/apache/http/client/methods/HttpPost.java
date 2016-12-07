@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpPost.java $
- * $Revision: 664505 $
- * $Date: 2008-06-08 06:21:20 -0700 (Sun, 08 Jun 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,11 +29,14 @@ package org.apache.http.client.methods;
 
 import java.net.URI;
 
+import org.apache.http.annotation.NotThreadSafe;
+
 /**
  * HTTP POST method.
  * <p>
- * The HTTP POST method is defined in section 9.5 of 
+ * The HTTP POST method is defined in section 9.5 of
  * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * </p>
  * <blockquote>
  * The POST method is used to request that the origin server accept the entity
  * enclosed in the request as a new subordinate of the resource identified by
@@ -45,34 +44,32 @@ import java.net.URI;
  * method to cover the following functions:
  * <ul>
  *   <li>Annotation of existing resources</li>
- *   <li>Posting a message to a bulletin board, newsgroup, mailing list, or 
+ *   <li>Posting a message to a bulletin board, newsgroup, mailing list, or
  *     similar group of articles</li>
  *   <li>Providing a block of data, such as the result of submitting a form,
  *     to a data-handling process</li>
  *   <li>Extending a database through an append operation</li>
  * </ul>
  * </blockquote>
- * </p>
  *
- * @version $Revision: 664505 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class HttpPost extends HttpEntityEnclosingRequestBase {
 
     public final static String METHOD_NAME = "POST";
-    
+
     public HttpPost() {
         super();
     }
-    
+
     public HttpPost(final URI uri) {
         super();
         setURI(uri);
     }
-    
+
     /**
-     * @throws IllegalArgumentException if the uri is invalid. 
+     * @throws IllegalArgumentException if the uri is invalid.
      */
     public HttpPost(final String uri) {
         super();
@@ -83,5 +80,5 @@ public class HttpPost extends HttpEntityEnclosingRequestBase {
     public String getMethod() {
         return METHOD_NAME;
     }
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/ContentProducer.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,14 +32,9 @@ import java.io.OutputStream;
 
 /**
  * An abstract entity content producer.
- *
- *<p>Content producers are expected to be able to produce their 
+ *<p>Content producers are expected to be able to produce their
  * content multiple times</p>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
 public interface ContentProducer {

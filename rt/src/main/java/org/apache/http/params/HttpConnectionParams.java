@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/HttpConnectionParams.java $
- * $Revision: 576089 $
- * $Date: 2007-09-16 05:39:56 -0700 (Sun, 16 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,194 +27,217 @@
 
 package org.apache.http.params;
 
+import org.apache.http.util.Args;
+
 /**
- * An adaptor for accessing connection parameters in {@link HttpParams}.
- * <br/>
- * Note that the <i>implements</i> relation to {@link CoreConnectionPNames}
- * is for compatibility with existing application code only. References to
- * the parameter names should use the interface, not this class.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @version $Revision: 576089 $
- * 
+ * Utility class for accessing connection parameters in {@link HttpParams}.
+ *
  * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
  */
+@Deprecated
 public final class HttpConnectionParams implements CoreConnectionPNames {
 
-    /**
-     */
     private HttpConnectionParams() {
         super();
     }
 
     /**
-     * Returns the default socket timeout (<tt>SO_TIMEOUT</tt>) in milliseconds which is the 
-     * timeout for waiting for data. A timeout value of zero is interpreted as an infinite 
-     * timeout. This value is used when no socket timeout is set in the 
-     * method parameters. 
+     * Obtains value of the {@link CoreConnectionPNames#SO_TIMEOUT} parameter.
+     * If not set, defaults to {@code 0}.
      *
-     * @return timeout in milliseconds
+     * @param params HTTP parameters.
+     * @return SO_TIMEOUT.
      */
     public static int getSoTimeout(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+        Args.notNull(params, "HTTP parameters");
         return params.getIntParameter(CoreConnectionPNames.SO_TIMEOUT, 0);
     }
 
     /**
-     * Sets the default socket timeout (<tt>SO_TIMEOUT</tt>) in milliseconds which is the 
-     * timeout for waiting for data. A timeout value of zero is interpreted as an infinite 
-     * timeout. This value is used when no socket timeout is set in the 
-     * method parameters. 
+     * Sets value of the {@link CoreConnectionPNames#SO_TIMEOUT} parameter.
      *
-     * @param timeout Timeout in milliseconds
+     * @param params HTTP parameters.
+     * @param timeout SO_TIMEOUT.
      */
-    public static void setSoTimeout(final HttpParams params, int timeout) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+    public static void setSoTimeout(final HttpParams params, final int timeout) {
+        Args.notNull(params, "HTTP parameters");
         params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
-        
+
     }
 
     /**
-     * Tests if Nagle's algorithm is to be used.  
+     * Obtains value of the {@link CoreConnectionPNames#SO_REUSEADDR} parameter.
+     * If not set, defaults to {@code false}.
      *
-     * @return <tt>true</tt> if the Nagle's algorithm is to NOT be used
-     *   (that is enable TCP_NODELAY), <tt>false</tt> otherwise.
+     * @param params HTTP parameters.
+     * @return SO_REUSEADDR.
+     *
+     * @since 4.1
+     */
+    public static boolean getSoReuseaddr(final HttpParams params) {
+        Args.notNull(params, "HTTP parameters");
+        return params.getBooleanParameter(CoreConnectionPNames.SO_REUSEADDR, false);
+    }
+
+    /**
+     * Sets value of the {@link CoreConnectionPNames#SO_REUSEADDR} parameter.
+     *
+     * @param params HTTP parameters.
+     * @param reuseaddr SO_REUSEADDR.
+     *
+     * @since 4.1
+     */
+    public static void setSoReuseaddr(final HttpParams params, final boolean reuseaddr) {
+        Args.notNull(params, "HTTP parameters");
+        params.setBooleanParameter(CoreConnectionPNames.SO_REUSEADDR, reuseaddr);
+    }
+
+    /**
+     * Obtains value of the {@link CoreConnectionPNames#TCP_NODELAY} parameter.
+     * If not set, defaults to {@code true}.
+     *
+     * @param params HTTP parameters.
+     * @return Nagle's algorithm flag
      */
     public static boolean getTcpNoDelay(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        return params.getBooleanParameter
-            (CoreConnectionPNames.TCP_NODELAY, true);
+        Args.notNull(params, "HTTP parameters");
+        return params.getBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true);
     }
 
     /**
-     * Determines whether Nagle's algorithm is to be used. The Nagle's algorithm 
-     * tries to conserve bandwidth by minimizing the number of segments that are 
-     * sent. When applications wish to decrease network latency and increase 
-     * performance, they can disable Nagle's algorithm (that is enable TCP_NODELAY). 
-     * Data will be sent earlier, at the cost of an increase in bandwidth consumption. 
+     * Sets value of the {@link CoreConnectionPNames#TCP_NODELAY} parameter.
      *
-     * @param value <tt>true</tt> if the Nagle's algorithm is to NOT be used
-     *   (that is enable TCP_NODELAY), <tt>false</tt> otherwise.
+     * @param params HTTP parameters.
+     * @param value Nagle's algorithm flag
      */
-    public static void setTcpNoDelay(final HttpParams params, boolean value) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+    public static void setTcpNoDelay(final HttpParams params, final boolean value) {
+        Args.notNull(params, "HTTP parameters");
         params.setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, value);
     }
 
+    /**
+     * Obtains value of the {@link CoreConnectionPNames#SOCKET_BUFFER_SIZE}
+     * parameter. If not set, defaults to {@code -1}.
+     *
+     * @param params HTTP parameters.
+     * @return socket buffer size
+     */
     public static int getSocketBufferSize(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        return params.getIntParameter
-            (CoreConnectionPNames.SOCKET_BUFFER_SIZE, -1);
+        Args.notNull(params, "HTTP parameters");
+        return params.getIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, -1);
     }
-    
-    public static void setSocketBufferSize(final HttpParams params, int size) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+
+    /**
+     * Sets value of the {@link CoreConnectionPNames#SOCKET_BUFFER_SIZE}
+     * parameter.
+     *
+     * @param params HTTP parameters.
+     * @param size socket buffer size
+     */
+    public static void setSocketBufferSize(final HttpParams params, final int size) {
+        Args.notNull(params, "HTTP parameters");
         params.setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, size);
     }
 
     /**
-     * Returns linger-on-close timeout. Value <tt>0</tt> implies that the option is 
-     * disabled. Value <tt>-1</tt> implies that the JRE default is used.
-     * 
-     * @return the linger-on-close timeout
+     * Obtains value of the {@link CoreConnectionPNames#SO_LINGER} parameter.
+     * If not set, defaults to {@code -1}.
+     *
+     * @param params HTTP parameters.
+     * @return SO_LINGER.
      */
     public static int getLinger(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+        Args.notNull(params, "HTTP parameters");
         return params.getIntParameter(CoreConnectionPNames.SO_LINGER, -1);
     }
 
     /**
-     * Returns linger-on-close timeout. This option disables/enables immediate return 
-     * from a close() of a TCP Socket. Enabling this option with a non-zero Integer 
-     * timeout means that a close() will block pending the transmission and 
-     * acknowledgement of all data written to the peer, at which point the socket is 
-     * closed gracefully. Value <tt>0</tt> implies that the option is 
-     * disabled. Value <tt>-1</tt> implies that the JRE default is used.
+     * Sets value of the {@link CoreConnectionPNames#SO_LINGER} parameter.
      *
-     * @param value the linger-on-close timeout
+     * @param params HTTP parameters.
+     * @param value SO_LINGER.
      */
-    public static void setLinger(final HttpParams params, int value) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+    public static void setLinger(final HttpParams params, final int value) {
+        Args.notNull(params, "HTTP parameters");
         params.setIntParameter(CoreConnectionPNames.SO_LINGER, value);
     }
 
     /**
-     * Returns the timeout until a connection is etablished. A value of zero 
-     * means the timeout is not used. The default value is zero.
-     * 
-     * @return timeout in milliseconds.
+     * Obtains value of the {@link CoreConnectionPNames#CONNECTION_TIMEOUT}
+     * parameter. If not set, defaults to {@code 0}.
+     *
+     * @param params HTTP parameters.
+     * @return connect timeout.
      */
     public static int getConnectionTimeout(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        return params.getIntParameter
-            (CoreConnectionPNames.CONNECTION_TIMEOUT, 0);
+        Args.notNull(params, "HTTP parameters");
+        return params.getIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 0);
     }
 
     /**
-     * Sets the timeout until a connection is etablished. A value of zero 
-     * means the timeout is not used. The default value is zero.
-     * 
-     * @param timeout Timeout in milliseconds.
+     * Sets value of the {@link CoreConnectionPNames#CONNECTION_TIMEOUT}
+     * parameter.
+     *
+     * @param params HTTP parameters.
+     * @param timeout connect timeout.
      */
-    public static void setConnectionTimeout(final HttpParams params, int timeout) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        params.setIntParameter
-            (CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
+    public static void setConnectionTimeout(final HttpParams params, final int timeout) {
+        Args.notNull(params, "HTTP parameters");
+        params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
     }
-    
+
     /**
-     * Tests whether stale connection check is to be used. Disabling 
-     * stale connection check may result in slight performance improvement 
-     * at the risk of getting an I/O error when executing a request over a
-     * connection that has been closed at the server side. 
-     * 
-     * @return <tt>true</tt> if stale connection check is to be used, 
-     *   <tt>false</tt> otherwise.
+     * Obtains value of the {@link CoreConnectionPNames#STALE_CONNECTION_CHECK}
+     * parameter. If not set, defaults to {@code true}.
+     *
+     * @param params HTTP parameters.
+     * @return stale connection check flag.
      */
     public static boolean isStaleCheckingEnabled(final HttpParams params) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        return params.getBooleanParameter
-            (CoreConnectionPNames.STALE_CONNECTION_CHECK, true);
+        Args.notNull(params, "HTTP parameters");
+        return params.getBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, true);
     }
 
     /**
-     * Defines whether stale connection check is to be used. Disabling 
-     * stale connection check may result in slight performance improvement 
-     * at the risk of getting an I/O error when executing a request over a
-     * connection that has been closed at the server side. 
-     * 
-     * @param value <tt>true</tt> if stale connection check is to be used, 
-     *   <tt>false</tt> otherwise.
+     * Sets value of the {@link CoreConnectionPNames#STALE_CONNECTION_CHECK}
+     * parameter.
+     *
+     * @param params HTTP parameters.
+     * @param value stale connection check flag.
      */
-    public static void setStaleCheckingEnabled(final HttpParams params, boolean value) {
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        params.setBooleanParameter
-            (CoreConnectionPNames.STALE_CONNECTION_CHECK, value);
+    public static void setStaleCheckingEnabled(final HttpParams params, final boolean value) {
+        Args.notNull(params, "HTTP parameters");
+        params.setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, value);
     }
-    
+
+    /**
+     * Obtains value of the {@link CoreConnectionPNames#SO_KEEPALIVE} parameter.
+     * If not set, defaults to {@code false}.
+     *
+     * @param params HTTP parameters.
+     * @return SO_KEEPALIVE.
+     *
+     * @since 4.2
+     */
+    public static boolean getSoKeepalive(final HttpParams params) {
+        Args.notNull(params, "HTTP parameters");
+        return params.getBooleanParameter(CoreConnectionPNames.SO_KEEPALIVE, false);
+    }
+
+    /**
+     * Sets value of the {@link CoreConnectionPNames#SO_KEEPALIVE} parameter.
+     *
+     * @param params HTTP parameters.
+     * @param enableKeepalive SO_KEEPALIVE.
+     *
+     * @since 4.2
+     */
+    public static void setSoKeepalive(final HttpParams params, final boolean enableKeepalive) {
+        Args.notNull(params, "HTTP parameters");
+        params.setBooleanParameter(CoreConnectionPNames.SO_KEEPALIVE, enableKeepalive);
+    }
+
 }

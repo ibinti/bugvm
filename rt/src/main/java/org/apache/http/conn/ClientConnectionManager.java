@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ClientConnectionManager.java $
- * $Revision: 671717 $
- * $Date: 2008-06-25 21:03:24 -0700 (Wed, 25 Jun 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,7 +27,6 @@
 
 package org.apache.http.conn;
 
-
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.conn.routing.HttpRoute;
@@ -39,57 +34,53 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 
 /**
  * Management interface for {@link ManagedClientConnection client connections}.
- * 
- * @author Michael Becke
- * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version   $Revision: 671717 $
+ * The purpose of an HTTP connection manager is to serve as a factory for new
+ * HTTP connections, manage persistent connections and synchronize access to
+ * persistent connections making sure that only one thread of execution can
+ * have access to a connection at a time.
+ * <p>
+ * Implementations of this interface must be thread-safe. Access to shared
+ * data must be synchronized as methods of this interface may be executed
+ * from multiple threads.
  *
  * @since 4.0
+ *
+ * @deprecated (4.3) replaced by {@link HttpClientConnectionManager}.
  */
+@Deprecated
 public interface ClientConnectionManager {
 
     /**
      * Obtains the scheme registry used by this manager.
      *
-     * @return  the scheme registry, never <code>null</code>
+     * @return  the scheme registry, never {@code null}
      */
-    SchemeRegistry getSchemeRegistry()
-        ;
+    SchemeRegistry getSchemeRegistry();
 
-    
     /**
      * Returns a new {@link ClientConnectionRequest}, from which a
      * {@link ManagedClientConnection} can be obtained or the request can be
      * aborted.
      */
-    ClientConnectionRequest requestConnection(HttpRoute route, Object state)
-        ;
-
+    ClientConnectionRequest requestConnection(HttpRoute route, Object state);
 
     /**
      * Releases a connection for use by others.
      * You may optionally specify how long the connection is valid
-     * to be reused.  Values <= 0 are considered to be valid forever.
+     * to be reused.  Values &lt;= 0 are considered to be valid forever.
      * If the connection is not marked as reusable, the connection will
      * not be reused regardless of the valid duration.
-     * 
+     *
      * If the connection has been released before,
      * the call will be ignored.
      *
      * @param conn      the connection to release
      * @param validDuration the duration of time this connection is valid for reuse
      * @param timeUnit the unit of time validDuration is measured in
-     * 
+     *
      * @see #closeExpiredConnections()
      */
-    void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit)
-        ;
-
+    void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit);
 
     /**
      * Closes idle connections in the pool.
@@ -97,16 +88,15 @@ public interface ClientConnectionManager {
      * timespan given by the argument will be closed.
      * Currently allocated connections are not subject to this method.
      * Times will be checked with milliseconds precision
-     * 
+     *
      * All expired connections will also be closed.
-     * 
+     *
      * @param idletime  the idle time of connections to be closed
-     * @param tunit     the unit for the <code>idletime</code>
-     * 
+     * @param tunit     the unit for the {@code idletime}
+     *
      * @see #closeExpiredConnections()
      */
-    void closeIdleConnections(long idletime, TimeUnit tunit)
-        ;
+    void closeIdleConnections(long idletime, TimeUnit tunit);
 
     /**
      * Closes all expired connections in the pool.
@@ -122,8 +112,6 @@ public interface ClientConnectionManager {
      * This includes closing all connections, whether they are currently
      * used or not.
      */
-    void shutdown()
-        ;
+    void shutdown();
 
-
-} // interface ClientConnectionManager
+}

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/DefaultHttpRequestFactory.java $
- * $Revision: 618367 $
- * $Date: 2008-02-04 10:26:06 -0800 (Mon, 04 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,24 +31,25 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestFactory;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.RequestLine;
+import org.apache.http.annotation.Immutable;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpRequest;
+import org.apache.http.util.Args;
 
 /**
- * Default implementation of a factory for creating request objects.
+ * Default factory for creating {@link HttpRequest} objects.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 618367 $
- * 
  * @since 4.0
  */
+@Immutable
 public class DefaultHttpRequestFactory implements HttpRequestFactory {
-    
+
+    public static final DefaultHttpRequestFactory INSTANCE = new DefaultHttpRequestFactory();
+
     private static final String[] RFC2616_COMMON_METHODS = {
         "GET"
     };
-    
+
     private static final String[] RFC2616_ENTITY_ENC_METHODS = {
         "POST",
         "PUT"
@@ -62,52 +59,53 @@ public class DefaultHttpRequestFactory implements HttpRequestFactory {
         "HEAD",
         "OPTIONS",
         "DELETE",
-        "TRACE"
+        "TRACE",
+        "CONNECT"
     };
-    
-    
+
+
     public DefaultHttpRequestFactory() {
         super();
     }
-    
+
     private static boolean isOneOf(final String[] methods, final String method) {
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].equalsIgnoreCase(method)) {
+        for (final String method2 : methods) {
+            if (method2.equalsIgnoreCase(method)) {
                 return true;
             }
         }
         return false;
     }
 
+    @Override
     public HttpRequest newHttpRequest(final RequestLine requestline)
             throws MethodNotSupportedException {
-        if (requestline == null) {
-            throw new IllegalArgumentException("Request line may not be null");
-        }
-        String method = requestline.getMethod();
+        Args.notNull(requestline, "Request line");
+        final String method = requestline.getMethod();
         if (isOneOf(RFC2616_COMMON_METHODS, method)) {
-            return new BasicHttpRequest(requestline); 
+            return new BasicHttpRequest(requestline);
         } else if (isOneOf(RFC2616_ENTITY_ENC_METHODS, method)) {
-            return new BasicHttpEntityEnclosingRequest(requestline); 
+            return new BasicHttpEntityEnclosingRequest(requestline);
         } else if (isOneOf(RFC2616_SPECIAL_METHODS, method)) {
-            return new BasicHttpRequest(requestline); 
-        } else { 
+            return new BasicHttpRequest(requestline);
+        } else {
             throw new MethodNotSupportedException(method +  " method not supported");
         }
     }
 
+    @Override
     public HttpRequest newHttpRequest(final String method, final String uri)
             throws MethodNotSupportedException {
         if (isOneOf(RFC2616_COMMON_METHODS, method)) {
-            return new BasicHttpRequest(method, uri); 
+            return new BasicHttpRequest(method, uri);
         } else if (isOneOf(RFC2616_ENTITY_ENC_METHODS, method)) {
-            return new BasicHttpEntityEnclosingRequest(method, uri); 
+            return new BasicHttpEntityEnclosingRequest(method, uri);
         } else if (isOneOf(RFC2616_SPECIAL_METHODS, method)) {
-            return new BasicHttpRequest(method, uri); 
+            return new BasicHttpRequest(method, uri);
         } else {
             throw new MethodNotSupportedException(method
                     + " method not supported");
         }
     }
-    
+
 }

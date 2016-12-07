@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpRequestBase.java $
- * $Revision: 674186 $
- * $Date: 2008-07-05 05:18:54 -0700 (Sat, 05 Jul 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,152 +27,103 @@
 
 package org.apache.http.client.methods;
 
-import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
-import org.apache.http.client.utils.CloneUtils;
-import org.apache.http.conn.ClientConnectionRequest;
-import org.apache.http.conn.ConnectionReleaseTrigger;
-import org.apache.http.message.AbstractHttpMessage;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.message.BasicRequestLine;
-import org.apache.http.message.HeaderGroup;
-import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 /**
- * Basic implementation of an HTTP request that can be modified.
+ * Base implementation of {@link HttpUriRequest}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 674186 $
- * 
  * @since 4.0
  */
-public abstract class HttpRequestBase extends AbstractHttpMessage 
-    implements HttpUriRequest, AbortableHttpRequest, Cloneable {
+@SuppressWarnings("deprecation")
+@NotThreadSafe
+public abstract class HttpRequestBase extends AbstractExecutionAwareRequest
+    implements HttpUriRequest, Configurable {
 
-    private Lock abortLock;
-
-    private boolean aborted;
-    
+    private ProtocolVersion version;
     private URI uri;
-    private ClientConnectionRequest connRequest;
-    private ConnectionReleaseTrigger releaseTrigger;
-    
-    public HttpRequestBase() {
-        super();
-        this.abortLock = new ReentrantLock();
-    }
+    private RequestConfig config;
 
+    @Override
     public abstract String getMethod();
 
-    public ProtocolVersion getProtocolVersion() {
-        return HttpProtocolParams.getVersion(getParams());
+    /**
+     * @since 4.3
+     */
+    public void setProtocolVersion(final ProtocolVersion version) {
+        this.version = version;
     }
 
+    @Override
+    public ProtocolVersion getProtocolVersion() {
+        return version != null ? version : HttpProtocolParams.getVersion(getParams());
+    }
+
+    /**
+     * Returns the original request URI.
+     * <p>
+     * Please note URI remains unchanged in the course of request execution and
+     * is not updated if the request is redirected to another location.
+     */
+    @Override
     public URI getURI() {
         return this.uri;
     }
-    
+
+    @Override
     public RequestLine getRequestLine() {
-        String method = getMethod();
-        ProtocolVersion ver = getProtocolVersion();
-        URI uri = getURI();
+        final String method = getMethod();
+        final ProtocolVersion ver = getProtocolVersion();
+        final URI uriCopy = getURI(); // avoids possible window where URI could be changed
         String uritext = null;
-        if (uri != null) {
-            uritext = uri.toASCIIString();
+        if (uriCopy != null) {
+            uritext = uriCopy.toASCIIString();
         }
-        if (uritext == null || uritext.length() == 0) {
+        if (uritext == null || uritext.isEmpty()) {
             uritext = "/";
         }
         return new BasicRequestLine(method, uritext, ver);
+    }
+
+
+    @Override
+    public RequestConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(final RequestConfig config) {
+        this.config = config;
     }
 
     public void setURI(final URI uri) {
         this.uri = uri;
     }
 
-    public void setConnectionRequest(final ClientConnectionRequest connRequest)
-            throws IOException {
-        this.abortLock.lock();
-        try {
-            if (this.aborted) {
-                throw new IOException("Request already aborted");
-            }
-            
-            this.releaseTrigger = null;
-            this.connRequest = connRequest;
-        } finally {
-            this.abortLock.unlock();
-        }
+    /**
+     * @since 4.2
+     */
+    public void started() {
     }
 
-    public void setReleaseTrigger(final ConnectionReleaseTrigger releaseTrigger)
-            throws IOException {
-        this.abortLock.lock();
-        try {
-            if (this.aborted) {
-                throw new IOException("Request already aborted");
-            }
-            
-            this.connRequest = null;
-            this.releaseTrigger = releaseTrigger;
-        } finally {
-            this.abortLock.unlock();
-        }
-    }
-    
-    public void abort() {
-        ClientConnectionRequest localRequest;
-        ConnectionReleaseTrigger localTrigger;
-        
-        this.abortLock.lock();
-        try {
-            if (this.aborted) {
-                return;
-            }            
-            this.aborted = true;
-            
-            localRequest = connRequest;
-            localTrigger = releaseTrigger;
-        } finally {
-            this.abortLock.unlock();
-        }        
-
-        // Trigger the callbacks outside of the lock, to prevent
-        // deadlocks in the scenario where the callbacks have
-        // their own locks that may be used while calling
-        // setReleaseTrigger or setConnectionRequest.
-        if (localRequest != null) {
-            localRequest.abortRequest();
-        }
-        if (localTrigger != null) {
-            try {
-                localTrigger.abortConnection();
-            } catch (IOException ex) {
-                // ignore
-            }
-        }
-    }
-    
-    public boolean isAborted() {
-        return this.aborted;
+    /**
+     * A convenience method to simplify migration from HttpClient 3.1 API. This method is
+     * equivalent to {@link #reset()}.
+     *
+     * @since 4.2
+     */
+    public void releaseConnection() {
+        reset();
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        HttpRequestBase clone = (HttpRequestBase) super.clone();
-        clone.abortLock = new ReentrantLock();
-        clone.aborted = false;
-        clone.releaseTrigger = null;
-        clone.connRequest = null;
-        clone.headergroup = (HeaderGroup) CloneUtils.clone(this.headergroup);
-        clone.params = (HttpParams) CloneUtils.clone(this.params);
-        return clone;
+    public String toString() {
+        return getMethod() + " " + getURI() + " " + getProtocolVersion();
     }
-    
+
 }

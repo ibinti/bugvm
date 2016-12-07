@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/ParseException.java $
- * $Revision: 609106 $
- * $Date: 2008-01-05 01:15:42 -0800 (Sat, 05 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,14 +28,14 @@
 package org.apache.http;
 
 /**
- * Indicates a parse error.
+ * Signals a parse error.
  * Parse errors when receiving a message will typically trigger
  * {@link ProtocolException}. Parse errors that do not occur during
  * protocol execution may be handled differently.
- * This is an unchecked exceptions, since there are cases where
+ * This is an unchecked exception, since there are cases where
  * the data to be parsed has been generated and is therefore
  * known to be parseable.
- * 
+ *
  * @since 4.0
  */
 public class ParseException extends RuntimeException {
@@ -55,10 +51,10 @@ public class ParseException extends RuntimeException {
 
     /**
      * Creates a {@link ParseException} with a detail message.
-     * 
-     * @param message the exception detail message, or <code>null</code>
+     *
+     * @param message the exception detail message, or {@code null}
      */
-    public ParseException(String message) {
+    public ParseException(final String message) {
         super(message);
     }
 

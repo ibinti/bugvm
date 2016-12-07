@@ -10,7 +10,7 @@ buildscript {
 apply plugin: "com.github.johnrengelman.shadow"
 
 archivesBaseName = "bugvm-rt"
-description = """BugVM Runtime Library"""
+description = "BugVM Runtime Library"
 
 dependencies {
      compile "commons-io:commons-io:2.4"
@@ -25,17 +25,17 @@ jar {
 
 shadowJar {
      classifier = null
-     relocate 'org.bouncycastle', 'com.android.org.bouncycastle'
-     relocate 'org.conscrypt', 'com.android.org.conscrypt'
-     relocate 'com.squareup', 'com.android'
+     relocate "org.bouncycastle", "com.android.org.bouncycastle"
+     relocate "org.conscrypt", "com.android.org.conscrypt"
+     relocate "com.squareup", "com.android"
 }
 
 jar.dependsOn shadowJar
 
 task nativeLib(type:Exec) {
-     workingDir 'vm'
+     workingDir "vm"
 
-     commandLine 'bash', '-c', '. build.sh --clean --build=release'
+     commandLine "bash", "-c", ". build.sh --clean --build=release"
 
 }
 
@@ -69,19 +69,19 @@ uploadArchives {
                pom.project {
                     name project.archivesBaseName
                     description project.description
-                    url 'https://bugvm.com'
+                    url "https://bugvm.com"
 
                     scm {
-                         url 'https://github.com/bugvm/bugvm.git'
-                         connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                         url "https://github.com/bugvm/bugvm.git"
+                         connection "scm:git:git://github.com/bugvm/bugvm.git"
                     }
 
                     developers {
                          developer {
-                              id 'bugvm'
-                              name 'The Bug'
-                              email 'bug@bugvm.com'
-                              url 'https://bugvm.com'
+                              id "bugvm"
+                              name "The Bug"
+                              email "bug@bugvm.com"
+                              url "https://bugvm.com"
                          }
                     }
                }

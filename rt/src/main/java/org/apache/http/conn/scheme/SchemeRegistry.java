@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/scheme/SchemeRegistry.java $
- * $Revision: 648356 $
- * $Date: 2008-04-15 10:57:53 -0700 (Tue, 15 Apr 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,51 +27,49 @@
 package org.apache.http.conn.scheme;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.HttpHost;
+import org.apache.http.annotation.ThreadSafe;
+import org.apache.http.util.Args;
 
 /**
- * A set of supported protocol {@link Scheme schemes}.
+ * A set of supported protocol {@link Scheme}s.
  * Schemes are identified by lowercase names.
  *
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version   $Revision: 648356 $ $Date: 2008-04-15 10:57:53 -0700 (Tue, 15 Apr 2008) $
- *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link org.apache.http.config.Registry}
  */
+@ThreadSafe
+@Deprecated
 public final class SchemeRegistry {
 
     /** The available schemes in this registry. */
-    private final Map<String,Scheme> registeredSchemes;
-
+    private final ConcurrentHashMap<String,Scheme> registeredSchemes;
 
     /**
      * Creates a new, empty scheme registry.
      */
     public SchemeRegistry() {
         super();
-        registeredSchemes = new LinkedHashMap<String,Scheme>();
+        registeredSchemes = new ConcurrentHashMap<String,Scheme>();
     }
-
 
     /**
      * Obtains a scheme by name.
      *
      * @param name      the name of the scheme to look up (in lowercase)
      *
-     * @return  the scheme, never <code>null</code>
+     * @return  the scheme, never {@code null}
      *
      * @throws IllegalStateException
      *          if the scheme with the given name is not registered
      */
-    public synchronized final Scheme getScheme(String name) {
-        Scheme found = get(name);
+    public final Scheme getScheme(final String name) {
+        final Scheme found = get(name);
         if (found == null) {
             throw new IllegalStateException
                 ("Scheme '"+name+"' not registered.");
@@ -83,25 +77,21 @@ public final class SchemeRegistry {
         return found;
     }
 
-
     /**
      * Obtains the scheme for a host.
-     * Convenience method for <code>getScheme(host.getSchemeName())</pre>
+     * Convenience method for {@code getScheme(host.getSchemeName())}
      *
-     * @param host      the host for which to obtain the scheme
+     * @param host the host for which to obtain the scheme
      *
-     * @return  the scheme for the given host, never <code>null</code>
+     * @return the scheme for the given host, never {@code null}
      *
      * @throws IllegalStateException
      *          if a scheme with the respective name is not registered
      */
-    public synchronized final Scheme getScheme(HttpHost host) {
-        if (host == null) {
-            throw new IllegalArgumentException("Host must not be null.");
-        }
+    public final Scheme getScheme(final HttpHost host) {
+        Args.notNull(host, "Host");
         return getScheme(host.getSchemeName());
     }
-
 
     /**
      * Obtains a scheme by name, if registered.
@@ -109,18 +99,15 @@ public final class SchemeRegistry {
      * @param name      the name of the scheme to look up (in lowercase)
      *
      * @return  the scheme, or
-     *          <code>null</code> if there is none by this name
+     *          {@code null} if there is none by this name
      */
-    public synchronized final Scheme get(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("Name must not be null.");
-
+    public final Scheme get(final String name) {
+        Args.notNull(name, "Scheme name");
         // leave it to the caller to use the correct name - all lowercase
-        //name = name.toLowerCase();
-        Scheme found = registeredSchemes.get(name);
+        //name = name.toLowerCase(Locale.ENGLISH);
+        final Scheme found = registeredSchemes.get(name);
         return found;
     }
-
 
     /**
      * Registers a scheme.
@@ -130,16 +117,13 @@ public final class SchemeRegistry {
      * @param sch       the scheme to register
      *
      * @return  the scheme previously registered with that name, or
-     *          <code>null</code> if none was registered
+     *          {@code null} if none was registered
      */
-    public synchronized final Scheme register(Scheme sch) {
-        if (sch == null)
-            throw new IllegalArgumentException("Scheme must not be null.");
-
-        Scheme old = registeredSchemes.put(sch.getName(), sch);
+    public final Scheme register(final Scheme sch) {
+        Args.notNull(sch, "Scheme");
+        final Scheme old = registeredSchemes.put(sch.getName(), sch);
         return old;
     }
-
 
     /**
      * Unregisters a scheme.
@@ -147,35 +131,32 @@ public final class SchemeRegistry {
      * @param name      the name of the scheme to unregister (in lowercase)
      *
      * @return  the unregistered scheme, or
-     *          <code>null</code> if there was none
+     *          {@code null} if there was none
      */
-    public synchronized final Scheme unregister(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("Name must not be null.");
-
+    public final Scheme unregister(final String name) {
+        Args.notNull(name, "Scheme name");
         // leave it to the caller to use the correct name - all lowercase
-        //name = name.toLowerCase();
-        Scheme gone = registeredSchemes.remove(name);
+        //name = name.toLowerCase(Locale.ENGLISH);
+        final Scheme gone = registeredSchemes.remove(name);
         return gone;
     }
 
-
     /**
-     * Obtains the names of the registered schemes in their default order.
+     * Obtains the names of the registered schemes.
      *
      * @return  List containing registered scheme names.
      */
-    public synchronized final List<String> getSchemeNames() {
+    public final List<String> getSchemeNames() {
         return new ArrayList<String>(registeredSchemes.keySet());
     }
 
     /**
-     * Populates the internal collection of registered {@link Scheme protocol schemes} 
+     * Populates the internal collection of registered {@link Scheme protocol schemes}
      * with the content of the map passed as a parameter.
-     * 
+     *
      * @param map protocol schemes
      */
-    public synchronized void setItems(final Map<String, Scheme> map) {
+    public void setItems(final Map<String, Scheme> map) {
         if (map == null) {
             return;
         }
@@ -183,5 +164,5 @@ public final class SchemeRegistry {
         registeredSchemes.putAll(map);
     }
 
-} // class SchemeRegistry
+}
 

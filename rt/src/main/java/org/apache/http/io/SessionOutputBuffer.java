@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/io/SessionOutputBuffer.java $
- * $Revision: 560528 $
- * $Date: 2007-07-28 04:34:17 -0700 (Sat, 28 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,28 +32,89 @@ import java.io.IOException;
 import org.apache.http.util.CharArrayBuffer;
 
 /**
- * Session output buffer for blocking connections.
+ * Session output buffer for blocking connections. This interface is similar to
+ * OutputStream class, but it also provides methods for writing lines of text.
+ * <p>
+ * Implementing classes are also expected to manage intermediate data buffering
+ * for optimal output performance.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 560528 $
- * 
  * @since 4.0
  */
 public interface SessionOutputBuffer {
 
+    /**
+     * Writes {@code len} bytes from the specified byte array
+     * starting at offset {@code off} to this session buffer.
+     * <p>
+     * If {@code off} is negative, or {@code len} is negative, or
+     * {@code off+len} is greater than the length of the array
+     * {@code b}, then an {@code IndexOutOfBoundsException} is thrown.
+     *
+     * @param      b     the data.
+     * @param      off   the start offset in the data.
+     * @param      len   the number of bytes to write.
+     * @exception  IOException  if an I/O error occurs.
+     */
     void write(byte[] b, int off, int len) throws IOException;
-    
+
+    /**
+     * Writes {@code b.length} bytes from the specified byte array
+     * to this session buffer.
+     *
+     * @param      b   the data.
+     * @exception  IOException  if an I/O error occurs.
+     */
     void write(byte[] b) throws IOException;
-    
+
+    /**
+     * Writes the specified byte to this session buffer.
+     *
+     * @param      b   the {@code byte}.
+     * @exception  IOException  if an I/O error occurs.
+     */
     void write(int b) throws IOException;
-    
+
+    /**
+     * Writes characters from the specified string followed by a line delimiter
+     * to this session buffer.
+     * <p>
+     * The choice of a char encoding and line delimiter sequence is up to the
+     * specific implementations of this interface.
+     *
+     * @param      s   the line.
+     * @exception  IOException  if an I/O error occurs.
+     */
     void writeLine(String s) throws IOException;
-    
+
+    /**
+     * Writes characters from the specified char array followed by a line
+     * delimiter to this session buffer.
+     * <p>
+     * The choice of a char encoding and line delimiter sequence is up to the
+     * specific implementations of this interface.
+     *
+     * @param      buffer   the buffer containing chars of the line.
+     * @exception  IOException  if an I/O error occurs.
+     */
     void writeLine(CharArrayBuffer buffer) throws IOException;
-    
+
+    /**
+     * Flushes this session buffer and forces any buffered output bytes
+     * to be written out. The general contract of {@code flush} is
+     * that calling it is an indication that, if any bytes previously
+     * written have been buffered by the implementation of the output
+     * stream, such bytes should immediately be written to their
+     * intended destination.
+     *
+     * @exception  IOException  if an I/O error occurs.
+     */
     void flush() throws IOException;
-    
+
+    /**
+     * Returns {@link HttpTransportMetrics} for this session buffer.
+     *
+     * @return transport metrics.
+     */
     HttpTransportMetrics getMetrics();
-    
+
 }

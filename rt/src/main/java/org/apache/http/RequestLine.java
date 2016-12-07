@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/RequestLine.java $
- * $Revision: 573864 $
- * $Date: 2007-09-08 08:53:25 -0700 (Sat, 08 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,14 +28,14 @@
 package org.apache.http;
 
 /**
- * The first line of an {@link HttpRequest HttpRequest}.
- * It contains the method, URI, and HTTP version of the request.
- * For details, see RFC 2616.
+ * The Request-Line begins with a method token, followed by the
+ * Request-URI and the protocol version, and ending with CRLF. The
+ * elements are separated by SP characters. No CR or LF is allowed
+ * except in the final CRLF sequence.
+ * <pre>
+ *      Request-Line   = Method SP Request-URI SP HTTP-Version CRLF
+ * </pre>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 573864 $
- * 
  * @since 4.0
  */
 public interface RequestLine {
@@ -49,5 +45,5 @@ public interface RequestLine {
     ProtocolVersion getProtocolVersion();
 
     String getUri();
-    
+
 }

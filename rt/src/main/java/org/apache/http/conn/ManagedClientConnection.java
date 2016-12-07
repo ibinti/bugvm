@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ManagedClientConnection.java $
- * $Revision: 672969 $
- * $Date: 2008-06-30 18:09:50 -0700 (Mon, 30 Jun 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,72 +33,62 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLSession;
 
 import org.apache.http.HttpClientConnection;
-import org.apache.http.HttpInetConnection;
 import org.apache.http.HttpHost;
+import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
-
-import org.apache.http.conn.routing.HttpRoute;
-
-
 
 /**
  * A client-side connection with advanced connection logic.
  * Instances are typically obtained from a connection manager.
  *
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version   $Revision: 672969 $
- *
  * @since 4.0
+ *
+ * @deprecated (4.3) replaced by {@link HttpClientConnectionManager}.
  */
+@Deprecated
 public interface ManagedClientConnection extends
-    HttpClientConnection, HttpInetConnection, ConnectionReleaseTrigger {
-
+    HttpClientConnection, HttpRoutedConnection, ManagedHttpClientConnection, ConnectionReleaseTrigger {
 
     /**
      * Indicates whether this connection is secure.
      * The return value is well-defined only while the connection is open.
      * It may change even while the connection is open.
      *
-     * @return  <code>true</code> if this connection is secure,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if this connection is secure,
+     *          {@code false} otherwise
      */
-    boolean isSecure()
-        ;
-
+    @Override
+    boolean isSecure();
 
     /**
      * Obtains the current route of this connection.
      *
      * @return  the route established so far, or
-     *          <code>null</code> if not connected
+     *          {@code null} if not connected
      */
-    HttpRoute getRoute()
-        ;
-
+    @Override
+    HttpRoute getRoute();
 
     /**
      * Obtains the SSL session of the underlying connection, if any.
      * If this connection is open, and the underlying socket is an
      * {@link javax.net.ssl.SSLSocket SSLSocket}, the SSL session of
      * that socket is obtained. This is a potentially blocking operation.
-     * <br/>
+     * <p>
      * <b>Note:</b> Whether the underlying socket is an SSL socket
      * can not necessarily be determined via {@link #isSecure}.
      * Plain sockets may be considered secure, for example if they are
      * connected to a known host in the same network segment.
      * On the other hand, SSL sockets may be considered insecure,
      * for example depending on the chosen cipher suite.
+     * </p>
      *
      * @return  the underlying SSL session if available,
-     *          <code>null</code> otherwise
+     *          {@code null} otherwise
      */
-    SSLSession getSSLSession()
-        ;
-
+    @Override
+    SSLSession getSSLSession();
 
     /**
      * Opens this connection according to the given route.
@@ -115,31 +101,28 @@ public interface ManagedClientConnection extends
      * @throws IOException      in case of a problem
      */
     void open(HttpRoute route, HttpContext context, HttpParams params)
-        throws IOException
-        ;
-
+        throws IOException;
 
     /**
      * Indicates that a tunnel to the target has been established.
      * The route is the one previously passed to {@link #open open}.
      * Subsequently, {@link #layerProtocol layerProtocol} can be called
      * to layer the TLS/SSL protocol on top of the tunnelled connection.
-     * <br/>
+     * <p>
      * <b>Note:</b> In HttpClient 3, a call to the corresponding method
      * would automatically trigger the layering of the TLS/SSL protocol.
      * This is not the case anymore, you can establish a tunnel without
      * layering a new protocol over the connection.
+     * </p>
      *
-     * @param secure    <code>true</code> if the tunnel should be considered
-     *                  secure, <code>false</code> otherwise
+     * @param secure    {@code true} if the tunnel should be considered
+     *                  secure, {@code false} otherwise
      * @param params    the parameters for tunnelling this connection
      *
      * @throws IOException  in case of a problem
      */
     void tunnelTarget(boolean secure, HttpParams params)
-        throws IOException
-        ;
-
+        throws IOException;
 
     /**
      * Indicates that a tunnel to an intermediate proxy has been established.
@@ -155,16 +138,14 @@ public interface ManagedClientConnection extends
      *                  of the tunnel. The tunnel does <i>not</i> yet
      *                  reach to the target, use {@link #tunnelTarget}
      *                  to indicate an end-to-end tunnel.
-     * @param secure    <code>true</code> if the connection should be
-     *                  considered secure, <code>false</code> otherwise
+     * @param secure    {@code true} if the connection should be
+     *                  considered secure, {@code false} otherwise
      * @param params    the parameters for tunnelling this connection
      *
      * @throws IOException  in case of a problem
      */
     void tunnelProxy(HttpHost next, boolean secure, HttpParams params)
-        throws IOException
-        ;
-
+        throws IOException;
 
     /**
      * Layers a new protocol on top of a {@link #tunnelTarget tunnelled}
@@ -180,74 +161,67 @@ public interface ManagedClientConnection extends
      * @throws IOException      in case of a problem
      */
     void layerProtocol(HttpContext context, HttpParams params)
-        throws IOException
-        ;
-
+        throws IOException;
 
     /**
      * Marks this connection as being in a reusable communication state.
      * The checkpoints for reuseable communication states (in the absence
      * of pipelining) are before sending a request and after receiving
-     * the response in it's entirety.
+     * the response in its entirety.
      * The connection will automatically clear the checkpoint when
      * used for communication. A call to this method indicates that
      * the next checkpoint has been reached.
-     * <br/>
+     * <p>
      * A reusable communication state is necessary but not sufficient
      * for the connection to be reused.
      * A {@link #getRoute route} mismatch, the connection being closed,
      * or other circumstances might prevent reuse.
+     * </p>
      */
-    void markReusable()
-        ;
-
+    void markReusable();
 
     /**
      * Marks this connection as not being in a reusable state.
      * This can be used immediately before releasing this connection
-     * to prevent it's reuse. Reasons for preventing reuse include
+     * to prevent its reuse. Reasons for preventing reuse include
      * error conditions and the evaluation of a
      * {@link org.apache.http.ConnectionReuseStrategy reuse strategy}.
-     * <br/>
+     * <p>
      * <b>Note:</b>
      * It is <i>not</i> necessary to call here before writing to
      * or reading from this connection. Communication attempts will
      * automatically unmark the state as non-reusable. It can then
      * be switched back using {@link #markReusable markReusable}.
+     * </p>
      */
-    void unmarkReusable()
-        ;
-
+    void unmarkReusable();
 
     /**
      * Indicates whether this connection is in a reusable communication state.
      * See {@link #markReusable markReusable} and
      * {@link #unmarkReusable unmarkReusable} for details.
      *
-     * @return  <code>true</code> if this connection is marked as being in
+     * @return  {@code true} if this connection is marked as being in
      *          a reusable communication state,
-     *          <code>false</code> otherwise
+     *          {@code false} otherwise
      */
-    boolean isMarkedReusable()
-        ;
+    boolean isMarkedReusable();
 
-    /** 
-     * Assigns a state object to this connection. Connection managers may make 
+    /**
+     * Assigns a state object to this connection. Connection managers may make
      * use of the connection state when allocating persistent connections.
-     *  
+     *
      * @param state The state object
      */
-    void setState(Object state)
-        ;
-    
+    void setState(Object state);
+
     /**
      * Returns the state object associated with this connection.
-     * 
+     *
      * @return The state object
      */
-    Object getState()
-        ;
-    
+    Object getState();
+
     /**
      * Sets the duration that this connection can remain idle before it is
      * reused. The connection should not be used again if this time elapses. The
@@ -258,4 +232,4 @@ public interface ManagedClientConnection extends
      */
     void setIdleDuration(long duration, TimeUnit unit);
 
-} // interface ManagedClientConnection
+}

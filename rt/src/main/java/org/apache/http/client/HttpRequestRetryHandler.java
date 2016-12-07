@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/HttpRequestRetryHandler.java $
- * $Revision: 535610 $
- * $Date: 2007-05-06 06:28:13 -0700 (Sun, 06 May 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,29 +32,27 @@ import java.io.IOException;
 import org.apache.http.protocol.HttpContext;
 
 /**
- * A handler for determining if an HttpRequest should be retried after a 
+ * A handler for determining if an HttpRequest should be retried after a
  * recoverable exception during execution.
- * 
  * <p>
- * Classes implementing this interface must synchronize access to shared
- * data as methods of this interfrace may be executed from multiple threads 
- * </p>
- * 
- * @author Michael Becke
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * Implementations of this interface must be thread-safe. Access to shared
+ * data must be synchronized as methods of this interface may be executed
+ * from multiple threads.
+ *
+ * @since 4.0
  */
 public interface HttpRequestRetryHandler {
 
     /**
      * Determines if a method should be retried after an IOException
      * occurs during execution.
-     * 
+     *
      * @param exception the exception that occurred
-     * @param executionCount the number of times this method has been 
+     * @param executionCount the number of times this method has been
      * unsuccessfully executed
      * @param context the context for the request execution
-     * 
-     * @return <code>true</code> if the method should be retried, <code>false</code>
+     *
+     * @return {@code true} if the method should be retried, {@code false}
      * otherwise
      */
     boolean retryRequest(IOException exception, int executionCount, HttpContext context);

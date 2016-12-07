@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/io/HttpTransportMetrics.java $
- * $Revision: 536667 $
- * $Date: 2007-05-09 14:48:41 -0700 (Wed, 09 May 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,16 +27,22 @@
 
 package org.apache.http.io;
 
+/**
+ * The point of access to the statistics of {@link SessionInputBuffer} or
+ * {@link SessionOutputBuffer}.
+ *
+ * @since 4.0
+ */
 public interface HttpTransportMetrics {
-    
+
     /**
-     * Returns the number of bytes trasferred.
+     * Returns the number of bytes transferred.
      */
-    long getBytesTransferred(); 
-    
+    long getBytesTransferred();
+
     /**
      * Resets the counts
      */
     void reset();
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/RFC2965PortAttributeHandler.java $
- * $Revision: 590695 $
- * $Date: 2007-10-31 07:55:41 -0700 (Wed, 31 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,18 +29,24 @@ package org.apache.http.impl.cookie;
 
 import java.util.StringTokenizer;
 
+import org.apache.http.annotation.Immutable;
 import org.apache.http.cookie.ClientCookie;
+import org.apache.http.cookie.CommonCookieAttributeHandler;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.cookie.CookieAttributeHandler;
 import org.apache.http.cookie.CookieOrigin;
+import org.apache.http.cookie.CookieRestrictionViolationException;
 import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.cookie.SetCookie;
 import org.apache.http.cookie.SetCookie2;
+import org.apache.http.util.Args;
 
 /**
- * <tt>"Port"</tt> cookie attribute handler for RFC 2965 cookie spec.
+ * {@code "Port"} cookie attribute handler for RFC 2965 cookie spec.
+ *
+ * @since 4.0
  */
-public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
+@Immutable
+public class RFC2965PortAttributeHandler implements CommonCookieAttributeHandler {
 
     public RFC2965PortAttributeHandler() {
         super();
@@ -61,8 +63,8 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
      */
     private static int[] parsePortAttribute(final String portValue)
             throws MalformedCookieException {
-        StringTokenizer st = new StringTokenizer(portValue, ",");
-        int[] ports = new int[st.countTokens()];
+        final StringTokenizer st = new StringTokenizer(portValue, ",");
+        final int[] ports = new int[st.countTokens()];
         try {
             int i = 0;
             while(st.hasMoreTokens()) {
@@ -72,7 +74,7 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
                 }
                 ++i;
             }
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new MalformedCookieException ("Invalid Port "
                                                 + "attribute: " + e.getMessage());
         }
@@ -80,18 +82,18 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
     }
 
     /**
-     * Returns <tt>true</tt> if the given port exists in the given
+     * Returns {@code true} if the given port exists in the given
      * ports list.
      *
      * @param port port of host where cookie was received from or being sent to.
      * @param ports port list
-     * @return true returns <tt>true</tt> if the given port exists in
-     *         the given ports list; <tt>false</tt> otherwise.
+     * @return true returns {@code true} if the given port exists in
+     *         the given ports list; {@code false} otherwise.
      */
-    private static boolean portMatch(int port, int[] ports) {
+    private static boolean portMatch(final int port, final int[] ports) {
         boolean portInList = false;
-        for (int i = 0, len = ports.length; i < len; i++) {
-            if (port == ports[i]) {
+        for (final int port2 : ports) {
+            if (port == port2) {
                 portInList = true;
                 break;
             }
@@ -102,15 +104,14 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
     /**
      * Parse cookie port attribute.
      */
+    @Override
     public void parse(final SetCookie cookie, final String portValue)
             throws MalformedCookieException {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
+        Args.notNull(cookie, "Cookie");
         if (cookie instanceof SetCookie2) {
-            SetCookie2 cookie2 = (SetCookie2) cookie;
-            if (portValue != null && portValue.trim().length() > 0) {
-                int[] ports = parsePortAttribute(portValue);
+            final SetCookie2 cookie2 = (SetCookie2) cookie;
+            if (portValue != null && !portValue.trim().isEmpty()) {
+                final int[] ports = parsePortAttribute(portValue);
                 cookie2.setPorts(ports);
             }
         }
@@ -120,19 +121,16 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
      * Validate cookie port attribute. If the Port attribute was specified
      * in header, the request port must be in cookie's port list.
      */
+    @Override
     public void validate(final Cookie cookie, final CookieOrigin origin)
             throws MalformedCookieException {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
-        if (origin == null) {
-            throw new IllegalArgumentException("Cookie origin may not be null");
-        }
-        int port = origin.getPort();
-        if (cookie instanceof ClientCookie 
+        Args.notNull(cookie, "Cookie");
+        Args.notNull(origin, "Cookie origin");
+        final int port = origin.getPort();
+        if (cookie instanceof ClientCookie
                 && ((ClientCookie) cookie).containsAttribute(ClientCookie.PORT_ATTR)) {
             if (!portMatch(port, cookie.getPorts())) {
-                throw new MalformedCookieException(
+                throw new CookieRestrictionViolationException(
                         "Port attribute violates RFC 2965: "
                         + "Request port not found in cookie's port list.");
             }
@@ -144,15 +142,12 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
      * in header, the cookie can be sent to any port. Otherwise, the request port
      * must be in the cookie's port list.
      */
+    @Override
     public boolean match(final Cookie cookie, final CookieOrigin origin) {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
-        if (origin == null) {
-            throw new IllegalArgumentException("Cookie origin may not be null");
-        }
-        int port = origin.getPort();
-        if (cookie instanceof ClientCookie 
+        Args.notNull(cookie, "Cookie");
+        Args.notNull(origin, "Cookie origin");
+        final int port = origin.getPort();
+        if (cookie instanceof ClientCookie
                 && ((ClientCookie) cookie).containsAttribute(ClientCookie.PORT_ATTR)) {
             if (cookie.getPorts() == null) {
                 // Invalid cookie state: port not specified
@@ -163,6 +158,11 @@ public class RFC2965PortAttributeHandler implements CookieAttributeHandler {
             }
         }
         return true;
+    }
+
+    @Override
+    public String getAttributeName() {
+        return ClientCookie.PORT_ATTR;
     }
 
 }

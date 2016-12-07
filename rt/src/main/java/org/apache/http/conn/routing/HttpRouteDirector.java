@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/routing/HttpRouteDirector.java $
- * $Revision: 620255 $
- * $Date: 2008-02-10 02:23:55 -0800 (Sun, 10 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,18 +27,10 @@
 
 package org.apache.http.conn.routing;
 
-
-
 /**
  * Provides directions on establishing a route.
  * Implementations of this interface compare a planned route with
  * a tracked route and indicate the next step required.
- * 
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version $Revision: 620255 $
  *
  * @since 4.0
  */
@@ -75,14 +63,12 @@ public interface HttpRouteDirector {
      *
      * @param plan      the planned route
      * @param fact      the currently established route, or
-     *                  <code>null</code> if nothing is established
+     *                  {@code null} if nothing is established
      *
      * @return  one of the constants defined in this interface, indicating
      *          either the next step to perform, or success, or failure.
      *          0 is for success, a negative value for failure.
      */
-    public int nextStep(RouteInfo plan, RouteInfo fact)
-        ;
+    public int nextStep(RouteInfo plan, RouteInfo fact);
 
-
-} // interface HttpRouteDirector
+}

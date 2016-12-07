@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/RequestTargetHost.java $
- * $Revision: 573864 $
- * $Date: 2007-09-08 08:53:25 -0700 (Sat, 08 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -41,49 +37,51 @@ import org.apache.http.HttpInetConnection;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolVersion;
 import org.apache.http.ProtocolException;
+import org.apache.http.ProtocolVersion;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
- * A request interceptor that sets the Host header for HTTP/1.1 requests.
+ * RequestTargetHost is responsible for adding {@code Host} header. This
+ * interceptor is required for client side protocol processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 573864 $
- * 
  * @since 4.0
  */
+@Immutable
 public class RequestTargetHost implements HttpRequestInterceptor {
 
     public RequestTargetHost() {
         super();
     }
-    
-    public void process(final HttpRequest request, final HttpContext context) 
+
+    @Override
+    public void process(final HttpRequest request, final HttpContext context)
             throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
+        Args.notNull(request, "HTTP request");
+
+        final HttpCoreContext corecontext = HttpCoreContext.adapt(context);
+
+        final ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
+        final String method = request.getRequestLine().getMethod();
+        if (method.equalsIgnoreCase("CONNECT") && ver.lessEquals(HttpVersion.HTTP_1_0)) {
+            return;
         }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
+
         if (!request.containsHeader(HTTP.TARGET_HOST)) {
-            HttpHost targethost = (HttpHost) context
-                .getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+            HttpHost targethost = corecontext.getTargetHost();
             if (targethost == null) {
-                HttpConnection conn = (HttpConnection) context
-                    .getAttribute(ExecutionContext.HTTP_CONNECTION);
+                final HttpConnection conn = corecontext.getConnection();
                 if (conn instanceof HttpInetConnection) {
-                    // Populate the context with a default HTTP host based on the 
+                    // Populate the context with a default HTTP host based on the
                     // inet address of the target host
-                    InetAddress address = ((HttpInetConnection) conn).getRemoteAddress();
-                    int port = ((HttpInetConnection) conn).getRemotePort();
+                    final InetAddress address = ((HttpInetConnection) conn).getRemoteAddress();
+                    final int port = ((HttpInetConnection) conn).getRemotePort();
                     if (address != null) {
                         targethost = new HttpHost(address.getHostName(), port);
                     }
                 }
                 if (targethost == null) {
-                    ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
                     if (ver.lessEquals(HttpVersion.HTTP_1_0)) {
                         return;
                     } else {
@@ -94,5 +92,5 @@ public class RequestTargetHost implements HttpRequestInterceptor {
             request.addHeader(HTTP.TARGET_HOST, targethost.toHostString());
         }
     }
-    
+
 }

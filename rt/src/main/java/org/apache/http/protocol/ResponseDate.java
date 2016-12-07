@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/ResponseDate.java $
- * $Revision: 555989 $
- * $Date: 2007-07-13 06:33:39 -0700 (Fri, 13 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,37 +33,35 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpStatus;
+import org.apache.http.annotation.ThreadSafe;
+import org.apache.http.util.Args;
 
 /**
- * A response interceptor that adds a Date header.
- * For use on the server side.
+ * ResponseDate is responsible for adding {@code Date} header to the
+ * outgoing responses. This interceptor is recommended for server side protocol
+ * processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 555989 $
- * 
  * @since 4.0
  */
+@ThreadSafe
 public class ResponseDate implements HttpResponseInterceptor {
 
-    private static final HttpDateGenerator DATE_GENERATOR = new HttpDateGenerator(); 
-    
+    private static final HttpDateGenerator DATE_GENERATOR = new HttpDateGenerator();
+
     public ResponseDate() {
         super();
     }
 
-    public void process(final HttpResponse response, final HttpContext context) 
+    @Override
+    public void process(final HttpResponse response, final HttpContext context)
             throws HttpException, IOException {
-        if (response == null) {
-            throw new IllegalArgumentException
-                ("HTTP response may not be null.");
-        }
-        int status = response.getStatusLine().getStatusCode();
+        Args.notNull(response, "HTTP response");
+        final int status = response.getStatusLine().getStatusCode();
         if ((status >= HttpStatus.SC_OK) &&
             !response.containsHeader(HTTP.DATE_HEADER)) {
-            String httpdate = DATE_GENERATOR.getCurrentDate();
-            response.setHeader(HTTP.DATE_HEADER, httpdate); 
+            final String httpdate = DATE_GENERATOR.getCurrentDate();
+            response.setHeader(HTTP.DATE_HEADER, httpdate);
         }
     }
-    
+
 }

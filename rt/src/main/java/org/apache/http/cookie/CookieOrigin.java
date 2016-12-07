@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/CookieOrigin.java $
- * $Revision: 653041 $
- * $Date: 2008-05-03 03:39:28 -0700 (Sat, 03 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,41 +28,32 @@ package org.apache.http.cookie;
 
 import java.util.Locale;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
+import org.apache.http.util.TextUtils;
+
 /**
- * CookieOrigin class incapsulates details of an origin server that 
+ * CookieOrigin class encapsulates details of an origin server that
  * are relevant when parsing, validating or matching HTTP cookies.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
+ *
  * @since 4.0
  */
+@Immutable
 public final class CookieOrigin {
 
     private final String host;
     private final int port;
     private final String path;
     private final boolean secure;
-    
-    public CookieOrigin(final String host, int port, final String path, boolean secure) {
+
+    public CookieOrigin(final String host, final int port, final String path, final boolean secure) {
         super();
-        if (host == null) {
-            throw new IllegalArgumentException(
-                    "Host of origin may not be null");
-        }
-        if (host.trim().length() == 0) {
-            throw new IllegalArgumentException(
-                    "Host of origin may not be blank");
-        }
-        if (port < 0) {
-            throw new IllegalArgumentException("Invalid port: " + port);
-        }
-        if (path == null) {
-            throw new IllegalArgumentException(
-                    "Path of origin may not be null.");
-        }
-        this.host = host.toLowerCase(Locale.ENGLISH);
+        Args.notBlank(host, "Host");
+        Args.notNegative(port, "Port");
+        Args.notNull(path, "Path");
+        this.host = host.toLowerCase(Locale.ROOT);
         this.port = port;
-        if (path.trim().length() != 0) {
+        if (!TextUtils.isBlank(path)) {
             this.path = path;
         } else {
             this.path = "/";
@@ -92,7 +79,7 @@ public final class CookieOrigin {
 
     @Override
     public String toString() {
-        StringBuilder buffer = new StringBuilder();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append('[');
         if (this.secure) {
             buffer.append("(secure)");
@@ -104,5 +91,5 @@ public final class CookieOrigin {
         buffer.append(']');
         return buffer.toString();
     }
-    
+
 }

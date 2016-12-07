@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/HeaderGroup.java $
- * $Revision: 659185 $
- * $Date: 2008-05-22 11:07:36 -0700 (Thu, 22 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,61 +27,68 @@
 
 package org.apache.http.message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.util.CharArrayBuffer;
 
 /**
  * A class for combining a set of headers.
  * This class allows for multiple headers with the same name and
  * keeps track of the order in which headers were added.
- * 
- * @author Michael Becke
+ *
  *
  * @since 4.0
  */
-public class HeaderGroup implements Cloneable {
+@NotThreadSafe
+public class HeaderGroup implements Cloneable, Serializable {
+
+    private static final long serialVersionUID = 2608834160639271617L;
+
+    private final Header[] EMPTY = new Header[] {};
 
     /** The list of headers for this group, in the order in which they were added */
-    private List headers;
+    private final List<Header> headers;
 
     /**
      * Constructor for HeaderGroup.
      */
     public HeaderGroup() {
-        this.headers = new ArrayList(16);
+        this.headers = new ArrayList<Header>(16);
     }
-    
+
     /**
      * Removes any contained headers.
      */
     public void clear() {
         headers.clear();
     }
-    
+
     /**
      * Adds the given header to the group.  The order in which this header was
      * added is preserved.
-     * 
+     *
      * @param header the header to add
      */
-    public void addHeader(Header header) {
+    public void addHeader(final Header header) {
         if (header == null) {
             return;
         }
         headers.add(header);
     }
-    
+
     /**
      * Removes the given header.
      *
      * @param header the header to remove
      */
-    public void removeHeader(Header header) {
+    public void removeHeader(final Header header) {
         if (header == null) {
             return;
         }
@@ -93,18 +96,21 @@ public class HeaderGroup implements Cloneable {
     }
 
     /**
-     * Replaces the first occurence of the header with the same name. If no header with 
+     * Replaces the first occurence of the header with the same name. If no header with
      * the same name is found the given header is added to the end of the list.
-     * 
-     * @param header the new header that should replace the first header with the same 
+     *
+     * @param header the new header that should replace the first header with the same
      * name if present in the list.
      */
-    public void updateHeader(Header header) {
+    public void updateHeader(final Header header) {
         if (header == null) {
             return;
         }
+        // HTTPCORE-361 : we don't use the for-each syntax, i.e.
+        //     for (Header header : headers)
+        // as that creates an Iterator that needs to be garbage-collected
         for (int i = 0; i < this.headers.size(); i++) {
-            Header current = (Header) this.headers.get(i);
+            final Header current = this.headers.get(i);
             if (current.getName().equalsIgnoreCase(header.getName())) {
                 this.headers.set(i, header);
                 return;
@@ -117,179 +123,193 @@ public class HeaderGroup implements Cloneable {
      * Sets all of the headers contained within this group overriding any
      * existing headers. The headers are added in the order in which they appear
      * in the array.
-     * 
+     *
      * @param headers the headers to set
      */
-    public void setHeaders(Header[] headers) {
+    public void setHeaders(final Header[] headers) {
         clear();
         if (headers == null) {
             return;
         }
-        for (int i = 0; i < headers.length; i++) {
-            this.headers.add(headers[i]);
-        }
+        Collections.addAll(this.headers, headers);
     }
-    
+
     /**
      * Gets a header representing all of the header values with the given name.
      * If more that one header with the given name exists the values will be
      * combined with a "," as per RFC 2616.
-     * 
+     *
      * <p>Header name comparison is case insensitive.
-     * 
+     *
      * @param name the name of the header(s) to get
-     * @return a header with a condensed value or <code>null</code> if no
+     * @return a header with a condensed value or {@code null} if no
      * headers by the given name are present
      */
-    public Header getCondensedHeader(String name) {
-        Header[] headers = getHeaders(name);
-        
-        if (headers.length == 0) {
-            return null;   
-        } else if (headers.length == 1) {
-            return headers[0];
+    public Header getCondensedHeader(final String name) {
+        final Header[] hdrs = getHeaders(name);
+
+        if (hdrs.length == 0) {
+            return null;
+        } else if (hdrs.length == 1) {
+            return hdrs[0];
         } else {
-            CharArrayBuffer valueBuffer = new CharArrayBuffer(128);
-            valueBuffer.append(headers[0].getValue());
-            for (int i = 1; i < headers.length; i++) {
+            final CharArrayBuffer valueBuffer = new CharArrayBuffer(128);
+            valueBuffer.append(hdrs[0].getValue());
+            for (int i = 1; i < hdrs.length; i++) {
                 valueBuffer.append(", ");
-                valueBuffer.append(headers[i].getValue());
+                valueBuffer.append(hdrs[i].getValue());
             }
-            
-            return new BasicHeader(name.toLowerCase(Locale.ENGLISH), valueBuffer.toString());
+
+            return new BasicHeader(name.toLowerCase(Locale.ROOT), valueBuffer.toString());
         }
     }
-    
+
     /**
      * Gets all of the headers with the given name.  The returned array
-     * maintains the relative order in which the headers were added.  
-     * 
+     * maintains the relative order in which the headers were added.
+     *
      * <p>Header name comparison is case insensitive.
-     * 
+     *
      * @param name the name of the header(s) to get
-     * 
-     * @return an array of length >= 0
+     *
+     * @return an array of length &ge; 0
      */
-    public Header[] getHeaders(String name) {
-        ArrayList headersFound = new ArrayList();
-        
-        for (int i = 0; i < headers.size(); i++) {
-            Header header = (Header) headers.get(i);
+    public Header[] getHeaders(final String name) {
+        List<Header> headersFound = null;
+        // HTTPCORE-361 : we don't use the for-each syntax, i.e.
+        //     for (Header header : headers)
+        // as that creates an Iterator that needs to be garbage-collected
+        for (int i = 0; i < this.headers.size(); i++) {
+            final Header header = this.headers.get(i);
             if (header.getName().equalsIgnoreCase(name)) {
+                if (headersFound == null) {
+                    headersFound = new ArrayList<Header>();
+                }
                 headersFound.add(header);
             }
         }
-        
-        return (Header[]) headersFound.toArray(new Header[headersFound.size()]);
+        return headersFound != null ? headersFound.toArray(new Header[headersFound.size()]) : EMPTY;
     }
-    
+
     /**
      * Gets the first header with the given name.
-     * 
+     *
      * <p>Header name comparison is case insensitive.
-     * 
+     *
      * @param name the name of the header to get
-     * @return the first header or <code>null</code>
+     * @return the first header or {@code null}
      */
-    public Header getFirstHeader(String name) {
-        for (int i = 0; i < headers.size(); i++) {
-            Header header = (Header) headers.get(i);
+    public Header getFirstHeader(final String name) {
+        // HTTPCORE-361 : we don't use the for-each syntax, i.e.
+        //     for (Header header : headers)
+        // as that creates an Iterator that needs to be garbage-collected
+        for (int i = 0; i < this.headers.size(); i++) {
+            final Header header = this.headers.get(i);
             if (header.getName().equalsIgnoreCase(name)) {
                 return header;
             }
         }
-        return null;                
+        return null;
     }
-    
+
     /**
      * Gets the last header with the given name.
      *
      * <p>Header name comparison is case insensitive.
      *
      * @param name the name of the header to get
-     * @return the last header or <code>null</code>
+     * @return the last header or {@code null}
      */
-    public Header getLastHeader(String name) {
+    public Header getLastHeader(final String name) {
         // start at the end of the list and work backwards
         for (int i = headers.size() - 1; i >= 0; i--) {
-            Header header = (Header) headers.get(i);
+            final Header header = headers.get(i);
             if (header.getName().equalsIgnoreCase(name)) {
                 return header;
-            }            
+            }
         }
-        
-        return null;        
+
+        return null;
     }
-    
+
     /**
      * Gets all of the headers contained within this group.
-     * 
-     * @return an array of length >= 0
+     *
+     * @return an array of length &ge; 0
      */
     public Header[] getAllHeaders() {
-        return (Header[]) headers.toArray(new Header[headers.size()]);
+        return headers.toArray(new Header[headers.size()]);
     }
-    
+
     /**
      * Tests if headers with the given name are contained within this group.
-     * 
+     *
      * <p>Header name comparison is case insensitive.
-     * 
+     *
      * @param name the header name to test for
-     * @return <code>true</code> if at least one header with the name is
-     * contained, <code>false</code> otherwise
+     * @return {@code true} if at least one header with the name is
+     * contained, {@code false} otherwise
      */
-    public boolean containsHeader(String name) {
-        for (int i = 0; i < headers.size(); i++) {
-            Header header = (Header) headers.get(i);
+    public boolean containsHeader(final String name) {
+        // HTTPCORE-361 : we don't use the for-each syntax, i.e.
+        //     for (Header header : headers)
+        // as that creates an Iterator that needs to be garbage-collected
+        for (int i = 0; i < this.headers.size(); i++) {
+            final Header header = this.headers.get(i);
             if (header.getName().equalsIgnoreCase(name)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /**
      * Returns an iterator over this group of headers.
-     * 
+     *
      * @return iterator over this group of headers.
-     * 
+     *
      * @since 4.0
      */
     public HeaderIterator iterator() {
-        return new BasicListHeaderIterator(this.headers, null); 
+        return new BasicListHeaderIterator(this.headers, null);
     }
 
     /**
      * Returns an iterator over the headers with a given name in this group.
      *
      * @param name      the name of the headers over which to iterate, or
-     *                  <code>null</code> for all headers
+     *                  {@code null} for all headers
      *
      * @return iterator over some headers in this group.
-     * 
+     *
      * @since 4.0
      */
     public HeaderIterator iterator(final String name) {
         return new BasicListHeaderIterator(this.headers, name);
     }
-    
+
     /**
      * Returns a copy of this object
-     * 
+     *
      * @return copy of this object
+     *
+     * @since 4.0
      */
     public HeaderGroup copy() {
-        HeaderGroup clone = new HeaderGroup();
+        final HeaderGroup clone = new HeaderGroup();
         clone.headers.addAll(this.headers);
         return clone;
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
-        HeaderGroup clone = (HeaderGroup) super.clone();
-        clone.headers = new ArrayList(this.headers);
-        return clone;
+        return super.clone();
     }
-    
+
+    @Override
+    public String toString() {
+        return this.headers.toString();
+    }
+
 }

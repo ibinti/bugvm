@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/auth/DigestSchemeFactory.java $
- * $Revision: 534839 $
- * $Date: 2007-05-03 06:03:41 -0700 (Thu, 03 May 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,20 +27,47 @@
 
 package org.apache.http.impl.auth;
 
+import java.nio.charset.Charset;
+
+import org.apache.http.annotation.Immutable;
 import org.apache.http.auth.AuthScheme;
 import org.apache.http.auth.AuthSchemeFactory;
+import org.apache.http.auth.AuthSchemeProvider;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
 
 /**
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * {@link AuthSchemeProvider} implementation that creates and initializes
+ * {@link DigestScheme} instances.
  *
  * @since 4.0
  */
-public class DigestSchemeFactory implements AuthSchemeFactory {    
+@Immutable
+@SuppressWarnings("deprecation")
+public class DigestSchemeFactory implements AuthSchemeFactory, AuthSchemeProvider {
 
+    private final Charset charset;
+
+    /**
+     * @since 4.3
+     */
+    public DigestSchemeFactory(final Charset charset) {
+        super();
+        this.charset = charset;
+    }
+
+    public DigestSchemeFactory() {
+        this(null);
+    }
+
+    @Override
     public AuthScheme newInstance(final HttpParams params) {
         return new DigestScheme();
+    }
+
+    @Override
+    public AuthScheme create(final HttpContext context) {
+        return new DigestScheme(this.charset);
     }
 
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/LineParser.java $
- * $Revision: 589374 $
- * $Date: 2007-10-28 09:25:07 -0700 (Sun, 28 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,14 +27,12 @@
 
 package org.apache.http.message;
 
-
-import org.apache.http.ProtocolVersion;
+import org.apache.http.Header;
 import org.apache.http.ParseException;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
 import org.apache.http.StatusLine;
-import org.apache.http.Header;
 import org.apache.http.util.CharArrayBuffer;
-
 
 /**
  * Interface for parsing lines in the HEAD section of an HTTP message.
@@ -48,16 +42,9 @@ import org.apache.http.util.CharArrayBuffer;
  * on any specific IO mechanism.
  * Instances of this interface are expected to be stateless and thread-safe.
  *
- * @author <a href="mailto:rolandw AT apache.org">Roland Weber</a>
- *
- *
- * <!-- empty lines above to avoid 'svn diff' context problems -->
- * @version $Revision: 589374 $ $Date: 2007-10-28 09:25:07 -0700 (Sun, 28 Oct 2007) $
- *
  * @since 4.0
  */
 public interface LineParser {
-
 
     /**
      * Parses the textual representation of a protocol version.
@@ -65,9 +52,9 @@ public interface LineParser {
      * as well as status lines (first element).
      *
      * @param buffer    a buffer holding the protocol version to parse
-     * @param cursor    the parser cursor containing the current position and 
+     * @param cursor    the parser cursor containing the current position and
      *                  the bounds within the buffer for the parsing operation
-     * 
+     *
      * @return  the parsed protocol version
      *
      * @throws ParseException        in case of a parse error
@@ -75,7 +62,6 @@ public interface LineParser {
     ProtocolVersion parseProtocolVersion(
             CharArrayBuffer buffer,
             ParserCursor cursor) throws ParseException;
-
 
     /**
      * Checks whether there likely is a protocol version in a line.
@@ -92,20 +78,19 @@ public interface LineParser {
      *                  whitespace before or after the protocol version is
      *                  implementation dependent.
      *
-     * @return  <code>true</code> if there is a protocol version at the
+     * @return  {@code true} if there is a protocol version at the
      *          argument index (possibly ignoring whitespace),
-     *          <code>false</code> otherwise
+     *          {@code false} otherwise
      */
     boolean hasProtocolVersion(
-            CharArrayBuffer buffer, 
+            CharArrayBuffer buffer,
             ParserCursor cursor);
-
 
     /**
      * Parses a request line.
      *
      * @param buffer    a buffer holding the line to parse
-     * @param cursor    the parser cursor containing the current position and 
+     * @param cursor    the parser cursor containing the current position and
      *                  the bounds within the buffer for the parsing operation
      *
      * @return  the parsed request line
@@ -116,12 +101,11 @@ public interface LineParser {
             CharArrayBuffer buffer,
             ParserCursor cursor) throws ParseException;
 
-
     /**
      * Parses a status line.
      *
      * @param buffer    a buffer holding the line to parse
-     * @param cursor    the parser cursor containing the current position and 
+     * @param cursor    the parser cursor containing the current position and
      *                  the bounds within the buffer for the parsing operation
      *
      * @return  the parsed status line
@@ -131,7 +115,6 @@ public interface LineParser {
     StatusLine parseStatusLine(
             CharArrayBuffer buffer,
             ParserCursor cursor) throws ParseException;
-
 
     /**
      * Creates a header from a line.
@@ -149,8 +132,6 @@ public interface LineParser {
      * @throws ParseException        in case of a parse error
      */
     Header parseHeader(CharArrayBuffer buffer)
-        throws ParseException
-        ;
-
+        throws ParseException;
 
 }

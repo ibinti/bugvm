@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/DefaultConnectionReuseStrategy.java $
- * $Revision: 602537 $
- * $Date: 2007-12-08 11:42:06 -0800 (Sat, 08 Dec 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,77 +28,78 @@
 package org.apache.http.impl;
 
 import org.apache.http.ConnectionReuseStrategy;
-import org.apache.http.HttpConnection;
+import org.apache.http.Header;
 import org.apache.http.HeaderIterator;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.ParseException;
 import org.apache.http.ProtocolVersion;
+import org.apache.http.TokenIterator;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.message.BasicHeaderIterator;
+import org.apache.http.message.BasicTokenIterator;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.TokenIterator;
-import org.apache.http.message.BasicTokenIterator;
+import org.apache.http.util.Args;
 
 /**
  * Default implementation of a strategy deciding about connection re-use.
  * The default implementation first checks some basics, for example
  * whether the connection is still open or whether the end of the
  * request entity can be determined without closing the connection.
- * If these checks pass, the tokens in the "Connection" header will
- * be examined. In the absence of a "Connection" header, the
- * non-standard but commonly used "Proxy-Connection" header takes
- * it's role. A token "close" indicates that the connection cannot
- * be reused. If there is no such token, a token "keep-alive" indicates
- * that the connection should be re-used. If neither token is found,
- * or if there are no "Connection" headers, the default policy for
- * the HTTP version is applied. Since HTTP/1.1, connections are re-used
- * by default. Up until HTTP/1.0, connections are not re-used by default.
+ * If these checks pass, the tokens in the {@code Connection} header will
+ * be examined. In the absence of a {@code Connection} header, the
+ * non-standard but commonly used {@code Proxy-Connection} header takes
+ * it's role. A token {@code close} indicates that the connection cannot
+ * be reused. If there is no such token, a token {@code keep-alive}
+ * indicates that the connection should be re-used. If neither token is found,
+ * or if there are no {@code Connection} headers, the default policy for
+ * the HTTP version is applied. Since {@code HTTP/1.1}, connections are
+ * re-used by default. Up until {@code HTTP/1.0}, connections are not
+ * re-used by default.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- * @version $Revision: 602537 $
- * 
  * @since 4.0
  */
-public class DefaultConnectionReuseStrategy
-    implements ConnectionReuseStrategy {
+@Immutable
+public class DefaultConnectionReuseStrategy implements ConnectionReuseStrategy {
+
+    public static final DefaultConnectionReuseStrategy INSTANCE = new DefaultConnectionReuseStrategy();
 
     public DefaultConnectionReuseStrategy() {
         super();
     }
 
     // see interface ConnectionReuseStrategy
+    @Override
     public boolean keepAlive(final HttpResponse response,
                              final HttpContext context) {
-        if (response == null) {
-            throw new IllegalArgumentException
-                ("HTTP response may not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException
-                ("HTTP context may not be null.");
-        }
-        
-        HttpConnection conn = (HttpConnection)
-            context.getAttribute(ExecutionContext.HTTP_CONNECTION);
-
-        if (conn != null && !conn.isOpen())
-            return false;
-        // do NOT check for stale connection, that is an expensive operation
+        Args.notNull(response, "HTTP response");
+        Args.notNull(context, "HTTP context");
 
         // Check for a self-terminating entity. If the end of the entity will
         // be indicated by closing the connection, there is no keep-alive.
-        HttpEntity entity = response.getEntity();
-        ProtocolVersion ver = response.getStatusLine().getProtocolVersion();
-        if (entity != null) {
-            if (entity.getContentLength() < 0) {
-                if (!entity.isChunked() ||
-                    ver.lessEquals(HttpVersion.HTTP_1_0)) {
-                    // if the content length is not known and is not chunk
-                    // encoded, the connection cannot be reused
+        final ProtocolVersion ver = response.getStatusLine().getProtocolVersion();
+        final Header teh = response.getFirstHeader(HTTP.TRANSFER_ENCODING);
+        if (teh != null) {
+            if (!HTTP.CHUNK_CODING.equalsIgnoreCase(teh.getValue())) {
+                return false;
+            }
+        } else {
+            if (canResponseHaveBody(response)) {
+                final Header[] clhs = response.getHeaders(HTTP.CONTENT_LEN);
+                // Do not reuse if not properly content-length delimited
+                if (clhs.length == 1) {
+                    final Header clh = clhs[0];
+                    try {
+                        final int contentLen = Integer.parseInt(clh.getValue());
+                        if (contentLen < 0) {
+                            return false;
+                        }
+                    } catch (final NumberFormatException ex) {
+                        return false;
+                    }
+                } else {
                     return false;
                 }
             }
@@ -111,9 +108,10 @@ public class DefaultConnectionReuseStrategy
         // Check for the "Connection" header. If that is absent, check for
         // the "Proxy-Connection" header. The latter is an unspecified and
         // broken but unfortunately common extension of HTTP.
-        HeaderIterator hit = response.headerIterator(HTTP.CONN_DIRECTIVE);
-        if (!hit.hasNext())
-            hit = response.headerIterator("Proxy-Connection");
+        Header[] connHeaders = response.getHeaders(HTTP.CONN_DIRECTIVE);
+        if (connHeaders.length == 0) {
+            connHeaders = response.getHeaders("Proxy-Connection");
+        }
 
         // Experimental usage of the "Connection" header in HTTP/1.0 is
         // documented in RFC 2068, section 19.7.1. A token "keep-alive" is
@@ -138,9 +136,9 @@ public class DefaultConnectionReuseStrategy
         // it takes precedence and indicates a non-persistent connection.
         // If there is no "close" but a "keep-alive", we take the hint.
 
-        if (hit.hasNext()) {
+        if (connHeaders.length != 0) {
             try {
-                TokenIterator ti = createTokenIterator(hit);
+                final TokenIterator ti = new BasicTokenIterator(new BasicHeaderIterator(connHeaders, null));
                 boolean keepalive = false;
                 while (ti.hasNext()) {
                     final String token = ti.nextToken();
@@ -151,11 +149,12 @@ public class DefaultConnectionReuseStrategy
                         keepalive = true;
                     }
                 }
-                if (keepalive)
+                if (keepalive) {
                     return true;
                 // neither "close" nor "keep-alive", use default policy
+                }
 
-            } catch (ParseException px) {
+            } catch (final ParseException px) {
                 // invalid connection header means no persistent connection
                 // we don't have logging in HttpCore, so the exception is lost
                 return false;
@@ -176,7 +175,16 @@ public class DefaultConnectionReuseStrategy
      *
      * @return  the token iterator
      */
-    protected TokenIterator createTokenIterator(HeaderIterator hit) {
+    protected TokenIterator createTokenIterator(final HeaderIterator hit) {
         return new BasicTokenIterator(hit);
     }
+
+    private boolean canResponseHaveBody(final HttpResponse response) {
+        final int status = response.getStatusLine().getStatusCode();
+        return status >= HttpStatus.SC_OK
+            && status != HttpStatus.SC_NO_CONTENT
+            && status != HttpStatus.SC_NOT_MODIFIED
+            && status != HttpStatus.SC_RESET_CONTENT;
+    }
+
 }

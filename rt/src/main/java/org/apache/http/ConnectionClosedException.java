@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/ConnectionClosedException.java $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,21 +30,17 @@ package org.apache.http;
 import java.io.IOException;
 
 /**
- * Indicates that a connection has been closed.
+ * Signals that the connection has been closed unexpectedly.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 618017 $
- * 
  * @since 4.0
  */
 public class ConnectionClosedException extends IOException {
 
     private static final long serialVersionUID = 617550366255636674L;
-    
+
     /**
      * Creates a new ConnectionClosedException with the specified detail message.
-     * 
+     *
      * @param message The exception detail message
      */
     public ConnectionClosedException(final String message) {

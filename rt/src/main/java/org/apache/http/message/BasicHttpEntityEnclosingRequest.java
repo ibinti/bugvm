@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicHttpEntityEnclosingRequest.java $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,46 +32,47 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.protocol.HTTP;
 
 /**
- * Basic implementation of a request with an entity that can be modified.
+ * Basic implementation of {@link HttpEntityEnclosingRequest}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 618017 $
- * 
  * @since 4.0
  */
-public class BasicHttpEntityEnclosingRequest 
+@NotThreadSafe
+public class BasicHttpEntityEnclosingRequest
             extends BasicHttpRequest implements HttpEntityEnclosingRequest {
-    
+
     private HttpEntity entity;
-    
+
     public BasicHttpEntityEnclosingRequest(final String method, final String uri) {
         super(method, uri);
     }
 
-    public BasicHttpEntityEnclosingRequest(final String method, final String uri, 
+    public BasicHttpEntityEnclosingRequest(final String method, final String uri,
             final ProtocolVersion ver) {
-        this(new BasicRequestLine(method, uri, ver));
+        super(method, uri, ver);
     }
 
     public BasicHttpEntityEnclosingRequest(final RequestLine requestline) {
         super(requestline);
     }
 
+    @Override
     public HttpEntity getEntity() {
         return this.entity;
     }
 
+    @Override
     public void setEntity(final HttpEntity entity) {
         this.entity = entity;
     }
-    
+
+    @Override
     public boolean expectContinue() {
-        Header expect = getFirstHeader(HTTP.EXPECT_DIRECTIVE);
+        final Header expect = getFirstHeader(HTTP.EXPECT_DIRECTIVE);
         return expect != null && HTTP.EXPECT_CONTINUE.equalsIgnoreCase(expect.getValue());
     }
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/CookieSpecFactory.java $
- * $Revision: 489636 $
- * $Date: 2006-12-22 04:34:57 -0800 (Fri, 22 Dec 2006) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,13 +30,22 @@ package org.apache.http.cookie;
 import org.apache.http.params.HttpParams;
 
 /**
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * Factory for {@link CookieSpec} implementations.
  *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link CookieSpecProvider}
  */
-public interface CookieSpecFactory {    
+@Deprecated
+public interface CookieSpecFactory {
 
+    /**
+     * Creates an instance of {@link CookieSpec} using given HTTP parameters.
+     *
+     * @param params HTTP parameters.
+     *
+     * @return cookie spec.
+     */
     CookieSpec newInstance(HttpParams params);
 
 }

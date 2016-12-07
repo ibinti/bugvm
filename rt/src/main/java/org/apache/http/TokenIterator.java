@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/TokenIterator.java $
- * $Revision: 601000 $
- * $Date: 2007-12-04 09:03:49 -0800 (Tue, 04 Dec 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,29 +27,26 @@
 
 package org.apache.http;
 
-
 import java.util.Iterator;
-
 
 /**
  * An iterator for {@link String} tokens.
  * This interface is designed as a complement to
  * {@link HeaderElementIterator}, in cases where the items
  * are plain strings rather than full header elements.
- * 
- * @version $Revision: 601000 $
+ *
+ * @since 4.0
  */
-public interface TokenIterator extends Iterator {
+public interface TokenIterator extends Iterator<Object> {
 
     /**
      * Indicates whether there is another token in this iteration.
      *
-     * @return  <code>true</code> if there is another token,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if there is another token,
+     *          {@code false} otherwise
      */
-    boolean hasNext()
-        ;
-
+    @Override
+    boolean hasNext();
 
     /**
      * Obtains the next token from this iteration.
@@ -62,6 +55,6 @@ public interface TokenIterator extends Iterator {
      *
      * @return  the next token in this iteration
      */
-    String nextToken()
-        ;
+    String nextToken();
+
 }

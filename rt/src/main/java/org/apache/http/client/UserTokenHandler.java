@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/UserTokenHandler.java $
- * $Revision: 658759 $
- * $Date: 2008-05-21 10:06:17 -0700 (Wed, 21 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,30 +30,29 @@ package org.apache.http.client;
 import org.apache.http.protocol.HttpContext;
 
 /**
- * A handler for determining if the given execution context is user specific 
- * or not. The token object returned by this handler is expected to uniquely 
- * identify the current user if the context is user specific or to be 
- * <code>null</code> if the context does not contain any resources or details 
+ * A handler for determining if the given execution context is user specific
+ * or not. The token object returned by this handler is expected to uniquely
+ * identify the current user if the context is user specific or to be
+ * {@code null} if the context does not contain any resources or details
  * specific to the current user.
- * <p/>
- * The user token will be used to ensure that user specific resouces will not
- * shared with or reused by other users.
+ * <p>
+ * The user token will be used to ensure that user specific resources will not
+ * be shared with or reused by other users.
+ * </p>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
  * @since 4.0
  */
 public interface UserTokenHandler {
 
     /**
-     * The token object returned by this method is expected to uniquely 
-     * identify the current user if the context is user specific or to be 
-     * <code>null</code> if it is not.
-     * 
+     * The token object returned by this method is expected to uniquely
+     * identify the current user if the context is user specific or to be
+     * {@code null} if it is not.
+     *
      * @param context the execution context
-     * 
-     * @return user token that uniquely identifies the user or 
-     * <code>null</null> if the context is not user specific.
+     *
+     * @return user token that uniquely identifies the user or
+     * {@code null} if the context is not user specific.
      */
     Object getUserToken(HttpContext context);
 

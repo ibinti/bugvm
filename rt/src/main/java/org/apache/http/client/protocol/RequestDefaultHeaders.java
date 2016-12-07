@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/protocol/RequestDefaultHeaders.java $
- * $Revision: 653041 $
- * $Date: 2008-05-03 03:39:28 -0700 (Sat, 03 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -38,37 +34,57 @@ import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.annotation.Immutable;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.Args;
 
 /**
  * Request interceptor that adds default request headers.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 653041 $
- * 
  * @since 4.0
  */
+@SuppressWarnings("deprecation")
+@Immutable
 public class RequestDefaultHeaders implements HttpRequestInterceptor {
 
-    public RequestDefaultHeaders() {
+    private final Collection<? extends Header> defaultHeaders;
+
+    /**
+     * @since 4.3
+     */
+    public RequestDefaultHeaders(final Collection<? extends Header> defaultHeaders) {
         super();
+        this.defaultHeaders = defaultHeaders;
     }
-    
-    public void process(final HttpRequest request, final HttpContext context) 
+
+    public RequestDefaultHeaders() {
+        this(null);
+    }
+
+    @Override
+    public void process(final HttpRequest request, final HttpContext context)
             throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
+        Args.notNull(request, "HTTP request");
+
+        final String method = request.getRequestLine().getMethod();
+        if (method.equalsIgnoreCase("CONNECT")) {
+            return;
         }
+
         // Add default headers
-        Collection<?> defHeaders = (Collection<?>) request.getParams().getParameter(
-                ClientPNames.DEFAULT_HEADERS);
+        @SuppressWarnings("unchecked")
+        Collection<? extends Header> defHeaders = (Collection<? extends Header>)
+            request.getParams().getParameter(ClientPNames.DEFAULT_HEADERS);
+        if (defHeaders == null) {
+            defHeaders = this.defaultHeaders;
+        }
+
         if (defHeaders != null) {
-            for (Object defHeader : defHeaders) {
-                request.addHeader((Header) defHeader);
+            for (final Header defHeader : defHeaders) {
+                request.addHeader(defHeader);
             }
         }
     }
-    
+
 }

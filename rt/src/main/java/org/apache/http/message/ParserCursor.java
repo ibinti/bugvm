@@ -1,8 +1,4 @@
 /*
- * $HeadURL:https://svn.apache.org/repos/asf/jakarta/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/ParserCursor.java $
- * $Revision:589325 $
- * $Date:2007-10-28 11:37:56 +0100 (Sun, 28 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,24 +27,25 @@
 
 package org.apache.http.message;
 
-import org.apache.http.util.CharArrayBuffer;
+import org.apache.http.annotation.NotThreadSafe;
 
 /**
- * This class represents a context of a parsing operation: 
+ * This class represents a context of a parsing operation:
  * <ul>
  *  <li>the current position the parsing operation is expected to start at</li>
  *  <li>the bounds limiting the scope of the parsing operation</li>
  * </ul>
- * 
- * @author <a href="mailto:oleg at ural.com">Oleg Kalnichevski</a>
+ *
+ * @since 4.0
  */
+@NotThreadSafe
 public class ParserCursor {
 
     private final int lowerBound;
     private final int upperBound;
     private int pos;
-    
-    public ParserCursor(int lowerBound, int upperBound) {
+
+    public ParserCursor(final int lowerBound, final int upperBound) {
         super();
         if (lowerBound < 0) {
             throw new IndexOutOfBoundsException("Lower bound cannot be negative");
@@ -73,22 +70,23 @@ public class ParserCursor {
         return this.pos;
     }
 
-    public void updatePos(int pos) {
+    public void updatePos(final int pos) {
         if (pos < this.lowerBound) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("pos: "+pos+" < lowerBound: "+this.lowerBound);
         }
         if (pos > this.upperBound) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("pos: "+pos+" > upperBound: "+this.upperBound);
         }
         this.pos = pos;
     }
-    
+
     public boolean atEnd() {
         return this.pos >= this.upperBound;
     }
 
+    @Override
     public String toString() {
-        CharArrayBuffer buffer = new CharArrayBuffer(16);
+        final StringBuilder buffer = new StringBuilder();
         buffer.append('[');
         buffer.append(Integer.toString(this.lowerBound));
         buffer.append('>');
@@ -98,5 +96,5 @@ public class ParserCursor {
         buffer.append(']');
         return buffer.toString();
     }
-    
+
 }

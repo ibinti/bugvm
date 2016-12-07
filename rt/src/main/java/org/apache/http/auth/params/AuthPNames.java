@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/auth/params/AuthPNames.java $
- * $Revision: 578403 $
- * $Date: 2007-09-22 03:56:04 -0700 (Sat, 22 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,25 +28,47 @@
 package org.apache.http.auth.params;
 
 /**
- * Parameter names for HttpAuth.
- * 
- * @version $Revision: 578403 $
- * 
+ * Parameter names for HTTP authentication classes.
+ *
  * @since 4.0
- */
+ *
+ * @deprecated (4.3) use {@link org.apache.http.client.config.RequestConfig}
+ *   and constructor parameters of
+ *   {@link org.apache.http.auth.AuthSchemeProvider}s.
+*/
+@Deprecated
 public interface AuthPNames {
 
     /**
-     * Defines the charset to be used when encoding 
+     * Defines the charset to be used when encoding
      * {@link org.apache.http.auth.Credentials}.
      * <p>
      * This parameter expects a value of type {@link String}.
-     * If not defined, then
-     * {@link org.apache.http.params.CoreProtocolPNames#HTTP_ELEMENT_CHARSET
-     *        HttpProtocolParams.HTTP_ELEMENT_CHARSET}
-     * should be used.
-     * </p>
      */
-    public static final String CREDENTIAL_CHARSET = "http.auth.credential-charset"; 
+    public static final String CREDENTIAL_CHARSET = "http.auth.credential-charset";
+
+    /**
+     * Defines the order of preference for supported
+     *  {@link org.apache.http.auth.AuthScheme}s when authenticating with
+     *  the target host.
+     * <p>
+     * This parameter expects a value of type {@link java.util.Collection}. The
+     * collection is expected to contain {@link String} instances representing
+     * a name of an authentication scheme as returned by
+     * {@link org.apache.http.auth.AuthScheme#getSchemeName()}.
+     */
+    public static final String TARGET_AUTH_PREF = "http.auth.target-scheme-pref";
+
+    /**
+     * Defines the order of preference for supported
+     *  {@link org.apache.http.auth.AuthScheme}s when authenticating with the
+     *  proxy host.
+     * <p>
+     * This parameter expects a value of type {@link java.util.Collection}. The
+     * collection is expected to contain {@link String} instances representing
+     * a name of an authentication scheme as returned by
+     * {@link org.apache.http.auth.AuthScheme#getSchemeName()}.
+     */
+    public static final String PROXY_AUTH_PREF = "http.auth.proxy-scheme-pref";
 
 }

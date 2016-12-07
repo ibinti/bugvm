@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ssl/AbstractVerifier.java $
- * $Revision: 653041 $
- * $Date: 2008-05-03 03:39:28 -0700 (Sat, 03 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,261 +27,228 @@
 
 package org.apache.http.conn.ssl;
 
-import org.apache.http.conn.util.InetAddressUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
+import javax.security.auth.x500.X500Principal;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.http.conn.util.InetAddressUtils;
+import org.apache.http.util.Args;
 
 /**
- * Abstract base class for all standard {@link X509HostnameVerifier} 
+ * Abstract base class for all standard {@link X509HostnameVerifier}
  * implementations.
- * 
- * @author Julius Davies
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.4) use an implementation of {@link javax.net.ssl.HostnameVerifier} or
+ *  {@link DefaultHostnameVerifier}.
  */
+@Deprecated
 public abstract class AbstractVerifier implements X509HostnameVerifier {
 
-    /**
-     * This contains a list of 2nd-level domains that aren't allowed to
-     * have wildcards when combined with country-codes.
-     * For example: [*.co.uk].
-     * <p/>
-     * The [*.co.uk] problem is an interesting one.  Should we just hope
-     * that CA's would never foolishly allow such a certificate to happen?
-     * Looks like we're the only implementation guarding against this.
-     * Firefox, Curl, Sun Java 1.4, 5, 6 don't bother with this check.
-     */
-    private final static String[] BAD_COUNTRY_2LDS =
-          { "ac", "co", "com", "ed", "edu", "go", "gouv", "gov", "info",
-            "lg", "ne", "net", "or", "org" };
+    private final Log log = LogFactory.getLog(getClass());
+
+    final static String[] BAD_COUNTRY_2LDS =
+            { "ac", "co", "com", "ed", "edu", "go", "gouv", "gov", "info",
+                    "lg", "ne", "net", "or", "org" };
 
     static {
         // Just in case developer forgot to manually sort the array.  :-)
         Arrays.sort(BAD_COUNTRY_2LDS);
     }
 
-    public AbstractVerifier() {
-        super();
-    }
+    @Override
+    public final void verify(final String host, final SSLSocket ssl)
+            throws IOException {
+        Args.notNull(host, "Host");
+        SSLSession session = ssl.getSession();
+        if(session == null) {
+            // In our experience this only happens under IBM 1.4.x when
+            // spurious (unrelated) certificates show up in the server'
+            // chain.  Hopefully this will unearth the real problem:
+            final InputStream in = ssl.getInputStream();
+            in.available();
+            /*
+              If you're looking at the 2 lines of code above because
+              you're running into a problem, you probably have two
+              options:
 
-    public final void verify(String host, SSLSocket ssl)
-          throws IOException {
-        if(host == null) {
-            throw new NullPointerException("host to verify is null");
+                #1.  Clean up the certificate chain that your server
+                     is presenting (e.g. edit "/etc/apache2/server.crt"
+                     or wherever it is your server's certificate chain
+                     is defined).
+
+                                           OR
+
+                #2.   Upgrade to an IBM 1.5.x or greater JVM, or switch
+                      to a non-IBM JVM.
+            */
+
+            // If ssl.getInputStream().available() didn't cause an
+            // exception, maybe at least now the session is available?
+            session = ssl.getSession();
+            if(session == null) {
+                // If it's still null, probably a startHandshake() will
+                // unearth the real problem.
+                ssl.startHandshake();
+
+                // Okay, if we still haven't managed to cause an exception,
+                // might as well go for the NPE.  Or maybe we're okay now?
+                session = ssl.getSession();
+            }
         }
 
-        SSLSession session = ssl.getSession();
-        Certificate[] certs = session.getPeerCertificates();
-        X509Certificate x509 = (X509Certificate) certs[0];
+        final Certificate[] certs = session.getPeerCertificates();
+        final X509Certificate x509 = (X509Certificate) certs[0];
         verify(host, x509);
     }
 
-    public final boolean verify(String host, SSLSession session) {
+    @Override
+    public final boolean verify(final String host, final SSLSession session) {
         try {
-            Certificate[] certs = session.getPeerCertificates();
-            X509Certificate x509 = (X509Certificate) certs[0];
+            final Certificate[] certs = session.getPeerCertificates();
+            final X509Certificate x509 = (X509Certificate) certs[0];
             verify(host, x509);
             return true;
-        }
-        catch(SSLException e) {
+        } catch(final SSLException ex) {
+            if (log.isDebugEnabled()) {
+                log.debug(ex.getMessage(), ex);
+            }
             return false;
         }
     }
 
-    public final void verify(String host, X509Certificate cert)
-          throws SSLException {
-        String[] cns = getCNs(cert);
-        String[] subjectAlts = getDNSSubjectAlts(cert);
-        verify(host, cns, subjectAlts);
+    @Override
+    public final void verify(
+            final String host, final X509Certificate cert) throws SSLException {
+        final boolean ipv4 = InetAddressUtils.isIPv4Address(host);
+        final boolean ipv6 = InetAddressUtils.isIPv6Address(host);
+        final int subjectType = ipv4 || ipv6 ? DefaultHostnameVerifier.IP_ADDRESS_TYPE : DefaultHostnameVerifier.DNS_NAME_TYPE;
+        final List<String> subjectAlts = DefaultHostnameVerifier.extractSubjectAlts(cert, subjectType);
+        final X500Principal subjectPrincipal = cert.getSubjectX500Principal();
+        final String cn = DefaultHostnameVerifier.extractCN(subjectPrincipal.getName(X500Principal.RFC2253));
+        verify(host,
+                cn != null ? new String[] {cn} : null,
+                subjectAlts != null && !subjectAlts.isEmpty() ? subjectAlts.toArray(new String[subjectAlts.size()]) : null);
     }
 
     public final void verify(final String host, final String[] cns,
                              final String[] subjectAlts,
                              final boolean strictWithSubDomains)
-          throws SSLException {
+            throws SSLException {
 
-        // Build the list of names we're going to check.  Our DEFAULT and
-        // STRICT implementations of the HostnameVerifier only use the
-        // first CN provided.  All other CNs are ignored.
-        // (Firefox, wget, curl, Sun Java 1.4, 5, 6 all work this way).
-        LinkedList<String> names = new LinkedList<String>();
-        if(cns != null && cns.length > 0 && cns[0] != null) {
-            names.add(cns[0]);
-        }
-        if(subjectAlts != null) {
-            for (String subjectAlt : subjectAlts) {
-                if (subjectAlt != null) {
-                    names.add(subjectAlt);
+        final String cn = cns != null && cns.length > 0 ? cns[0] : null;
+        final List<String> subjectAltList = subjectAlts != null && subjectAlts.length > 0 ? Arrays.asList(subjectAlts) : null;
+
+        final String normalizedHost = InetAddressUtils.isIPv6Address(host) ?
+                DefaultHostnameVerifier.normaliseAddress(host.toLowerCase(Locale.ROOT)) : host;
+
+        if (subjectAltList != null) {
+            for (final String subjectAlt: subjectAltList) {
+                final String normalizedAltSubject = InetAddressUtils.isIPv6Address(subjectAlt) ?
+                        DefaultHostnameVerifier.normaliseAddress(subjectAlt) : subjectAlt;
+                if (matchIdentity(normalizedHost, normalizedAltSubject, strictWithSubDomains)) {
+                    return;
                 }
             }
-        }
-
-        if(names.isEmpty()) {
-            String msg = "Certificate for <" + host + "> doesn't contain CN or DNS subjectAlt";
-            throw new SSLException(msg);
-        }
-
-        // StringBuffer for building the error message.
-        StringBuffer buf = new StringBuffer();
-
-        // We're can be case-insensitive when comparing the host we used to
-        // establish the socket to the hostname in the certificate.
-        String hostName = host.trim().toLowerCase(Locale.ENGLISH);
-        boolean match = false;
-        for(Iterator<String> it = names.iterator(); it.hasNext();) {
-            // Don't trim the CN, though!
-            String cn = it.next();
-            cn = cn.toLowerCase(Locale.ENGLISH);
-            // Store CN in StringBuffer in case we need to report an error.
-            buf.append(" <");
-            buf.append(cn);
-            buf.append('>');
-            if(it.hasNext()) {
-                buf.append(" OR");
+            throw new SSLException("Certificate for <" + host + "> doesn't match any " +
+                    "of the subject alternative names: " + subjectAltList);
+        } else if (cn != null) {
+            final String normalizedCN = InetAddressUtils.isIPv6Address(cn) ?
+                    DefaultHostnameVerifier.normaliseAddress(cn) : cn;
+            if (matchIdentity(normalizedHost, normalizedCN, strictWithSubDomains)) {
+                return;
             }
-
-            // The CN better have at least two dots if it wants wildcard
-            // action.  It also can't be [*.co.uk] or [*.co.jp] or
-            // [*.org.uk], etc...
-            boolean doWildcard = cn.startsWith("*.") &&
-                                 cn.indexOf('.', 2) != -1 &&
-                                 acceptableCountryWildcard(cn) &&
-                                 !InetAddressUtils.isIPv4Address(host);
-
-            if(doWildcard) {
-                match = hostName.endsWith(cn.substring(1));
-                if(match && strictWithSubDomains) {
-                    // If we're in strict mode, then [*.foo.com] is not
-                    // allowed to match [a.b.foo.com]
-                    match = countDots(hostName) == countDots(cn);
-                }
-            } else {
-                match = hostName.equals(cn);
-            }
-            if(match) {
-                break;
-            }
-        }
-        if(!match) {
-            throw new SSLException("hostname in certificate didn't match: <" + host + "> !=" + buf);
-        }
-    }
-
-    public static boolean acceptableCountryWildcard(String cn) {
-        int cnLen = cn.length();
-        if(cnLen >= 7 && cnLen <= 9) {
-            // Look for the '.' in the 3rd-last position:
-            if(cn.charAt(cnLen - 3) == '.') {
-                // Trim off the [*.] and the [.XX].
-                String s = cn.substring(2, cnLen - 3);
-                // And test against the sorted array of bad 2lds:
-                int x = Arrays.binarySearch(BAD_COUNTRY_2LDS, s);
-                return x < 0;
-            }
-        }
-        return true;
-    }
-
-    public static String[] getCNs(X509Certificate cert) {
-        LinkedList<String> cnList = new LinkedList<String>();
-        /*
-          Sebastian Hauer's original StrictSSLProtocolSocketFactory used
-          getName() and had the following comment:
-
-                Parses a X.500 distinguished name for the value of the
-                "Common Name" field.  This is done a bit sloppy right
-                 now and should probably be done a bit more according to
-                <code>RFC 2253</code>.
-
-           I've noticed that toString() seems to do a better job than
-           getName() on these X500Principal objects, so I'm hoping that
-           addresses Sebastian's concern.
-
-           For example, getName() gives me this:
-           1.2.840.113549.1.9.1=#16166a756c6975736461766965734063756362632e636f6d
-
-           whereas toString() gives me this:
-           EMAILADDRESS=juliusdavies@cucbc.com
-
-           Looks like toString() even works with non-ascii domain names!
-           I tested it with "&#x82b1;&#x5b50;.co.jp" and it worked fine.
-        */
-        String subjectPrincipal = cert.getSubjectX500Principal().toString();
-        StringTokenizer st = new StringTokenizer(subjectPrincipal, ",");
-        while(st.hasMoreTokens()) {
-            String tok = st.nextToken();
-            int x = tok.indexOf("CN=");
-            if(x >= 0) {
-                cnList.add(tok.substring(x + 3));
-            }
-        }
-        if(!cnList.isEmpty()) {
-            String[] cns = new String[cnList.size()];
-            cnList.toArray(cns);
-            return cns;
+            throw new SSLException("Certificate for <" + host + "> doesn't match " +
+                    "common name of the certificate subject: " + cn);
         } else {
+            throw new SSLException("Certificate subject for <" + host + "> doesn't contain " +
+                    "a common name and does not have alternative names");
+        }
+    }
+
+    private static boolean matchIdentity(final String host, final String identity, final boolean strict) {
+        if (host == null) {
+            return false;
+        }
+        final String normalizedHost = host.toLowerCase(Locale.ROOT);
+        final String normalizedIdentity = identity.toLowerCase(Locale.ROOT);
+        // The CN better have at least two dots if it wants wildcard
+        // action.  It also can't be [*.co.uk] or [*.co.jp] or
+        // [*.org.uk], etc...
+        final String parts[] = normalizedIdentity.split("\\.");
+        final boolean doWildcard = parts.length >= 3 && parts[0].endsWith("*") &&
+                (!strict || validCountryWildcard(parts));
+        if (doWildcard) {
+            boolean match;
+            final String firstpart = parts[0];
+            if (firstpart.length() > 1) { // e.g. server*
+                final String prefix = firstpart.substring(0, firstpart.length() - 1); // e.g. server
+                final String suffix = normalizedIdentity.substring(firstpart.length()); // skip wildcard part from cn
+                final String hostSuffix = normalizedHost.substring(prefix.length()); // skip wildcard part from normalizedHost
+                match = normalizedHost.startsWith(prefix) && hostSuffix.endsWith(suffix);
+            } else {
+                match = normalizedHost.endsWith(normalizedIdentity.substring(1));
+            }
+            return match && (!strict || countDots(normalizedHost) == countDots(normalizedIdentity));
+        } else {
+            return normalizedHost.equals(normalizedIdentity);
+        }
+    }
+
+    private static boolean validCountryWildcard(final String parts[]) {
+        if (parts.length != 3 || parts[2].length() != 2) {
+            return true; // it's not an attempt to wildcard a 2TLD within a country code
+        }
+        return Arrays.binarySearch(BAD_COUNTRY_2LDS, parts[1]) < 0;
+    }
+
+    public static boolean acceptableCountryWildcard(final String cn) {
+        return validCountryWildcard(cn.split("\\."));
+    }
+
+    public static String[] getCNs(final X509Certificate cert) {
+        final String subjectPrincipal = cert.getSubjectX500Principal().toString();
+        try {
+            final String cn = DefaultHostnameVerifier.extractCN(subjectPrincipal);
+            return cn != null ? new String[] { cn } : null;
+        } catch (final SSLException ex) {
             return null;
         }
     }
-
 
     /**
      * Extracts the array of SubjectAlt DNS names from an X509Certificate.
      * Returns null if there aren't any.
-     * <p/>
+     * <p>
      * Note:  Java doesn't appear able to extract international characters
      * from the SubjectAlts.  It can only extract international characters
      * from the CN field.
-     * <p/>
+     * </p>
+     * <p>
      * (Or maybe the version of OpenSSL I'm using to test isn't storing the
      * international characters correctly in the SubjectAlts?).
+     * </p>
      *
      * @param cert X509Certificate
      * @return Array of SubjectALT DNS names stored in the certificate.
      */
-    public static String[] getDNSSubjectAlts(X509Certificate cert) {
-        LinkedList<String> subjectAltList = new LinkedList<String>();
-        Collection<List<?>> c = null;
-        try {
-            c = cert.getSubjectAlternativeNames();
-        }
-        catch(CertificateParsingException cpe) {
-            Logger.getLogger(AbstractVerifier.class.getName())
-                    .log(Level.FINE, "Error parsing certificate.", cpe);
-        }
-        if(c != null) {
-            for (List<?> aC : c) {
-                List<?> list = aC;
-                int type = ((Integer) list.get(0)).intValue();
-                // If type is 2, then we've got a dNSName
-                if (type == 2) {
-                    String s = (String) list.get(1);
-                    subjectAltList.add(s);
-                }
-            }
-        }
-        if(!subjectAltList.isEmpty()) {
-            String[] subjectAlts = new String[subjectAltList.size()];
-            subjectAltList.toArray(subjectAlts);
-            return subjectAlts;
-        } else {
-            return null;
-        }
+    public static String[] getDNSSubjectAlts(final X509Certificate cert) {
+        final List<String> subjectAlts = DefaultHostnameVerifier.extractSubjectAlts(
+                cert, DefaultHostnameVerifier.DNS_NAME_TYPE);
+        return subjectAlts != null && !subjectAlts.isEmpty() ?
+                subjectAlts.toArray(new String[subjectAlts.size()]) : null;
     }
 
     /**
@@ -302,5 +265,5 @@ public abstract class AbstractVerifier implements X509HostnameVerifier {
         }
         return count;
     }
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpRequestHandler.java $
- * $Revision: 613298 $
- * $Date: 2008-01-18 14:09:22 -0800 (Fri, 18 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -38,16 +34,29 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 
 /**
+ * HttpRequestHandler represents a routine for processing of a specific group
+ * of HTTP requests. Protocol handlers are designed to take care of protocol
+ * specific aspects, whereas individual request handlers are expected to take
+ * care of application specific HTTP processing. The main purpose of a request
+ * handler is to generate a response object with a content entity to be sent
+ * back to the client in response to the given request
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 613298 $
- * 
  * @since 4.0
  */
 public interface HttpRequestHandler {
 
-    void handle(HttpRequest request, HttpResponse response, HttpContext context) 
+    /**
+     * Handles the request and produces a response to be sent back to
+     * the client.
+     *
+     * @param request the HTTP request.
+     * @param response the HTTP response.
+     * @param context the HTTP execution context.
+     * @throws IOException in case of an I/O error.
+     * @throws HttpException in case of HTTP protocol violation or a processing
+     *   problem.
+     */
+    void handle(HttpRequest request, HttpResponse response, HttpContext context)
             throws HttpException, IOException;
-    
+
 }

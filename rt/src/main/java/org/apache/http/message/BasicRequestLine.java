@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicRequestLine.java $
- * $Revision: 604625 $
- * $Date: 2007-12-16 06:11:11 -0800 (Sun, 16 Dec 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,23 +27,22 @@
 
 package org.apache.http.message;
 
+import java.io.Serializable;
+
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
- * The first line of an {@link org.apache.http.HttpRequest HttpRequest}.
- * It contains the method, URI, and HTTP version of the request.
- * For details, see RFC 2616.
+ * Basic implementation of {@link RequestLine}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- *
- * <!-- empty lines above to avoid 'svn diff' context problems -->
- * @version $Revision: 604625 $
- * 
  * @since 4.0
  */
-public class BasicRequestLine implements RequestLine, Cloneable {
+@Immutable
+public class BasicRequestLine implements RequestLine, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 2810581718468737193L;
 
     private final ProtocolVersion protoversion;
     private final String method;
@@ -57,43 +52,35 @@ public class BasicRequestLine implements RequestLine, Cloneable {
                             final String uri,
                             final ProtocolVersion version) {
         super();
-        if (method == null) {
-            throw new IllegalArgumentException
-                ("Method must not be null.");
-        }
-        if (uri == null) {
-            throw new IllegalArgumentException
-                ("URI must not be null.");
-        }
-        if (version == null) {
-            throw new IllegalArgumentException
-                ("Protocol version must not be null.");
-        }
-        this.method = method;
-        this.uri = uri;
-        this.protoversion = version;
+        this.method = Args.notNull(method, "Method");
+        this.uri = Args.notNull(uri, "URI");
+        this.protoversion = Args.notNull(version, "Version");
     }
 
+    @Override
     public String getMethod() {
         return this.method;
     }
 
+    @Override
     public ProtocolVersion getProtocolVersion() {
         return this.protoversion;
     }
 
+    @Override
     public String getUri() {
         return this.uri;
     }
 
+    @Override
     public String toString() {
         // no need for non-default formatting in toString()
-        return BasicLineFormatter.DEFAULT
-            .formatRequestLine(null, this).toString();
+        return BasicLineFormatter.INSTANCE.formatRequestLine(null, this).toString();
     }
-    
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-    
+
 }

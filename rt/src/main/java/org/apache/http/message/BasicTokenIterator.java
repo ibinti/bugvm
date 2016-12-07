@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicTokenIterator.java $
- * $Revision: 602520 $
- * $Date: 2007-12-08 09:42:26 -0800 (Sat, 08 Dec 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,15 +32,18 @@ import java.util.NoSuchElementException;
 import org.apache.http.HeaderIterator;
 import org.apache.http.ParseException;
 import org.apache.http.TokenIterator;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
 /**
  * Basic implementation of a {@link TokenIterator}.
- * This implementation parses <tt>#token<tt> sequences as
+ * This implementation parses {@code #token} sequences as
  * defined by RFC 2616, section 2.
  * It extends that definition somewhat beyond US-ASCII.
- * 
- * @version $Revision: 602520 $
+ *
+ * @since 4.0
  */
+@NotThreadSafe
 public class BasicTokenIterator implements TokenIterator {
 
     /** The HTTP separator characters. Defined in RFC 2616, section 2.2. */
@@ -64,8 +63,8 @@ public class BasicTokenIterator implements TokenIterator {
     protected String currentHeader;
 
     /**
-     * The token to be returned by the next call to {@link #currentToken}.
-     * <code>null</code> if the iteration is over.
+     * The token to be returned by the next call to {@link #nextToken()}.
+     * {@code null} if the iteration is over.
      */
     protected String currentToken;
 
@@ -82,17 +81,14 @@ public class BasicTokenIterator implements TokenIterator {
      * @param headerIterator    the iterator for the headers to tokenize
      */
     public BasicTokenIterator(final HeaderIterator headerIterator) {
-        if (headerIterator == null) {
-            throw new IllegalArgumentException
-                ("Header iterator must not be null.");
-        }
-
-        this.headerIt = headerIterator;
+        super();
+        this.headerIt = Args.notNull(headerIterator, "Header iterator");
         this.searchPos = findNext(-1);
     }
 
 
     // non-javadoc, see interface TokenIterator
+    @Override
     public boolean hasNext() {
         return (this.currentToken != null);
     }
@@ -106,6 +102,7 @@ public class BasicTokenIterator implements TokenIterator {
      * @throws NoSuchElementException   if the iteration is already over
      * @throws ParseException   if an invalid header value is encountered
      */
+    @Override
     public String nextToken()
         throws NoSuchElementException, ParseException {
 
@@ -130,6 +127,7 @@ public class BasicTokenIterator implements TokenIterator {
      * @throws NoSuchElementException   if there are no more tokens
      * @throws ParseException   if an invalid header value is encountered
      */
+    @Override
     public final Object next()
         throws NoSuchElementException, ParseException {
         return nextToken();
@@ -141,6 +139,7 @@ public class BasicTokenIterator implements TokenIterator {
      *
      * @throws UnsupportedOperationException    always
      */
+    @Override
     public final void remove()
         throws UnsupportedOperationException {
 
@@ -155,9 +154,9 @@ public class BasicTokenIterator implements TokenIterator {
      * The return value indicates the position after the token
      * in {@link #currentHeader}. If necessary, the next header
      * will be obtained from {@link #headerIt}.
-     * If not found, {@link #currentToken} is set to <code>null</code>.
+     * If not found, {@link #currentToken} is set to {@code null}.
      *
-     * @param from      the position in the current header at which to
+     * @param pos       the position in the current header at which to
      *                  start the search, -1 to search in the first header
      *
      * @return  the position after the found token in the current header, or
@@ -165,9 +164,8 @@ public class BasicTokenIterator implements TokenIterator {
      *
      * @throws ParseException   if an invalid header value is encountered
      */
-    protected int findNext(int from)
-        throws ParseException {
-
+    protected int findNext(final int pos) throws ParseException {
+        int from = pos;
         if (from < 0) {
             // called from the constructor, initialize the first header
             if (!this.headerIt.hasNext()) {
@@ -180,13 +178,13 @@ public class BasicTokenIterator implements TokenIterator {
             from = findTokenSeparator(from);
         }
 
-        int start = findTokenStart(from);
+        final int start = findTokenStart(from);
         if (start < 0) {
             this.currentToken = null;
             return -1; // nothing found
         }
 
-        int end = findTokenEnd(start);
+        final int end = findTokenEnd(start);
         this.currentToken = createToken(this.currentHeader, start, end);
         return end;
     }
@@ -197,7 +195,7 @@ public class BasicTokenIterator implements TokenIterator {
      * Called from {@link #findNext findNext} after the token is identified.
      * The default implementation simply calls
      * {@link java.lang.String#substring String.substring}.
-     * <br/>
+     * <p>
      * If header values are significantly longer than tokens, and some
      * tokens are permanently referenced by the application, there can
      * be problems with garbage collection. A substring will hold a
@@ -205,6 +203,7 @@ public class BasicTokenIterator implements TokenIterator {
      * therefore occupies more memory than might be expected.
      * To avoid this, override this method and create a new string
      * instead of a substring.
+     * </p>
      *
      * @param value     the full header value from which to create a token
      * @param start     the index of the first token character
@@ -212,7 +211,7 @@ public class BasicTokenIterator implements TokenIterator {
      *
      * @return  a string representing the token identified by the arguments
      */
-    protected String createToken(String value, int start, int end) {
+    protected String createToken(final String value, final int start, final int end) {
         return value.substring(start, end);
     }
 
@@ -221,18 +220,14 @@ public class BasicTokenIterator implements TokenIterator {
      * Determines the starting position of the next token.
      * This method will iterate over headers if necessary.
      *
-     * @param from      the position in the current header at which to
+     * @param pos       the position in the current header at which to
      *                  start the search
      *
      * @return  the position of the token start in the current header,
      *          negative if no token start could be found
      */
-    protected int findTokenStart(int from) {
-        if (from < 0) {
-            throw new IllegalArgumentException
-                ("Search position must not be negative: " + from);
-        }
-
+    protected int findTokenStart(final int pos) {
+        int from = Args.notNegative(pos, "Search position");
         boolean found = false;
         while (!found && (this.currentHeader != null)) {
 
@@ -272,7 +267,7 @@ public class BasicTokenIterator implements TokenIterator {
      * header value is a token separator. This method does
      * therefore not need to iterate over headers.
      *
-     * @param from      the position in the current header at which to
+     * @param pos       the position in the current header at which to
      *                  start the search
      *
      * @return  the position of a token separator in the current header,
@@ -281,14 +276,10 @@ public class BasicTokenIterator implements TokenIterator {
      * @throws ParseException
      *         if a new token is found before a token separator.
      *         RFC 2616, section 2.1 explicitly requires a comma between
-     *         tokens for <tt>#</tt>.
+     *         tokens for {@code #}.
      */
-    protected int findTokenSeparator(int from) {
-        if (from < 0) {
-            throw new IllegalArgumentException
-                ("Search position must not be negative: " + from);
-        }
-
+    protected int findTokenSeparator(final int pos) {
+        int from = Args.notNegative(pos, "Search position");
         boolean found = false;
         final int to = this.currentHeader.length();
         while (!found && (from < to)) {
@@ -320,15 +311,11 @@ public class BasicTokenIterator implements TokenIterator {
      * @param from      the position of the first character of the token
      *
      * @return  the position after the last character of the token.
-     *          The behavior is undefined if <code>from</code> does not
+     *          The behavior is undefined if {@code from} does not
      *          point to a token character in the current header value.
      */
-    protected int findTokenEnd(int from) {
-        if (from < 0) {
-            throw new IllegalArgumentException
-                ("Token start position must not be negative: " + from);
-        }
-
+    protected int findTokenEnd(final int from) {
+        Args.notNegative(from, "Search position");
         final int to = this.currentHeader.length();
         int end = from+1;
         while ((end < to) && isTokenChar(this.currentHeader.charAt(end))) {
@@ -342,15 +329,15 @@ public class BasicTokenIterator implements TokenIterator {
     /**
      * Checks whether a character is a token separator.
      * RFC 2616, section 2.1 defines comma as the separator for
-     * <tt>#token</tt> sequences. The end of a header value will
+     * {@code #token} sequences. The end of a header value will
      * also separate tokens, but that is not a character check.
      *
      * @param ch        the character to check
      *
-     * @return  <code>true</code> if the character is a token separator,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if the character is a token separator,
+     *          {@code false} otherwise
      */
-    protected boolean isTokenSeparator(char ch) {
+    protected boolean isTokenSeparator(final char ch) {
         return (ch == ',');
     }
 
@@ -363,10 +350,10 @@ public class BasicTokenIterator implements TokenIterator {
      *
      * @param ch        the character to check
      *
-     * @return  <code>true</code> if the character is whitespace,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if the character is whitespace,
+     *          {@code false} otherwise
      */
-    protected boolean isWhitespace(char ch) {
+    protected boolean isWhitespace(final char ch) {
 
         // we do not use Character.isWhitspace(ch) here, since that allows
         // many control characters which are not whitespace as per RFC 2616
@@ -383,22 +370,25 @@ public class BasicTokenIterator implements TokenIterator {
      *
      * @param ch        the character to check
      *
-     * @return  <code>true</code> if the character is a valid token start,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if the character is a valid token start,
+     *          {@code false} otherwise
      */
-    protected boolean isTokenChar(char ch) {
+    protected boolean isTokenChar(final char ch) {
 
         // common sense extension of ALPHA + DIGIT
-        if (Character.isLetterOrDigit(ch))
+        if (Character.isLetterOrDigit(ch)) {
             return true;
+        }
 
         // common sense extension of CTL
-        if (Character.isISOControl(ch))
+        if (Character.isISOControl(ch)) {
             return false;
+        }
 
         // no common sense extension for this
-        if (isHttpSeparator(ch))
+        if (isHttpSeparator(ch)) {
             return false;
+        }
 
         // RFC 2616, section 2.2 defines a token character as
         // "any CHAR except CTLs or separators". The controls
@@ -418,12 +408,12 @@ public class BasicTokenIterator implements TokenIterator {
      *
      * @param ch        the character to check
      *
-     * @return  <code>true</code> if the character is an HTTP separator
+     * @return  {@code true} if the character is an HTTP separator
      */
-    protected boolean isHttpSeparator(char ch) {
+    protected boolean isHttpSeparator(final char ch) {
         return (HTTP_SEPARATORS.indexOf(ch) >= 0);
     }
 
 
 } // class BasicTokenIterator
-    
+

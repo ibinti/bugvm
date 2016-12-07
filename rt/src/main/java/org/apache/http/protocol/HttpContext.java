@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpContext.java $
- * $Revision: 558111 $
- * $Date: 2007-07-20 13:01:50 -0700 (Fri, 20 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,27 +28,48 @@
 package org.apache.http.protocol;
 
 /**
- * A context for executing a request.
- * The context is used to tie together the request, the response,
- * and optional application data. It is also used for internal data.
- * Attribute names starting with the prefix "http." are
- * {@link #RESERVED_PREFIX reserved} for internal data.
+ * HttpContext represents execution state of an HTTP process. It is a structure
+ * that can be used to map an attribute name to an attribute value.
+ * <p>
+ * The primary purpose of the HTTP context is to facilitate information sharing
+ * among various  logically related components. HTTP context can be used
+ * to store a processing state for one message or several consecutive messages.
+ * Multiple logically related messages can participate in a logical session
+ * if the same context is reused between consecutive messages.
+ * <p>/
+ * IMPORTANT: Please note HTTP context implementation, even when thread safe,
+ * may not be used concurrently by multiple threads, as the context may contain
+ * thread unsafe attributes.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 558111 $
- * 
  * @since 4.0
  */
 public interface HttpContext {
 
     /** The prefix reserved for use by HTTP components. "http." */
     public static final String RESERVED_PREFIX  = "http.";
-    
+
+    /**
+     * Obtains attribute with the given name.
+     *
+     * @param id the attribute name.
+     * @return attribute value, or {@code null} if not set.
+     */
     Object getAttribute(String id);
 
+    /**
+     * Sets value of the attribute with the given name.
+     *
+     * @param id the attribute name.
+     * @param obj the attribute value.
+     */
     void setAttribute(String id, Object obj);
 
+    /**
+     * Removes attribute with the given name from the context.
+     *
+     * @param id the attribute name.
+     * @return attribute value, or {@code null} if not set.
+     */
     Object removeAttribute(String id);
-    
+
 }

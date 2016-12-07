@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/MethodNotSupportedException.java $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,21 +29,17 @@ package org.apache.http;
 
 
 /**
- * Indicates that an HTTP method is not supported.
+ * Signals that an HTTP method is not supported.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 618017 $
- * 
  * @since 4.0
  */
 public class MethodNotSupportedException extends HttpException {
 
     private static final long serialVersionUID = 3365359036840171201L;
-    
+
     /**
      * Creates a new MethodNotSupportedException with the specified detail message.
-     * 
+     *
      * @param message The exception detail message
      */
     public MethodNotSupportedException(final String message) {
@@ -56,10 +48,10 @@ public class MethodNotSupportedException extends HttpException {
 
     /**
      * Creates a new MethodNotSupportedException with the specified detail message and cause.
-     * 
+     *
      * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
+     * @param cause the {@code Throwable} that caused this exception, or {@code null}
+     * if the cause is unavailable, unknown, or not a {@code Throwable}
      */
     public MethodNotSupportedException(final String message, final Throwable cause) {
         super(message, cause);

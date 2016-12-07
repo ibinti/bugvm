@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/FormattedHeader.java $
- * $Revision: 569781 $
- * $Date: 2007-08-26 02:05:06 -0700 (Sun, 26 Aug 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -39,11 +35,9 @@ import org.apache.http.util.CharArrayBuffer;
  * can be preserved. This allows for the header to be sent without
  * another formatting step.
  *
- *
- * @version $Revision: 569781 $
+ * @since 4.0
  */
 public interface FormattedHeader extends Header {
-
 
     /**
      * Obtains the buffer with the formatted header.
@@ -51,8 +45,7 @@ public interface FormattedHeader extends Header {
      *
      * @return  the formatted header, in a buffer that must not be modified
      */
-    CharArrayBuffer getBuffer()
-        ;
+    CharArrayBuffer getBuffer();
 
     /**
      * Obtains the start of the header value in the {@link #getBuffer buffer}.
@@ -62,7 +55,6 @@ public interface FormattedHeader extends Header {
      * @return  index of the first character of the header value
      *          in the buffer returned by {@link #getBuffer getBuffer}.
      */
-    int getValuePos()
-        ;
+    int getValuePos();
 
 }

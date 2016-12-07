@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/util/VersionInfo.java $
- * $Revision: 554888 $
- * $Date: 2007-07-10 02:46:36 -0700 (Tue, 10 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,26 +29,23 @@ package org.apache.http.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ArrayList;
-
 
 /**
  * Provides access to version information for HTTP components.
- * Instances of this class provide version information for a single module
- * or informal unit, as explained
- * <a href="http://wiki.apache.org/jakarta-httpclient/HttpComponents">here</a>.
  * Static methods are used to extract version information from property
  * files that are automatically packaged with HTTP component release JARs.
- * <br/>
+ * <p>
  * All available version information is provided in strings, where
  * the string format is informal and subject to change without notice.
  * Version information is provided for debugging output and interpretation
  * by humans, not for automated processing in applications.
+ * </p>
  *
- * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
- * @author and others
+ * @since 4.0
  */
 public class VersionInfo {
 
@@ -88,18 +81,14 @@ public class VersionInfo {
      * Instantiates version information.
      *
      * @param pckg      the package
-     * @param module    the module, or <code>null</code>
-     * @param release   the release, or <code>null</code>
-     * @param time      the build time, or <code>null</code>
-     * @param clsldr    the class loader, or <code>null</code>
+     * @param module    the module, or {@code null}
+     * @param release   the release, or {@code null}
+     * @param time      the build time, or {@code null}
+     * @param clsldr    the class loader, or {@code null}
      */
-    protected VersionInfo(String pckg, String module,
-                          String release, String time, String clsldr) {
-        if (pckg == null) {
-            throw new IllegalArgumentException
-                ("Package identifier must not be null.");
-        }
-
+    protected VersionInfo(final String pckg, final String module,
+                          final String release, final String time, final String clsldr) {
+        Args.notNull(pckg, "Package identifier");
         infoPackage     = pckg;
         infoModule      = (module  != null) ? module  : UNAVAILABLE;
         infoRelease     = (release != null) ? release : UNAVAILABLE;
@@ -112,7 +101,7 @@ public class VersionInfo {
      * Obtains the package name.
      * The package name identifies the module or informal unit.
      *
-     * @return  the package name, never <code>null</code>
+     * @return  the package name, never {@code null}
      */
     public final String getPackage() {
         return infoPackage;
@@ -122,7 +111,7 @@ public class VersionInfo {
      * Obtains the name of the versioned module or informal unit.
      * This data is read from the version information for the package.
      *
-     * @return  the module name, never <code>null</code>
+     * @return  the module name, never {@code null}
      */
     public final String getModule() {
         return infoModule;
@@ -132,7 +121,7 @@ public class VersionInfo {
      * Obtains the release of the versioned module or informal unit.
      * This data is read from the version information for the package.
      *
-     * @return  the release version, never <code>null</code>
+     * @return  the release version, never {@code null}
      */
     public final String getRelease() {
         return infoRelease;
@@ -142,7 +131,7 @@ public class VersionInfo {
      * Obtains the timestamp of the versioned module or informal unit.
      * This data is read from the version information for the package.
      *
-     * @return  the timestamp, never <code>null</code>
+     * @return  the timestamp, never {@code null}
      */
     public final String getTimestamp() {
         return infoTimestamp;
@@ -150,11 +139,11 @@ public class VersionInfo {
 
     /**
      * Obtains the classloader used to read the version information.
-     * This is just the <code>toString</code> output of the classloader,
+     * This is just the {@code toString} output of the classloader,
      * since the version information should not keep a reference to
      * the classloader itself. That could prevent garbage collection.
      *
-     * @return  the classloader description, never <code>null</code>
+     * @return  the classloader description, never {@code null}
      */
     public final String getClassloader() {
         return infoClassloader;
@@ -166,8 +155,9 @@ public class VersionInfo {
      *
      * @return  a string holding this version information
      */
+    @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer
+        final StringBuilder sb = new StringBuilder
             (20 + infoPackage.length() + infoModule.length() +
              infoRelease.length() + infoTimestamp.length() +
              infoClassloader.length());
@@ -177,15 +167,18 @@ public class VersionInfo {
 
         // If version info is missing, a single "UNAVAILABLE" for the module
         // is sufficient. Everything else just clutters the output.
-        if (!UNAVAILABLE.equals(infoRelease))
+        if (!UNAVAILABLE.equals(infoRelease)) {
             sb.append(':').append(infoRelease);
-        if (!UNAVAILABLE.equals(infoTimestamp))
+        }
+        if (!UNAVAILABLE.equals(infoTimestamp)) {
             sb.append(':').append(infoTimestamp);
+        }
 
         sb.append(')');
 
-        if (!UNAVAILABLE.equals(infoClassloader))
+        if (!UNAVAILABLE.equals(infoClassloader)) {
             sb.append('@').append(infoClassloader);
+        }
 
         return sb.toString();
     }
@@ -196,26 +189,23 @@ public class VersionInfo {
      *
      * @param pckgs     the packages for which to load version info
      * @param clsldr    the classloader to load from, or
-     *                  <code>null</code> for the thread context classloader
+     *                  {@code null} for the thread context classloader
      *
      * @return  the version information for all packages found,
-     *          never <code>null</code>
+     *          never {@code null}
      */
-    public final static VersionInfo[] loadVersionInfo(String[] pckgs,
-                                                      ClassLoader clsldr) {
-        if (pckgs == null) {
-            throw new IllegalArgumentException
-                ("Package identifier list must not be null.");
-        }
-
-        ArrayList vil = new ArrayList(pckgs.length);
-        for (int i=0; i<pckgs.length; i++) {
-            VersionInfo vi = loadVersionInfo(pckgs[i], clsldr);
-            if (vi != null)
+    public static VersionInfo[] loadVersionInfo(final String[] pckgs,
+                                                      final ClassLoader clsldr) {
+        Args.notNull(pckgs, "Package identifier array");
+        final List<VersionInfo> vil = new ArrayList<VersionInfo>(pckgs.length);
+        for (final String pckg : pckgs) {
+            final VersionInfo vi = loadVersionInfo(pckg, clsldr);
+            if (vi != null) {
                 vil.add(vi);
+            }
         }
 
-        return (VersionInfo[]) vil.toArray(new VersionInfo[vil.size()]);
+        return vil.toArray(new VersionInfo[vil.size()]);
     }
 
 
@@ -226,43 +216,39 @@ public class VersionInfo {
      *                  for example "org.apache.http".
      *                  The package name should NOT end with a dot.
      * @param clsldr    the classloader to load from, or
-     *                  <code>null</code> for the thread context classloader
+     *                  {@code null} for the thread context classloader
      *
      * @return  the version information for the argument package, or
-     *          <code>null</code> if not available
+     *          {@code null} if not available
      */
-    public final static VersionInfo loadVersionInfo(final String pckg,
-                                                    ClassLoader clsldr) {
-        if (pckg == null) {
-            throw new IllegalArgumentException
-                ("Package identifier must not be null.");
-        }
-
-        if (clsldr == null)
-            clsldr = Thread.currentThread().getContextClassLoader();
+    public static VersionInfo loadVersionInfo(final String pckg,
+                                              final ClassLoader clsldr) {
+        Args.notNull(pckg, "Package identifier");
+        final ClassLoader cl = clsldr != null ? clsldr : Thread.currentThread().getContextClassLoader();
 
         Properties vip = null; // version info properties, if available
         try {
             // org.apache.http      becomes
             // org/apache/http/version.properties
-            InputStream is = clsldr.getResourceAsStream
+            final InputStream is = cl.getResourceAsStream
                 (pckg.replace('.', '/') + "/" + VERSION_PROPERTY_FILE);
             if (is != null) {
                 try {
-                    Properties props = new Properties();
+                    final Properties props = new Properties();
                     props.load(is);
                     vip = props;
                 } finally {
                     is.close();
                 }
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             // shamelessly munch this exception
         }
 
         VersionInfo result = null;
-        if (vip != null)
-            result = fromMap(pckg, vip, clsldr);
+        if (vip != null) {
+            result = fromMap(pckg, vip, cl);
+        }
 
         return result;
     }
@@ -274,44 +260,67 @@ public class VersionInfo {
      * @param pckg      the package for the version information
      * @param info      the map from string keys to string values,
      *                  for example {@link java.util.Properties}
-     * @param clsldr    the classloader, or <code>null</code>
+     * @param clsldr    the classloader, or {@code null}
      *
      * @return  the version information
      */
-    protected final static VersionInfo fromMap(String pckg, Map info,
-                                               ClassLoader clsldr) {
-        if (pckg == null) {
-            throw new IllegalArgumentException
-                ("Package identifier must not be null.");
-        }
-
+    protected static VersionInfo fromMap(final String pckg, final Map<?, ?> info,
+                                               final ClassLoader clsldr) {
+        Args.notNull(pckg, "Package identifier");
         String module = null;
         String release = null;
         String timestamp = null;
 
         if (info != null) {
             module = (String) info.get(PROPERTY_MODULE);
-            if ((module != null) && (module.length() < 1))
+            if ((module != null) && (module.length() < 1)) {
                 module = null;
+            }
 
             release = (String) info.get(PROPERTY_RELEASE);
             if ((release != null) && ((release.length() < 1) ||
-                                      (release.equals("${pom.version}"))))
+                                      (release.equals("${pom.version}")))) {
                 release = null;
+            }
 
             timestamp = (String) info.get(PROPERTY_TIMESTAMP);
             if ((timestamp != null) &&
                 ((timestamp.length() < 1) ||
                  (timestamp.equals("${mvn.timestamp}")))
-                )
+                ) {
                 timestamp = null;
+            }
         } // if info
 
         String clsldrstr = null;
-        if (clsldr != null)
+        if (clsldr != null) {
             clsldrstr = clsldr.toString();
+        }
 
         return new VersionInfo(pckg, module, release, timestamp, clsldrstr);
+    }
+
+    /**
+     * Sets the user agent to {@code "<name>/<release> (Java/<java.version>)"}.
+     * <p>
+     * For example:
+     * <pre>"Apache-HttpClient/4.3 (Java/1.6.0_35)"</pre>
+     *
+     * @param name the component name, like "Apache-HttpClient".
+     * @param pkg
+     *            the package for which to load version information, for example "org.apache.http". The package name
+     *            should NOT end with a dot.
+     * @param cls
+     *            the class' class loader to load from, or {@code null} for the thread context class loader
+     * @since 4.3
+     */
+    public static String getUserAgent(final String name, final String pkg, final Class<?> cls) {
+        // determine the release version from packaged version info
+        final VersionInfo vi = VersionInfo.loadVersionInfo(pkg, cls.getClassLoader());
+        final String release = (vi != null) ? vi.getRelease() : VersionInfo.UNAVAILABLE;
+        final String javaVersion = System.getProperty("java.version");
+
+        return String.format("%s/%s (Java/%s)", name, release, javaVersion);
     }
 
 } // class VersionInfo

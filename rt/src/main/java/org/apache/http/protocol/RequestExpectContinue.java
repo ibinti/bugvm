@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/RequestExpectContinue.java $
- * $Revision: 573864 $
- * $Date: 2007-09-08 08:53:25 -0700 (Sat, 08 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -40,39 +36,59 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
-import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.util.Args;
 
 /**
- * A request interceptor that enables the expect-continue handshake.
+ * RequestExpectContinue is responsible for enabling the 'expect-continue'
+ * handshake by adding {@code Expect} header. This interceptor is
+ * recommended for client side protocol processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 573864 $
- * 
  * @since 4.0
  */
+@Immutable
+@SuppressWarnings("deprecation")
 public class RequestExpectContinue implements HttpRequestInterceptor {
 
+    private final boolean activeByDefault;
+
+    /**
+     * @deprecated (4.3) use {@link org.apache.http.protocol.RequestExpectContinue#RequestExpectContinue(boolean)}
+     */
+    @Deprecated
     public RequestExpectContinue() {
-        super();
+        this(false);
     }
-    
-    public void process(final HttpRequest request, final HttpContext context) 
+
+    /**
+     * @since 4.3
+     */
+    public RequestExpectContinue(final boolean activeByDefault) {
+        super();
+        this.activeByDefault = activeByDefault;
+    }
+
+    @Override
+    public void process(final HttpRequest request, final HttpContext context)
             throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
-        if (request instanceof HttpEntityEnclosingRequest) {
-            HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
-            // Do not send the expect header if request body is known to be empty
-            if (entity != null && entity.getContentLength() != 0) { 
-                ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
-                if (HttpProtocolParams.useExpectContinue(request.getParams()) 
-                        && !ver.lessEquals(HttpVersion.HTTP_1_0)) {
-                    request.addHeader(HTTP.EXPECT_DIRECTIVE, HTTP.EXPECT_CONTINUE);
+        Args.notNull(request, "HTTP request");
+
+        if (!request.containsHeader(HTTP.EXPECT_DIRECTIVE)) {
+            if (request instanceof HttpEntityEnclosingRequest) {
+                final ProtocolVersion ver = request.getRequestLine().getProtocolVersion();
+                final HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
+                // Do not send the expect header if request body is known to be empty
+                if (entity != null
+                        && entity.getContentLength() != 0 && !ver.lessEquals(HttpVersion.HTTP_1_0)) {
+                    final boolean active = request.getParams().getBooleanParameter(
+                            CoreProtocolPNames.USE_EXPECT_CONTINUE, this.activeByDefault);
+                    if (active) {
+                        request.addHeader(HTTP.EXPECT_DIRECTIVE, HTTP.EXPECT_CONTINUE);
+                    }
                 }
             }
         }
     }
-    
+
 }

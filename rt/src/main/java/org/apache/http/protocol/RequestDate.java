@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/RequestDate.java $
- * $Revision: 555989 $
- * $Date: 2007-07-13 06:33:39 -0700 (Fri, 13 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,40 +29,38 @@ package org.apache.http.protocol;
 
 import java.io.IOException;
 
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
-import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.annotation.ThreadSafe;
+import org.apache.http.util.Args;
 
 /**
- * A request interceptor that adds a Date header.
- * For use on the client side.
+ * RequestDate interceptor is responsible for adding {@code Date} header
+ * to the outgoing requests This interceptor is optional for client side
+ * protocol processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 555989 $
- * 
  * @since 4.0
  */
+@ThreadSafe
 public class RequestDate implements HttpRequestInterceptor {
 
-    private static final HttpDateGenerator DATE_GENERATOR = new HttpDateGenerator(); 
-    
+    private static final HttpDateGenerator DATE_GENERATOR = new HttpDateGenerator();
+
     public RequestDate() {
         super();
     }
 
-    public void process(final HttpRequest request, final HttpContext context) 
+    @Override
+    public void process(final HttpRequest request, final HttpContext context)
             throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException
-                ("HTTP request may not be null.");
-        }
+        Args.notNull(request, "HTTP request");
         if ((request instanceof HttpEntityEnclosingRequest) &&
             !request.containsHeader(HTTP.DATE_HEADER)) {
-            String httpdate = DATE_GENERATOR.getCurrentDate();
-            request.setHeader(HTTP.DATE_HEADER, httpdate); 
+            final String httpdate = DATE_GENERATOR.getCurrentDate();
+            request.setHeader(HTTP.DATE_HEADER, httpdate);
         }
     }
-    
+
 }

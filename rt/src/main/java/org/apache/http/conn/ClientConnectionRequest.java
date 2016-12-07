@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ClientConnectionRequest.java $
- * $Revision: 651815 $
- * $Date: 2008-04-26 04:14:43 -0700 (Sat, 26 Apr 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,23 +31,28 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Encapsulates a request for a {@link ManagedClientConnection}.
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.3) replaced by {@link ConnectionRequest}.
  */
+@Deprecated
 public interface ClientConnectionRequest {
-    
+
     /**
      * Obtains a connection within a given time.
      * This method will block until a connection becomes available,
      * the timeout expires, or the connection manager is
      * {@link ClientConnectionManager#shutdown() shut down}.
      * Timeouts are handled with millisecond precision.
-     * 
+     *
      * If {@link #abortRequest()} is called while this is blocking or
      * before this began, an {@link InterruptedException} will
      * be thrown.
-     * 
+     *
      * @param timeout   the timeout, 0 or negative for no timeout
-     * @param tunit     the unit for the <code>timeout</code>,
-     *                  may be <code>null</code> only if there is no timeout
+     * @param tunit     the unit for the {@code timeout},
+     *                  may be {@code null} only if there is no timeout
      *
      * @return  a connection that can be used to communicate
      *          along the given route
@@ -61,9 +62,9 @@ public interface ClientConnectionRequest {
      * @throws InterruptedException
      *         if the calling thread is interrupted while waiting
      */
-    ManagedClientConnection getConnection(long timeout, TimeUnit tunit) 
+    ManagedClientConnection getConnection(long timeout, TimeUnit tunit)
         throws InterruptedException, ConnectionPoolTimeoutException;
-    
+
     /**
      * Aborts the call to {@link #getConnection(long, TimeUnit)},
      * causing it to throw an {@link InterruptedException}.

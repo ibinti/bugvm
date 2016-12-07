@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/ContentLengthInputStream.java $
- * $Revision: 652091 $
- * $Date: 2008-04-29 13:41:07 -0700 (Tue, 29 Apr 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,48 +30,37 @@ package org.apache.http.impl.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.http.ConnectionClosedException;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.io.BufferInfo;
 import org.apache.http.io.SessionInputBuffer;
+import org.apache.http.util.Args;
 
 /**
- * Stream that cuts off after a specified number of bytes.
+ * Input stream that cuts off after a defined number of bytes. This class
+ * is used to receive content of HTTP messages where the end of the content
+ * entity is determined by the value of the {@code Content-Length header}.
+ * Entities transferred using this stream can be maximum {@link Long#MAX_VALUE}
+ * long.
+ * <p>
  * Note that this class NEVER closes the underlying stream, even when close
- * gets called.  Instead, it will read until the "end" of its chunking on
+ * gets called.  Instead, it will read until the "end" of its limit on
  * close, which allows for the seamless execution of subsequent HTTP 1.1
  * requests, while not requiring the client to remember to read the entire
  * contents of the response.
  *
- * <p>Implementation note: Choices abound. One approach would pass
- * through the {@link InputStream#mark} and {@link InputStream#reset} calls to
- * the underlying stream.  That's tricky, though, because you then have to
- * start duplicating the work of keeping track of how much a reset rewinds.
- * Further, you have to watch out for the "readLimit", and since the semantics
- * for the readLimit leave room for differing implementations, you might get
- * into a lot of trouble.</p>
- *
- * <p>Alternatively, you could make this class extend
- * {@link java.io.BufferedInputStream}
- * and then use the protected members of that class to avoid duplicated effort.
- * That solution has the side effect of adding yet another possible layer of
- * buffering.</p>
- *
- * <p>Then, there is the simple choice, which this takes - simply don't
- * support {@link InputStream#mark} and {@link InputStream#reset}.  That choice
- * has the added benefit of keeping this class very simple.</p>
- *
- * @author Ortwin Glueck
- * @author Eric Johnson
- * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
  *
  * @since 4.0
  */
+@NotThreadSafe
 public class ContentLengthInputStream extends InputStream {
-    
+
     private static final int BUFFER_SIZE = 2048;
     /**
      * The maximum number of bytes that can be read from the stream. Subsequent
      * read operations will return -1.
      */
-    private long contentLength;
+    private final long contentLength;
 
     /** The current position */
     private long pos = 0;
@@ -89,22 +74,17 @@ public class ContentLengthInputStream extends InputStream {
     private SessionInputBuffer in = null;
 
     /**
-     * Creates a new length limited stream
+     * Wraps a session input buffer and cuts off output after a defined number
+     * of bytes.
      *
-     * @param in The session input buffer to wrap
+     * @param in The session input buffer
      * @param contentLength The maximum number of bytes that can be read from
      * the stream. Subsequent read operations will return -1.
      */
-    public ContentLengthInputStream(final SessionInputBuffer in, long contentLength) {
+    public ContentLengthInputStream(final SessionInputBuffer in, final long contentLength) {
         super();
-        if (in == null) {
-            throw new IllegalArgumentException("Input stream may not be null");
-        }
-        if (contentLength < 0) {
-            throw new IllegalArgumentException("Content length may not be negative");
-        }
-        this.in = in;
-        this.contentLength = contentLength;
+        this.in = Args.notNull(in, "Session input buffer");
+        this.contentLength = Args.notNegative(contentLength, "Content length");
     }
 
     /**
@@ -114,11 +94,14 @@ public class ContentLengthInputStream extends InputStream {
      * primed to parse the next response.</p>
      * @throws IOException If an IO problem occurs.
      */
+    @Override
     public void close() throws IOException {
         if (!closed) {
             try {
-                byte buffer[] = new byte[BUFFER_SIZE];
-                while (read(buffer) >= 0) {
+                if (pos < contentLength) {
+                    final byte buffer[] = new byte[BUFFER_SIZE];
+                    while (read(buffer) >= 0) {
+                    }
                 }
             } finally {
                 // close after above so that we don't throw an exception trying
@@ -128,6 +111,15 @@ public class ContentLengthInputStream extends InputStream {
         }
     }
 
+    @Override
+    public int available() throws IOException {
+        if (this.in instanceof BufferInfo) {
+            final int len = ((BufferInfo) this.in).length();
+            return Math.min(len, (int) (this.contentLength - this.pos));
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * Read the next byte from the stream
@@ -135,6 +127,7 @@ public class ContentLengthInputStream extends InputStream {
      * @throws IOException If an IO problem occurs
      * @see java.io.InputStream#read()
      */
+    @Override
     public int read() throws IOException {
         if (closed) {
             throw new IOException("Attempted read from closed stream.");
@@ -143,8 +136,17 @@ public class ContentLengthInputStream extends InputStream {
         if (pos >= contentLength) {
             return -1;
         }
-        pos++;
-        return this.in.read();
+        final int b = this.in.read();
+        if (b == -1) {
+            if (pos < contentLength) {
+                throw new ConnectionClosedException(
+                        "Premature end of Content-Length delimited message body (expected: "
+                        + contentLength + "; received: " + pos);
+            }
+        } else {
+            pos++;
+        }
+        return b;
     }
 
     /**
@@ -159,7 +161,8 @@ public class ContentLengthInputStream extends InputStream {
      *
      * @throws java.io.IOException Should an error occur on the wrapped stream.
      */
-    public int read (byte[] b, int off, int len) throws java.io.IOException {
+    @Override
+    public int read (final byte[] b, final int off, final int len) throws java.io.IOException {
         if (closed) {
             throw new IOException("Attempted read from closed stream.");
         }
@@ -168,11 +171,19 @@ public class ContentLengthInputStream extends InputStream {
             return -1;
         }
 
+        int chunk = len;
         if (pos + len > contentLength) {
-            len = (int) (contentLength - pos);
+            chunk = (int) (contentLength - pos);
         }
-        int count = this.in.read(b, off, len);
-        pos += count;
+        final int count = this.in.read(b, off, chunk);
+        if (count == -1 && pos < contentLength) {
+            throw new ConnectionClosedException(
+                    "Premature end of Content-Length delimited message body (expected: "
+                    + contentLength + "; received: " + pos);
+        }
+        if (count > 0) {
+            pos += count;
+        }
         return count;
     }
 
@@ -184,37 +195,38 @@ public class ContentLengthInputStream extends InputStream {
      * @throws IOException If an IO problem occurs
      * @see java.io.InputStream#read(byte[])
      */
-    public int read(byte[] b) throws IOException {
+    @Override
+    public int read(final byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 
     /**
      * Skips and discards a number of bytes from the input stream.
      * @param n The number of bytes to skip.
-     * @return The actual number of bytes skipped. <= 0 if no bytes
+     * @return The actual number of bytes skipped. &le; 0 if no bytes
      * are skipped.
      * @throws IOException If an error occurs while skipping bytes.
      * @see InputStream#skip(long)
      */
-    public long skip(long n) throws IOException {
+    @Override
+    public long skip(final long n) throws IOException {
         if (n <= 0) {
             return 0;
         }
-        byte[] buffer = new byte[BUFFER_SIZE];
-        // make sure we don't skip more bytes than are 
+        final byte[] buffer = new byte[BUFFER_SIZE];
+        // make sure we don't skip more bytes than are
         // still available
-        long remaining = Math.min(n, this.contentLength - this.pos); 
+        long remaining = Math.min(n, this.contentLength - this.pos);
         // skip and keep track of the bytes actually skipped
         long count = 0;
         while (remaining > 0) {
-            int l = read(buffer, 0, (int)Math.min(BUFFER_SIZE, remaining));
+            final int l = read(buffer, 0, (int)Math.min(BUFFER_SIZE, remaining));
             if (l == -1) {
                 break;
             }
             count += l;
             remaining -= l;
         }
-        this.pos += count;
         return count;
     }
 }

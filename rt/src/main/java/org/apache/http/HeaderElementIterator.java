@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HeaderElementIterator.java $
- * $Revision: 584542 $
- * $Date: 2007-10-14 06:29:34 -0700 (Sun, 14 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,21 +30,22 @@ package org.apache.http;
 import java.util.Iterator;
 
 /**
- * A type-safe iterator for {@link HeaderElement HeaderElement} objects.
- * 
- * @version $Revision: 584542 $
+ * A type-safe iterator for {@link HeaderElement} objects.
+ *
+ * @since 4.0
  */
-public interface HeaderElementIterator extends Iterator {
-    
+public interface HeaderElementIterator extends Iterator<Object> {
+
     /**
-     * Indicates whether there is another header element in this 
+     * Indicates whether there is another header element in this
      * iteration.
      *
-     * @return  <code>true</code> if there is another header element,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if there is another header element,
+     *          {@code false} otherwise
      */
+    @Override
     boolean hasNext();
-    
+
     /**
      * Obtains the next header element from this iteration.
      * This method should only be called while {@link #hasNext hasNext}
@@ -57,5 +54,5 @@ public interface HeaderElementIterator extends Iterator {
      * @return  the next header element in this iteration
      */
     HeaderElement nextElement();
-    
+
 }

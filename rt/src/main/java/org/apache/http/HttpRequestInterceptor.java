@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpRequestInterceptor.java $
- * $Revision: 618367 $
- * $Date: 2008-02-04 10:26:06 -0800 (Mon, 04 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,18 +31,21 @@ import java.io.IOException;
 
 import org.apache.http.protocol.HttpContext;
 
-
 /**
- * Processes a request.
- * Provides the ability to process a request before it is sent
- * to the server or after it has received on the server side.
+ * HTTP protocol interceptor is a routine that implements a specific aspect of
+ * the HTTP protocol. Usually protocol interceptors are expected to act upon
+ * one specific header or a group of related headers of the incoming message
+ * or populate the outgoing message with one specific header or a group of
+ * related headers.
+ * <p>
+ *  Protocol Interceptors can also manipulate content entities enclosed with messages.
+ * Usually this is accomplished by using the 'Decorator' pattern where a wrapper
+ * entity class is used to decorate the original entity.
+ * <p>
+ * Protocol interceptors must be implemented as thread-safe. Similarly to
+ * servlets, protocol interceptors should not use instance variables unless
+ * access to those variables is synchronized.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- *
- * <!-- empty lines above to avoid 'svn diff' context problems -->
- * @version $Revision: 618367 $
- * 
  * @since 4.0
  */
 public interface HttpRequestInterceptor {
@@ -60,10 +59,10 @@ public interface HttpRequestInterceptor {
      * @param request   the request to preprocess
      * @param context   the context for the request
      *
-     * @throws IOException      in case of an IO problem
-     * @throws HttpException    in case of a protocol or other problem
+     * @throws HttpException in case of an HTTP protocol violation
+     * @throws IOException in case of an I/O error
      */
-    void process(HttpRequest request, HttpContext context) 
+    void process(HttpRequest request, HttpContext context)
         throws HttpException, IOException;
-    
+
 }

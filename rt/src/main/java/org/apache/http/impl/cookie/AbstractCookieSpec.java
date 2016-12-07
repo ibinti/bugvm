@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/AbstractCookieSpec.java $
- * $Revision: 617207 $
- * $Date: 2008-01-31 12:14:12 -0800 (Thu, 31 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,64 +23,91 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  *
- */ 
+ */
 
 package org.apache.http.impl.cookie;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.http.annotation.ThreadSafe;
+import org.apache.http.cookie.CommonCookieAttributeHandler;
 import org.apache.http.cookie.CookieAttributeHandler;
 import org.apache.http.cookie.CookieSpec;
+import org.apache.http.util.Args;
+import org.apache.http.util.Asserts;
 
 /**
  * Abstract cookie specification which can delegate the job of parsing,
- * validation or matching cookie attributes to a number of arbitrary 
+ * validation or matching cookie attributes to a number of arbitrary
  * {@link CookieAttributeHandler}s.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @since 4.0 
+ *
+ *
+ * @since 4.0
  */
+@ThreadSafe
 public abstract class AbstractCookieSpec implements CookieSpec {
-    
+
     /**
     * Stores attribute name -> attribute handler mappings
     */
     private final Map<String, CookieAttributeHandler> attribHandlerMap;
 
-    /** 
-     * Default constructor 
+    /**
+     * Default constructor
      * */
     public AbstractCookieSpec() {
         super();
-        this.attribHandlerMap = new HashMap<String, CookieAttributeHandler>(10);        
+        this.attribHandlerMap = new ConcurrentHashMap<String, CookieAttributeHandler>(10);
     }
 
+    /**
+     * @since 4.4
+     */
+    protected AbstractCookieSpec(final HashMap<String, CookieAttributeHandler> map) {
+        super();
+        Asserts.notNull(map, "Attribute handler map");
+        this.attribHandlerMap = new ConcurrentHashMap<String, CookieAttributeHandler>(map);
+    }
+
+    /**
+     * @since 4.4
+     */
+    protected AbstractCookieSpec(final CommonCookieAttributeHandler... handlers) {
+        super();
+        this.attribHandlerMap = new ConcurrentHashMap<String, CookieAttributeHandler>(handlers.length);
+        for (final CommonCookieAttributeHandler handler: handlers) {
+            this.attribHandlerMap.put(handler.getAttributeName(), handler);
+        }
+    }
+
+    /**
+     * @deprecated (4.4) use {@link #AbstractCookieSpec(java.util.HashMap)} or
+     *  {@link #AbstractCookieSpec(org.apache.http.cookie.CommonCookieAttributeHandler...)}
+     *  constructors instead.
+     */
+    @Deprecated
     public void registerAttribHandler(
             final String name, final CookieAttributeHandler handler) {
-        if (name == null) {
-            throw new IllegalArgumentException("Attribute name may not be null");
-        }
-        if (handler == null) {
-            throw new IllegalArgumentException("Attribute handler may not be null");
-        }
+        Args.notNull(name, "Attribute name");
+        Args.notNull(handler, "Attribute handler");
         this.attribHandlerMap.put(name, handler);
     }
-    
+
     /**
      * Finds an attribute handler {@link CookieAttributeHandler} for the
-     * given attribute. Returns <tt>null</tt> if no attribute handler is
+     * given attribute. Returns {@code null} if no attribute handler is
      * found for the specified attribute.
      *
      * @param name attribute name. e.g. Domain, Path, etc.
-     * @return an attribute handler or <tt>null</tt>
+     * @return an attribute handler or {@code null}
      */
     protected CookieAttributeHandler findAttribHandler(final String name) {
         return this.attribHandlerMap.get(name);
     }
-    
+
     /**
      * Gets attribute handler {@link CookieAttributeHandler} for the
      * given attribute.
@@ -94,17 +117,14 @@ public abstract class AbstractCookieSpec implements CookieSpec {
      *          specified attribute.
      */
     protected CookieAttributeHandler getAttribHandler(final String name) {
-        CookieAttributeHandler handler = findAttribHandler(name);
-        if (handler == null) {
-            throw new IllegalStateException("Handler not registered for " +
-                                            name + " attribute.");
-        } else {
-            return handler;
-        }
+        final CookieAttributeHandler handler = findAttribHandler(name);
+        Asserts.check(handler != null, "Handler not registered for " +
+                name + " attribute");
+        return handler;
     }
 
     protected Collection<CookieAttributeHandler> getAttribHandlers() {
         return this.attribHandlerMap.values();
     }
-    
+
 }

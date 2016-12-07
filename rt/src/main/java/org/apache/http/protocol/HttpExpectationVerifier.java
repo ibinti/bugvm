@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpExpectationVerifier.java $
- * $Revision: 613298 $
- * $Date: 2008-01-18 14:09:22 -0800 (Fri, 18 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,8 +32,8 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 
 /**
- * Defines an interface to verify whether an incoming HTTP request meets 
- * the target server's expectations. 
+ * Defines an interface to verify whether an incoming HTTP request meets
+ * the target server's expectations.
  *<p>
  * The Expect request-header field is used to indicate that particular
  * server behaviors are required by the client.
@@ -59,15 +55,27 @@ import org.apache.http.HttpResponse;
  * status.
  *</p>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 613298 $
- * 
  * @since 4.0
  */
 public interface HttpExpectationVerifier {
 
+    /**
+     * Verifies whether the given request meets the server's expectations.
+     * <p>
+     * If the request fails to meet particular criteria, this method can
+     * trigger a terminal response back to the client by setting the status
+     * code of the response object to a value greater or equal to
+     * {@code 200}. In this case the client will not have to transmit
+     * the request body. If the request meets expectations this method can
+     * terminate without modifying the response object. Per default the status
+     * code of the response object will be set to {@code 100}.
+     *
+     * @param request the HTTP request.
+     * @param response the HTTP response.
+     * @param context the HTTP context.
+     * @throws HttpException in case of an HTTP protocol violation.
+     */
     void verify(HttpRequest request, HttpResponse response, HttpContext context)
             throws HttpException;
-    
+
 }

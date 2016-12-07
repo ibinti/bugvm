@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/ChunkedOutputStream.java $
- * $Revision: 645081 $
- * $Date: 2008-04-05 04:36:42 -0700 (Sat, 05 Apr 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,25 +30,28 @@ package org.apache.http.impl.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.io.SessionOutputBuffer;
 
 /**
- * Implements chunked transfer coding.
- * See <a href="http://www.w3.org/Protocols/rfc2616/rfc2616.txt">RFC 2616</a>,
- * <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6">section 3.6.1</a>.
+ * Implements chunked transfer coding. The content is sent in small chunks.
+ * Entities transferred using this output stream can be of unlimited length.
  * Writes are buffered to an internal buffer (2048 default size).
- * 
- * @author Mohammad Rezaei (Goldman, Sachs &amp; Co.)
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, the stream will be marked as closed and no further
+ * output will be permitted.
+ *
+ *
  * @since 4.0
  */
+@NotThreadSafe
 public class ChunkedOutputStream extends OutputStream {
 
     // ----------------------------------------------------- Instance Variables
     private final SessionOutputBuffer out;
 
-    private byte[] cache;
+    private final byte[] cache;
 
     private int cachePosition = 0;
 
@@ -60,37 +59,51 @@ public class ChunkedOutputStream extends OutputStream {
 
     /** True if the stream is closed. */
     private boolean closed = false;
-    
-    // ----------------------------------------------------------- Constructors
+
     /**
-     * Wraps a session output buffer and chunks the output.
-     * @param out the session output buffer to wrap
-     * @param bufferSize minimum chunk size (excluding last chunk)
-     * @throws IOException
+     * Wraps a session output buffer and chunk-encodes the output.
+     *
+     * @param out The session output buffer
+     * @param bufferSize The minimum chunk size (excluding last chunk)
+     * @throws IOException not thrown
+     *
+     * @deprecated (4.3) use {@link ChunkedOutputStream#ChunkedOutputStream(int, SessionOutputBuffer)}
      */
-    public ChunkedOutputStream(final SessionOutputBuffer out, int bufferSize)
+    @Deprecated
+    public ChunkedOutputStream(final SessionOutputBuffer out, final int bufferSize)
             throws IOException {
+        this(bufferSize, out);
+    }
+
+    /**
+     * Wraps a session output buffer and chunks the output. The default buffer
+     * size of 2048 was chosen because the chunk overhead is less than 0.5%
+     *
+     * @param out       the output buffer to wrap
+     * @throws IOException not thrown
+     *
+     * @deprecated (4.3) use {@link ChunkedOutputStream#ChunkedOutputStream(int, SessionOutputBuffer)}
+     */
+    @Deprecated
+    public ChunkedOutputStream(final SessionOutputBuffer out)
+            throws IOException {
+        this(2048, out);
+    }
+
+    /**
+     * Wraps a session output buffer and chunk-encodes the output.
+     *
+     * @param bufferSize The minimum chunk size (excluding last chunk)
+     * @param out The session output buffer
+     */
+    public ChunkedOutputStream(final int bufferSize, final SessionOutputBuffer out) {
         super();
         this.cache = new byte[bufferSize];
         this.out = out;
     }
 
     /**
-     * Wraps a session output buffer and chunks the output. The default buffer 
-     * size of 2048 was chosen because the chunk overhead is less than 0.5%
-     *
-     * @param out       the output buffer to wrap
-     * @throws IOException
-     */
-    public ChunkedOutputStream(final SessionOutputBuffer out) 
-            throws IOException {
-        this(out, 2048);
-    }
-
-    // ----------------------------------------------------------- Internal methods
-    /**
      * Writes the cache out onto the underlying stream
-     * @throws IOException
      */
     protected void flushCache() throws IOException {
         if (this.cachePosition > 0) {
@@ -104,12 +117,8 @@ public class ChunkedOutputStream extends OutputStream {
     /**
      * Writes the cache and bufferToAppend to the underlying stream
      * as one large chunk
-     * @param bufferToAppend
-     * @param off
-     * @param len
-     * @throws IOException
      */
-    protected void flushCacheWithAppend(byte bufferToAppend[], int off, int len) throws IOException {
+    protected void flushCacheWithAppend(final byte bufferToAppend[], final int off, final int len) throws IOException {
         this.out.writeLine(Integer.toHexString(this.cachePosition + len));
         this.out.write(this.cache, 0, this.cachePosition);
         this.out.write(bufferToAppend, off, len);
@@ -125,8 +134,9 @@ public class ChunkedOutputStream extends OutputStream {
 
     // ----------------------------------------------------------- Public Methods
     /**
-     * Must be called to ensure the internal cache is flushed and the closing chunk is written.
-     * @throws IOException
+     * Must be called to ensure the internal cache is flushed and the closing
+     * chunk is written.
+     * @throws IOException in case of an I/O error
      */
     public void finish() throws IOException {
         if (!this.wroteLastChunk) {
@@ -137,26 +147,33 @@ public class ChunkedOutputStream extends OutputStream {
     }
 
     // -------------------------------------------- OutputStream Methods
-    public void write(int b) throws IOException {
+    @Override
+    public void write(final int b) throws IOException {
         if (this.closed) {
             throw new IOException("Attempted write to closed stream.");
         }
         this.cache[this.cachePosition] = (byte) b;
         this.cachePosition++;
-        if (this.cachePosition == this.cache.length) flushCache();
+        if (this.cachePosition == this.cache.length) {
+            flushCache();
+        }
     }
 
     /**
      * Writes the array. If the array does not fit within the buffer, it is
      * not split, but rather written out as one large chunk.
-     * @param b
-     * @throws IOException
      */
-    public void write(byte b[]) throws IOException {
+    @Override
+    public void write(final byte b[]) throws IOException {
         write(b, 0, b.length);
     }
 
-    public void write(byte src[], int off, int len) throws IOException {
+    /**
+     * Writes the array. If the array does not fit within the buffer, it is
+     * not split, but rather written out as one large chunk.
+     */
+    @Override
+    public void write(final byte src[], final int off, final int len) throws IOException {
         if (this.closed) {
             throw new IOException("Attempted write to closed stream.");
         }
@@ -170,8 +187,8 @@ public class ChunkedOutputStream extends OutputStream {
 
     /**
      * Flushes the content buffer and the underlying stream.
-     * @throws IOException
      */
+    @Override
     public void flush() throws IOException {
         flushCache();
         this.out.flush();
@@ -179,8 +196,8 @@ public class ChunkedOutputStream extends OutputStream {
 
     /**
      * Finishes writing to the underlying stream, but does NOT close the underlying stream.
-     * @throws IOException
      */
+    @Override
     public void close() throws IOException {
         if (!this.closed) {
             this.closed = true;

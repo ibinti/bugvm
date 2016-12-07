@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpConnection.java $
- * $Revision: 548031 $
- * $Date: 2007-06-17 04:28:38 -0700 (Sun, 17 Jun 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,34 +27,32 @@
 
 package org.apache.http;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
  * A generic HTTP connection, useful on client and server side.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 548031 $
- * 
  * @since 4.0
  */
-public interface HttpConnection {
+public interface HttpConnection extends Closeable {
 
     /**
      * Closes this connection gracefully.
-     * This method will attempt to  flush the transmitter's
-     * internal buffer prior to closing the underlying socket.
-     * This method MUST NOT be called from a different thread to force 
+     * This method will attempt to flush the internal output
+     * buffer prior to closing the underlying socket.
+     * This method MUST NOT be called from a different thread to force
      * shutdown of the connection. Use {@link #shutdown shutdown} instead.
      */
-    public void close() throws IOException;
-    
+    @Override
+    void close() throws IOException;
+
     /**
      * Checks if this connection is open.
      * @return true if it is open, false if it is closed.
      */
-    public boolean isOpen();
- 
+    boolean isOpen();
+
     /**
      * Checks whether this connection has gone down.
      * Network connections may get closed during some time of inactivity
@@ -67,27 +61,27 @@ public interface HttpConnection {
      * This method tries to alleviate this inconvenience by trying to
      * find out if a connection is still usable. Implementations may do
      * that by attempting a read with a very small timeout. Thus this
-     * method may block for a small amount of time before returning a result. 
+     * method may block for a small amount of time before returning a result.
      * It is therefore an <i>expensive</i> operation.
-     * 
-     * @return  <code>true</code> if attempts to use this connection are
-     *          likely to succeed, or <code>false</code> if they are likely
+     *
+     * @return  {@code true} if attempts to use this connection are
+     *          likely to succeed, or {@code false} if they are likely
      *          to fail and this connection should be closed
      */
-    public boolean isStale();
-    
+    boolean isStale();
+
     /**
      * Sets the socket timeout value.
-     * 
+     *
      * @param timeout timeout value in milliseconds
      */
     void setSocketTimeout(int timeout);
-    
+
     /**
      * Returns the socket timeout value.
-     * 
-     * @return positive value in milliseconds if a timeout is set, 
-     * <code>0</code> if timeout is disabled or <code>-1</code> if 
+     *
+     * @return positive value in milliseconds if a timeout is set,
+     * {@code 0} if timeout is disabled or {@code -1} if
      * timeout is undefined.
      */
     int getSocketTimeout();
@@ -95,16 +89,17 @@ public interface HttpConnection {
     /**
      * Force-closes this connection.
      * This is the only method of a connection which may be called
-     * from a different thread to terminate the connection. 
+     * from a different thread to terminate the connection.
      * This method will not attempt to flush the transmitter's
      * internal buffer prior to closing the underlying socket.
      */
-    public void shutdown() throws IOException;
-    
+    void shutdown() throws IOException;
+
     /**
-     * Returns a collection of connection metrcis
+     * Returns a collection of connection metrics.
+     *
      * @return HttpConnectionMetrics
      */
     HttpConnectionMetrics getMetrics();
-    
+
 }

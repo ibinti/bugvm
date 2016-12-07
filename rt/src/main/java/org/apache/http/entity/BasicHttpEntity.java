@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/BasicHttpEntity.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,19 +31,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.impl.io.EmptyInputStream;
+import org.apache.http.util.Args;
+import org.apache.http.util.Asserts;
+
 /**
- * A generic streamed entity being received on a connection.
+ * A generic streamed, non-repeatable entity that obtains its content
+ * from an {@link InputStream}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class BasicHttpEntity extends AbstractHttpEntity {
 
     private InputStream content;
-    private boolean contentObtained;
     private long length;
 
     /**
@@ -60,7 +58,7 @@ public class BasicHttpEntity extends AbstractHttpEntity {
         this.length = -1;
     }
 
-    // non-javadoc, see interface HttpEntity
+    @Override
     public long getContentLength() {
         return this.length;
     }
@@ -72,27 +70,20 @@ public class BasicHttpEntity extends AbstractHttpEntity {
      *          since {@link #setContent setContent} has been called
      *
      * @throws IllegalStateException
-     *          if the content has been obtained before, or
-     *          has not yet been provided
+     *          if the content has not been provided
      */
-    public InputStream getContent()
-        throws IllegalStateException {
-        if (this.content == null) {
-            throw new IllegalStateException("Content has not been provided");
-        }
-        if (this.contentObtained) {
-            throw new IllegalStateException("Content has been consumed");
-        }
-        this.contentObtained = true;
+    @Override
+    public InputStream getContent() throws IllegalStateException {
+        Asserts.check(this.content != null, "Content has not been provided");
         return this.content;
-
-    } // getContent
+    }
 
     /**
      * Tells that this entity is not repeatable.
      *
-     * @return <code>false</code>
+     * @return {@code false}
      */
+    @Override
     public boolean isRepeatable() {
         return false;
     }
@@ -103,7 +94,7 @@ public class BasicHttpEntity extends AbstractHttpEntity {
      * @param len       the number of bytes in the content, or
      *                  a negative number to indicate an unknown length
      */
-    public void setContentLength(long len) {
+    public void setContentLength(final long len) {
         this.length = len;
     }
 
@@ -115,32 +106,26 @@ public class BasicHttpEntity extends AbstractHttpEntity {
      */
     public void setContent(final InputStream instream) {
         this.content = instream;
-        this.contentObtained = false; 
     }
 
-    // non-javadoc, see interface HttpEntity
+    @Override
     public void writeTo(final OutputStream outstream) throws IOException {
-        if (outstream == null) {
-            throw new IllegalArgumentException("Output stream may not be null");
-        }
-        InputStream instream = getContent();
-        int l;
-        byte[] tmp = new byte[2048];
-        while ((l = instream.read(tmp)) != -1) {
-            outstream.write(tmp, 0, l);
+        Args.notNull(outstream, "Output stream");
+        final InputStream instream = getContent();
+        try {
+            int l;
+            final byte[] tmp = new byte[OUTPUT_BUFFER_SIZE];
+            while ((l = instream.read(tmp)) != -1) {
+                outstream.write(tmp, 0, l);
+            }
+        } finally {
+            instream.close();
         }
     }
 
-    // non-javadoc, see interface HttpEntity
+    @Override
     public boolean isStreaming() {
-        return !this.contentObtained && this.content != null;
+        return this.content != null && this.content != EmptyInputStream.INSTANCE;
     }
 
-    // non-javadoc, see interface HttpEntity
-    public void consumeContent() throws IOException {
-        if (content != null) {
-            content.close(); // reads to the end of the entity
-        }
-    }
-    
-} // class BasicHttpEntity
+}

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpRequestFactory.java $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,18 +30,14 @@ package org.apache.http;
 /**
  * A factory for {@link HttpRequest HttpRequest} objects.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 618017 $
- * 
  * @since 4.0
  */
 public interface HttpRequestFactory {
-    
-    HttpRequest newHttpRequest(RequestLine requestline) 
+
+    HttpRequest newHttpRequest(RequestLine requestline)
         throws MethodNotSupportedException;
-    
-    HttpRequest newHttpRequest(String method, String uri) 
+
+    HttpRequest newHttpRequest(String method, String uri)
             throws MethodNotSupportedException;
-    
+
 }

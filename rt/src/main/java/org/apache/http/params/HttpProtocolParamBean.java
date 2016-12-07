@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/HttpProtocolParamBean.java $
- * $Revision: 593937 $
- * $Date: 2007-11-11 10:44:12 -0800 (Sun, 11 Nov 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,8 +29,19 @@ package org.apache.http.params;
 
 import org.apache.http.HttpVersion;
 
+/**
+ * This is a Java Bean class that can be used to wrap an instance of
+ * {@link HttpParams} and manipulate HTTP protocol parameters using Java Beans
+ * conventions.
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
+ */
+@Deprecated
 public class HttpProtocolParamBean extends HttpAbstractParamBean {
-    
+
     public HttpProtocolParamBean (final HttpParams params) {
         super(params);
     }
@@ -55,8 +62,8 @@ public class HttpProtocolParamBean extends HttpAbstractParamBean {
         HttpProtocolParams.setUserAgent(params, userAgent);
     }
 
-    public void setUseExpectContinue (boolean useExpectContinue) {
+    public void setUseExpectContinue (final boolean useExpectContinue) {
         HttpProtocolParams.setUseExpectContinue(params, useExpectContinue);
     }
-    
+
 }

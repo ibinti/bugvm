@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ConnectTimeoutException.java $
- * $Revision: 617645 $
- * $Date: 2008-02-01 13:05:31 -0800 (Fri, 01 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,34 +27,68 @@
 
 package org.apache.http.conn;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.net.InetAddress;
+import java.util.Arrays;
+
+import org.apache.http.HttpHost;
+import org.apache.http.annotation.Immutable;
 
 /**
  * A timeout while connecting to an HTTP server or waiting for an
  * available connection from an HttpConnectionManager.
- * 
- * @author <a href="mailto:laura@lwerner.org">Laura Werner</a>
- * 
+ *
+ *
  * @since 4.0
  */
+@Immutable
 public class ConnectTimeoutException extends InterruptedIOException {
 
     private static final long serialVersionUID = -4816682903149535989L;
 
+    private final HttpHost host;
+
     /**
-     * Creates a ConnectTimeoutException with a <tt>null</tt> detail message.
+     * Creates a ConnectTimeoutException with a {@code null} detail message.
      */
     public ConnectTimeoutException() {
         super();
+        this.host = null;
     }
 
     /**
      * Creates a ConnectTimeoutException with the specified detail message.
-     * 
-     * @param message The exception detail message 
      */
     public ConnectTimeoutException(final String message) {
         super(message);
+        this.host = null;
+    }
+
+    /**
+     * Creates a ConnectTimeoutException based on original {@link IOException}.
+     *
+     * @since 4.3
+     */
+    public ConnectTimeoutException(
+            final IOException cause,
+            final HttpHost host,
+            final InetAddress... remoteAddresses) {
+        super("Connect to " +
+                (host != null ? host.toHostString() : "remote host") +
+                (remoteAddresses != null && remoteAddresses.length > 0 ?
+                        " " + Arrays.asList(remoteAddresses) : "") +
+                ((cause != null && cause.getMessage() != null) ?
+                        " failed: " + cause.getMessage() : " timed out"));
+        this.host = host;
+        initCause(cause);
+    }
+
+    /**
+     * @since 4.3
+     */
+    public HttpHost getHost() {
+        return host;
     }
 
 }

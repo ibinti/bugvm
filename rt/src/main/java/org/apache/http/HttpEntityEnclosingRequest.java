@@ -1,8 +1,4 @@
 /*
- * $Header: $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -28,16 +24,11 @@
  * <http://www.apache.org/>.
  *
  */
-
 package org.apache.http;
 
 /**
  * A request with an entity.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 618017 $
- * 
  * @since 4.0
  */
 public interface HttpEntityEnclosingRequest extends HttpRequest {
@@ -51,13 +42,19 @@ public interface HttpEntityEnclosingRequest extends HttpRequest {
      * not.
      */
     boolean expectContinue();
-    
+
     /**
-     * Hands the entity to the request.
+     * Associates the entity with this request.
+     *
      * @param entity the entity to send.
      */
     void setEntity(HttpEntity entity);
-    
+
+    /**
+     * Returns the entity associated with this request.
+     *
+     * @return entity
+     */
     HttpEntity getEntity();
-    
+
 }

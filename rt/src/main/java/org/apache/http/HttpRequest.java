@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpRequest.java $
- * $Revision: 528428 $
- * $Date: 2007-04-13 03:26:04 -0700 (Fri, 13 Apr 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,12 +28,18 @@
 package org.apache.http;
 
 /**
- * An HTTP request.
+ * A request message from a client to a server includes, within the
+ * first line of that message, the method to be applied to the resource,
+ * the identifier of the resource, and the protocol version in use.
+ * <pre>
+ *      Request       = Request-Line
+ *                      *(( general-header
+ *                       | request-header
+ *                       | entity-header ) CRLF)
+ *                      CRLF
+ *                      [ message-body ]
+ * </pre>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 528428 $
- * 
  * @since 4.0
  */
 public interface HttpRequest extends HttpMessage {
@@ -47,5 +49,5 @@ public interface HttpRequest extends HttpMessage {
      * @return the request line.
      */
     RequestLine getRequestLine();
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/HttpAbstractParamBean.java $
- * $Revision: 593937 $
- * $Date: 2007-11-11 10:44:12 -0800 (Sun, 11 Nov 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,14 +27,22 @@
 
 package org.apache.http.params;
 
+import org.apache.http.util.Args;
+
+/**
+ * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
+ */
+@Deprecated
 public abstract class HttpAbstractParamBean {
-    
+
     protected final HttpParams params;
 
     public HttpAbstractParamBean (final HttpParams params) {
-        if (params == null)
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        this.params = params;
+        super();
+        this.params = Args.notNull(params, "HTTP parameters");
     }
-    
+
 }

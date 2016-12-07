@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/SocketOutputBuffer.java $
- * $Revision: 560358 $
- * $Date: 2007-07-27 12:30:42 -0700 (Fri, 27 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,34 +31,43 @@ import java.io.IOException;
 import java.net.Socket;
 
 import org.apache.http.params.HttpParams;
-
+import org.apache.http.util.Args;
 
 /**
- * {@link Socket} bound session output buffer.
- *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 560358 $
+ * {@link org.apache.http.io.SessionOutputBuffer} implementation
+ * bound to a {@link Socket}.
  *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link SessionOutputBufferImpl}
  */
+@Deprecated
 public class SocketOutputBuffer extends AbstractSessionOutputBuffer {
 
+    /**
+     * Creates an instance of this class.
+     *
+     * @param socket the socket to write data to.
+     * @param buffersize the size of the internal buffer. If this number is less
+     *   than {@code 0} it is set to the value of
+     *   {@link Socket#getSendBufferSize()}. If resultant number is less
+     *   than {@code 1024} it is set to {@code 1024}.
+     * @param params HTTP parameters.
+     */
     public SocketOutputBuffer(
             final Socket socket,
-            int buffersize,
+            final int buffersize,
             final HttpParams params) throws IOException {
         super();
-        if (socket == null) {
-            throw new IllegalArgumentException("Socket may not be null");
+        Args.notNull(socket, "Socket");
+        int n = buffersize;
+        if (n < 0) {
+            n = socket.getSendBufferSize();
         }
-        // BEGIN android-changed
-        // Workaround for http://b/1083103 and http://b/3514259. We take
-        // 'buffersize' as a hint in the weakest sense, and always use
-        // an 8KiB heap buffer and leave the kernel buffer size alone,
-        // trusting the system to have set a network-appropriate default.
-        init(socket.getOutputStream(), 8192, params);
-        // END android-changed
+        if (n < 1024) {
+            n = 1024;
+        }
+        init(socket.getOutputStream(), n, params);
     }
 
 }

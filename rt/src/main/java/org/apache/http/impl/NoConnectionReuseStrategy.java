@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/NoConnectionReuseStrategy.java $
- * $Revision: 502684 $
- * $Date: 2007-02-02 10:25:38 -0800 (Fri, 02 Feb 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,33 +29,26 @@ package org.apache.http.impl;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpResponse;
+import org.apache.http.annotation.Immutable;
 import org.apache.http.protocol.HttpContext;
-
 
 /**
  * A strategy that never re-uses a connection.
  *
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- * @version $Revision: 502684 $
- * 
  * @since 4.0
  */
+@Immutable
 public class NoConnectionReuseStrategy implements ConnectionReuseStrategy {
 
-    // default constructor
+    public static final NoConnectionReuseStrategy INSTANCE = new NoConnectionReuseStrategy();
 
+    public NoConnectionReuseStrategy() {
+        super();
+    }
 
-    // non-JavaDoc, see interface ConnectionReuseStrategy
+    @Override
     public boolean keepAlive(final HttpResponse response, final HttpContext context) {
-        if (response == null) {
-            throw new IllegalArgumentException("HTTP response may not be null");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("HTTP context may not be null");
-        }
-
         return false;
     }
-            
+
 }

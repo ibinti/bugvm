@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/params/CookieSpecPNames.java $
- * $Revision: 578403 $
- * $Date: 2007-09-22 03:56:04 -0700 (Sat, 22 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,37 +28,38 @@
 package org.apache.http.cookie.params;
 
 /**
- * Parameter names for cookie specifications in HttpCookie.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @version $Revision: 578403 $
- * 
+ * Parameter names for HTTP cookie management classes.
+ *
  * @since 4.0
+ *
+ * @deprecated (4.3) use constructor parameters of {@link
+ *   org.apache.http.cookie.CookieSpecProvider}s.
  */
+@Deprecated
 public interface CookieSpecPNames {
 
     /**
-     * Parameter for the date patterns used for parsing.
+     * Defines valid date patterns to be used for parsing non-standard
+     * {@code expires} attribute. Only required for compatibility
+     * with non-compliant servers that still use {@code expires}
+     * defined in the Netscape draft instead of the standard
+     * {@code max-age} attribute.
      * <p>
      * This parameter expects a value of type {@link java.util.Collection}.
-     * The collection elements are of type {@link String}
-     * and must be compatible with the syntax of
-     * {@link java.text.SimpleDateFormat}.
+     * The collection elements must be of type {@link String} compatible
+     * with the syntax of {@link java.text.SimpleDateFormat}.
      * </p>
      */
     public static final String DATE_PATTERNS = "http.protocol.cookie-datepatterns";
-    
+
     /**
-     * Parameter for Cookie header formatting.
-     * Defines whether {@link org.apache.http.cookie.Cookie cookies}
-     * should be put on 
-     * a single {@link org.apache.http.Header request header}.
-     * If not, each cookie is formatted in a seperate Cookie header.
+     * Defines whether cookies should be forced into a single
+     * {@code Cookie} request header. Otherwise, each cookie is formatted
+     * as a separate {@code Cookie} header.
      * <p>
      * This parameter expects a value of type {@link Boolean}.
      * </p>
      */
-    public static final String SINGLE_COOKIE_HEADER = "http.protocol.single-cookie-header"; 
+    public static final String SINGLE_COOKIE_HEADER = "http.protocol.single-cookie-header";
 
 }

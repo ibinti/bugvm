@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/MalformedChunkCodingException.java $
- * $Revision: 609106 $
- * $Date: 2008-01-05 01:15:42 -0800 (Sat, 05 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,6 +31,8 @@ import java.io.IOException;
 
 /**
  * Signals a malformed chunked stream.
+ *
+ * @since 4.0
  */
 public class MalformedChunkCodingException extends IOException {
 
@@ -49,8 +47,8 @@ public class MalformedChunkCodingException extends IOException {
 
     /**
      * Creates a MalformedChunkCodingException with the specified detail message.
-     * 
-     * @param message The exception detail message 
+     *
+     * @param message The exception detail message
      */
     public MalformedChunkCodingException(final String message) {
         super(message);

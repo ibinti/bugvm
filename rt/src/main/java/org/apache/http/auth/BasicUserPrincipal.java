@@ -1,24 +1,21 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/auth/BasicUserPrincipal.java $
- * $Revision: 658430 $
- * $Date: 2008-05-20 14:04:27 -0700 (Tue, 20 May 2008) $
- *
  * ====================================================================
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
@@ -27,32 +24,34 @@
  * <http://www.apache.org/>.
  *
  */
-
 package org.apache.http.auth;
 
+import java.io.Serializable;
 import java.security.Principal;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 import org.apache.http.util.LangUtils;
 
 /**
  * Basic user principal used for HTTP authentication
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
  * @since 4.0
  */
-public final class BasicUserPrincipal implements Principal {
+@Immutable
+public final class BasicUserPrincipal implements Principal, Serializable {
+
+    private static final long serialVersionUID = -2266305184969850467L;
 
     private final String username;
-    
+
     public BasicUserPrincipal(final String username) {
         super();
-        if (username == null) {
-            throw new IllegalArgumentException("User name may not be null");
-        }
+        Args.notNull(username, "User name");
         this.username = username;
     }
-    
+
+    @Override
     public String getName() {
         return this.username;
     }
@@ -65,11 +64,12 @@ public final class BasicUserPrincipal implements Principal {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null) return false;
-        if (this == o) return true;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o instanceof BasicUserPrincipal) {
-            BasicUserPrincipal that = (BasicUserPrincipal) o;
+            final BasicUserPrincipal that = (BasicUserPrincipal) o;
             if (LangUtils.equals(this.username, that.username)) {
                 return true;
             }
@@ -79,7 +79,7 @@ public final class BasicUserPrincipal implements Principal {
 
     @Override
     public String toString() {
-        StringBuilder buffer = new StringBuilder();
+        final StringBuilder buffer = new StringBuilder();
         buffer.append("[principal: ");
         buffer.append(this.username);
         buffer.append("]");

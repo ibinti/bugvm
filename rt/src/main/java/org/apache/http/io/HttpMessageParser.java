@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/io/HttpMessageParser.java $
- * $Revision: 567370 $
- * $Date: 2007-08-19 01:13:21 -0700 (Sun, 19 Aug 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,17 +33,24 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpMessage;
 
 /**
- * Generic message parser interface.
+ * Abstract message parser intended to build HTTP messages from an arbitrary data source.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * @param <T>
+ *            {@link HttpMessage} or a subclass
  *
- * @version $Revision: 567370 $
- * 
  * @since 4.0
  */
-public interface HttpMessageParser {
-    
-    HttpMessage parse()
+public interface HttpMessageParser<T extends HttpMessage> {
+
+    /**
+     * Generates an instance of {@link HttpMessage} from the underlying data
+     * source.
+     *
+     * @return HTTP message
+     * @throws IOException in case of an I/O error
+     * @throws HttpException in case of HTTP protocol violation
+     */
+    T parse()
         throws IOException, HttpException;
 
 }

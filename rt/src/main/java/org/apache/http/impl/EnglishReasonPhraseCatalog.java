@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/EnglishReasonPhraseCatalog.java $
- * $Revision: 505744 $
- * $Date: 2007-02-10 10:58:45 -0800 (Sat, 10 Feb 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,21 +31,18 @@ import java.util.Locale;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.ReasonPhraseCatalog;
-
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
  * English reason phrases for HTTP status codes.
  * All status codes defined in RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), and
  * RFC2518 (WebDAV) are supported.
- * 
- * @author Unascribed
- * @author <a href="mailto:mbowler@GargoyleSoftware.com">Mike Bowler</a>
- * @author <a href="mailto:jsdever@apache.org">Jeff Dever</a>
- * 
- * @version $Revision: 505744 $
+ *
+ * @since 4.0
  */
-public class EnglishReasonPhraseCatalog
-    implements ReasonPhraseCatalog {
+@Immutable
+public class EnglishReasonPhraseCatalog implements ReasonPhraseCatalog {
 
     // static array with english reason phrases defined below
 
@@ -77,20 +70,18 @@ public class EnglishReasonPhraseCatalog
      * @param status    the status code, in the range 100-599
      * @param loc       ignored
      *
-     * @return  the reason phrase, or <code>null</code>
+     * @return  the reason phrase, or {@code null}
      */
-    public String getReason(int status, Locale loc) {
-        if ((status < 100) || (status >= 600)) {
-            throw new IllegalArgumentException
-                ("Unknown category for status code " + status + ".");
-        }
-
+    @Override
+    public String getReason(final int status, final Locale loc) {
+        Args.check(status >= 100 && status < 600, "Unknown category for status code " + status);
         final int category = status / 100;
         final int subcode  = status - 100*category;
 
         String reason = null;
-        if (REASON_PHRASES[category].length > subcode)
+        if (REASON_PHRASES[category].length > subcode) {
             reason = REASON_PHRASES[category][subcode];
+        }
 
         return reason;
     }
@@ -115,7 +106,7 @@ public class EnglishReasonPhraseCatalog
      * @param status    the status code for which to define the phrase
      * @param reason    the reason phrase for this status code
      */
-    private static void setReason(int status, String reason) {
+    private static void setReason(final int status, final String reason) {
         final int category = status / 100;
         final int subcode  = status - 100*category;
         REASON_PHRASES[category][subcode] = reason;
@@ -185,9 +176,9 @@ public class EnglishReasonPhraseCatalog
                   "Payment Required");
         setReason(HttpStatus.SC_NOT_ACCEPTABLE,
                   "Not Acceptable");
-        setReason(HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED, 
+        setReason(HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED,
                   "Proxy Authentication Required");
-        setReason(HttpStatus.SC_REQUEST_TIMEOUT, 
+        setReason(HttpStatus.SC_REQUEST_TIMEOUT,
                   "Request Timeout");
 
         setReason(HttpStatus.SC_SWITCHING_PROTOCOLS,

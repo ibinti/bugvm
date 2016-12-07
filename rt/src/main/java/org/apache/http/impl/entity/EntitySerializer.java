@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/entity/EntitySerializer.java $
- * $Revision: 560343 $
- * $Date: 2007-07-27 11:18:19 -0700 (Fri, 27 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,40 +33,61 @@ import java.io.OutputStream;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpMessage;
+import org.apache.http.annotation.ThreadingBehavior;
+import org.apache.http.annotation.Contract;
 import org.apache.http.entity.ContentLengthStrategy;
 import org.apache.http.impl.io.ChunkedOutputStream;
 import org.apache.http.impl.io.ContentLengthOutputStream;
 import org.apache.http.impl.io.IdentityOutputStream;
 import org.apache.http.io.SessionOutputBuffer;
+import org.apache.http.util.Args;
 
 /**
- * Default implementation of an entity serializer.
+ * HTTP entity serializer.
  * <p>
- * This entity serializer currently supports only "chunked" and "identitiy" transfer-coding</a>
- * </p>
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * This entity serializer currently supports "chunked" and "identitiy"
+ * transfer-coding and content length delimited content.
+ * <p>
+ * This class relies on a specific implementation of
+ * {@link ContentLengthStrategy} to determine the content length or transfer
+ * encoding of the entity.
+ * <p>
+ * This class writes out the content of {@link HttpEntity} to the data stream
+ * using a transfer coding based on properties on the HTTP message.
  *
- * @version $Revision: 560343 $
- * 
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link org.apache.http.impl.BHttpConnectionBase}
  */
+@Contract(threading = ThreadingBehavior.IMMUTABLE_CONDITIONAL)
+@Deprecated
 public class EntitySerializer {
 
     private final ContentLengthStrategy lenStrategy;
-    
+
     public EntitySerializer(final ContentLengthStrategy lenStrategy) {
         super();
-        if (lenStrategy == null) {
-            throw new IllegalArgumentException("Content length strategy may not be null");
-        }
-        this.lenStrategy = lenStrategy;
+        this.lenStrategy = Args.notNull(lenStrategy, "Content length strategy");
     }
 
+    /**
+     * Creates a transfer codec based on properties of the given HTTP message
+     * and returns {@link OutputStream} instance that transparently encodes
+     * output data as it is being written out to the output stream.
+     * <p>
+     * This method is called by the public
+     * {@link #serialize(SessionOutputBuffer, HttpMessage, HttpEntity)}.
+     *
+     * @param outbuffer the session output buffer.
+     * @param message the HTTP message.
+     * @return output stream.
+     * @throws HttpException in case of HTTP protocol violation.
+     * @throws IOException in case of an I/O error.
+     */
     protected OutputStream doSerialize(
             final SessionOutputBuffer outbuffer,
             final HttpMessage message) throws HttpException, IOException {
-        long len = this.lenStrategy.determineLength(message);
+        final long len = this.lenStrategy.determineLength(message);
         if (len == ContentLengthStrategy.CHUNKED) {
             return new ChunkedOutputStream(outbuffer);
         } else if (len == ContentLengthStrategy.IDENTITY) {
@@ -80,22 +97,26 @@ public class EntitySerializer {
         }
     }
 
+    /**
+     * Writes out the content of the given HTTP entity to the session output
+     * buffer based on properties of the given HTTP message.
+     *
+     * @param outbuffer the output session buffer.
+     * @param message the HTTP message.
+     * @param entity the HTTP entity to be written out.
+     * @throws HttpException in case of HTTP protocol violation.
+     * @throws IOException in case of an I/O error.
+     */
     public void serialize(
             final SessionOutputBuffer outbuffer,
             final HttpMessage message,
             final HttpEntity entity) throws HttpException, IOException {
-        if (outbuffer == null) {
-            throw new IllegalArgumentException("Session output buffer may not be null");
-        }
-        if (message == null) {
-            throw new IllegalArgumentException("HTTP message may not be null");
-        }
-        if (entity == null) {
-            throw new IllegalArgumentException("HTTP entity may not be null");
-        }
-        OutputStream outstream = doSerialize(outbuffer, message);
+        Args.notNull(outbuffer, "Session output buffer");
+        Args.notNull(message, "HTTP message");
+        Args.notNull(entity, "HTTP entity");
+        final OutputStream outstream = doSerialize(outbuffer, message);
         entity.writeTo(outstream);
         outstream.close();
     }
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/SM.java $
- * $Revision: 582602 $
- * $Date: 2007-10-07 02:35:48 -0700 (Sun, 07 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,16 +29,15 @@ package org.apache.http.cookie;
 
 /**
  * Constants and static helpers related to the HTTP state management.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ *
  *
  * @since 4.0
  */
 public interface SM {
 
     public static final String COOKIE            = "Cookie";
-    public static final String COOKIE2          = "Cookie2";
+    public static final String COOKIE2           = "Cookie2";
     public static final String SET_COOKIE        = "Set-Cookie";
     public static final String SET_COOKIE2       = "Set-Cookie2";
-       
+
 }

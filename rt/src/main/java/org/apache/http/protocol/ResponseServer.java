@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/ResponseServer.java $
- * $Revision: 576073 $
- * $Date: 2007-09-16 03:53:13 -0700 (Sun, 16 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,36 +32,41 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.util.Args;
 
 /**
- * A response interceptor that adds a Server header.
- * For use on the server side.
+ * ResponseServer is responsible for adding {@code Server} header. This
+ * interceptor is recommended for server side protocol processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 576073 $
- * 
  * @since 4.0
  */
+@Immutable
 public class ResponseServer implements HttpResponseInterceptor {
 
-    public ResponseServer() {
+    private final String originServer;
+
+    /**
+     * @since 4.3
+     */
+    public ResponseServer(final String originServer) {
         super();
+        this.originServer = originServer;
     }
 
-    public void process(final HttpResponse response, final HttpContext context) 
+    public ResponseServer() {
+        this(null);
+    }
+
+    @Override
+    public void process(final HttpResponse response, final HttpContext context)
             throws HttpException, IOException {
-        if (response == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
+        Args.notNull(response, "HTTP response");
         if (!response.containsHeader(HTTP.SERVER_HEADER)) {
-            String s = (String) response.getParams().getParameter(
-                    CoreProtocolPNames.ORIGIN_SERVER);
-            if (s != null) {
-                response.addHeader(HTTP.SERVER_HEADER, s);
+            if (this.originServer != null) {
+                response.addHeader(HTTP.SERVER_HEADER, this.originServer);
             }
         }
     }
-    
+
 }

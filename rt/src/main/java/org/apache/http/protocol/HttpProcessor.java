@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpProcessor.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,18 +31,21 @@ import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
 
 /**
- * Performs interceptor processing of requests and responses.
- * Specific interceptors typically interpret or update message headers,
- * and they may wrap the message entity for example to implement a
- * specific transport or content encoding.
- * A <code>HttpProcessor</code> typically maintains a list of
- * interceptors that will be applied to a request or response.
+ * HTTP protocol processor is a collection of protocol interceptors that
+ * implements the 'Chain of Responsibility' pattern, where each individual
+ * protocol interceptor is expected to work on a particular aspect of the HTTP
+ * protocol the interceptor is responsible for.
+ * <p>
+ * Usually the order in which interceptors are executed should not matter as
+ * long as they do not depend on a particular state of the execution context.
+ * If protocol interceptors have interdependencies and therefore must be
+ * executed in a particular order, they should be added to the protocol
+ * processor in the same sequence as their expected execution order.
+ * <p>
+ * Protocol interceptors must be implemented as thread-safe. Similarly to
+ * servlets, protocol interceptors should not use instance variables unless
+ * access to those variables is synchronized.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
 public interface HttpProcessor

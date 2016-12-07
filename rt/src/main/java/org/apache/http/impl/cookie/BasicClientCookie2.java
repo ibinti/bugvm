@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/BasicClientCookie2.java $
- * $Revision: 659191 $
- * $Date: 2008-05-22 11:26:53 -0700 (Thu, 22 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,24 +29,26 @@ package org.apache.http.impl.cookie;
 
 import java.util.Date;
 
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.cookie.SetCookie2;
 
 /**
- * HTTP "magic-cookie" represents a piece of state information
- * that the HTTP agent and the target server can exchange to maintain 
- * a session as specified by RFC2965.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * Default implementation of {@link SetCookie2}.
+ *
+ * @since 4.0
  */
+@NotThreadSafe
 public class BasicClientCookie2 extends BasicClientCookie implements SetCookie2 {
+
+    private static final long serialVersionUID = -7744598295706617057L;
 
     private String commentURL;
     private int[] ports;
     private boolean discard;
-    
+
     /**
      * Default Constructor taking a name and a value. The value may be null.
-     * 
+     *
      * @param name The name.
      * @param value The value.
      */
@@ -63,20 +61,23 @@ public class BasicClientCookie2 extends BasicClientCookie implements SetCookie2 
         return this.ports;
     }
 
+    @Override
     public void setPorts(final int[] ports) {
         this.ports = ports;
     }
-    
+
     @Override
     public String getCommentURL() {
         return this.commentURL;
     }
 
+    @Override
     public void setCommentURL(final String commentURL) {
         this.commentURL = commentURL;
     }
 
-    public void setDiscard(boolean discard) {
+    @Override
+    public void setDiscard(final boolean discard) {
         this.discard = discard;
     }
 
@@ -89,13 +90,15 @@ public class BasicClientCookie2 extends BasicClientCookie implements SetCookie2 
     public boolean isExpired(final Date date) {
         return this.discard || super.isExpired(date);
     }
- 
+
     @Override
     public Object clone() throws CloneNotSupportedException {
-        BasicClientCookie2 clone = (BasicClientCookie2) super.clone();
-        clone.ports = this.ports.clone();
+        final BasicClientCookie2 clone = (BasicClientCookie2) super.clone();
+        if (this.ports != null) {
+            clone.ports = this.ports.clone();
+        }
         return clone;
     }
-    
+
 }
 

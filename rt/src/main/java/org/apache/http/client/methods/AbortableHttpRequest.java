@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/AbortableHttpRequest.java $
- * $Revision: 639600 $
- * $Date: 2008-03-21 04:28:15 -0700 (Fri, 21 Mar 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,42 +27,37 @@
 
 package org.apache.http.client.methods;
 
-import java.io.IOException;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.ClientConnectionRequest;
 import org.apache.http.conn.ConnectionReleaseTrigger;
-import org.apache.http.conn.ManagedClientConnection;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+
+import java.io.IOException;
+
 
 /**
- * Interface representing an HTTP request that can be aborted by shutting 
+ * Interface representing an HTTP request that can be aborted by shutting
  * down the underlying HTTP connection.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * <!-- empty lines to avoid svn diff problems -->
- * @version   $Revision: 639600 $
- *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link HttpExecutionAware}
  */
+@Deprecated
 public interface AbortableHttpRequest {
 
     /**
-     * Sets the {@link ClientConnectionRequest} callback that can be
-     * used to abort a long-lived request for a connection.
+     * Sets the {@link org.apache.http.conn.ClientConnectionRequest}
+     * callback that can be used to abort a long-lived request for a connection.
      * If the request is already aborted, throws an {@link IOException}.
-     * 
-     * @see ClientConnectionManager
-     * @see ThreadSafeClientConnManager
+     *
+     * @see org.apache.http.conn.ClientConnectionManager
      */
     void setConnectionRequest(ClientConnectionRequest connRequest) throws IOException;
-    
+
     /**
      * Sets the {@link ConnectionReleaseTrigger} callback that can
      * be used to abort an active connection.
-     * Typically, this will be the {@link ManagedClientConnection} itself.
+     * Typically, this will be the
+     *   {@link org.apache.http.conn.ManagedClientConnection} itself.
      * If the request is already aborted, throws an {@link IOException}.
      */
     void setReleaseTrigger(ConnectionReleaseTrigger releaseTrigger) throws IOException;
@@ -76,13 +67,13 @@ public interface AbortableHttpRequest {
      * return immediately. If the request has not started, it will abort after
      * the next execution. Aborting this request will cause all subsequent
      * executions with this request to fail.
-     * 
-     * @see HttpClient#execute(HttpUriRequest)
-     * @see HttpClient#execute(org.apache.http.HttpHost,
+     *
+     * @see org.apache.http.client.HttpClient#execute(HttpUriRequest)
+     * @see org.apache.http.client.HttpClient#execute(org.apache.http.HttpHost,
      *      org.apache.http.HttpRequest)
-     * @see HttpClient#execute(HttpUriRequest,
+     * @see org.apache.http.client.HttpClient#execute(HttpUriRequest,
      *      org.apache.http.protocol.HttpContext)
-     * @see HttpClient#execute(org.apache.http.HttpHost,
+     * @see org.apache.http.client.HttpClient#execute(org.apache.http.HttpHost,
      *      org.apache.http.HttpRequest, org.apache.http.protocol.HttpContext)
      */
     void abort();

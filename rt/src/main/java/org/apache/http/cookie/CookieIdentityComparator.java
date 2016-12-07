@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/cookie/CookieIdentityComparator.java $
- * $Revision: 618308 $
- * $Date: 2008-02-04 07:51:19 -0800 (Mon, 04 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,33 +30,50 @@ package org.apache.http.cookie;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.apache.http.annotation.Immutable;
+
 /**
  * This cookie comparator can be used to compare identity of cookies.
- *  
  * <p>
- *  Cookies are considered identical if their names are equal and 
+ *  Cookies are considered identical if their names are equal and
  *  their domain attributes match ignoring case.
- * </p>
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ *
+ * @since 4.0
  */
+@Immutable
 public class CookieIdentityComparator implements Serializable, Comparator<Cookie> {
 
     private static final long serialVersionUID = 4466565437490631532L;
 
+    @Override
     public int compare(final Cookie c1, final Cookie c2) {
         int res = c1.getName().compareTo(c2.getName());
         if (res == 0) {
-            // do not differentiate empty and null domains 
+            // do not differentiate empty and null domains
             String d1 = c1.getDomain();
             if (d1 == null) {
                 d1 = "";
+            } else if (d1.indexOf('.') == -1) {
+                d1 = d1 + ".local";
             }
             String d2 = c2.getDomain();
             if (d2 == null) {
                 d2 = "";
+            } else if (d2.indexOf('.') == -1) {
+                d2 = d2 + ".local";
             }
             res = d1.compareToIgnoreCase(d2);
+        }
+        if (res == 0) {
+            String p1 = c1.getPath();
+            if (p1 == null) {
+                p1 = "/";
+            }
+            String p2 = c2.getPath();
+            if (p2 == null) {
+                p2 = "/";
+            }
+            res = p1.compareTo(p2);
         }
         return res;
     }

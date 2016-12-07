@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/BasicHttpParams.java $
- * $Revision: 610464 $
- * $Date: 2008-01-09 09:10:55 -0800 (Wed, 09 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,56 +28,57 @@
 package org.apache.http.params;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.http.params.HttpParams;
+import org.apache.http.annotation.ThreadSafe;
 
 /**
- * This class represents a collection of HTTP protocol parameters.
- * Protocol parameters may be linked together to form a hierarchy.
- * If a particular parameter value has not been explicitly defined
- * in the collection itself, its value will be drawn from the parent 
- * collection of parameters.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @version $Revision: 610464 $
+ * Default implementation of {@link HttpParams} interface.
+ * <p>
+ * Please note access to the internal structures of this class is not
+ * synchronized and therefore this class may be thread-unsafe.
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
  */
-public final class BasicHttpParams extends AbstractHttpParams
-    implements Serializable, Cloneable {
+@Deprecated
+@ThreadSafe
+public class BasicHttpParams extends AbstractHttpParams implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -7086398485908701455L;
 
     /** Map of HTTP parameters that this collection contains. */
-    private HashMap parameters;
+    private final Map<String, Object> parameters = new ConcurrentHashMap<String, Object>();
 
     public BasicHttpParams() {
         super();
     }
 
+    @Override
     public Object getParameter(final String name) {
-        // See if the parameter has been explicitly defined
-        Object param = null;
-        if (this.parameters != null) {
-            param = this.parameters.get(name);
-        }    
-        return param;
+        return this.parameters.get(name);
     }
 
+    @Override
     public HttpParams setParameter(final String name, final Object value) {
-        if (this.parameters == null) {
-            this.parameters = new HashMap();
+        if (name == null) {
+            return this;
         }
-        this.parameters.put(name, value);
+        if (value != null) {
+            this.parameters.put(name, value);
+        } else {
+            this.parameters.remove(name);
+        }
         return this;
     }
-    
-    public boolean removeParameter(String name) {
-        if (this.parameters == null) {
-            return false;
-        }
+
+    @Override
+    public boolean removeParameter(final String name) {
         //this is to avoid the case in which the key has a null value
         if (this.parameters.containsKey(name)) {
             this.parameters.remove(name);
@@ -91,70 +88,107 @@ public final class BasicHttpParams extends AbstractHttpParams
         }
     }
 
-    
     /**
      * Assigns the value to all the parameter with the given names
-     * 
-     * @param names array of parameter name
+     *
+     * @param names array of parameter names
      * @param value parameter value
-     */ 
+     */
     public void setParameters(final String[] names, final Object value) {
-        for (int i = 0; i < names.length; i++) {
-            setParameter(names[i], value);
+        for (final String name : names) {
+            setParameter(name, value);
         }
     }
 
+    /**
+     * Is the parameter set?
+     * <p>
+     * Uses {@link #getParameter(String)} (which is overrideable) to
+     * fetch the parameter value, if any.
+     * <p>
+     * Also @see {@link #isParameterSetLocally(String)}
+     *
+     * @param name parameter name
+     * @return true if parameter is defined and non-null
+     */
     public boolean isParameterSet(final String name) {
         return getParameter(name) != null;
     }
-        
+
+    /**
+     * Is the parameter set in this object?
+     * <p>
+     * The parameter value is fetched directly.
+     * <p>
+     * Also @see {@link #isParameterSet(String)}
+     *
+     * @param name parameter name
+     * @return true if parameter is defined and non-null
+     */
     public boolean isParameterSetLocally(final String name) {
-        return this.parameters != null && this.parameters.get(name) != null;
+        return this.parameters.get(name) != null;
     }
-        
+
     /**
      * Removes all parameters from this collection.
      */
     public void clear() {
-        this.parameters = null;
+        this.parameters.clear();
     }
 
     /**
      * Creates a copy of these parameters.
-     * The implementation here instantiates {@link BasicHttpParams}, 
-     * then calls {@link #copyParams(HttpParams)} to populate the copy.
+     * This implementation calls {@link #clone()}.
      *
      * @return  a new set of params holding a copy of the
      *          <i>local</i> parameters in this object.
-     */
-    public HttpParams copy() {
-        BasicHttpParams clone = new BasicHttpParams();
-        copyParams(clone);
-        return clone;
-    }
-
-    public Object clone() throws CloneNotSupportedException {
-        BasicHttpParams clone = (BasicHttpParams) super.clone();
-        copyParams(clone);
-        return clone;
-    }
- 
-    /**
-     * Copies the locally defined parameters to the argument parameters.
-     * This method is called from {@link #copy()}.
      *
-     * @param target    the parameters to which to copy
+     * @throws UnsupportedOperationException if the clone() fails
      */
-    protected void copyParams(HttpParams target) {
-        if (this.parameters == null)
-            return;
-
-        Iterator iter = parameters.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry me = (Map.Entry) iter.next();
-            if (me.getKey() instanceof String)
-                target.setParameter((String)me.getKey(), me.getValue());
+    @Override
+    public HttpParams copy() {
+        try {
+            return (HttpParams) clone();
+        } catch (final CloneNotSupportedException ex) {
+            throw new UnsupportedOperationException("Cloning not supported");
         }
     }
-    
+
+    /**
+     * Clones the instance.
+     * Uses {@link #copyParams(HttpParams)} to copy the parameters.
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        final BasicHttpParams clone = (BasicHttpParams) super.clone();
+        copyParams(clone);
+        return clone;
+    }
+
+    /**
+     * Copies the locally defined parameters to the argument parameters.
+     * This method is called from {@link #clone()}.
+     *
+     * @param target    the parameters to which to copy
+     * @since 4.2
+     */
+    public void copyParams(final HttpParams target) {
+        for (final Map.Entry<String, Object> me : this.parameters.entrySet()) {
+            target.setParameter(me.getKey(), me.getValue());
+        }
+    }
+
+    /**
+     * Returns the current set of names.
+     *
+     * Changes to the underlying HttpParams are not reflected
+     * in the set - it is a snapshot.
+     *
+     * @return the names, as a Set&lt;String&gt;
+     * @since 4.2
+     */
+    @Override
+    public Set<String> getNames() {
+        return new HashSet<String>(this.parameters.keySet());
+    }
 }

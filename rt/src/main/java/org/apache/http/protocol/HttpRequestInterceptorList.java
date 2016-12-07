@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpRequestInterceptorList.java $
- * $Revision: 554903 $
- * $Date: 2007-07-10 03:54:17 -0700 (Tue, 10 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -40,40 +36,34 @@ import org.apache.http.HttpRequestInterceptor;
  * Lists are expected to be built upfront and used read-only afterwards
  * for {@link HttpProcessor processing}.
  *
- * @author <a href="mailto:rolandw at apache.org">Roland Weber</a>
- *
- * @version $Revision: 554903 $
- * 
  * @since 4.0
+ *
+ * @deprecated (4.3)
  */
+@Deprecated
 public interface HttpRequestInterceptorList {
 
     /**
      * Appends a request interceptor to this list.
      *
-     * @param itcp      the request interceptor to add
+     * @param interceptor the request interceptor to add
      */
-    void addRequestInterceptor(HttpRequestInterceptor itcp)
-        ;
-
+    void addRequestInterceptor(HttpRequestInterceptor interceptor);
 
     /**
      * Inserts a request interceptor at the specified index.
      *
-     * @param itcp      the request interceptor to add
+     * @param interceptor the request interceptor to add
      * @param index     the index to insert the interceptor at
      */
-    void addRequestInterceptor(HttpRequestInterceptor itcp, int index);
-    
-    
+    void addRequestInterceptor(HttpRequestInterceptor interceptor, int index);
+
     /**
      * Obtains the current size of this list.
      *
      * @return  the number of request interceptors in this list
      */
-    int getRequestInterceptorCount()
-        ;
-
+    int getRequestInterceptorCount();
 
     /**
      * Obtains a request interceptor from this list.
@@ -82,27 +72,22 @@ public interface HttpRequestInterceptorList {
      *                  0 for first
      *
      * @return  the interceptor at the given index, or
-     *          <code>null</code> if the index is out of range
+     *          {@code null} if the index is out of range
      */
-    HttpRequestInterceptor getRequestInterceptor(int index)
-        ;
-
+    HttpRequestInterceptor getRequestInterceptor(int index);
 
     /**
      * Removes all request interceptors from this list.
      */
-    void clearRequestInterceptors()
-        ;
-
+    void clearRequestInterceptors();
 
     /**
      * Removes all request interceptor of the specified class
      *
      * @param clazz  the class of the instances to be removed.
      */
-    void removeRequestInterceptorByClass(Class clazz);
-    
-    
+    void removeRequestInterceptorByClass(Class<? extends HttpRequestInterceptor> clazz);
+
     /**
      * Sets the request interceptors in this list.
      * This list will be cleared and re-initialized to contain
@@ -110,11 +95,9 @@ public interface HttpRequestInterceptorList {
      * If the argument list includes elements that are not request
      * interceptors, the behavior is implementation dependent.
      *
-     * @param itcps     the list of request interceptors
+     * @param list the list of request interceptors
      */
-    void setInterceptors(List itcps)
-        ;
+    void setInterceptors(List<?> list);
 
-
-} // interface HttpRequestInterceptorList
+}
 

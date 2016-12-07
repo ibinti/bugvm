@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/RequestUserAgent.java $
- * $Revision: 496070 $
- * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -36,34 +32,49 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.Args;
 
 /**
- * A request interceptor that adds a User-Agent header.
+ * RequestUserAgent is responsible for adding {@code User-Agent} header.
+ * This interceptor is recommended for client side protocol processors.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 496070 $
- * 
  * @since 4.0
  */
+@SuppressWarnings("deprecation")
+@Immutable
 public class RequestUserAgent implements HttpRequestInterceptor {
 
-    public RequestUserAgent() {
+    private final String userAgent;
+
+    public RequestUserAgent(final String userAgent) {
         super();
+        this.userAgent = userAgent;
     }
-    
-    public void process(final HttpRequest request, final HttpContext context) 
+
+    public RequestUserAgent() {
+        this(null);
+    }
+
+    @Override
+    public void process(final HttpRequest request, final HttpContext context)
         throws HttpException, IOException {
-        if (request == null) {
-            throw new IllegalArgumentException("HTTP request may not be null");
-        }
+        Args.notNull(request, "HTTP request");
         if (!request.containsHeader(HTTP.USER_AGENT)) {
-            String useragent = HttpProtocolParams.getUserAgent(request.getParams());
-            if (useragent != null) {
-                request.addHeader(HTTP.USER_AGENT, useragent);
+            String s = null;
+            final HttpParams params = request.getParams();
+            if (params != null) {
+                s = (String) params.getParameter(CoreProtocolPNames.USER_AGENT);
+            }
+            if (s == null) {
+                s = this.userAgent;
+            }
+            if (s != null) {
+                request.addHeader(HTTP.USER_AGENT, s);
             }
         }
     }
-    
+
 }

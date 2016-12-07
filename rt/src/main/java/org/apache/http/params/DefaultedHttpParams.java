@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/DefaultedHttpParams.java $
- * $Revision: 610763 $
- * $Date: 2008-01-10 04:01:13 -0800 (Thu, 10 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,29 +27,37 @@
 
 package org.apache.http.params;
 
-import org.apache.http.params.HttpParams;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.http.util.Args;
 
 /**
  * {@link HttpParams} implementation that delegates resolution of a parameter
- * to the given default {@link HttpParams} instance if the parameter is not 
+ * to the given default {@link HttpParams} instance if the parameter is not
  * present in the local one. The state of the local collection can be mutated,
  * whereas the default collection is treated as read-only.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- * 
- * @version $Revision: 610763 $
+ * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
  */
+@Deprecated
 public final class DefaultedHttpParams extends AbstractHttpParams {
 
     private final HttpParams local;
     private final HttpParams defaults;
-    
+
+    /**
+     * Create the defaulted set of HttpParams.
+     *
+     * @param local the mutable set of HttpParams
+     * @param defaults the default set of HttpParams, not mutated by this class
+     */
     public DefaultedHttpParams(final HttpParams local, final HttpParams defaults) {
         super();
-        if (local == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
-        this.local = local;
+        this.local = Args.notNull(local, "Local HTTP parameters");
         this.defaults = defaults;
     }
 
@@ -61,13 +65,13 @@ public final class DefaultedHttpParams extends AbstractHttpParams {
      * Creates a copy of the local collection with the same default
      */
     public HttpParams copy() {
-        HttpParams clone = this.local.copy();
+        final HttpParams clone = this.local.copy();
         return new DefaultedHttpParams(clone, this.defaults);
     }
 
     /**
-     * Retrieves the value of the parameter from the local collection and, if the 
-     * parameter is not set locally, delegates its resolution to the default 
+     * Retrieves the value of the parameter from the local collection and, if the
+     * parameter is not set locally, delegates its resolution to the default
      * collection.
      */
     public Object getParameter(final String name) {
@@ -79,7 +83,7 @@ public final class DefaultedHttpParams extends AbstractHttpParams {
     }
 
     /**
-     * Attempts to remove the parameter from the local collection. This method 
+     * Attempts to remove the parameter from the local collection. This method
      * <i>does not</i> modify the default collection.
      */
     public boolean removeParameter(final String name) {
@@ -87,15 +91,73 @@ public final class DefaultedHttpParams extends AbstractHttpParams {
     }
 
     /**
-     * Sets the parameter in the local collection. This method <i>does not</i> 
+     * Sets the parameter in the local collection. This method <i>does not</i>
      * modify the default collection.
      */
     public HttpParams setParameter(final String name, final Object value) {
         return this.local.setParameter(name, value);
     }
 
+    /**
+     *
+     * @return the default HttpParams collection
+     */
     public HttpParams getDefaults() {
         return this.defaults;
     }
-    
+
+    /**
+     * Returns the current set of names
+     * from both the local and default HttpParams instances.
+     *
+     * Changes to the underlying HttpParams intances are not reflected
+     * in the set - it is a snapshot.
+     *
+     * @return the combined set of names, as a Set&lt;String&gt;
+     * @since 4.2
+     * @throws UnsupportedOperationException if either the local or default HttpParams instances do not implement HttpParamsNames
+     */
+    @Override
+    public Set<String> getNames() {
+        final Set<String> combined = new HashSet<String>(getNames(defaults));
+        combined.addAll(getNames(this.local));
+        return combined ;
+    }
+
+    /**
+     * Returns the current set of defaults names.
+     *
+     * Changes to the underlying HttpParams are not reflected
+     * in the set - it is a snapshot.
+     *
+     * @return the names, as a Set&lt;String&gt;
+     * @since 4.2
+     * @throws UnsupportedOperationException if the default HttpParams instance does not implement HttpParamsNames
+     */
+    public Set<String> getDefaultNames() {
+        return new HashSet<String>(getNames(this.defaults));
+    }
+
+    /**
+     * Returns the current set of local names.
+     *
+     * Changes to the underlying HttpParams are not reflected
+     * in the set - it is a snapshot.
+     *
+     * @return the names, as a Set&lt;String&gt;
+     * @since 4.2
+     * @throws UnsupportedOperationException if the local HttpParams instance does not implement HttpParamsNames
+     */
+    public Set<String> getLocalNames() {
+        return new HashSet<String>(getNames(this.local));
+    }
+
+    // Helper method
+    private Set<String> getNames(final HttpParams params) {
+        if (params instanceof HttpParamsNames) {
+            return ((HttpParamsNames) params).getNames();
+        }
+        throw new UnsupportedOperationException("HttpParams instance does not implement HttpParamsNames");
+    }
+
 }

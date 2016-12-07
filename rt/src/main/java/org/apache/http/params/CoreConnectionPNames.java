@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/CoreConnectionPNames.java $
- * $Revision: 576077 $
- * $Date: 2007-09-16 04:50:22 -0700 (Sun, 16 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,40 +27,42 @@
 
 package org.apache.http.params;
 
-
 /**
  * Defines parameter names for connections in HttpCore.
- * 
- * @version $Revision: 576077 $
- * 
+ *
  * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
  */
+@Deprecated
 public interface CoreConnectionPNames {
 
     /**
-     * Defines the default socket timeout (<tt>SO_TIMEOUT</tt>) in milliseconds which is the 
-     * timeout for waiting for data. A timeout value of zero is interpreted as an infinite 
-     * timeout. This value is used when no socket timeout is set in the 
-     * method parameters. 
+     * Defines the socket timeout ({@code SO_TIMEOUT}) in milliseconds,
+     * which is the timeout for waiting for data  or, put differently,
+     * a maximum period inactivity between two consecutive data packets).
+     * A timeout value of zero is interpreted as an infinite timeout.
      * <p>
      * This parameter expects a value of type {@link Integer}.
      * </p>
      * @see java.net.SocketOptions#SO_TIMEOUT
      */
-    public static final String SO_TIMEOUT = "http.socket.timeout"; 
+    public static final String SO_TIMEOUT = "http.socket.timeout";
 
     /**
-     * Determines whether Nagle's algorithm is to be used. The Nagle's algorithm 
-     * tries to conserve bandwidth by minimizing the number of segments that are 
-     * sent. When applications wish to decrease network latency and increase 
-     * performance, they can disable Nagle's algorithm (that is enable TCP_NODELAY). 
-     * Data will be sent earlier, at the cost of an increase in bandwidth consumption. 
+     * Determines whether Nagle's algorithm is to be used. The Nagle's algorithm
+     * tries to conserve bandwidth by minimizing the number of segments that are
+     * sent. When applications wish to decrease network latency and increase
+     * performance, they can disable Nagle's algorithm (that is enable
+     * TCP_NODELAY). Data will be sent earlier, at the cost of an increase
+     * in bandwidth consumption.
      * <p>
      * This parameter expects a value of type {@link Boolean}.
      * </p>
      * @see java.net.SocketOptions#TCP_NODELAY
      */
-    public static final String TCP_NODELAY = "http.tcp.nodelay"; 
+    public static final String TCP_NODELAY = "http.tcp.nodelay";
 
     /**
      * Determines the size of the internal socket buffer used to buffer data
@@ -73,59 +71,100 @@ public interface CoreConnectionPNames {
      * This parameter expects a value of type {@link Integer}.
      * </p>
      */
-    public static final String SOCKET_BUFFER_SIZE = "http.socket.buffer-size"; 
+    public static final String SOCKET_BUFFER_SIZE = "http.socket.buffer-size";
 
     /**
-     * Sets SO_LINGER with the specified linger time in seconds. The maximum timeout 
-     * value is platform specific. Value <tt>0</tt> implies that the option is disabled.
-     * Value <tt>-1</tt> implies that the JRE default is used. The setting only affects 
-     * socket close.  
+     * Sets SO_LINGER with the specified linger time in seconds. The maximum
+     * timeout value is platform specific. Value {@code 0} implies that
+     * the option is disabled. Value {@code -1} implies that the JRE
+     * default is used. The setting only affects the socket close operation.
      * <p>
      * This parameter expects a value of type {@link Integer}.
      * </p>
      * @see java.net.SocketOptions#SO_LINGER
      */
-    public static final String SO_LINGER = "http.socket.linger"; 
+    public static final String SO_LINGER = "http.socket.linger";
 
     /**
-     * Determines the timeout until a connection is etablished. A value of zero 
-     * means the timeout is not used. The default value is zero.
+     * Defines whether the socket can be bound even though a previous connection is
+     * still in a timeout state.
+     * <p>
+     * This parameter expects a value of type {@link Boolean}.
+     * </p>
+     * @see java.net.Socket#setReuseAddress(boolean)
+     *
+     * @since 4.1
+     */
+    public static final String SO_REUSEADDR = "http.socket.reuseaddr";
+
+    /**
+     * Determines the timeout in milliseconds until a connection is established.
+     * A timeout value of zero is interpreted as an infinite timeout.
+     * <p>
+     * Please note this parameter can only be applied to connections that
+     * are bound to a particular local address.
      * <p>
      * This parameter expects a value of type {@link Integer}.
      * </p>
      */
-    public static final String CONNECTION_TIMEOUT = "http.connection.timeout"; 
+    public static final String CONNECTION_TIMEOUT = "http.connection.timeout";
 
     /**
-     * Determines whether stale connection check is to be used. Disabling 
-     * stale connection check may result in slight performance improvement 
-     * at the risk of getting an I/O error when executing a request over a
-     * connection that has been closed at the server side. 
+     * Determines whether stale connection check is to be used. The stale
+     * connection check can cause up to 30 millisecond overhead per request and
+     * should be used only when appropriate. For performance critical
+     * operations this check should be disabled.
      * <p>
      * This parameter expects a value of type {@link Boolean}.
      * </p>
      */
-    public static final String STALE_CONNECTION_CHECK = "http.connection.stalecheck"; 
+    public static final String STALE_CONNECTION_CHECK = "http.connection.stalecheck";
 
     /**
-     * Determines the maximum line length limit. If set to a positive value, any HTTP 
-     * line exceeding this limit will cause an IOException. A negative or zero value
-     * will effectively disable the check.
+     * Determines the maximum line length limit. If set to a positive value,
+     * any HTTP line exceeding this limit will cause an IOException. A negative
+     * or zero value will effectively disable the check.
      * <p>
      * This parameter expects a value of type {@link Integer}.
      * </p>
      */
     public static final String MAX_LINE_LENGTH = "http.connection.max-line-length";
-    
+
     /**
-     * Determines the maximum HTTP header count allowed. If set to a positive value, 
-     * the number of HTTP headers received from the data stream exceeding this limit 
-     * will cause an IOException. A negative or zero value will effectively disable 
-     * the check. 
+     * Determines the maximum HTTP header count allowed. If set to a positive
+     * value, the number of HTTP headers received from the data stream exceeding
+     * this limit will cause an IOException. A negative or zero value will
+     * effectively disable the check.
      * <p>
      * This parameter expects a value of type {@link Integer}.
      * </p>
      */
     public static final String MAX_HEADER_COUNT = "http.connection.max-header-count";
+
+    /**
+     * Defines the size limit below which data chunks should be buffered in a session I/O buffer
+     * in order to minimize native method invocations on the underlying network socket.
+     * The optimal value of this parameter can be platform specific and defines a trade-off
+     * between performance of memory copy operations and that of native method invocation.
+     * <p>
+     * This parameter expects a value of type {@link Integer}.
+     * </p>
+     *
+     * @since 4.1
+     */
+    public static final String MIN_CHUNK_LIMIT = "http.connection.min-chunk-limit";
+
+
+    /**
+     * Defines whether or not TCP is to send automatically a keepalive probe to the peer
+     * after an interval of inactivity (no data exchanged in either direction) between this
+     * host and the peer. The purpose of this option is to detect if the peer host crashes.
+     * <p>
+     * This parameter expects a value of type {@link Boolean}.
+     * </p>
+     * @see java.net.SocketOptions#SO_KEEPALIVE
+     * @since 4.2
+     */
+    public static final String SO_KEEPALIVE = "http.socket.keepalive";
 
 }

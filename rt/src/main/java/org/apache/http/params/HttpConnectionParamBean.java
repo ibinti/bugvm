@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/params/HttpConnectionParamBean.java $
- * $Revision: 593937 $
- * $Date: 2007-11-11 10:44:12 -0800 (Sun, 11 Nov 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,34 +27,45 @@
 
 package org.apache.http.params;
 
+/**
+ * This is a Java Bean class that can be used to wrap an instance of
+ * {@link HttpParams} and manipulate HTTP connection parameters using Java Beans
+ * conventions.
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.3) use configuration classes provided 'org.apache.http.config'
+ *  and 'org.apache.http.client.config'
+ */
+@Deprecated
 public class HttpConnectionParamBean extends HttpAbstractParamBean {
-    
+
     public HttpConnectionParamBean (final HttpParams params) {
         super(params);
     }
 
-    public void setSoTimeout (int soTimeout) {
+    public void setSoTimeout (final int soTimeout) {
         HttpConnectionParams.setSoTimeout(params, soTimeout);
     }
 
-    public void setTcpNoDelay (boolean tcpNoDelay) {
+    public void setTcpNoDelay (final boolean tcpNoDelay) {
         HttpConnectionParams.setTcpNoDelay(params, tcpNoDelay);
     }
 
-    public void setSocketBufferSize (int socketBufferSize) {
+    public void setSocketBufferSize (final int socketBufferSize) {
         HttpConnectionParams.setSocketBufferSize(params, socketBufferSize);
     }
 
-    public void setLinger (int linger) {
+    public void setLinger (final int linger) {
         HttpConnectionParams.setLinger(params, linger);
     }
 
-    public void setConnectionTimeout (int connectionTimeout) {
+    public void setConnectionTimeout (final int connectionTimeout) {
         HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);
     }
 
-    public void setStaleCheckingEnabled (boolean staleCheckingEnabled) {
+    public void setStaleCheckingEnabled (final boolean staleCheckingEnabled) {
         HttpConnectionParams.setStaleCheckingEnabled(params, staleCheckingEnabled);
     }
-    
+
 }

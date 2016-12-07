@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/SocketHttpClientConnection.java $
- * $Revision: 561083 $
- * $Date: 2007-07-30 11:31:17 -0700 (Mon, 30 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,7 +29,9 @@ package org.apache.http.impl;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.apache.http.HttpInetConnection;
@@ -41,80 +39,122 @@ import org.apache.http.impl.io.SocketInputBuffer;
 import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.io.SessionInputBuffer;
 import org.apache.http.io.SessionOutputBuffer;
-import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.Args;
+import org.apache.http.util.Asserts;
 
 /**
- * Implementation of a client-side HTTP connection that can be bound to a 
- * network Socket in order to receive and transmit data.
+ * Implementation of a client-side HTTP connection that can be bound to an
+ * arbitrary {@link Socket} for receiving data from and transmitting data to
+ * a remote server.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 561083 $
- * 
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link DefaultBHttpClientConnection}
  */
-public class SocketHttpClientConnection 
+@Deprecated
+public class SocketHttpClientConnection
         extends AbstractHttpClientConnection implements HttpInetConnection {
 
     private volatile boolean open;
-    private Socket socket = null;
-    
+    private volatile Socket socket = null;
+
     public SocketHttpClientConnection() {
         super();
     }
-    
+
     protected void assertNotOpen() {
-        if (this.open) {
-            throw new IllegalStateException("Connection is already open");
-        }
-    }
-    
-    protected void assertOpen() {
-        if (!this.open) {
-            throw new IllegalStateException("Connection is not open");
-        }
+        Asserts.check(!this.open, "Connection is already open");
     }
 
+    @Override
+    protected void assertOpen() {
+        Asserts.check(this.open, "Connection is not open");
+    }
+
+    /**
+     * Creates an instance of {@link SocketInputBuffer} to be used for
+     * receiving data from the given {@link Socket}.
+     * <p>
+     * This method can be overridden in a super class in order to provide
+     * a custom implementation of {@link SessionInputBuffer} interface.
+     *
+     * @see SocketInputBuffer#SocketInputBuffer(Socket, int, HttpParams)
+     *
+     * @param socket the socket.
+     * @param buffersize the buffer size.
+     * @param params HTTP parameters.
+     * @return session input buffer.
+     * @throws IOException in case of an I/O error.
+     */
     protected SessionInputBuffer createSessionInputBuffer(
-            final Socket socket, 
-            int buffersize,
+            final Socket socket,
+            final int buffersize,
             final HttpParams params) throws IOException {
         return new SocketInputBuffer(socket, buffersize, params);
     }
-    
+
+    /**
+     * Creates an instance of {@link SessionOutputBuffer} to be used for
+     * sending data to the given {@link Socket}.
+     * <p>
+     * This method can be overridden in a super class in order to provide
+     * a custom implementation of {@link SocketOutputBuffer} interface.
+     *
+     * @see SocketOutputBuffer#SocketOutputBuffer(Socket, int, HttpParams)
+     *
+     * @param socket the socket.
+     * @param buffersize the buffer size.
+     * @param params HTTP parameters.
+     * @return session output buffer.
+     * @throws IOException in case of an I/O error.
+     */
     protected SessionOutputBuffer createSessionOutputBuffer(
-            final Socket socket, 
-            int buffersize,
+            final Socket socket,
+            final int buffersize,
             final HttpParams params) throws IOException {
         return new SocketOutputBuffer(socket, buffersize, params);
     }
-    
+
+    /**
+     * Binds this connection to the given {@link Socket}. This socket will be
+     * used by the connection to send and receive data.
+     * <p>
+     * This method will invoke {@link #createSessionInputBuffer(Socket, int, HttpParams)}
+     * and {@link #createSessionOutputBuffer(Socket, int, HttpParams)} methods
+     * to create session input / output buffers bound to this socket and then
+     * will invoke {@link #init(SessionInputBuffer, SessionOutputBuffer, HttpParams)}
+     * method to pass references to those buffers to the underlying HTTP message
+     * parser and formatter.
+     * <p>
+     * After this method's execution the connection status will be reported
+     * as open and the {@link #isOpen()} will return {@code true}.
+     *
+     * @param socket the socket.
+     * @param params HTTP parameters.
+     * @throws IOException in case of an I/O error.
+     */
     protected void bind(
-            final Socket socket, 
+            final Socket socket,
             final HttpParams params) throws IOException {
-        if (socket == null) {
-            throw new IllegalArgumentException("Socket may not be null");
-        }
-        if (params == null) {
-            throw new IllegalArgumentException("HTTP parameters may not be null");
-        }
+        Args.notNull(socket, "Socket");
+        Args.notNull(params, "HTTP parameters");
         this.socket = socket;
 
-        int buffersize = HttpConnectionParams.getSocketBufferSize(params);
-
+        final int buffersize = params.getIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, -1);
         init(
-                createSessionInputBuffer(socket, buffersize, params), 
+                createSessionInputBuffer(socket, buffersize, params),
                 createSessionOutputBuffer(socket, buffersize, params),
                 params);
-        
+
         this.open = true;
     }
 
     public boolean isOpen() {
         return this.open;
     }
-    
+
     protected Socket getSocket() {
         return this.socket;
     }
@@ -151,24 +191,24 @@ public class SocketHttpClientConnection
         }
     }
 
-    public void setSocketTimeout(int timeout) {
+    public void setSocketTimeout(final int timeout) {
         assertOpen();
         if (this.socket != null) {
             try {
                 this.socket.setSoTimeout(timeout);
-            } catch (SocketException ignore) {
-                // It is not quite clear from the Sun's documentation if there are any 
-                // other legitimate cases for a socket exception to be thrown when setting 
+            } catch (final SocketException ignore) {
+                // It is not quite clear from the Sun's documentation if there are any
+                // other legitimate cases for a socket exception to be thrown when setting
                 // SO_TIMEOUT besides the socket being already closed
             }
         }
     }
-    
+
     public int getSocketTimeout() {
         if (this.socket != null) {
             try {
                 return this.socket.getSoTimeout();
-            } catch (SocketException ignore) {
+            } catch (final SocketException ignore) {
                 return -1;
             }
         } else {
@@ -178,31 +218,64 @@ public class SocketHttpClientConnection
 
     public void shutdown() throws IOException {
         this.open = false;
-        Socket tmpsocket = this.socket;
+        final Socket tmpsocket = this.socket;
         if (tmpsocket != null) {
             tmpsocket.close();
         }
     }
-    
+
     public void close() throws IOException {
         if (!this.open) {
             return;
         }
         this.open = false;
-        doFlush();
+        final Socket sock = this.socket;
         try {
+            doFlush();
             try {
-                this.socket.shutdownOutput();
-            } catch (IOException ignore) {
+                try {
+                    sock.shutdownOutput();
+                } catch (final IOException ignore) {
+                }
+                try {
+                    sock.shutdownInput();
+                } catch (final IOException ignore) {
+                }
+            } catch (final UnsupportedOperationException ignore) {
+                // if one isn't supported, the other one isn't either
             }
-            try {
-                this.socket.shutdownInput();
-            } catch (IOException ignore) {
-            }
-        } catch (UnsupportedOperationException ignore) {
-            // if one isn't supported, the other one isn't either
+        } finally {
+            sock.close();
         }
-        this.socket.close();
     }
-    
+
+    private static void formatAddress(final StringBuilder buffer, final SocketAddress socketAddress) {
+        if (socketAddress instanceof InetSocketAddress) {
+            final InetSocketAddress addr = ((InetSocketAddress) socketAddress);
+            buffer.append(addr.getAddress() != null ? addr.getAddress().getHostAddress() :
+                addr.getAddress())
+            .append(':')
+            .append(addr.getPort());
+        } else {
+            buffer.append(socketAddress);
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (this.socket != null) {
+            final StringBuilder buffer = new StringBuilder();
+            final SocketAddress remoteAddress = this.socket.getRemoteSocketAddress();
+            final SocketAddress localAddress = this.socket.getLocalSocketAddress();
+            if (remoteAddress != null && localAddress != null) {
+                formatAddress(buffer, localAddress);
+                buffer.append("<->");
+                formatAddress(buffer, remoteAddress);
+            }
+            return buffer.toString();
+        } else {
+            return super.toString();
+        }
+    }
+
 }

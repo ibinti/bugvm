@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpGet.java $
- * $Revision: 664505 $
- * $Date: 2008-06-08 06:21:20 -0700 (Sun, 08 Jun 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,11 +29,14 @@ package org.apache.http.client.methods;
 
 import java.net.URI;
 
+import org.apache.http.annotation.NotThreadSafe;
+
 /**
  * HTTP GET method.
  * <p>
  * The HTTP GET method is defined in section 9.3 of
  * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * </p>
  * <blockquote>
  * The GET method means retrieve whatever information (in the form of an
  * entity) is identified by the Request-URI. If the Request-URI refers
@@ -45,19 +44,14 @@ import java.net.URI;
  * returned as the entity in the response and not the source text of the
  * process, unless that text happens to be the output of the process.
  * </blockquote>
- * </p>
- * <p>
- * GetMethods will follow redirect requests from the http server by default.
- * This behavour can be disabled by calling setFollowRedirects(false).</p>
- * 
- * @version $Revision: 664505 $
- * 
+ *
  * @since 4.0
  */
+@NotThreadSafe
 public class HttpGet extends HttpRequestBase {
 
     public final static String METHOD_NAME = "GET";
-    
+
     public HttpGet() {
         super();
     }
@@ -68,7 +62,7 @@ public class HttpGet extends HttpRequestBase {
     }
 
     /**
-     * @throws IllegalArgumentException if the uri is invalid. 
+     * @throws IllegalArgumentException if the uri is invalid.
      */
     public HttpGet(final String uri) {
         super();
@@ -79,5 +73,5 @@ public class HttpGet extends HttpRequestBase {
     public String getMethod() {
         return METHOD_NAME;
     }
-    
+
 }

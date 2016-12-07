@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/HttpTransportMetricsImpl.java $
- * $Revision: 539755 $
- * $Date: 2007-05-19 07:05:02 -0700 (Sat, 19 May 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,33 +27,39 @@
 
 package org.apache.http.impl.io;
 
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.io.HttpTransportMetrics;
 
 /**
  * Default implementation of {@link HttpTransportMetrics}.
+ *
+ * @since 4.0
  */
+@NotThreadSafe
 public class HttpTransportMetricsImpl implements HttpTransportMetrics {
 
     private long bytesTransferred = 0;
-    
+
     public HttpTransportMetricsImpl() {
         super();
     }
-    
+
+    @Override
     public long getBytesTransferred() {
         return this.bytesTransferred;
     }
 
-    public void setBytesTransferred(long count) {
+    public void setBytesTransferred(final long count) {
         this.bytesTransferred = count;
     }
 
-    public void incrementBytesTransferred(long count) {
+    public void incrementBytesTransferred(final long count) {
         this.bytesTransferred += count;
     }
 
+    @Override
     public void reset() {
         this.bytesTransferred = 0;
     }
-    
+
 }

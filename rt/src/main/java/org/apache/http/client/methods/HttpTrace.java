@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpTrace.java $
- * $Revision: 664505 $
- * $Date: 2008-06-08 06:21:20 -0700 (Sun, 08 Jun 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,11 +29,14 @@ package org.apache.http.client.methods;
 
 import java.net.URI;
 
+import org.apache.http.annotation.NotThreadSafe;
+
 /**
  * HTTP TRACE method.
  * <p>
- * The HTTP TRACE method is defined in section 9.6 of 
+ * The HTTP TRACE method is defined in section 9.6 of
  * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * </p>
  * <blockquote>
  *  The TRACE method is used to invoke a remote, application-layer loop-
  *  back of the request message. The final recipient of the request
@@ -47,16 +46,14 @@ import java.net.URI;
  *  value of zero (0) in the request (see section 14.31). A TRACE request
  *  MUST NOT include an entity.
  * </blockquote>
- * </p>
- * 
- * @version $Revision: 664505 $
- * 
+ *
  * @since 4.0
  */
+@NotThreadSafe
 public class HttpTrace extends HttpRequestBase {
 
     public final static String METHOD_NAME = "TRACE";
-    
+
     public HttpTrace() {
         super();
     }
@@ -65,9 +62,9 @@ public class HttpTrace extends HttpRequestBase {
         super();
         setURI(uri);
     }
-    
+
     /**
-     * @throws IllegalArgumentException if the uri is invalid. 
+     * @throws IllegalArgumentException if the uri is invalid.
      */
     public HttpTrace(final String uri) {
         super();
@@ -78,5 +75,5 @@ public class HttpTrace extends HttpRequestBase {
     public String getMethod() {
         return METHOD_NAME;
     }
-    
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HeaderIterator.java $
- * $Revision: 581981 $
- * $Date: 2007-10-04 11:26:26 -0700 (Thu, 04 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,26 +27,23 @@
 
 package org.apache.http;
 
-
 import java.util.Iterator;
 
-
 /**
- * A type-safe iterator for {@link Header Header} objects.
- * 
- * @version $Revision: 581981 $
+ * A type-safe iterator for {@link Header} objects.
+ *
+ * @since 4.0
  */
-public interface HeaderIterator extends Iterator {
+public interface HeaderIterator extends Iterator<Object> {
 
     /**
      * Indicates whether there is another header in this iteration.
      *
-     * @return  <code>true</code> if there is another header,
-     *          <code>false</code> otherwise
+     * @return  {@code true} if there is another header,
+     *          {@code false} otherwise
      */
-    boolean hasNext()
-        ;
-
+    @Override
+    boolean hasNext();
 
     /**
      * Obtains the next header from this iteration.
@@ -59,6 +52,6 @@ public interface HeaderIterator extends Iterator {
      *
      * @return  the next header in this iteration
      */
-    Header nextHeader()
-        ;
+    Header nextHeader();
+
 }

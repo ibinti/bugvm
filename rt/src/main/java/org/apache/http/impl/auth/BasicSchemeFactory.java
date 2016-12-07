@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/auth/BasicSchemeFactory.java $
- * $Revision: 534839 $
- * $Date: 2007-05-03 06:03:41 -0700 (Thu, 03 May 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,20 +27,47 @@
 
 package org.apache.http.impl.auth;
 
+import java.nio.charset.Charset;
+
+import org.apache.http.annotation.Immutable;
 import org.apache.http.auth.AuthScheme;
 import org.apache.http.auth.AuthSchemeFactory;
+import org.apache.http.auth.AuthSchemeProvider;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
 
 /**
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
+ * {@link AuthSchemeProvider} implementation that creates and initializes
+ * {@link BasicScheme} instances.
  *
  * @since 4.0
  */
-public class BasicSchemeFactory implements AuthSchemeFactory {    
+@Immutable
+@SuppressWarnings("deprecation")
+public class BasicSchemeFactory implements AuthSchemeFactory, AuthSchemeProvider {
 
+    private final Charset charset;
+
+    /**
+     * @since 4.3
+     */
+    public BasicSchemeFactory(final Charset charset) {
+        super();
+        this.charset = charset;
+    }
+
+    public BasicSchemeFactory() {
+        this(null);
+    }
+
+    @Override
     public AuthScheme newInstance(final HttpParams params) {
         return new BasicScheme();
+    }
+
+    @Override
+    public AuthScheme create(final HttpContext context) {
+        return new BasicScheme(this.charset);
     }
 
 }

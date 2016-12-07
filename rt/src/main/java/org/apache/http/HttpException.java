@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpException.java $
- * $Revision: 618017 $
- * $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,21 +27,17 @@
 
 package org.apache.http;
 
-import org.apache.http.util.ExceptionUtils;
-
 /**
  * Signals that an HTTP exception has occurred.
- * 
- * @author Laura Werner
- * 
- * @version $Revision: 618017 $ $Date: 2008-02-03 08:42:22 -0800 (Sun, 03 Feb 2008) $
+ *
+ * @since 4.0
  */
 public class HttpException extends Exception {
 
     private static final long serialVersionUID = -5437299376222011036L;
-    
+
     /**
-     * Creates a new HttpException with a <tt>null</tt> detail message.
+     * Creates a new HttpException with a {@code null} detail message.
      */
     public HttpException() {
         super();
@@ -62,14 +54,14 @@ public class HttpException extends Exception {
 
     /**
      * Creates a new HttpException with the specified detail message and cause.
-     * 
+     *
      * @param message the exception detail message
-     * @param cause the <tt>Throwable</tt> that caused this exception, or <tt>null</tt>
-     * if the cause is unavailable, unknown, or not a <tt>Throwable</tt>
+     * @param cause the {@code Throwable} that caused this exception, or {@code null}
+     * if the cause is unavailable, unknown, or not a {@code Throwable}
      */
     public HttpException(final String message, final Throwable cause) {
         super(message);
-        ExceptionUtils.initCause(this, cause);
+        initCause(cause);
     }
 
 }

@@ -1,18 +1,18 @@
 buildscript {
     ext {
-        bugVMVersion = '1.2.2-SNAPSHOT'
+        bugVMVersion = "1.2.3-SNAPSHOT"
     }
 }
 
 allprojects {
 
-    group = 'com.bugvm'
+    group = "com.bugvm"
     version = bugVMVersion
 
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    apply plugin: 'maven'
-    apply plugin: 'signing'
+    apply plugin: "java"
+    apply plugin: "maven-publish"
+    apply plugin: "maven"
+    apply plugin: "signing"
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -20,13 +20,13 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 
     ext {
-        mavenUrlSnapshot = 'https://oss.sonatype.org/content/repositories/snapshots'
-        mavenUsername = ''
-        mavenPassword = ''
+        mavenUrlSnapshot = "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenUsername = ""
+        mavenPassword = ""
     }
 
     publishing {
@@ -36,7 +36,7 @@ allprojects {
     }
 
     tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
+        options.encoding = "UTF-8"
     }
 }
 
@@ -50,7 +50,7 @@ task buildJars {
 
 task buildNativeLib {
 
-    dependsOn ':llvm:nativeLib', ':rt:nativeLib'
+    dependsOn ":llvm:nativeLib", ":rt:nativeLib"
 
 }
 
@@ -62,22 +62,22 @@ task All  {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2'
+    gradleVersion = "3.2"
 }
 
 archivesBaseName = "bugvm-dist"
-description = """BugVM Dist Package (tar.gz)"""
+description = "BugVM Dist Package (tar.gz)"
 
 dependencies {
-    compile project(':compiler')
-    compile project(':apple')
-    compile project(':rt')
-    compile project(':cacerts')
+    compile project(":compiler")
+    compile project(":apple")
+    compile project(":rt")
+    compile project(":cacerts")
 }
 
 task targz(type: Tar) {
 
-    extension = 'tar.gz'
+    extension = "tar.gz"
     compression = Compression.GZIP
 
     into ("bugvm-${version}/bin") {
@@ -138,19 +138,19 @@ uploadArchives {
             pom.project {
                 name project.archivesBaseName
                 description project.description
-                url 'https://bugvm.com'
+                url "https://bugvm.com"
 
                 scm {
-                    url 'https://github.com/bugvm/bugvm.git'
-                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                    url "https://github.com/bugvm/bugvm.git"
+                    connection "scm:git:git://github.com/bugvm/bugvm.git"
                 }
 
                 developers {
                     developer {
-                        id 'bugvm'
-                        name 'The Bug'
-                        email 'bug@bugvm.com'
-                        url 'https://bugvm.com'
+                        id "bugvm"
+                        name "The Bug"
+                        email "bug@bugvm.com"
+                        url "https://bugvm.com"
                     }
                 }
             }

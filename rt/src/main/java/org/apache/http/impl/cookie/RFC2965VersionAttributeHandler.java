@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/RFC2965VersionAttributeHandler.java $
- * $Revision: 590695 $
- * $Date: 2007-10-31 07:55:41 -0700 (Wed, 31 Oct 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,31 +27,36 @@
 
 package org.apache.http.impl.cookie;
 
+import org.apache.http.annotation.Immutable;
 import org.apache.http.cookie.ClientCookie;
+import org.apache.http.cookie.CommonCookieAttributeHandler;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.cookie.CookieAttributeHandler;
 import org.apache.http.cookie.CookieOrigin;
+import org.apache.http.cookie.CookieRestrictionViolationException;
 import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.cookie.SetCookie;
 import org.apache.http.cookie.SetCookie2;
+import org.apache.http.util.Args;
 
 /**
- * <tt>"Version"</tt> cookie attribute handler for RFC 2965 cookie spec.
+ * {@code "Version"} cookie attribute handler for RFC 2965 cookie spec.
+ *
+ * @since 4.0
  */
-public class RFC2965VersionAttributeHandler implements CookieAttributeHandler {
+@Immutable
+public class RFC2965VersionAttributeHandler implements CommonCookieAttributeHandler {
 
     public RFC2965VersionAttributeHandler() {
         super();
     }
-    
+
     /**
      * Parse cookie version attribute.
      */
+    @Override
     public void parse(final SetCookie cookie, final String value)
             throws MalformedCookieException {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
+        Args.notNull(cookie, "Cookie");
         if (value == null) {
             throw new MalformedCookieException(
                     "Missing value for version attribute");
@@ -63,7 +64,7 @@ public class RFC2965VersionAttributeHandler implements CookieAttributeHandler {
         int version = -1;
         try {
             version = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             version = -1;
         }
         if (version < 0) {
@@ -75,22 +76,27 @@ public class RFC2965VersionAttributeHandler implements CookieAttributeHandler {
     /**
      * validate cookie version attribute. Version attribute is REQUIRED.
      */
+    @Override
     public void validate(final Cookie cookie, final CookieOrigin origin)
             throws MalformedCookieException {
-        if (cookie == null) {
-            throw new IllegalArgumentException("Cookie may not be null");
-        }
+        Args.notNull(cookie, "Cookie");
         if (cookie instanceof SetCookie2) {
-            if (cookie instanceof ClientCookie 
+            if (cookie instanceof ClientCookie
                     && !((ClientCookie) cookie).containsAttribute(ClientCookie.VERSION_ATTR)) {
-                throw new MalformedCookieException(
+                throw new CookieRestrictionViolationException(
                         "Violates RFC 2965. Version attribute is required.");
             }
         }
     }
 
+    @Override
     public boolean match(final Cookie cookie, final CookieOrigin origin) {
         return true;
+    }
+
+    @Override
+    public String getAttributeName() {
+        return ClientCookie.VERSION_ATTR;
     }
 
 }

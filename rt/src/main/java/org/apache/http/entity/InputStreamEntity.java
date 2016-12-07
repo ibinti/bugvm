@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/InputStreamEntity.java $
- * $Revision: 617591 $
- * $Date: 2008-02-01 10:21:17 -0800 (Fri, 01 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,83 +30,131 @@ package org.apache.http.entity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
- 
+
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
+
 /**
- * A streamed entity obtaining content from an {@link InputStream InputStream}.
+ * A streamed, non-repeatable entity that obtains its content from
+ * an {@link InputStream}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 617591 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class InputStreamEntity extends AbstractHttpEntity {
-
-    private final static int BUFFER_SIZE = 2048;
 
     private final InputStream content;
     private final long length;
-    private boolean consumed = false;
 
-    public InputStreamEntity(final InputStream instream, long length) {
-        super();        
-        if (instream == null) {
-            throw new IllegalArgumentException("Source input stream may not be null");
-        }
-        this.content = instream;
-        this.length = length;
+    /**
+     * Creates an entity with an unknown length.
+     * Equivalent to {@code new InputStreamEntity(instream, -1)}.
+     *
+     * @param instream input stream
+     * @throws IllegalArgumentException if {@code instream} is {@code null}
+     * @since 4.3
+     */
+    public InputStreamEntity(final InputStream instream) {
+        this(instream, -1);
     }
 
+    /**
+     * Creates an entity with a specified content length.
+     *
+     * @param instream input stream
+     * @param length of the input stream, {@code -1} if unknown
+     * @throws IllegalArgumentException if {@code instream} is {@code null}
+     */
+    public InputStreamEntity(final InputStream instream, final long length) {
+        this(instream, length, null);
+    }
+
+    /**
+     * Creates an entity with a content type and unknown length.
+     * Equivalent to {@code new InputStreamEntity(instream, -1, contentType)}.
+     *
+     * @param instream input stream
+     * @param contentType content type
+     * @throws IllegalArgumentException if {@code instream} is {@code null}
+     * @since 4.3
+     */
+    public InputStreamEntity(final InputStream instream, final ContentType contentType) {
+        this(instream, -1, contentType);
+    }
+
+    /**
+     * @param instream input stream
+     * @param length of the input stream, {@code -1} if unknown
+     * @param contentType for specifying the {@code Content-Type} header, may be {@code null}
+     * @throws IllegalArgumentException if {@code instream} is {@code null}
+     * @since 4.2
+     */
+    public InputStreamEntity(final InputStream instream, final long length, final ContentType contentType) {
+        super();
+        this.content = Args.notNull(instream, "Source input stream");
+        this.length = length;
+        if (contentType != null) {
+            setContentType(contentType.toString());
+        }
+    }
+
+    @Override
     public boolean isRepeatable() {
         return false;
     }
 
+    /**
+     * @return the content length or {@code -1} if unknown
+     */
+    @Override
     public long getContentLength() {
         return this.length;
     }
 
+    @Override
     public InputStream getContent() throws IOException {
         return this.content;
     }
-        
+
+    /**
+     * Writes bytes from the {@code InputStream} this entity was constructed
+     * with to an {@code OutputStream}.  The content length
+     * determines how many bytes are written.  If the length is unknown ({@code -1}), the
+     * stream will be completely consumed (to the end of the stream).
+     *
+     */
+    @Override
     public void writeTo(final OutputStream outstream) throws IOException {
-        if (outstream == null) {
-            throw new IllegalArgumentException("Output stream may not be null");
-        }
-        InputStream instream = this.content;
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int l;
-        if (this.length < 0) {
-            // consume until EOF
-            while ((l = instream.read(buffer)) != -1) {
-                outstream.write(buffer, 0, l);
-            }
-        } else {
-            // consume no more than length
-            long remaining = this.length;
-            while (remaining > 0) {
-                l = instream.read(buffer, 0, (int)Math.min(BUFFER_SIZE, remaining));
-                if (l == -1) {
-                    break;
+        Args.notNull(outstream, "Output stream");
+        final InputStream instream = this.content;
+        try {
+            final byte[] buffer = new byte[OUTPUT_BUFFER_SIZE];
+            int l;
+            if (this.length < 0) {
+                // consume until EOF
+                while ((l = instream.read(buffer)) != -1) {
+                    outstream.write(buffer, 0, l);
                 }
-                outstream.write(buffer, 0, l);
-                remaining -= l;
+            } else {
+                // consume no more than length
+                long remaining = this.length;
+                while (remaining > 0) {
+                    l = instream.read(buffer, 0, (int)Math.min(OUTPUT_BUFFER_SIZE, remaining));
+                    if (l == -1) {
+                        break;
+                    }
+                    outstream.write(buffer, 0, l);
+                    remaining -= l;
+                }
             }
+        } finally {
+            instream.close();
         }
-        this.consumed = true;
     }
 
-    // non-javadoc, see interface HttpEntity
+    @Override
     public boolean isStreaming() {
-        return !this.consumed;
+        return true;
     }
 
-    // non-javadoc, see interface HttpEntity
-    public void consumeContent() throws IOException {
-        this.consumed = true;
-        // If the input stream is from a connection, closing it will read to
-        // the end of the content. Otherwise, we don't care what it does.
-        this.content.close();
-    }
-    
-} // class InputStreamEntity
+}

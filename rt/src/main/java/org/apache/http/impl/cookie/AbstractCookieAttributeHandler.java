@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/AbstractCookieAttributeHandler.java $
- * $Revision: 503525 $
- * $Date: 2007-02-04 17:15:08 -0800 (Sun, 04 Feb 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,24 +23,32 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  *
- */ 
+ */
 package org.apache.http.impl.cookie;
 
+import org.apache.http.annotation.Immutable;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.cookie.CookieAttributeHandler;
 import org.apache.http.cookie.CookieOrigin;
 import org.apache.http.cookie.MalformedCookieException;
 
+/**
+ *
+ * @since 4.0
+ */
+@Immutable
 public abstract class AbstractCookieAttributeHandler implements CookieAttributeHandler {
 
-    public void validate(final Cookie cookie, final CookieOrigin origin) 
+    @Override
+    public void validate(final Cookie cookie, final CookieOrigin origin)
             throws MalformedCookieException {
         // Do nothing
     }
-    
+
+    @Override
     public boolean match(final Cookie cookie, final CookieOrigin origin) {
         // Always match
         return true;
     }
-    
+
 }

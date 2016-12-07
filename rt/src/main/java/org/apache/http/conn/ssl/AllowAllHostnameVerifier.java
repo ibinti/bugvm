@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ssl/AllowAllHostnameVerifier.java $
- * $Revision: 617642 $
- * $Date: 2008-02-01 12:54:07 -0800 (Fri, 01 Feb 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,24 +27,34 @@
 
 package org.apache.http.conn.ssl;
 
+import org.apache.http.annotation.Immutable;
+
 /**
  * The ALLOW_ALL HostnameVerifier essentially turns hostname verification
  * off. This implementation is a no-op, and never throws the SSLException.
- * 
- * @author Julius Davies
+ *
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.4) Use {@link org.apache.http.conn.ssl.NoopHostnameVerifier}
  */
+@Deprecated
+@Immutable
 public class AllowAllHostnameVerifier extends AbstractVerifier {
 
+    public static final AllowAllHostnameVerifier INSTANCE = new AllowAllHostnameVerifier();
+
+    @Override
     public final void verify(
-            final String host, 
+            final String host,
             final String[] cns,
             final String[] subjectAlts) {
         // Allow everything - so never blowup.
     }
 
     @Override
-    public final String toString() { 
-        return "ALLOW_ALL"; 
+    public final String toString() {
+        return "ALLOW_ALL";
     }
-    
+
 }

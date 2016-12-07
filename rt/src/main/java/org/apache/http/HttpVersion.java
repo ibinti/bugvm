@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpVersion.java $
- * $Revision: 609106 $
- * $Date: 2008-01-05 01:15:42 -0800 (Sat, 05 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,13 +29,22 @@ package org.apache.http;
 
 import java.io.Serializable;
 
+import org.apache.http.annotation.Immutable;
+
 /**
- * Represents an HTTP version, as specified in RFC 2616.
- * 
- * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
- * 
- * @version $Revision: 609106 $ $Date: 2008-01-05 01:15:42 -0800 (Sat, 05 Jan 2008) $
+ * Represents an HTTP version. HTTP uses a "major.minor" numbering
+ * scheme to indicate versions of the protocol.
+ * <p>
+ * The version of an HTTP message is indicated by an HTTP-Version field
+ * in the first line of the message.
+ * </p>
+ * <pre>
+ *     HTTP-Version   = "HTTP" "/" 1*DIGIT "." 1*DIGIT
+ * </pre>
+ *
+ * @since 4.0
  */
+@Immutable
 public final class HttpVersion extends ProtocolVersion
     implements Serializable {
 
@@ -47,26 +52,26 @@ public final class HttpVersion extends ProtocolVersion
 
     /** The protocol name. */
     public static final String HTTP = "HTTP";
-    
+
     /** HTTP protocol version 0.9 */
-    public static final HttpVersion HTTP_0_9 = new HttpVersion(0, 9);  
+    public static final HttpVersion HTTP_0_9 = new HttpVersion(0, 9);
 
     /** HTTP protocol version 1.0 */
-    public static final HttpVersion HTTP_1_0 = new HttpVersion(1, 0);  
+    public static final HttpVersion HTTP_1_0 = new HttpVersion(1, 0);
 
     /** HTTP protocol version 1.1 */
-    public static final HttpVersion HTTP_1_1 = new HttpVersion(1, 1);  
+    public static final HttpVersion HTTP_1_1 = new HttpVersion(1, 1);
 
-    
+
     /**
      * Create an HTTP protocol version designator.
      *
      * @param major   the major version number of the HTTP protocol
      * @param minor   the minor version number of the HTTP protocol
-     * 
+     *
      * @throws IllegalArgumentException if either major or minor version number is negative
      */
-    public HttpVersion(int major, int minor) {
+    public HttpVersion(final int major, final int minor) {
         super(HTTP, major, minor);
     }
 
@@ -79,7 +84,8 @@ public final class HttpVersion extends ProtocolVersion
      *
      * @return  an instance of {@link HttpVersion} with the argument version
      */
-    public ProtocolVersion forVersion(int major, int minor) {
+    @Override
+    public ProtocolVersion forVersion(final int major, final int minor) {
 
         if ((major == this.major) && (minor == this.minor)) {
             return this;

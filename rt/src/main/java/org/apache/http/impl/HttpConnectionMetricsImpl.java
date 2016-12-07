@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/HttpConnectionMetricsImpl.java $
- * $Revision: 548031 $
- * $Date: 2007-06-17 04:28:38 -0700 (Sun, 17 Jun 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,29 +28,35 @@
 package org.apache.http.impl;
 
 import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.HttpConnectionMetrics;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.io.HttpTransportMetrics;
 
 /**
- * Implementation of the metrics interface.
+ * Default implementation of the {@link HttpConnectionMetrics} interface.
+ *
+ * @since 4.0
  */
+@NotThreadSafe
 public class HttpConnectionMetricsImpl implements HttpConnectionMetrics {
-    
+
     public static final String REQUEST_COUNT = "http.request-count";
     public static final String RESPONSE_COUNT = "http.response-count";
     public static final String SENT_BYTES_COUNT = "http.sent-bytes-count";
     public static final String RECEIVED_BYTES_COUNT = "http.received-bytes-count";
-    
+
     private final HttpTransportMetrics inTransportMetric;
     private final HttpTransportMetrics outTransportMetric;
     private long requestCount = 0;
     private long responseCount = 0;
-    
+
     /**
      * The cache map for all metrics values.
      */
-    private HashMap metricsCache;
-    
+    private Map<String, Object> metricsCache;
+
     public HttpConnectionMetricsImpl(
             final HttpTransportMetrics inTransportMetric,
             final HttpTransportMetrics outTransportMetric) {
@@ -62,9 +64,10 @@ public class HttpConnectionMetricsImpl implements HttpConnectionMetrics {
         this.inTransportMetric = inTransportMetric;
         this.outTransportMetric = outTransportMetric;
     }
-    
+
     /* ------------------  Public interface method -------------------------- */
 
+    @Override
     public long getReceivedBytesCount() {
         if (this.inTransportMetric != null) {
             return this.inTransportMetric.getBytesTransferred();
@@ -73,6 +76,7 @@ public class HttpConnectionMetricsImpl implements HttpConnectionMetrics {
         }
     }
 
+    @Override
     public long getSentBytesCount() {
         if (this.outTransportMetric != null) {
             return this.outTransportMetric.getBytesTransferred();
@@ -80,23 +84,26 @@ public class HttpConnectionMetricsImpl implements HttpConnectionMetrics {
             return -1;
         }
     }
-    
+
+    @Override
     public long getRequestCount() {
         return this.requestCount;
     }
-    
+
     public void incrementRequestCount() {
         this.requestCount++;
     }
-    
+
+    @Override
     public long getResponseCount() {
         return this.responseCount;
     }
-    
+
     public void incrementResponseCount() {
         this.responseCount++;
     }
-    
+
+    @Override
     public Object getMetric(final String metricName) {
         Object value = null;
         if (this.metricsCache != null) {
@@ -104,18 +111,18 @@ public class HttpConnectionMetricsImpl implements HttpConnectionMetrics {
         }
         if (value == null) {
             if (REQUEST_COUNT.equals(metricName)) {
-                value = new Long(requestCount);
+                value = Long.valueOf(requestCount);
             } else if (RESPONSE_COUNT.equals(metricName)) {
-                value = new Long(responseCount);
+                value = Long.valueOf(responseCount);
             } else if (RECEIVED_BYTES_COUNT.equals(metricName)) {
                 if (this.inTransportMetric != null) {
-                    return new Long(this.inTransportMetric.getBytesTransferred());
+                    return Long.valueOf(this.inTransportMetric.getBytesTransferred());
                 } else {
                     return null;
                 }
             } else if (SENT_BYTES_COUNT.equals(metricName)) {
                 if (this.outTransportMetric != null) {
-                    return new Long(this.outTransportMetric.getBytesTransferred());
+                    return Long.valueOf(this.outTransportMetric.getBytesTransferred());
                 } else {
                     return null;
                 }
@@ -123,14 +130,15 @@ public class HttpConnectionMetricsImpl implements HttpConnectionMetrics {
         }
         return value;
     }
-    
-    public void setMetric(final String metricName, Object obj) {
+
+    public void setMetric(final String metricName, final Object obj) {
         if (this.metricsCache == null) {
-            this.metricsCache = new HashMap();
+            this.metricsCache = new HashMap<String, Object>();
         }
         this.metricsCache.put(metricName, obj);
     }
-    
+
+    @Override
     public void reset() {
         if (this.outTransportMetric != null) {
             this.outTransportMetric.reset();

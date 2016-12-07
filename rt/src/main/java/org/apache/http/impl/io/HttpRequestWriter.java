@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/HttpRequestWriter.java $
- * $Revision: 569673 $
- * $Date: 2007-08-25 06:58:51 -0700 (Sat, 25 Aug 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -33,27 +29,32 @@ package org.apache.http.impl.io;
 
 import java.io.IOException;
 
-import org.apache.http.HttpMessage;
 import org.apache.http.HttpRequest;
 import org.apache.http.io.SessionOutputBuffer;
 import org.apache.http.message.LineFormatter;
 import org.apache.http.params.HttpParams;
-import org.apache.http.util.CharArrayBuffer;
 
-public class HttpRequestWriter extends AbstractMessageWriter {
+/**
+ * HTTP request writer that serializes its output to an instance
+ * of {@link SessionOutputBuffer}.
+ *
+ * @since 4.0
+ *
+ * @deprecated (4.3) use {@link DefaultHttpRequestWriter}
+ */
+@Deprecated
+public class HttpRequestWriter extends AbstractMessageWriter<HttpRequest> {
 
     public HttpRequestWriter(final SessionOutputBuffer buffer,
                              final LineFormatter formatter,
                              final HttpParams params) {
         super(buffer, formatter, params);
     }
-    
-    protected void writeHeadLine(final HttpMessage message)
-        throws IOException {
 
-        final CharArrayBuffer buffer = lineFormatter.formatRequestLine
-            (this.lineBuf, ((HttpRequest) message).getRequestLine());
-        this.sessionBuffer.writeLine(buffer);
+    @Override
+    protected void writeHeadLine(final HttpRequest message) throws IOException {
+        lineFormatter.formatRequestLine(this.lineBuf, message.getRequestLine());
+        this.sessionBuffer.writeLine(this.lineBuf);
     }
 
 }

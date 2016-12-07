@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/conn/ConnectionPoolTimeoutException.java $
- * $Revision: 505684 $
- * $Date: 2007-02-10 04:40:02 -0800 (Sat, 10 Feb 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,20 +27,22 @@
 
 package org.apache.http.conn;
 
+import org.apache.http.annotation.Immutable;
+
 /**
- * A timeout while waiting for an available connection 
+ * A timeout while waiting for an available connection
  * from a connection manager.
- * 
- * @author <a href="mailto:laura@lwerner.org">Laura Werner</a>
- * 
+ *
+ *
  * @since 4.0
  */
+@Immutable
 public class ConnectionPoolTimeoutException extends ConnectTimeoutException {
 
     private static final long serialVersionUID = -7898874842020245128L;
 
     /**
-     * Creates a ConnectTimeoutException with a <tt>null</tt> detail message.
+     * Creates a ConnectTimeoutException with a {@code null} detail message.
      */
     public ConnectionPoolTimeoutException() {
         super();
@@ -52,10 +50,10 @@ public class ConnectionPoolTimeoutException extends ConnectTimeoutException {
 
     /**
      * Creates a ConnectTimeoutException with the specified detail message.
-     * 
-     * @param message The exception detail message 
+     *
+     * @param message The exception detail message
      */
-    public ConnectionPoolTimeoutException(String message) {
+    public ConnectionPoolTimeoutException(final String message) {
         super(message);
     }
 

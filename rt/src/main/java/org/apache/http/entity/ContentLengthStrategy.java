@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/entity/ContentLengthStrategy.java $
- * $Revision: 613298 $
- * $Date: 2008-01-18 14:09:22 -0800 (Fri, 18 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -35,20 +31,27 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpMessage;
 
 /**
- * Represents a strategy to determine the content length based on the properties
- * of an HTTP message.
+ * Represents a strategy to determine length of the enclosed content entity
+ * based on properties of the HTTP message.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 613298 $
- * 
  * @since 4.0
  */
 public interface ContentLengthStrategy {
 
     public static final int IDENTITY         = -1;
     public static final int CHUNKED          = -2;
-    
+
+    /**
+     * Returns length of the given message in bytes. The returned value
+     * must be a non-negative number, {@link #IDENTITY} if the end of the
+     * message will be delimited by the end of connection, or {@link #CHUNKED}
+     * if the message is chunk coded
+     *
+     * @param message HTTP message
+     * @return content length, {@link #IDENTITY}, or {@link #CHUNKED}
+     *
+     * @throws HttpException in case of HTTP protocol violation
+     */
     long determineLength(HttpMessage message) throws HttpException;
-            
+
 }

@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicHttpRequest.java $
- * $Revision: 573864 $
- * $Date: 2007-09-08 08:53:25 -0700 (Sat, 08 Sep 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,67 +28,89 @@
 package org.apache.http.message;
 
 import org.apache.http.HttpRequest;
+import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
-import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
 /**
- * Basic implementation of an HTTP request that can be modified.
+ * Basic implementation of {@link HttpRequest}.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 573864 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest {
-    
-    private final RequestLine requestline;
+
     private final String method;
     private final String uri;
-        
+
+    private RequestLine requestline;
+
+    /**
+     * Creates an instance of this class using the given request method
+     * and URI.
+     *
+     * @param method request method.
+     * @param uri request URI.
+     */
     public BasicHttpRequest(final String method, final String uri) {
         super();
-        if (method == null) {
-            throw new IllegalArgumentException("Method name may not be null");
-        }
-        if (uri == null) {
-            throw new IllegalArgumentException("Request URI may not be null");
-        }
-        this.method = method;
-        this.uri = uri;
+        this.method = Args.notNull(method, "Method name");
+        this.uri = Args.notNull(uri, "Request URI");
         this.requestline = null;
     }
 
+    /**
+     * Creates an instance of this class using the given request method, URI
+     * and the HTTP protocol version.
+     *
+     * @param method request method.
+     * @param uri request URI.
+     * @param ver HTTP protocol version.
+     */
     public BasicHttpRequest(final String method, final String uri, final ProtocolVersion ver) {
         this(new BasicRequestLine(method, uri, ver));
     }
 
+    /**
+     * Creates an instance of this class using the given request line.
+     *
+     * @param requestline request line.
+     */
     public BasicHttpRequest(final RequestLine requestline) {
         super();
-        if (requestline == null) {
-            throw new IllegalArgumentException("Request line may not be null");
-        }
-        this.requestline = requestline;
+        this.requestline = Args.notNull(requestline, "Request line");
         this.method = requestline.getMethod();
         this.uri = requestline.getUri();
     }
 
+    /**
+     * Returns the HTTP protocol version to be used for this request.
+     *
+     * @see #BasicHttpRequest(String, String)
+     */
+    @Override
     public ProtocolVersion getProtocolVersion() {
-        if (this.requestline != null) {
-            return this.requestline.getProtocolVersion();
-        } else {
-            return HttpProtocolParams.getVersion(getParams());
-        }
+        return getRequestLine().getProtocolVersion();
     }
-    
+
+    /**
+     * Returns the request line of this request.
+     *
+     * @see #BasicHttpRequest(String, String)
+     */
+    @Override
     public RequestLine getRequestLine() {
-        if (this.requestline != null) {
-            return this.requestline;
-        } else {
-            ProtocolVersion ver = HttpProtocolParams.getVersion(getParams());
-            return new BasicRequestLine(this.method, this.uri, ver);
+        if (this.requestline == null) {
+            this.requestline = new BasicRequestLine(this.method, this.uri, HttpVersion.HTTP_1_1);
         }
+        return this.requestline;
     }
-    
+
+    @Override
+    public String toString() {
+        return this.method + ' ' + this.uri + ' ' + this.headergroup;
+    }
+
 }

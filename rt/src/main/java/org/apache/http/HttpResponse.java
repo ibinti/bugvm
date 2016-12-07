@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/HttpResponse.java $
- * $Revision: 652956 $
- * $Date: 2008-05-02 17:13:05 -0700 (Fri, 02 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,17 +27,20 @@
 
 package org.apache.http;
 
-
 import java.util.Locale;
 
-
 /**
- * An HTTP response.
+ * After receiving and interpreting a request message, a server responds
+ * with an HTTP response message.
+ * <pre>
+ *     Response      = Status-Line
+ *                     *(( general-header
+ *                      | response-header
+ *                      | entity-header ) CRLF)
+ *                     CRLF
+ *                     [ message-body ]
+ * </pre>
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 652956 $
- * 
  * @since 4.0
  */
 public interface HttpResponse extends HttpMessage {
@@ -52,7 +51,7 @@ public interface HttpResponse extends HttpMessage {
      * {@link #setStatusLine setStatusLine} methods,
      * or it can be initialized in a constructor.
      *
-     * @return  the status line, or <code>null</code> if not yet set
+     * @return  the status line, or {@code null} if not yet set
      */
     StatusLine getStatusLine();
 
@@ -78,19 +77,13 @@ public interface HttpResponse extends HttpMessage {
      *
      * @param ver       the HTTP version
      * @param code      the status code
-     * @param reason    the reason phrase, or <code>null</code> to omit
+     * @param reason    the reason phrase, or {@code null} to omit
      */
     void setStatusLine(ProtocolVersion ver, int code, String reason);
-    
+
     /**
      * Updates the status line of this response with a new status code.
-     * The status line can only be updated if it is available. It must
-     * have been set either explicitly or in a constructor.
-     * <br/>
-     * The reason phrase will be updated according to the new status code,
-     * based on the current {@link #getLocale locale}. It can be set
-     * explicitly using {@link #setReasonPhrase setReasonPhrase}.
-     * 
+     *
      * @param code the HTTP status code.
      *
      * @throws IllegalStateException
@@ -105,11 +98,9 @@ public interface HttpResponse extends HttpMessage {
 
     /**
      * Updates the status line of this response with a new reason phrase.
-     * The status line can only be updated if it is available. It must
-     * have been set either explicitly or in a constructor.
      *
      * @param reason    the new reason phrase as a single-line string, or
-     *                  <code>null</code> to unset the reason phrase
+     *                  {@code null} to unset the reason phrase
      *
      * @throws IllegalStateException
      *          if the status line has not be set
@@ -125,15 +116,22 @@ public interface HttpResponse extends HttpMessage {
      * The entity is provided by calling {@link #setEntity setEntity}.
      *
      * @return  the response entity, or
-     *          <code>null</code> if there is none
+     *          {@code null} if there is none
      */
     HttpEntity getEntity();
-    
+
     /**
      * Associates a response entity with this response.
+     * <p>
+     * Please note that if an entity has already been set for this response and it depends on
+     * an input stream ({@link HttpEntity#isStreaming()} returns {@code true}),
+     * it must be fully consumed in order to ensure release of resources.
      *
      * @param entity    the entity to associate with this response, or
-     *                  <code>null</code> to unset
+     *                  {@code null} to unset
+     *
+     * @see HttpEntity#isStreaming()
+     * @see org.apache.http.util.EntityUtils#updateEntity(HttpResponse, HttpEntity)
      */
     void setEntity(HttpEntity entity);
 
@@ -143,19 +141,15 @@ public interface HttpResponse extends HttpMessage {
      * for the {@link #setStatusCode status code}.
      * It can be changed using {@link #setLocale setLocale}.
      *
-     * @return  the locale of this response, never <code>null</code>
+     * @return  the locale of this response, never {@code null}
      */
     Locale getLocale();
 
     /**
      * Changes the locale of this response.
-     * If there is a status line, it's reason phrase will be updated
-     * according to the status code and new locale.
      *
      * @param loc       the new locale
-     *
-     * @see #getLocale getLocale
-     * @see #setStatusCode setStatusCode
      */
     void setLocale(Locale loc);
+
 }

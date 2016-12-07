@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/cookie/NetscapeDomainHandler.java $
- * $Revision: 653041 $
- * $Date: 2008-05-03 03:39:28 -0700 (Sat, 03 May 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,16 +23,27 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  *
- */ 
+ */
 package org.apache.http.impl.cookie;
 
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import org.apache.http.annotation.Immutable;
+import org.apache.http.cookie.ClientCookie;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.cookie.CookieOrigin;
+import org.apache.http.cookie.CookieRestrictionViolationException;
 import org.apache.http.cookie.MalformedCookieException;
+import org.apache.http.cookie.SetCookie;
+import org.apache.http.util.Args;
+import org.apache.http.util.TextUtils;
 
+/**
+ *
+ * @since 4.0
+ */
+@Immutable
 public class NetscapeDomainHandler extends BasicDomainHandler {
 
     public NetscapeDomainHandler() {
@@ -44,28 +51,39 @@ public class NetscapeDomainHandler extends BasicDomainHandler {
     }
 
     @Override
-    public void validate(final Cookie cookie, final CookieOrigin origin) 
+    public void parse(final SetCookie cookie, final String value) throws MalformedCookieException {
+        Args.notNull(cookie, "Cookie");
+        if (TextUtils.isBlank(value)) {
+            throw new MalformedCookieException("Blank or null value for domain attribute");
+        }
+        cookie.setDomain(value);
+    }
+
+    @Override
+    public void validate(final Cookie cookie, final CookieOrigin origin)
             throws MalformedCookieException {
-        super.validate(cookie, origin);
-        // Perform Netscape Cookie draft specific validation
-        String host = origin.getHost();
-        String domain = cookie.getDomain();
+        final String host = origin.getHost();
+        final String domain = cookie.getDomain();
+        if (!host.equals(domain) && !BasicDomainHandler.domainMatch(domain, host)) {
+            throw new CookieRestrictionViolationException(
+                    "Illegal domain attribute \"" + domain + "\". Domain of origin: \"" + host + "\"");
+        }
         if (host.contains(".")) {
-            int domainParts = new StringTokenizer(domain, ".").countTokens();
+            final int domainParts = new StringTokenizer(domain, ".").countTokens();
 
             if (isSpecialDomain(domain)) {
                 if (domainParts < 2) {
-                    throw new MalformedCookieException("Domain attribute \""
-                        + domain 
+                    throw new CookieRestrictionViolationException("Domain attribute \""
+                        + domain
                         + "\" violates the Netscape cookie specification for "
                         + "special domains");
                 }
             } else {
                 if (domainParts < 3) {
-                    throw new MalformedCookieException("Domain attribute \""
-                        + domain 
+                    throw new CookieRestrictionViolationException("Domain attribute \""
+                        + domain
                         + "\" violates the Netscape cookie specification");
-                }            
+                }
             }
         }
     }
@@ -77,7 +95,7 @@ public class NetscapeDomainHandler extends BasicDomainHandler {
     * @return True if the specified domain is "special"
     */
    private static boolean isSpecialDomain(final String domain) {
-       final String ucDomain = domain.toUpperCase(Locale.ENGLISH);
+       final String ucDomain = domain.toUpperCase(Locale.ROOT);
        return ucDomain.endsWith(".COM")
                || ucDomain.endsWith(".EDU")
                || ucDomain.endsWith(".NET")
@@ -88,19 +106,20 @@ public class NetscapeDomainHandler extends BasicDomainHandler {
    }
 
    @Override
-public boolean match(Cookie cookie, CookieOrigin origin) {
-       if (cookie == null) {
-           throw new IllegalArgumentException("Cookie may not be null");
-       }
-       if (origin == null) {
-           throw new IllegalArgumentException("Cookie origin may not be null");
-       }
-       String host = origin.getHost();
-       String domain = cookie.getDomain();
+   public boolean match(final Cookie cookie, final CookieOrigin origin) {
+       Args.notNull(cookie, "Cookie");
+       Args.notNull(origin, "Cookie origin");
+       final String host = origin.getHost();
+       final String domain = cookie.getDomain();
        if (domain == null) {
            return false;
        }
        return host.endsWith(domain);
    }
+
+    @Override
+    public String getAttributeName() {
+        return ClientCookie.DOMAIN_ATTR;
+    }
 
 }

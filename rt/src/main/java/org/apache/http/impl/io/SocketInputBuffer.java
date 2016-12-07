@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/SocketInputBuffer.java $
- * $Revision: 560358 $
- * $Date: 2007-07-27 12:30:42 -0700 (Fri, 27 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,88 +28,79 @@
 package org.apache.http.impl.io;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
-import java.net.SocketTimeoutException;
+import org.apache.http.io.EofSensor;
 import org.apache.http.params.HttpParams;
-
+import org.apache.http.util.Args;
 
 /**
- * {@link Socket} bound session input buffer.
- *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 560358 $
+ * {@link org.apache.http.io.SessionInputBuffer} implementation
+ * bound to a {@link Socket}.
  *
  * @since 4.0
+ *
+ * @deprecated (4.3) use {@link SessionInputBufferImpl}
  */
-public class SocketInputBuffer extends AbstractSessionInputBuffer {
+@Deprecated
+public class SocketInputBuffer extends AbstractSessionInputBuffer implements EofSensor {
 
     private final Socket socket;
 
+    private boolean eof;
+
+    /**
+     * Creates an instance of this class.
+     *
+     * @param socket the socket to read data from.
+     * @param buffersize the size of the internal buffer. If this number is less
+     *   than {@code 0} it is set to the value of
+     *   {@link Socket#getReceiveBufferSize()}. If resultant number is less
+     *   than {@code 1024} it is set to {@code 1024}.
+     * @param params HTTP parameters.
+     */
     public SocketInputBuffer(
             final Socket socket,
-            int buffersize,
+            final int buffersize,
             final HttpParams params) throws IOException {
         super();
-        if (socket == null) {
-            throw new IllegalArgumentException("Socket may not be null");
-        }
+        Args.notNull(socket, "Socket");
         this.socket = socket;
-        // BEGIN android-changed
-        // Workaround for http://b/3514259. We take 'buffersize' as a hint in
-        // the weakest sense, and always use an 8KiB heap buffer and leave the
-        // kernel buffer size alone, trusting the system to have set a
-        // network-appropriate default.
-        init(socket.getInputStream(), 8192, params);
-        // END android-changed
+        this.eof = false;
+        int n = buffersize;
+        if (n < 0) {
+            n = socket.getReceiveBufferSize();
+        }
+        if (n < 1024) {
+            n = 1024;
+        }
+        init(socket.getInputStream(), n, params);
     }
 
-    public boolean isDataAvailable(int timeout) throws IOException {
+    @Override
+    protected int fillBuffer() throws IOException {
+        final int i = super.fillBuffer();
+        this.eof = i == -1;
+        return i;
+    }
+
+    public boolean isDataAvailable(final int timeout) throws IOException {
         boolean result = hasBufferedData();
         if (!result) {
-            int oldtimeout = this.socket.getSoTimeout();
+            final int oldtimeout = this.socket.getSoTimeout();
             try {
                 this.socket.setSoTimeout(timeout);
                 fillBuffer();
                 result = hasBufferedData();
-            } catch (InterruptedIOException e) {
-                if (!(e instanceof SocketTimeoutException)) {
-                    throw e;
-                }
             } finally {
                 socket.setSoTimeout(oldtimeout);
             }
         }
         return result;
-    }    
-        
-    // BEGIN android-added
-    /**
-     * Returns true if the connection is probably functional. It's insufficient
-     * to rely on isDataAvailable() returning normally; that approach cannot
-     * distinguish between an exhausted stream and a stream with zero bytes
-     * buffered.
-     *
-     * @hide
-     */
-    public boolean isStale() throws IOException {
-        if (hasBufferedData()) {
-            return false;
-        }
-        int oldTimeout = this.socket.getSoTimeout();
-        try {
-            this.socket.setSoTimeout(1);
-            return fillBuffer() == -1;
-        } catch (SocketTimeoutException e) {
-            return false; // the connection is not stale; hooray
-        } catch (IOException e) {
-            return true; // the connection is stale, the read or soTimeout failed.
-        } finally {
-            this.socket.setSoTimeout(oldTimeout);
-        }
     }
-    // END android-added
+
+    public boolean isEof() {
+        return this.eof;
+    }
+
 }

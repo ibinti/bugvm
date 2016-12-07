@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BufferedHeader.java $
- * $Revision: 604625 $
- * $Date: 2007-12-16 06:11:11 -0800 (Sun, 16 Dec 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,22 +27,25 @@
 
 package org.apache.http.message;
 
+import java.io.Serializable;
+
 import org.apache.http.FormattedHeader;
 import org.apache.http.HeaderElement;
 import org.apache.http.ParseException;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 import org.apache.http.util.CharArrayBuffer;
 
 /**
  * This class represents a raw HTTP header whose content is parsed 'on demand'
  * only when the header value needs to be consumed.
- * 
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
  *
- *
- * <!-- empty lines above to avoid 'svn diff' context problems -->
- * @version $Revision: 604625 $ $Date: 2007-12-16 06:11:11 -0800 (Sun, 16 Dec 2007) $
+ * @since 4.0
  */
-public class BufferedHeader implements FormattedHeader, Cloneable {
+@NotThreadSafe
+public class BufferedHeader implements FormattedHeader, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -2768352615787625448L;
 
     /**
      * Header name.
@@ -57,7 +56,7 @@ public class BufferedHeader implements FormattedHeader, Cloneable {
      * The buffer containing the entire header line.
      */
     private final CharArrayBuffer buffer;
-    
+
     /**
      * The beginning of the header value in the buffer
      */
@@ -77,16 +76,13 @@ public class BufferedHeader implements FormattedHeader, Cloneable {
         throws ParseException {
 
         super();
-        if (buffer == null) {
-            throw new IllegalArgumentException
-                ("Char array buffer may not be null");
-        }
-        int colon = buffer.indexOf(':');
+        Args.notNull(buffer, "Char array buffer");
+        final int colon = buffer.indexOf(':');
         if (colon == -1) {
             throw new ParseException
                 ("Invalid header: " + buffer.toString());
         }
-        String s = buffer.substringTrimmed(0, colon);
+        final String s = buffer.substringTrimmed(0, colon);
         if (s.length() == 0) {
             throw new ParseException
                 ("Invalid header: " + buffer.toString());
@@ -97,37 +93,43 @@ public class BufferedHeader implements FormattedHeader, Cloneable {
     }
 
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public String getValue() {
         return this.buffer.substringTrimmed(this.valuePos, this.buffer.length());
     }
 
+    @Override
     public HeaderElement[] getElements() throws ParseException {
-        ParserCursor cursor = new ParserCursor(0, this.buffer.length());
+        final ParserCursor cursor = new ParserCursor(0, this.buffer.length());
         cursor.updatePos(this.valuePos);
-        return BasicHeaderValueParser.DEFAULT
-            .parseElements(this.buffer, cursor);
+        return BasicHeaderValueParser.INSTANCE.parseElements(this.buffer, cursor);
     }
 
+    @Override
     public int getValuePos() {
         return this.valuePos;
     }
 
+    @Override
     public CharArrayBuffer getBuffer() {
         return this.buffer;
     }
 
+    @Override
     public String toString() {
         return this.buffer.toString();
     }
 
+    @Override
     public Object clone() throws CloneNotSupportedException {
         // buffer is considered immutable
         // no need to make a copy of it
         return super.clone();
     }
- 
+
 }

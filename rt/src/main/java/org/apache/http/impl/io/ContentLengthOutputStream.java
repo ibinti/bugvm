@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/impl/io/ContentLengthOutputStream.java $
- * $Revision: 560343 $
- * $Date: 2007-07-27 11:18:19 -0700 (Fri, 27 Jul 2007) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,21 +30,28 @@ package org.apache.http.impl.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.io.SessionOutputBuffer;
+import org.apache.http.util.Args;
 
 /**
- * A stream wrapper that closes itself after a defined number of bytes.
+ * Output stream that cuts off after a defined number of bytes. This class
+ * is used to send content of HTTP messages where the end of the content entity
+ * is determined by the value of the {@code Content-Length header}.
+ * Entities transferred using this stream can be maximum {@link Long#MAX_VALUE}
+ * long.
+ * <p>
+ * Note that this class NEVER closes the underlying stream, even when close
+ * gets called.  Instead, the stream will be marked as closed and no further
+ * output will be permitted.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 560343 $
- * 
  * @since 4.0
  */
+@NotThreadSafe
 public class ContentLengthOutputStream extends OutputStream {
-    
+
     /**
-     * Wrapped session outbut buffer.
+     * Wrapped session output buffer.
      */
     private final SessionOutputBuffer out;
 
@@ -65,31 +68,27 @@ public class ContentLengthOutputStream extends OutputStream {
     private boolean closed = false;
 
     /**
-     * Creates a new length limited stream
+     * Wraps a session output buffer and cuts off output after a defined number
+     * of bytes.
      *
-     * @param out The data transmitter to wrap
+     * @param out The session output buffer
      * @param contentLength The maximum number of bytes that can be written to
      * the stream. Subsequent write operations will be ignored.
-     * 
+     *
      * @since 4.0
      */
-    public ContentLengthOutputStream(final SessionOutputBuffer out, long contentLength) {
+    public ContentLengthOutputStream(final SessionOutputBuffer out, final long contentLength) {
         super();
-        if (out == null) {
-            throw new IllegalArgumentException("Session output buffer may not be null");
-        }
-        if (contentLength < 0) {
-            throw new IllegalArgumentException("Content length may not be negative");
-        }
-        this.out = out;
-        this.contentLength = contentLength;
+        this.out = Args.notNull(out, "Session output buffer");
+        this.contentLength = Args.notNegative(contentLength, "Content length");
     }
 
     /**
      * <p>Does not close the underlying socket output.</p>
-     * 
+     *
      * @throws IOException If an I/O problem occurs.
      */
+    @Override
     public void close() throws IOException {
         if (!this.closed) {
             this.closed = true;
@@ -97,29 +96,34 @@ public class ContentLengthOutputStream extends OutputStream {
         }
     }
 
+    @Override
     public void flush() throws IOException {
         this.out.flush();
     }
 
-    public void write(byte[] b, int off, int len) throws IOException {
+    @Override
+    public void write(final byte[] b, final int off, final int len) throws IOException {
         if (this.closed) {
             throw new IOException("Attempted write to closed stream.");
         }
         if (this.total < this.contentLength) {
-            long max = this.contentLength - this.total;
-            if (len > max) {
-                len = (int) max;
+            final long max = this.contentLength - this.total;
+            int chunk = len;
+            if (chunk > max) {
+                chunk = (int) max;
             }
-            this.out.write(b, off, len);
-            this.total += len;
+            this.out.write(b, off, chunk);
+            this.total += chunk;
         }
     }
 
-    public void write(byte[] b) throws IOException {
+    @Override
+    public void write(final byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
-    public void write(int b) throws IOException {
+    @Override
+    public void write(final int b) throws IOException {
         if (this.closed) {
             throw new IOException("Attempted write to closed stream.");
         }
@@ -128,5 +132,5 @@ public class ContentLengthOutputStream extends OutputStream {
             this.total++;
         }
     }
-    
+
 }

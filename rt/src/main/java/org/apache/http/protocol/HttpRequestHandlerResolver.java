@@ -1,8 +1,4 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/HttpRequestHandlerResolver.java $
- * $Revision: 613298 $
- * $Date: 2008-01-18 14:09:22 -0800 (Fri, 18 Jan 2008) $
- *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,15 +28,24 @@
 package org.apache.http.protocol;
 
 /**
- * Interface to be implemented by objects that can resolve 
- * {@link HttpRequestHandler} instances by request URI.
+ * HttpRequestHandlerResolver can be used to resolve an instance of
+ * {@link HttpRequestHandler} matching a particular request URI. Usually the
+ * mapped request handler will be used to process the request with the
+ * specified request URI.
  *
- * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
- *
- * @version $Revision: 613298 $
+ * @since 4.0
+ * @deprecated see {@link HttpRequestHandlerMapper}
  */
+@Deprecated
 public interface HttpRequestHandlerResolver {
 
+    /**
+     * Looks up a handler matching the given request URI.
+     *
+     * @param requestURI the request URI
+     * @return HTTP request handler or {@code null} if no match
+     * is found.
+     */
     HttpRequestHandler lookup(String requestURI);
-    
+
 }
