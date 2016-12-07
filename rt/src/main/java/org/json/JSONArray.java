@@ -187,6 +187,17 @@ public class JSONArray {
     }
 
     /**
+     * Same as {@link #put}, with added validity checks.
+     */
+    void checkedPut(Object value) throws JSONException {
+        if (value instanceof Number) {
+            JSON.checkDouble(((Number) value).doubleValue());
+        }
+
+        put(value);
+    }
+
+    /**
      * Sets the value at {@code index} to {@code value}, null padding this array
      * to the required length if necessary. If a value already exists at {@code
      * index}, it will be replaced.
