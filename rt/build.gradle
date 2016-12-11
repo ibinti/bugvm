@@ -12,6 +12,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 archivesBaseName = "bugvm-rt"
 description = "BugVM Runtime Library"
 
+
 dependencies {
      compile "commons-io:commons-io:2.4"
 }
@@ -21,6 +22,7 @@ jar {
           attributes "Implementation-Version" : project.version
      }
      enabled = false
+     dependsOn shadowJar
 }
 
 shadowJar {
@@ -29,8 +31,6 @@ shadowJar {
      relocate "org.conscrypt", "com.android.org.conscrypt"
      relocate "com.squareup", "com.android"
 }
-
-jar.dependsOn shadowJar
 
 task nativeLib(type:Exec) {
      workingDir "vm"
