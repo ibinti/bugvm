@@ -278,7 +278,7 @@ public class IOSTarget extends AbstractTarget {
             env = new HashMap<>();
         }
 
-        File ideviceinstallerPath = new File(config.getHome().getBinDir(), "bugvm-device");
+        File ideviceinstallerPath = new File(config.getHome().getBinDir(), "ideviceinstaller");
         return new Executor(proxyLogger, ideviceinstallerPath)
                 .args(args)
                 .wd(launchParameters.getWorkingDirectory())
