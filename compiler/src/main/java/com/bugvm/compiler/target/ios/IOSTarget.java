@@ -108,21 +108,6 @@ public class IOSTarget extends AbstractTarget {
         return arch == Arch.thumbv7 || arch == Arch.arm64;
     }
 
-    public static synchronized File getIosSimPath() {
-        if (iosSimPath == null) {
-            try {
-                File path = File.createTempFile("bugvm-sim", "");
-                FileUtils.copyURLToFile(IOSTarget.class.getResource("/bugvm-sim"), path);
-                path.setExecutable(true);
-                path.deleteOnExit();
-                iosSimPath = path;
-            } catch (IOException e) {
-                throw new Error(e);
-            }
-        }
-        return iosSimPath;
-    }
-
     public List<SDK> getSDKs() {
         if (isSimulatorArch(arch)) {
             return SDK.listSimulatorSDKs();
@@ -143,78 +128,20 @@ public class IOSTarget extends AbstractTarget {
     private Launcher createIOSSimLauncher(LaunchParameters launchParameters)
             throws IOException {
 
-        File dir = getAppDir();
+        String appDir = getAppDir().getAbsolutePath();
+        String getDeviceTypeId = "";
 
-        List<Object> args = new ArrayList<Object>();
-        args.add("launch");
-        args.add(dir);
         if (((IOSSimulatorLaunchParameters) launchParameters).getDeviceType() != null) {
             DeviceType deviceType = ((IOSSimulatorLaunchParameters) launchParameters).getDeviceType();
-            args.add(deviceType.getDeviceTypeId());
+            getDeviceTypeId = deviceType.getDeviceTypeId();
         }
 
-        File xcodePath = new File(ToolchainUtil.findXcodePath());
-        Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
+        new com.bugvm.compiler.Sim().launch(appDir, getDeviceTypeId);
 
-        //BugVM: Please cleanup this outdated mess!
-        //
-        // See issue https://github.com/bugvm/bugvm/issues/1150, we need
-        // to swallow the error message by bugvm-sim on Xcode 7. We need
-        // to remove this
-        Logger proxyLogger = new Logger() {
-            boolean skipWarningsAndErrors = false;
-
-            @Override
-            public void debug(String format, Object... args) {
-                config.getLogger().debug(format, args);
-            }
-
-            @Override
-            public void info(String format, Object... args) {
-                config.getLogger().info(format, args);
-            }
-
-            @Override
-            public void warn(String format, Object... args) {
-                // we swallow the first warning message, then
-                // error() will turn on skipWarningsAndErrors until
-                // we get another warning.
-                if (format.toString().contains("DVTPlugInManager.m:257")) {
-                    config.getLogger().info(format, args);
-                    return;
-                }
-
-                // received the "closing" warning, enable
-                // logging of warnings and errors again
-                if (skipWarningsAndErrors) {
-                    skipWarningsAndErrors = false;
-                    config.getLogger().info(format, args);
-                } else {
-                    config.getLogger().warn(format, args);
-                }
-            }
-
-            @Override
-            public void error(String format, Object... args) {
-                if (format.contains(
-                        "Requested but did not find extension point with identifier Xcode.DVTFoundation.DevicePlatformMapping")) {
-                    skipWarningsAndErrors = true;                    
-                }
-                if (skipWarningsAndErrors) {
-                    config.getLogger().info(format, args);
-                } else {
-                    config.getLogger().error(format, args);
-                }
-            }
-        };
-
-        File bugvmSimPath = new File(config.getHome().getBinDir(), "bugvm-sim");
-        return new Executor(proxyLogger, bugvmSimPath)
-                .args(args)
-                //.wd(config.getHome().getBinDir())
+        //dummy
+        return new Executor(null, new File("/bin/bash"))
                 .wd(launchParameters.getWorkingDirectory())
-                .inheritEnv(false)
-                .env(env);
+                .inheritEnv(true);
     }
 
     private Launcher createIOSDeviceLauncher(LaunchParameters launchParameters)

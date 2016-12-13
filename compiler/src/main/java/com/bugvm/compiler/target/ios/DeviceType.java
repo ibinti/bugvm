@@ -30,9 +30,7 @@ import com.bugvm.compiler.log.Logger;
 import com.bugvm.compiler.util.Executor;
 
 /**
- * Simulator device types, consisting of the device type id and SDK version as
- * listed by bugvm-sim.
- * 
+ *
  * @author badlogic
  *
  */
@@ -69,8 +67,7 @@ public class DeviceType implements Comparable<DeviceType> {
     }
 
     /**
-     * @return id as understood by bugvm-sim, concatenation of type and sdk
-     *         version
+     * @return id, concatenation of type and sdk version
      */
     public String getDeviceTypeId() {
         return deviceName + ", " + sdk.getVersion();
@@ -96,9 +93,8 @@ public class DeviceType implements Comparable<DeviceType> {
     }
 
     public static List<DeviceType> listDeviceTypes() {
-        try {
-            String capture = new Executor(Logger.NULL_LOGGER, IOSTarget.getIosSimPath()).args(
-                    "showdevicetypes").execCapture();
+            String capture = new com.bugvm.compiler.Sim().showdevicetypes();
+
             List<DeviceType> types = new ArrayList<DeviceType>();
             String[] deviceTypeIds = capture.split("\n");
             List<SDK> sdks = SDK.listSimulatorSDKs();
@@ -131,9 +127,6 @@ public class DeviceType implements Comparable<DeviceType> {
             // another id comes before in the list.
             Collections.sort(types);
             return types;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
