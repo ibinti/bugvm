@@ -16,9 +16,11 @@
  */
 package com.bugvm.compiler.target.ios;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -220,12 +222,6 @@ public class IOSTarget extends AbstractTarget {
 
         File dir = getAppDir();
 
-
-
-        List<Object> args = new ArrayList<Object>();
-        args.add("-i");
-        args.add(dir);
-
         Logger proxyLogger = new Logger() {
             boolean skipWarningsAndErrors = false;
 
@@ -279,8 +275,11 @@ public class IOSTarget extends AbstractTarget {
         }
 
         File ideviceinstallerPath = new File(config.getHome().getBinDir(), "ideviceinstaller");
+        List<Object> ideviceinstallerArgs = new ArrayList<Object>();
+        ideviceinstallerArgs.add("-i");
+        ideviceinstallerArgs.add(dir);
         return new Executor(proxyLogger, ideviceinstallerPath)
-                .args(args)
+                .args(ideviceinstallerArgs)
                 .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)
                 .env(env);
