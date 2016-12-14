@@ -45,21 +45,22 @@ public class Sim {
                 command
         };
 
-        String out = "";
+        String showdevicetypes = "";
+
         String devicetypes = executeCommand(cmd);
         String[] lines = devicetypes.split("\n");
         for(String line : lines) {
             String[] parts = line.split("\\(YY\\)");
-
+            String out = "";
             String match = parts[1].trim();
             if(match.equals("iPhone-4s") || match.equals("iPhone-5") || match.equals("iPad-2") || match.equals("iPad-Retina") )
                 out = "com.apple.CoreSimulator.SimDeviceType." +match +", "+runtimes + ", (i386)";
             else out = "com.apple.CoreSimulator.SimDeviceType." +match +", "+runtimes + ", (x86_64 i386)";
 
-            if(list.contains(parts[0].replace("-"," ").trim())) out += out +"\n";
+            if(list.contains(parts[0].replace("-"," ").trim())) showdevicetypes += out +"\n";
         }
 
-        return out;
+        return showdevicetypes;
     }
 
     public void start() {
