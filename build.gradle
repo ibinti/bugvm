@@ -25,8 +25,8 @@ allprojects {
 
     ext {
         mavenUrlSnapshot = "https://oss.sonatype.org/content/repositories/snapshots"
-        //mavenUsername = ""
-        //mavenPassword = ""
+        mavenUsername = ""
+        mavenPassword = ""
     }
 
     publishing {
