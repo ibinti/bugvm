@@ -3,7 +3,7 @@ set(MACOSX_SDK_VERSION 10.12)
 # The minimum Mac OS X version needed by apps built by BugVM
 set(MACOSX_MIN_VERSION 10.7)
 # The iOS SDK version required when building the VM libs
-set(IOS_SDK_VERSION 10.1)
+set(IOS_SDK_VERSION 10.2)
 # The minimum iOS version needed by apps built by BugVM
 set(IOS_MIN_VERSION 6.0)
 
