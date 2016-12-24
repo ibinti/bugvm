@@ -16,4 +16,4 @@ Target Platform Apps:
 
 Visit [bugvm.com](https://bugvm.com) for latest news and information.
 
-If you have a question or message, post it to [the forum](https://ibinti.com/forumdisplay.php?fid=1).
+If you have a question or message, post it to [the forum](https://forum.ibinti.com/forumdisplay.php?fid=1).
