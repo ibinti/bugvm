@@ -13,5 +13,3 @@ Target Platform Apps:
 * iOS App
 * macOS Console
 * Ubuntu Console
-
-Visit [bugvm.com](https://bugvm.com) for latest news and information.
