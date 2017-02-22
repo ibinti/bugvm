@@ -20,7 +20,3 @@ Target Platform Apps:
 [Java HelloWorld](https://github.com/bugvm/bugvm-helloworld)
 
 [Scala HelloWorld](https://github.com/bugvm/bugvm-helloscala)
-
-
-
-Visit [bugvm.com](https://bugvm.com) for latest news and information.
