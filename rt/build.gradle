@@ -10,7 +10,7 @@ buildscript {
 apply plugin: "com.github.johnrengelman.shadow"
 
 archivesBaseName = "bugvm-rt"
-description = "BugVM Runtime Library"
+description = """BugVM Runtime Library"""
 
 
 dependencies {
@@ -30,6 +30,16 @@ shadowJar {
      relocate "org.bouncycastle", "com.android.org.bouncycastle"
      relocate "org.conscrypt", "com.android.org.conscrypt"
      relocate "com.squareup", "com.android"
+}
+
+sourceSets {
+
+     main {
+          resources {
+               srcDirs = ['src/main/resources']
+          }
+     }
+
 }
 
 task nativeLib(type:Exec) {

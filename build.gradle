@@ -72,7 +72,6 @@ dependencies {
     compile project(":compiler")
     compile project(":apple")
     compile project(":rt")
-    compile project(":cacerts")
 }
 
 task targz(type: Tar) {
@@ -88,7 +87,6 @@ task targz(type: Tar) {
         from  "compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
         from("rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
         from("apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
-        from("cacerts/build/libs/bugvm-cacerts-${version}.jar") rename { String fileName -> fileName.replace("bugvm-cacerts-${version}.jar", "bugvm-cacerts.jar") }
     }
 
     into ("bugvm-${version}/lib/vm") {

@@ -1,20 +1,20 @@
-archivesBaseName = 'bugvm-gradle'
-description = 'BugVM Gradle Plugin'
+archivesBaseName = "bugvm-gradle"
+description = """BugVM Gradle Plugin"""
 
-apply plugin: 'groovy'
+apply plugin: "groovy"
 
 dependencies {
-    compile project(':compiler')
+    compile project(":compiler")
 
     compile gradleApi()
     compile localGroovy()
 
-    compile 'org.apache.commons:commons-compress:1.5'
-    compile 'org.sonatype.aether:aether:1.13.1'
-    compile 'org.sonatype.aether:aether-connector-wagon:1.13.1'
-    compile 'org.apache.maven:maven-aether-provider:3.0.4'
-    compile 'org.apache.maven.wagon:wagon-provider-api:2.4'
-    compile 'org.apache.maven.wagon:wagon-http:2.4'
+    compile "org.apache.commons:commons-compress:1.5"
+    compile "org.sonatype.aether:aether:1.13.1"
+    compile "org.sonatype.aether:aether-connector-wagon:1.13.1"
+    compile "org.apache.maven:maven-aether-provider:3.0.4"
+    compile "org.apache.maven.wagon:wagon-provider-api:2.4"
+    compile "org.apache.maven.wagon:wagon-http:2.4"
 }
 
 jar {
@@ -52,19 +52,19 @@ uploadArchives {
         pom.project {
             name project.archivesBaseName
             description project.description
-            url 'https://bugvm.com'
+            url "https://bugvm.com"
 
             scm {
-                url 'https://github.com/bugvm/bugvm.git'
-                connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                url "https://github.com/bugvm/bugvm.git"
+                connection "scm:git:git://github.com/bugvm/bugvm.git"
             }
 
             developers {
                 developer {
-                    id 'bugvm'
-                    name 'The Bug'
-                    email 'bug@bugvm.com'
-                    url 'https://bugvm.com'
+                    id "bugvm"
+                    name "The Bug"
+                    email "bug@bugvm.com"
+                    url "https://bugvm.com"
                 }
             }
         }

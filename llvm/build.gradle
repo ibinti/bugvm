@@ -5,10 +5,10 @@ sourceSets {
 
     main {
         java {
-            srcDirs = ['src/main/java']
+            srcDirs = ["src/main/java"]
         }
         resources {
-            srcDirs = ['src/main/resources']
+            srcDirs = ["src/main/resources"]
         }
     }
 
@@ -16,7 +16,7 @@ sourceSets {
 
 task nativeLib(type:Exec) {
 
-    commandLine 'bash', '-c', '. build.sh --clean'
+    commandLine "bash", "-c", ". build.sh --clean"
 
 }
 
@@ -50,19 +50,19 @@ uploadArchives {
             pom.project {
                 name project.archivesBaseName
                 description project.description
-                url 'https://bugvm.com'
+                url "https://bugvm.com"
 
                 scm {
-                    url 'https://github.com/bugvm/bugvm.git'
-                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                    url "https://github.com/bugvm/bugvm.git"
+                    connection "scm:git:git://github.com/bugvm/bugvm.git"
                 }
 
                 developers {
                     developer {
-                        id 'bugvm'
-                        name 'The Bug'
-                        email 'bug@bugvm.com'
-                        url 'https://bugvm.com'
+                        id "bugvm"
+                        name "The Bug"
+                        email "bug@bugvm.com"
+                        url "https://bugvm.com"
                     }
                 }
             }

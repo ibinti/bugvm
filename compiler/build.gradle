@@ -2,8 +2,8 @@ archivesBaseName = "bugvm-compiler"
 description = """BugVM Compiler"""
 
 dependencies {
-    compile project(':llvm')
-    compile project(':soot')
+    compile project(":llvm")
+    compile project(":soot")
 
     compile "com.googlecode.plist:dd-plist:1.16"
     compile "commons-io:commons-io:2.4"
@@ -15,9 +15,9 @@ dependencies {
     compile "commons-cli:commons-cli:1.3.1"
     compile "com.googlecode.json-simple:json-simple:1.1.1"
     compile ("org.simpleframework:simple-xml:2.7.1") {
-        exclude(module: 'stax-api')
-        exclude(module: 'xpp3')
-        exclude(module: 'stax')
+        exclude(module: "stax-api")
+        exclude(module: "xpp3")
+        exclude(module: "stax")
     }
 }
 
@@ -25,10 +25,10 @@ sourceSets {
 
     main {
         java {
-            srcDirs = ['src/main/java']
+            srcDirs = ["src/main/java"]
         }
         resources {
-            srcDirs = ['src/main/resources']
+            srcDirs = ["src/main/resources"]
         }
     }
 
@@ -36,9 +36,9 @@ sourceSets {
 
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA','META-INF/maven/**'
+    exclude "META-INF/*.RSA", "META-INF/*.SF","META-INF/*.DSA","META-INF/maven/**"
     manifest {
-        attributes 'Main-Class': 'com.bugvm.compiler.AppCompiler'
+        attributes "Main-Class": "com.bugvm.compiler.AppCompiler"
         attributes "Implementation-Version" : project.version
     }
 }
@@ -73,19 +73,19 @@ uploadArchives {
             pom.project {
                 name project.archivesBaseName
                 description project.description
-                url 'https://bugvm.com'
+                url "https://bugvm.com"
 
                 scm {
-                    url 'https://github.com/bugvm/bugvm.git'
-                    connection 'scm:git:git://github.com/bugvm/bugvm.git'
+                    url "https://github.com/bugvm/bugvm.git"
+                    connection "scm:git:git://github.com/bugvm/bugvm.git"
                 }
 
                 developers {
                     developer {
-                        id 'bugvm'
-                        name 'The Bug'
-                        email 'bug@bugvm.com'
-                        url 'https://bugvm.com'
+                        id "bugvm"
+                        name "The Bug"
+                        email "bug@bugvm.com"
+                        url "https://bugvm.com"
                     }
                 }
             }
