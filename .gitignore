@@ -2,6 +2,5 @@
 .gradle
 .idea
 build
-local.properties
 *.iml
 *.hprof
