@@ -2,8 +2,6 @@
 .gradle
 .idea
 build
-target
 local.properties
 *.iml
 *.hprof
-/.nb-gradle/
