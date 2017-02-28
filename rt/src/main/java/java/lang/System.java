@@ -418,7 +418,7 @@ public final class System {
         VMRuntime runtime = VMRuntime.getRuntime();
         Properties p = new Properties();
 
-        String projectUrl = "http://www.bugvm.com/";
+        String projectUrl = "https://bugvm.com";
         String projectName = "BugVM";
 
         p.put("java.boot.class.path", runtime.bootClassPath());
@@ -467,7 +467,7 @@ public final class System {
 
         p.put("file.encoding", "UTF-8");
         p.put("user.language", "en");
-        p.put("user.region", "US");
+        p.put("user.region", "CA");
 
         try {
             StructPasswd passwd = Libcore.os.getpwuid(Libcore.os.getuid());
