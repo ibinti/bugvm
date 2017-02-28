@@ -913,7 +913,7 @@ public class Config {
             rtPath = new File(homeDir, "lib/bugvm-rt.jar");
             compilerPath = new File(homeDir, "lib/bugvm-compiler.jar");
             cacertsPath = new HashMap<Cacerts, File>();
-            cacertsPath.put(Cacerts.full, new File(homeDir, "lib/bugvm-cacerts.jar"));
+            cacertsPath.put(Cacerts.full, new File(homeDir, "lib/bugvm-rt.jar"));
         }
 
         public boolean isDev() {
