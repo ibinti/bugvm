@@ -63,6 +63,7 @@ fi
 
 case $OS in
 Darwin)
+  MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
   if xcrun -f clang &> /dev/null; then
     CC=$(xcrun -f clang)
   else
@@ -95,7 +96,7 @@ for T in $TARGETS; do
   BUILD_TYPE=Release
   mkdir -p "$BASE/target.llvm/build/$T"
   rm -rf "$BASE/binaries/$OS/$ARCH"
-  bash -c "cd '$BASE/target.llvm/build/$T'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOS=$OS -DARCH=$ARCH '$BASE'; make -j $WORKERS install/strip"
+  bash -c "cd '$BASE/target.llvm/build/$T'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DMACOSX_SDK_VERSION=$MACOSX_SDK_VERSION -DOS=$OS -DARCH=$ARCH '$BASE'; make -j $WORKERS install/strip"
   R=$?
   if [[ $R != 0 ]]; then
     echo "$T build failed"

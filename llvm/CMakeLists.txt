@@ -1,5 +1,5 @@
 # The Mac OS X SDK version required when building the LLVM libs
-set(MACOSX_SDK_VERSION 10.12)
+#set(MACOSX_SDK_VERSION 10.12)
 # The minimum Mac OS X version needed by apps built by BugVM
 set(MACOSX_MIN_VERSION 10.7)
 

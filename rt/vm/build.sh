@@ -89,6 +89,8 @@ if [ "$CLEAN" = '1' ]; then
 fi
 
 if [ $(uname) = 'Darwin' ]; then
+  MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
+  IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
   if xcrun -f clang &> /dev/null; then
     CC=$(xcrun -f clang)
   else
@@ -111,7 +113,7 @@ for T in $TARGETS; do
     BUILD_TYPE=$B
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
-    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOS=$OS -DARCH=$ARCH '$BASE'; make $VERBOSE install"
+    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DMACOSX_SDK_VERSION=$MACOSX_SDK_VERSION -DIOS_SDK_VERSION=$IOS_SDK_VERSION -DOS=$OS -DARCH=$ARCH '$BASE'; make $VERBOSE install"
     R=$?
     if [[ $R != 0 ]]; then
       echo "$T-$B build failed"
