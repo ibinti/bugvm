@@ -44,11 +44,41 @@ while [ "${1:0:2}" = '--' ]; do
   shift
 done
 
+if [ $(uname) = 'Darwin' ]; then
+  if xcrun --sdk macosx --show-sdk-version &> /dev/null; then
+    MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
+  else
+    MACOSX_SDK_VERSION=10.7
+  fi
+  if xcrun --sdk iphoneos --show-sdk-version &> /dev/null; then
+    IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
+  else
+    IOS_SDK_VERSION=6.1
+  fi
+  if xcrun -f clang &> /dev/null; then
+    CC=$(xcrun -f clang)
+  else
+    CC=$(which clang)
+  fi
+  if xcrun -f clang++ &> /dev/null; then
+    CXX=$(xcrun -f clang++)
+  else
+    CXX=$(which clang++)
+  fi
+else
+  CC=$(which gcc)
+  CXX=$(which g++)
+fi
+
 if [ "x$TARGETS" = 'x' ]; then
   OS=$(uname)
   case $OS in
   Darwin)
-    TARGETS="ios-thumbv7 ios-arm64 ios-x86_64 ios-x86 macosx-x86_64"
+    if [ $MACOSX_SDK_VERSION -eq 10.7 ] ; then
+      TARGETS="ios-thumbv7 ios-x86_64 ios-x86 macosx-x86_64"
+    else
+      TARGETS="ios-thumbv7 ios-arm64 ios-x86_64 ios-x86 macosx-x86_64"
+    fi
     ;;
   Linux)
     TARGETS="linux-x86_64" # "linux-x86_64 linux-x86"
@@ -88,36 +118,10 @@ if [ "$CLEAN" = '1' ]; then
   done
 fi
 
-if [ $(uname) = 'Darwin' ]; then
-  if xcrun --sdk macosx --show-sdk-version &> /dev/null; then
-    MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
-  else
-    MACOSX_SDK_VERSION=10.7
-  fi
-  if xcrun --sdk iphoneos --show-sdk-version &> /dev/null; then
-    IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
-  else
-    IOS_SDK_VERSION=6.1
-  fi
-  if xcrun -f clang &> /dev/null; then
-    CC=$(xcrun -f clang)
-  else
-    CC=$(which clang)
-  fi
-  if xcrun -f clang++ &> /dev/null; then
-    CXX=$(xcrun -f clang++)
-  else
-    CXX=$(which clang++)
-  fi
-else
-  CC=$(which gcc)
-  CXX=$(which g++)
-fi
-
 for T in $TARGETS; do
   OS=${T%%-*}
   ARCH=${T#*-}
-  for B in $BUILDS; do
+ for B in $BUILDS; do
     BUILD_TYPE=$B
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
