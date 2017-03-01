@@ -89,8 +89,16 @@ if [ "$CLEAN" = '1' ]; then
 fi
 
 if [ $(uname) = 'Darwin' ]; then
-  MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
-  IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
+  if xcrun --sdk macosx --show-sdk-version &> /dev/null; then
+    MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
+  else
+    MACOSX_SDK_VERSION=10.7
+  fi
+  if xcrun --sdk iphoneos --show-sdk-version &> /dev/null; then
+    IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
+  else
+    IOS_SDK_VERSION=6.1
+  fi
   if xcrun -f clang &> /dev/null; then
     CC=$(xcrun -f clang)
   else
