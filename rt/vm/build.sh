@@ -81,7 +81,7 @@ if [ "x$TARGETS" = 'x' ]; then
     fi
     ;;
   Linux)
-    TARGETS="linux-x86_64" # "linux-x86_64 linux-x86"
+    TARGETS="linux-x86" # "linux-x86_64 linux-x86"
     ;;
   *)
     echo "Unsupported OS: $OS"
@@ -95,7 +95,7 @@ fi
 
 # Validate targets #linux-(x86_64|x86)
 for T in $TARGETS; do
-  if ! [[ $T =~ (macosx-(x86_64))|(ios-(x86_64|x86|thumbv7|arm64))|(linux-(x86_64)) ]] ; then
+  if ! [[ $T =~ (macosx-(x86_64))|(ios-(x86_64|x86|thumbv7|arm64))|(linux-(x86_64|x86)) ]] ; then
     echo "Unsupported target: $T"
     exit 1
   fi
