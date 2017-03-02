@@ -21,8 +21,8 @@ if (WINDOWS)
   set(CMAKE_RC_COMPILER "/usr/local/bin/x86_64-w64-mingw32-windres")
   
   #these are not actually used by com_bugvm but find_package does not always resolve them, use JAVA_HOME env var to prevent paths?
-  set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libawt.so")
-  set(JAVA_JVM_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so")
+  set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/libawt.so")
+  set(JAVA_JVM_LIBRARY "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/libjvm.so")
 
   # adjust the default behaviour of the FIND_XXX() commands:
   # search headers and libraries in the target environment, search
