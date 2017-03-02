@@ -46,7 +46,7 @@ Linux)
   TARGETS="linux-x86_64" # "linux-x86_64 linux-x86"
   ;;
 Windows)
-  TARGETS="windows-x86_64" # "windows-x86_64 windows-x86"
+  TARGETS="windows-x86" # "windows-x86_64 windows-x86"
   ;;
 *)
   echo "Unsupported OS: $OS"
