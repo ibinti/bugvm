@@ -14,7 +14,7 @@ elseif(OS STREQUAL "windows")
 endif()
 
 if (WINDOWS)
-  # set(CMAKE_CROSSCOMPILING TRUE) 
+  set(CMAKE_CROSSCOMPILING TRUE) 
   set(CMAKE_SYSTEM_NAME Windows)
 
   #should be passed from build.sh, just here to prevent warning
