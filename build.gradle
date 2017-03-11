@@ -50,7 +50,7 @@ task buildJars {
 
 task buildNativeLib {
 
-    dependsOn ":llvm:nativeLib", ":rt:nativeLib"
+    dependsOn ":rt:nativeLib", ":llvm:nativeLib"
 
 }
 
