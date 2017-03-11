@@ -40,24 +40,32 @@ allprojects {
     }
 }
 
-task buildJars {
+task buildJar {
 
     dependsOn publishToMavenLocal, build, clean
 
     publishToMavenLocal.mustRunAfter build
     build.mustRunAfter clean
+
 }
 
-task buildNativeLib {
+task buildRT {
 
-    dependsOn ":rt:nativeLib", ":llvm:nativeLib"
+    dependsOn ":rt:nativeLib"
+
+}
+
+task buildLLVM {
+
+    dependsOn ":llvm:nativeLib"
 
 }
 
 task All  {
 
-    dependsOn buildJars, buildNativeLib
-    buildJars.mustRunAfter buildNativeLib
+    dependsOn buildJar, buildRT, buildLLVM
+    buildJar.mustRunAfter buildLLVM
+    buildLLVM.mustRunAfter buildRT
 
 }
 
