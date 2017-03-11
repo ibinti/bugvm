@@ -81,7 +81,7 @@ if [ "x$TARGETS" = 'x' ]; then
     fi
     ;;
   Linux)
-    TARGETS="linux-x86" # "linux-x86_64 linux-x86"
+    TARGETS="linux-x86_64"
     ;;
   *)
     echo "Unsupported OS: $OS"
