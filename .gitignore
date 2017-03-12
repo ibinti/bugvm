@@ -5,3 +5,8 @@ build
 *.iml
 *.hprof
 local.properties
+*.a
+
+*.so
+
+*.dylib
