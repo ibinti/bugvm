@@ -12,11 +12,6 @@ apply plugin: "com.github.johnrengelman.shadow"
 archivesBaseName = "bugvm-rt"
 description = """BugVM Runtime Library"""
 
-
-dependencies {
-     compile "commons-io:commons-io:2.4"
-}
-
 jar {
      manifest {
           attributes "Implementation-Version" : project.version

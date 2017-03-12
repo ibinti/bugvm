@@ -520,10 +520,10 @@ public abstract class AbstractTarget implements Target {
         }
 
         //issue #40
-//        if(output.getName().contains("bugvm-compiler.jar")) {output.delete(); return;}
-//        else if(output.getName().contains("bugvm-rt.jar")) {output.delete(); return;}
-//        else if(output.getName().contains("bugvm-apple.jar")) {output.delete(); return;}
-//        else config.getLogger().info("Creating stripped archive file %s", output);
+        if(output.getName().startsWith("bugvm-compiler")) {output.delete(); return;}
+        else if(output.getName().startsWith("bugvm-apple")) {output.delete(); return;}
+        else if(output.getName().startsWith("bugvm-rt-")) {output.delete(); return;}
+        else config.getLogger().info("Creating stripped archive file %s", output);
 
         ZipOutputStream out = null;
         try {

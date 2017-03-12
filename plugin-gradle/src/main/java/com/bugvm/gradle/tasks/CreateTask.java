@@ -19,7 +19,7 @@ package com.bugvm.gradle.tasks;
 /**
  * 
  */
-public class ArchiveTask extends AbstractBugVMBuildTask {
+public class CreateTask extends AbstractBugVMBuildTask {
     @Override
     protected boolean shouldArchive() {
         return true;

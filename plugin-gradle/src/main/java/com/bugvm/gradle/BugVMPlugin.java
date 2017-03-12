@@ -23,8 +23,8 @@ import java.util.jar.Manifest;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import com.bugvm.compiler.Version;
-import com.bugvm.gradle.tasks.ArchiveTask;
+
+import com.bugvm.gradle.tasks.CreateTask;
 import com.bugvm.gradle.tasks.ConsoleTask;
 import com.bugvm.gradle.tasks.IOSDeviceTask;
 import com.bugvm.gradle.tasks.IPadSimulatorTask;
@@ -64,8 +64,7 @@ public class BugVMPlugin implements Plugin<Project> {
         project.task(Collections.singletonMap("type", IPadSimulatorTask.class), "launchIPadSimulator");
         project.task(Collections.singletonMap("type", IOSDeviceTask.class), "launchIOSDevice");
         project.task(Collections.singletonMap("type", ConsoleTask.class), "launchConsole");
-        project.task(Collections.singletonMap("type", ArchiveTask.class), "createIPA");
-        project.task(Collections.singletonMap("type", ArchiveTask.class), "bugvmArchive");
+        project.task(Collections.singletonMap("type", CreateTask.class), "createIPA");
         project.task(Collections.singletonMap("type", InstallTask.class), "bugvmInstall");
     }
 }
