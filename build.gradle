@@ -40,7 +40,7 @@ allprojects {
     }
 }
 
-defaultTasks "buildJar"
+defaultTasks "install", "clean"
 
 task buildJar {
 
