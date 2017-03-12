@@ -40,6 +40,8 @@ allprojects {
     }
 }
 
+defaultTasks "buildJar"
+
 task buildJar {
 
     dependsOn publishToMavenLocal, build, clean
