@@ -3,7 +3,7 @@ package SQLite;
 import java.sql.*;
 import java.util.Properties;
 
-public class JDBCDriver implements java.sql.Driver {
+@Deprecated public class JDBCDriver implements java.sql.Driver {
 
     public static final int MAJORVERSION = 1;
 
