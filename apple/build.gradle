@@ -14,45 +14,15 @@ publishing {
             from components.java
         }
     }
-    repositories {
-        maven {
-            url mavenUrlSnapshot
-            credentials {
-                username = mavenUsername
-                password = mavenPassword
-            }
-        }
-    }
 }
 
 uploadArchives {
     repositories {
         mavenDeployer {
-
-            snapshotRepository(url: mavenUrlSnapshot) {
-                authentication(userName: mavenUsername, password: mavenPassword)
-            }
-
             pom.project {
                 name project.archivesBaseName
                 description project.description
-                url "https://bugvm.com"
-
-                scm {
-                    url "https://github.com/bugvm/bugvm.git"
-                    connection "scm:git:git://github.com/bugvm/bugvm.git"
-                }
-
-                developers {
-                    developer {
-                        id "bugvm"
-                        name "The Bug"
-                        email "bug@bugvm.com"
-                        url "https://bugvm.com"
-                    }
-                }
             }
         }
     }
 }
-

@@ -25,18 +25,49 @@ allprojects {
 
     ext {
         mavenUrlSnapshot = "https://oss.sonatype.org/content/repositories/snapshots"
-        mavenUsername = ""
-        mavenPassword = ""
+//        mavenUsername = ""
+//        mavenPassword = ""
     }
 
     publishing {
         repositories {
-            maven { url mavenUrlSnapshot }
+            maven {
+                url mavenUrlSnapshot
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
+                }
+            }
         }
     }
 
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+
+                snapshotRepository(url: mavenUrlSnapshot) {
+                    authentication(userName: mavenUsername, password: mavenPassword)
+                }
+
+                pom.project {
+                    url "https://bugvm.com"
+
+                    scm {
+                        url "https://github.com/bugvm/bugvm"
+                        connection "scm:git:git://github.com/bugvm/bugvm.git"
+                    }
+
+                    developers {
+                        developer {
+                            id "bugvm"
+                            name "We are the BugVM"
+                            email "bug@bugvm.com"
+                            url "https://bugvm.com"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -139,29 +170,9 @@ artifacts {
 uploadArchives {
     repositories {
         mavenDeployer {
-
-            snapshotRepository(url: mavenUrlSnapshot) {
-                authentication(userName: mavenUsername, password: mavenPassword)
-            }
-
             pom.project {
                 name project.archivesBaseName
                 description project.description
-                url "https://bugvm.com"
-
-                scm {
-                    url "https://github.com/bugvm/bugvm"
-                    connection "scm:git:git://github.com/bugvm/bugvm.git"
-                }
-
-                developers {
-                    developer {
-                        id "bugvm"
-                        name "The Bug"
-                        email "bug@bugvm.com"
-                        url "https://bugvm.com"
-                    }
-                }
             }
         }
     }
