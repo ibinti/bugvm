@@ -29,10 +29,10 @@ shadowJar {
     relocate "org.bouncycastle", "com.android.org.bouncycastle"
     relocate "org.conscrypt", "com.android.org.conscrypt"
     relocate "com.squareup", "com.android"
-    relocate "org.h2", "bugvm.h2"
-    relocate "SQLite", "bugvm.SQLite"
-    relocate "org.json", "bugvm.json"
-    relocate "org.jaudiotagger", "bugvm.jaudiotagger"
+    relocate "org.h2", "com.bugvm.h2"
+    relocate "SQLite", "com.bugvm.SQLite"
+    relocate "org.json", "com.bugvm.json"
+    relocate "org.jaudiotagger", "com.bugvm.jaudiotagger"
 }
 
 sourceSets {
