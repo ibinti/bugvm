@@ -52,7 +52,7 @@ public final class NativeCrypto {
         // BugVM note: Call onload() if running under BugVM.
         if (System.getProperty("java.vendor", "").contains("BugVM")) {
             onload();
-        } else if ("com.android.com.android.org.conscrypt".equals(NativeCrypto.class.getPackage().getName())) {
+        } else if ("com.android.org.conscrypt".equals(NativeCrypto.class.getPackage().getName())) {
             System.loadLibrary("javacrypto");
         } else {
             System.loadLibrary("conscrypt_jni");
