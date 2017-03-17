@@ -26,9 +26,9 @@ jar {
 
 shadowJar {
     classifier = null
-    relocate "org.bouncycastle", "com.android.org.bouncycastle"
-    relocate "org.conscrypt", "com.android.org.conscrypt"
-    relocate "com.squareup", "com.android"
+//    relocate "org.bouncycastle", "com.android.org.bouncycastle"
+//    relocate "org.conscrypt", "com.android.org.conscrypt"
+//    relocate "com.squareup.okhttp", "com.android.okhttp"
     relocate "org.h2", "com.bugvm.h2"
     relocate "SQLite", "com.bugvm.SQLite"
     relocate "org.json", "com.bugvm.json"
