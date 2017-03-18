@@ -21,19 +21,6 @@ dependencies {
     }
 }
 
-sourceSets {
-
-    main {
-        java {
-            srcDirs = ["src/main/java"]
-        }
-        resources {
-            srcDirs = ["src/main/resources"]
-        }
-    }
-
-}
-
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude "META-INF/*.RSA", "META-INF/*.SF","META-INF/*.DSA","META-INF/maven/**"

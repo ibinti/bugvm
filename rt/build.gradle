@@ -30,14 +30,6 @@ shadowJar {
     relocate "org.json", "com.bugvm.json"
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/resources"]
-        }
-    }
-}
-
 task nativeLib(type:Exec) {
     workingDir "vm"
     commandLine "bash", "-c", ". build.sh --clean"

@@ -1,19 +1,6 @@
 archivesBaseName = "bugvm-llvm"
 description = """BugVM LLVM Bindings"""
 
-sourceSets {
-
-    main {
-        java {
-            srcDirs = ["src/main/java"]
-        }
-        resources {
-            srcDirs = ["src/main/resources"]
-        }
-    }
-
-}
-
 task nativeLib(type:Exec) {
 
     commandLine "bash", "-c", ". build.sh --clean"
