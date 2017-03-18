@@ -228,7 +228,7 @@ abstract public class AbstractBugVMTask extends DefaultTask {
                 getLogger().debug("Including classpath element for BugVM app: " + classpathEntry.getAbsolutePath());
             }
 
-            if(classpathEntry.getName().startsWith("bugvm-rt.jar")) {
+            if(classpathEntry.getName().startsWith("bugvm-rt")) {
                 builder.addBootClasspathEntry(classpathEntry);
             } else {
                 builder.addClasspathEntry(classpathEntry);
