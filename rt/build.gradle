@@ -26,9 +26,8 @@ jar {
 
 shadowJar {
     classifier = null
-    relocate "org.h2", "com.bugvm.h2"
+    exclude("META-INF/maven/")
     relocate "org.json", "com.bugvm.json"
-    relocate "org.jaudiotagger", "com.bugvm.jaudiotagger"
 }
 
 sourceSets {
