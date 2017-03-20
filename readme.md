@@ -15,13 +15,13 @@ Target Platform Apps:
 * Ubuntu Console
 
 
-###HelloWorld Examples
+### HelloWorld Examples
 
 [Java HelloWorld](https://github.com/bugvm/bugvm-helloworld)
 
 [Scala HelloWorld](https://github.com/bugvm/bugvm-helloscala)
 
 
-###iOS Samples
+### iOS Samples
 
 [iOS Click Button App](https://github.com/bugvm/bugvm-ios)
