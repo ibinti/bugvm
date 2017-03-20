@@ -25,3 +25,5 @@ Target Platform Apps:
 ### iOS Samples
 
 [iOS Click Button App](https://github.com/bugvm/bugvm-ios)
+
+[iOS WebView App](https://github.com/bugvm/bugvm-webview)
