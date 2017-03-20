@@ -1,5 +1,8 @@
 # BugVM is a free open source native App builder.
 
+
+> The branch is to support the original iPad with iOS 5.1.1. Xcode 6 is requied.
+
 BugVM compiles JVM bytecode to native machine code and then links the compiled native code with other native libraries or frameworks to produce targeted platform App. Using BugVM, it is possible to build native apps easily in Java, Scala, or any other JVM languages.
 
 BugVM is composed by:

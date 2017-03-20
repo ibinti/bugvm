@@ -1,7 +1,7 @@
 # The minimum Mac OS X version needed by apps built by BugVM
 set(MACOSX_MIN_VERSION 10.7)
 # The minimum iOS version needed by apps built by BugVM
-set(IOS_MIN_VERSION 6.0)
+set(IOS_MIN_VERSION 5.0)
 
 cmake_minimum_required(VERSION 2.8.8)
 project(build)
