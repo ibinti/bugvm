@@ -4,8 +4,8 @@ description = """BugVM Soot"""
 sourceSets {
      main {
           java {
-               srcDirs = ['src', 'generated/options']
-               exclude('**/AntTask.java')
+               srcDirs = ["src", "generated/options"]
+               exclude "**/AntTask.java"
           }
      }
 }

@@ -26,7 +26,7 @@ jar {
 
 shadowJar {
     classifier = null
-    exclude("META-INF/maven/")
+    exclude "META-INF/maven/"
     relocate "org.json", "com.bugvm.json"
 }
 

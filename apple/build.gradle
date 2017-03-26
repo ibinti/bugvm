@@ -5,7 +5,6 @@ dependencies {
     compile project(":rt")
 }
 
-
 publishing {
     publications {
         mavenJava(MavenPublication) {

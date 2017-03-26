@@ -6,7 +6,5 @@ build
 *.hprof
 local.properties
 *.a
-
 *.so
-
 *.dylib

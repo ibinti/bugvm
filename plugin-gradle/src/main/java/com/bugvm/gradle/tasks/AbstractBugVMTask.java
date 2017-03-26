@@ -235,8 +235,6 @@ abstract public class AbstractBugVMTask extends DefaultTask {
             }
         }
 
-
-
         return builder;
     }
 

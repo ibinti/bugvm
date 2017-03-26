@@ -177,3 +177,10 @@ uploadArchives {
         }
     }
 }
+
+
+task listJars {
+    doLast {
+        configurations.runtime.each { File file -> println file.name }
+    }
+}

@@ -20,10 +20,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import libcore.util.EmptyArray;
 
@@ -68,7 +71,19 @@ public final class VM {
      */
     public static String vmVersion() {
 
-        return VMVersion.VERSION;
+        Class clazz = VM.class;
+        String className = clazz.getSimpleName() + ".class";
+        String classPath = clazz.getResource(className).toString();
+        String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +
+                "/META-INF/MANIFEST.MF";
+        Manifest manifest = null;
+        try {
+            manifest = new Manifest(new URL(manifestPath).openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Attributes attr = manifest.getMainAttributes();
+        return attr.getValue("Implementation-Version");
 
     }
 
