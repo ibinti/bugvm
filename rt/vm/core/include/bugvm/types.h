@@ -175,9 +175,9 @@ struct Class {
   void* initializer;       // Points to the <clinit> method implementation of the class. NULL if there is no <clinit>.
   jint flags;              // Low 16-bits are access flags. High 16-bits are BugVM specific flags defined in class.h.
   Thread* initThread;      // The Thread which is currently initializing this class.
-  Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use rvmGetInterfaces() to get this value.
-  Field* _fields;          // Lazily loaded linked list of fields. Use rvmGetFields() to get this value.
-  Method* _methods;        // Lazily loaded linked list of methods. Use rvmGetMethods() to get this value.
+  Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use bugvmGetInterfaces() to get this value.
+  Field* _fields;          // Lazily loaded linked list of fields. Use bugvmGetFields() to get this value.
+  Method* _methods;        // Lazily loaded linked list of methods. Use bugvmGetMethods() to get this value.
   void* attributes;
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of the Object where the instance fields of this class can be found.
@@ -380,23 +380,23 @@ typedef struct GatewayFrame {
 
 /*
  * Macros to push/pop GatewayFrames.
- * IMPORTANT: rvmPushGatewayFrame() uses a local GatewayFrame which will be allocated on the stack.
- *            The corresponding rvmPopGatewayFrame() call must be made in the same or a child scope 
+ * IMPORTANT: bugvmPushGatewayFrame() uses a local GatewayFrame which will be allocated on the stack.
+ *            The corresponding bugvmPopGatewayFrame() call must be made in the same or a child scope
  *            of the scope of the push.
  */
-#define rvmPushGatewayFrame0(env, f, address, pm)  \
+#define bugvmPushGatewayFrame0(env, f, address, pm)  \
     (f)->prev = env->gatewayFrames;                    \
     (f)->frameAddress = address;                       \
     (f)->proxyMethod = pm;                             \
     env->gatewayFrames = (f)
-#define rvmPushGatewayFrame1(env, f, address, pm)  \
+#define bugvmPushGatewayFrame1(env, f, address, pm)  \
     GatewayFrame f;                                       \
-    rvmPushGatewayFrame0(env, &f, address, pm)
+    bugvmPushGatewayFrame0(env, &f, address, pm)
 
-#define rvmPushGatewayFrameAddress(env, address) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, address, NULL)
-#define rvmPushGatewayFrameProxy(env, pm) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), pm)
-#define rvmPushGatewayFrame(env) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), NULL)
-#define rvmPopGatewayFrame(env) env->gatewayFrames = env->gatewayFrames->prev
+#define bugvmPushGatewayFrameAddress(env, address) bugvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, address, NULL)
+#define bugvmPushGatewayFrameProxy(env, pm) bugvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), pm)
+#define bugvmPushGatewayFrame(env) bugvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), NULL)
+#define bugvmPopGatewayFrame(env) env->gatewayFrames = env->gatewayFrames->prev
 
 struct TrycatchContext {
     struct TrycatchContext* prev;
@@ -536,7 +536,7 @@ typedef struct {
     CallStackFrame frames[0];
 } CallStack;
 
-static inline jboolean rvmIsNonNativeFrame(Env* env) {
+static inline jboolean bugvmIsNonNativeFrame(Env* env) {
     // Count the number of GatewayFrames. If the number is odd we're in
     // non native code.
     jint count = 0;

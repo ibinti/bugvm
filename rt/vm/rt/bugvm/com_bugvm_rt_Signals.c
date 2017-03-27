@@ -16,13 +16,13 @@
 #include <bugvm.h>
 
 void Java_com_bugvm_rt_Signals_installChainingSignals(Env* env, Class* c) {
-    rvmInstallChainingSignals(env);
+    bugvmInstallChainingSignals(env);
 }
 
 void Java_com_bugvm_rt_Signals_reinstallSavedSignals(Env* env, Class* c, jlong state) {
-    rvmReinstallSavedSignals(env, LONG_TO_PTR(state));
+    bugvmReinstallSavedSignals(env, LONG_TO_PTR(state));
 }
 
 jlong Java_com_bugvm_rt_Signals_saveSignals(Env* env, Class* c) {
-    return PTR_TO_LONG(rvmSaveSignals(env));
+    return PTR_TO_LONG(bugvmSaveSignals(env));
 }

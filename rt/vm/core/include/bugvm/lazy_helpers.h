@@ -20,7 +20,7 @@
     static inline Class* function(Env* env) { \
         static Class* c = NULL; \
         if (!c) { \
-            c = rvmFindClassUsingLoader(env, name, NULL); \
+            c = bugvmFindClassUsingLoader(env, name, NULL); \
             assert(c != NULL); \
         } \
         return c; \
@@ -30,7 +30,7 @@
     static inline Method* function(Env* env) { \
         static Method* m = NULL; \
         if (!m) { \
-            m = rvmGetInstanceMethod(env, lazy_class_function(env), name, desc); \
+            m = bugvmGetInstanceMethod(env, lazy_class_function(env), name, desc); \
             assert(m != NULL); \
         } \
         return m; \
@@ -40,7 +40,7 @@
     static inline InstanceField* function(Env* env) { \
         static InstanceField* f = NULL; \
         if (!f) { \
-            f = rvmGetInstanceField(env, lazy_class_function(env), name, desc); \
+            f = bugvmGetInstanceField(env, lazy_class_function(env), name, desc); \
             assert(f != NULL); \
         } \
         return f; \

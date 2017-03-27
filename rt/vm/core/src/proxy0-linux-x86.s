@@ -54,10 +54,10 @@ _proxy0:
     lea   8(%ebp), %eax                          # $rax = first stack arg
     mov   %eax, CallInfo_offset+stackArgs_offset(%esp)         # stackArgs = first stack arg
 
-    # Call _rvmProxyHandler with the CallInfo as first argument
+    # Call _bugvmProxyHandler with the CallInfo as first argument
     lea   CallInfo_offset(%esp), %eax
     movl  %eax, (%esp)
-    call  _rvmProxyHandler
+    call  _bugvmProxyHandler
 
     # For simplicity we always copy returnValue to eax and 
     # returnValue>>32 to edx even if float or double is returned.

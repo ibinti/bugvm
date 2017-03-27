@@ -210,26 +210,26 @@ static inline int android_atomic_acquire_cas(LW_TYPE old_value, LW_TYPE new_valu
 static Monitor* threadSleepMonitor;
 static void freeMonitorCleanupHandler(Env* env, Object* object);
 
-jboolean rvmInitMonitors(Env* env) {
-    threadSleepMonitor = rvmCreateMonitor(env, NULL);
+jboolean bugvmInitMonitors(Env* env) {
+    threadSleepMonitor = bugvmCreateMonitor(env, NULL);
     return TRUE;
 }
 
 /*
  * Create and initialize a monitor.
  */
-Monitor* rvmCreateMonitor(Env* env, Object* obj) {
+Monitor* bugvmCreateMonitor(Env* env, Object* obj) {
     Monitor* mon;
 
-    mon = (Monitor*) rvmAllocateMemoryAtomicUncollectable(env, sizeof(Monitor));
+    mon = (Monitor*) bugvmAllocateMemoryAtomicUncollectable(env, sizeof(Monitor));
     if (mon == NULL) {
-        rvmAbort("Unable to allocate monitor");
+        bugvmAbort("Unable to allocate monitor");
     }
     if (((LW_TYPE)mon & 7) != 0) {
-        rvmAbort("Misaligned monitor: %p", mon);
+        bugvmAbort("Misaligned monitor: %p", mon);
     }
     mon->obj = obj;
-    rvmInitMutex(&mon->lock);
+    bugvmInitMutex(&mon->lock);
 
     if (obj) {
         registerCleanupHandler(env, obj, freeMonitorCleanupHandler);
@@ -241,7 +241,7 @@ Monitor* rvmCreateMonitor(Env* env, Object* obj) {
 /*
  * Get the object that a monitor is part of.
  */
-Object* rvmGetMonitorObject(Monitor* mon) {
+Object* bugvmGetMonitorObject(Monitor* mon) {
     if (mon == NULL)
         return NULL;
     else
@@ -275,19 +275,19 @@ static u4 lockOwner(Object* obj) {
  *
  * The caller must lock the thread list before calling here.
  */
-Thread* rvmGetObjectLockHolder(Env* env, Object* obj) {
+Thread* bugvmGetObjectLockHolder(Env* env, Object* obj) {
     u4 threadId = lockOwner(obj);
 
     if (threadId == 0)
         return NULL;
-    return rvmGetThreadByThreadId(env, threadId);
+    return bugvmGetThreadByThreadId(env, threadId);
 }
 
 /*
  * Checks whether the given thread holds the given
  * objects's lock.
  */
-jboolean rvmHoldsLock(Env* env, Thread* thread, Object* obj) {
+jboolean bugvmHoldsLock(Env* env, Thread* thread, Object* obj) {
     if (thread == NULL || obj == NULL) {
         return FALSE;
     } else {
@@ -311,9 +311,9 @@ static void freeMonitor(Monitor *mon) {
      * the object, in which case we've got some bad
      * native code somewhere.
      */
-    assert(rvmTryLockMutex(&mon->lock) == 0);
-    assert(rvmUnlockMutex(&mon->lock) == 0);
-    rvmDestroyMutex(&mon->lock);
+    assert(bugvmTryLockMutex(&mon->lock) == 0);
+    assert(bugvmUnlockMutex(&mon->lock) == 0);
+    bugvmDestroyMutex(&mon->lock);
 }
 
 static void freeMonitorCleanupHandler(Env* env, Object* object) {
@@ -321,7 +321,7 @@ static void freeMonitorCleanupHandler(Env* env, Object* object) {
         Monitor* mon = LW_MONITOR(object->lock);
         freeMonitor(mon);
         object->lock = 0;
-        rvmFreeMemoryUncollectable(env, mon);
+        bugvmFreeMemoryUncollectable(env, mon);
     }
 }
 
@@ -335,10 +335,10 @@ static void lockMonitor(Env* env, Thread* self, Monitor* mon) {
         mon->lockCount++;
         return;
     }
-    if (rvmTryLockMutex(&mon->lock) != 0) {
-        oldStatus = rvmChangeThreadStatus(env, self, THREAD_MONITOR);
-        rvmLockMutex(&mon->lock);
-        rvmChangeThreadStatus(env, self, oldStatus);
+    if (bugvmTryLockMutex(&mon->lock) != 0) {
+        oldStatus = bugvmChangeThreadStatus(env, self, THREAD_MONITOR);
+        bugvmLockMutex(&mon->lock);
+        bugvmChangeThreadStatus(env, self, oldStatus);
     }
     mon->owner = self;
     assert(mon->lockCount == 0);
@@ -359,7 +359,7 @@ static jboolean unlockMonitor(Env* env, Thread* self, Monitor* mon) {
          */
         if (mon->lockCount == 0) {
             mon->owner = NULL;
-            rvmUnlockMutex(&mon->lock);
+            bugvmUnlockMutex(&mon->lock);
         } else {
             mon->lockCount--;
         }
@@ -369,7 +369,7 @@ static jboolean unlockMonitor(Env* env, Thread* self, Monitor* mon) {
          * The JNI spec says that we should throw IllegalMonitorStateException
          * in this case.
          */
-        rvmThrowIllegalMonitorStateException(env, "unlock of unowned monitor");
+        bugvmThrowIllegalMonitorStateException(env, "unlock of unowned monitor");
         return FALSE;
     }
     return TRUE;
@@ -492,7 +492,7 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
 
     /* Make sure that we hold the lock. */
     if (mon->owner != self) {
-        rvmThrowIllegalMonitorStateException(env, 
+        bugvmThrowIllegalMonitorStateException(env,
             "object not locked by thread before wait()");
         return;
     }
@@ -501,7 +501,7 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
      * Enforce the timeout range.
      */
     if (msec < 0 || nsec < 0 || nsec > 999999) {
-        rvmThrowIllegalArgumentException(env, "timeout arguments out of range");
+        bugvmThrowIllegalArgumentException(env, "timeout arguments out of range");
         return;
     }
 
@@ -536,11 +536,11 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
      * our suspend mode before we transition out.
      */
     if (timed)
-        rvmChangeThreadStatus(env, self, THREAD_TIMED_WAIT);
+        bugvmChangeThreadStatus(env, self, THREAD_TIMED_WAIT);
     else
-        rvmChangeThreadStatus(env, self, THREAD_WAIT);
+        bugvmChangeThreadStatus(env, self, THREAD_WAIT);
 
-    rvmLockMutex(&self->waitMutex);
+    bugvmLockMutex(&self->waitMutex);
 
     /*
      * Set waitMonitor to the monitor object we will be waiting on.
@@ -557,7 +557,7 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
     if (self->interrupted) {
         wasInterrupted = TRUE;
         self->waitMonitor = NULL;
-        rvmUnlockMutex(&self->waitMutex);
+        bugvmUnlockMutex(&self->waitMutex);
         goto done;
     }
 
@@ -565,7 +565,7 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
      * Release the monitor lock and wait for a notification or
      * a timeout to occur.
      */
-    rvmUnlockMutex(&mon->lock);
+    bugvmUnlockMutex(&mon->lock);
 
     /*
      * NOTE: According to POSIX pthread_cond_wait() and
@@ -597,7 +597,7 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
     self->interrupted = FALSE;
     self->waitMonitor = NULL;
 
-    rvmUnlockMutex(&self->waitMutex);
+    bugvmUnlockMutex(&self->waitMutex);
 
     /* Reacquire the monitor lock. */
     lockMonitor(env, self, mon);
@@ -614,7 +614,7 @@ done:
     waitSetRemove(env, mon, self);
 
     /* set self->status back to THREAD_RUNNING, and self-suspend if needed */
-    rvmChangeThreadStatus(env, self, THREAD_RUNNING);
+    bugvmChangeThreadStatus(env, self, THREAD_RUNNING);
 
     if (wasInterrupted) {
         /*
@@ -626,7 +626,7 @@ done:
          */
         self->interrupted = FALSE;
         if (interruptShouldThrow) {
-            rvmThrowInterruptedException(env);
+            bugvmThrowInterruptedException(env);
         }
     }
 }
@@ -642,7 +642,7 @@ static void notifyMonitor(Env* env, Thread* self, Monitor* mon) {
 
     /* Make sure that we hold the lock. */
     if (mon->owner != self) {
-        rvmThrowIllegalMonitorStateException(env, 
+        bugvmThrowIllegalMonitorStateException(env,
             "object not locked by thread before notify()");
         return;
     }
@@ -651,15 +651,15 @@ static void notifyMonitor(Env* env, Thread* self, Monitor* mon) {
         thread = mon->waitSet;
         mon->waitSet = thread->waitNext;
         thread->waitNext = NULL;
-        rvmLockMutex(&thread->waitMutex);
+        bugvmLockMutex(&thread->waitMutex);
         /* Check to see if the thread is still waiting. */
         if (thread->waitMonitor != NULL) {
             thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
             pthread_cond_signal(&thread->waitCond);
-            rvmUnlockMutex(&thread->waitMutex);
+            bugvmUnlockMutex(&thread->waitMutex);
             return;
         }
-        rvmUnlockMutex(&thread->waitMutex);
+        bugvmUnlockMutex(&thread->waitMutex);
     }
 }
 
@@ -674,7 +674,7 @@ static void notifyAllMonitor(Env* env, Thread* self, Monitor* mon) {
 
     /* Make sure that we hold the lock. */
     if (mon->owner != self) {
-        rvmThrowIllegalMonitorStateException(env, 
+        bugvmThrowIllegalMonitorStateException(env,
             "object not locked by thread before notifyAll()");
         return;
     }
@@ -683,13 +683,13 @@ static void notifyAllMonitor(Env* env, Thread* self, Monitor* mon) {
         thread = mon->waitSet;
         mon->waitSet = thread->waitNext;
         thread->waitNext = NULL;
-        rvmLockMutex(&thread->waitMutex);
+        bugvmLockMutex(&thread->waitMutex);
         /* Check to see if the thread is still waiting. */
         if (thread->waitMonitor != NULL) {
             thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
             pthread_cond_signal(&thread->waitCond);
         }
-        rvmUnlockMutex(&thread->waitMutex);
+        bugvmUnlockMutex(&thread->waitMutex);
     }
 }
 
@@ -706,7 +706,7 @@ static void inflateMonitor(Env* env, Thread *self, Object* obj) {
     assert(LW_SHAPE(obj->lock) == LW_SHAPE_THIN);
     assert(LW_LOCK_OWNER(obj->lock) == self->threadId);
     /* Allocate and acquire a new monitor. */
-    mon = rvmCreateMonitor(env, obj);
+    mon = bugvmCreateMonitor(env, obj);
     lockMonitor(env, self, mon);
     /* Propagate the lock state. */
     thin = obj->lock;
@@ -723,7 +723,7 @@ static void inflateMonitor(Env* env, Thread *self, Object* obj) {
  * This does not fail or throw an exception (unless deadlock prediction
  * is enabled and set to "err" mode).
  */
-void rvmLockObject(Env* env, Object* obj) {
+void bugvmLockObject(Env* env, Object* obj) {
     Thread* self = env->currentThread;
     volatile LW_TYPE *thinp;
     jint oldStatus;
@@ -781,7 +781,7 @@ retry:
              * The lock is owned by another thread.  Notify the VM
              * that we are about to wait.
              */
-            oldStatus = rvmChangeThreadStatus(env, self, THREAD_MONITOR);
+            oldStatus = bugvmChangeThreadStatus(env, self, THREAD_MONITOR);
             /*
              * Spin until the thin lock is released or inflated.
              */
@@ -839,7 +839,7 @@ retry:
                      */
                     TRACEF("(%d) lock %p surprise-fattened",
                              threadId, &obj->lock);
-                    rvmChangeThreadStatus(env, self, oldStatus);
+                    bugvmChangeThreadStatus(env, self, oldStatus);
                     goto retry;
                 }
             }
@@ -849,7 +849,7 @@ retry:
              * We have acquired the thin lock.  Let the VM know that
              * we are no longer waiting.
              */
-            rvmChangeThreadStatus(env, self, oldStatus);
+            bugvmChangeThreadStatus(env, self, oldStatus);
             /*
              * Fatten the lock.
              */
@@ -870,7 +870,7 @@ retry:
  *
  * On failure, throws an exception and returns "FALSE".
  */
-jboolean rvmUnlockObject(Env* env, Object* obj) {
+jboolean bugvmUnlockObject(Env* env, Object* obj) {
     Thread* self = env->currentThread;
     LW_TYPE thin;
 
@@ -912,7 +912,7 @@ jboolean rvmUnlockObject(Env* env, Object* obj) {
              * We do not own the lock.  The JVM spec requires that we
              * throw an exception in this case.
              */
-            rvmThrowIllegalMonitorStateException(env, "unlock of unowned monitor");
+            bugvmThrowIllegalMonitorStateException(env, "unlock of unowned monitor");
             return FALSE;
         }
     } else {
@@ -934,7 +934,7 @@ jboolean rvmUnlockObject(Env* env, Object* obj) {
 /*
  * Object.wait().  Also called for class init.
  */
-void rvmObjectWait(Env* env, Object* obj, jlong msec, jint nsec, jboolean interruptShouldThrow) {
+void bugvmObjectWait(Env* env, Object* obj, jlong msec, jint nsec, jboolean interruptShouldThrow) {
     Thread* self = env->currentThread;
     Monitor* mon;
     LW_TYPE thin = *(volatile LW_TYPE *)&obj->lock;
@@ -945,7 +945,7 @@ void rvmObjectWait(Env* env, Object* obj, jlong msec, jint nsec, jboolean interr
         /* Make sure that 'self' holds the lock.
          */
         if (LW_LOCK_OWNER(thin) != self->threadId) {
-            rvmThrowIllegalMonitorStateException(env, 
+            bugvmThrowIllegalMonitorStateException(env,
                 "object not locked by thread before wait()");
             return;
         }
@@ -965,7 +965,7 @@ void rvmObjectWait(Env* env, Object* obj, jlong msec, jint nsec, jboolean interr
 /*
  * Object.notify().
  */
-void rvmObjectNotify(Env* env, Object* obj) {
+void bugvmObjectNotify(Env* env, Object* obj) {
     Thread* self = env->currentThread;
     LW_TYPE thin = *(volatile LW_TYPE *)&obj->lock;
 
@@ -976,7 +976,7 @@ void rvmObjectNotify(Env* env, Object* obj) {
         /* Make sure that 'self' holds the lock.
          */
         if (LW_LOCK_OWNER(thin) != self->threadId) {
-            rvmThrowIllegalMonitorStateException(env, 
+            bugvmThrowIllegalMonitorStateException(env,
                 "object not locked by thread before notify()");
             return;
         }
@@ -993,7 +993,7 @@ void rvmObjectNotify(Env* env, Object* obj) {
 /*
  * Object.notifyAll().
  */
-void rvmObjectNotifyAll(Env* env, Object* obj) {
+void bugvmObjectNotifyAll(Env* env, Object* obj) {
     Thread* self = env->currentThread;
     LW_TYPE thin = *(volatile LW_TYPE *)&obj->lock;
 
@@ -1004,7 +1004,7 @@ void rvmObjectNotifyAll(Env* env, Object* obj) {
         /* Make sure that 'self' holds the lock.
          */
         if (LW_LOCK_OWNER(thin) != self->threadId) {
-            rvmThrowIllegalMonitorStateException(env, 
+            bugvmThrowIllegalMonitorStateException(env,
                 "object not locked by thread before notifyAll()");
             return;
         }
@@ -1032,7 +1032,7 @@ void rvmObjectNotifyAll(Env* env, Object* obj) {
  * It appears that we want sleep(0,0) to go through the motions of sleeping
  * for a very short duration, rather than just returning.
  */
-void rvmThreadSleep(Env* env, jlong msec, jint nsec) {
+void bugvmThreadSleep(Env* env, jlong msec, jint nsec) {
     Thread* self = env->currentThread;
     Monitor* mon = threadSleepMonitor;
 
@@ -1048,17 +1048,17 @@ void rvmThreadSleep(Env* env, jlong msec, jint nsec) {
 /*
  * Implement java.lang.Thread.interrupt().
  */
-void rvmThreadInterrupt(Env* env, Thread* thread) {
+void bugvmThreadInterrupt(Env* env, Thread* thread) {
     assert(thread != NULL);
 
-    rvmLockMutex(&thread->waitMutex);
+    bugvmLockMutex(&thread->waitMutex);
 
     /*
      * If the interrupted flag is already set no additional action is
      * required.
      */
     if (thread->interrupted == TRUE) {
-        rvmUnlockMutex(&thread->waitMutex);
+        bugvmUnlockMutex(&thread->waitMutex);
         return;
     }
 
@@ -1081,5 +1081,5 @@ void rvmThreadInterrupt(Env* env, Thread* thread) {
         pthread_cond_signal(&thread->waitCond);
     }
 
-    rvmUnlockMutex(&thread->waitMutex);
+    bugvmUnlockMutex(&thread->waitMutex);
 }

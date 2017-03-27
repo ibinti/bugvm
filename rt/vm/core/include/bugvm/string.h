@@ -16,19 +16,19 @@
 #ifndef BUGVM_STRING_H
 #define BUGVM_STRING_H
 
-extern jboolean rvmInitStrings(Env* env);
-extern Object* rvmNewStringNoCopy(Env* env, CharArray* value, jint offset, jint length);
-extern Object* rvmNewString(Env* env, const jchar* chars, jint length);
-extern Object* rvmNewStringUTF(Env* env, const char* s, jint length);
-extern Object* rvmNewStringAscii(Env* env, const char* s, jint length);
-extern Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length);
-extern Object* rvmInternString(Env* env, Object* str);
-extern jint rvmGetStringLength(Env* env, Object* str);
-extern jchar* rvmGetStringChars(Env* env, Object* str);
-extern jint rvmGetStringUTFLength(Env* env, Object* str);
-extern char* rvmGetStringUTFChars(Env* env, Object* str);
-extern void rvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf);
-extern void rvmGetStringUTFRegion(Env* env, Object* str, jint start, jint len, char* buf);
+extern jboolean bugvmInitStrings(Env* env);
+extern Object* bugvmNewStringNoCopy(Env* env, CharArray* value, jint offset, jint length);
+extern Object* bugvmNewString(Env* env, const jchar* chars, jint length);
+extern Object* bugvmNewStringUTF(Env* env, const char* s, jint length);
+extern Object* bugvmNewStringAscii(Env* env, const char* s, jint length);
+extern Object* bugvmNewInternedStringUTF(Env* env, const char* s, jint length);
+extern Object* bugvmInternString(Env* env, Object* str);
+extern jint bugvmGetStringLength(Env* env, Object* str);
+extern jchar* bugvmGetStringChars(Env* env, Object* str);
+extern jint bugvmGetStringUTFLength(Env* env, Object* str);
+extern char* bugvmGetStringUTFChars(Env* env, Object* str);
+extern void bugvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf);
+extern void bugvmGetStringUTFRegion(Env* env, Object* str, jint start, jint len, char* buf);
 
 #endif
 

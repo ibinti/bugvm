@@ -66,12 +66,12 @@ static ProxyMethod* hasMethod(Env* env, Class* clazz, const char* name, const ch
 static jboolean checkCompatible(Env* env, Class* proxyClass, ProxyMethod* proxyMethod, Method* method, Class** t1, Class** t2) {
     // method's return type must be more specific that that of proxyMethod
     Object* classLoader = proxyClass->classLoader;
-    Class* proxyRetType = rvmFindClassByDescriptor(env, rvmGetReturnType(proxyMethod->method.desc), classLoader);
-    if (rvmExceptionClear(env)) {
+    Class* proxyRetType = bugvmFindClassByDescriptor(env, bugvmGetReturnType(proxyMethod->method.desc), classLoader);
+    if (bugvmExceptionClear(env)) {
         goto incompatible;
     }
-    Class* methodRetType = rvmFindClassByDescriptor(env, rvmGetReturnType(method->desc), classLoader);
-    if (rvmExceptionClear(env)) {
+    Class* methodRetType = bugvmFindClassByDescriptor(env, bugvmGetReturnType(method->desc), classLoader);
+    if (bugvmExceptionClear(env)) {
         goto incompatible;
     }
     *t1 = proxyRetType;
@@ -83,32 +83,32 @@ static jboolean checkCompatible(Env* env, Class* proxyClass, ProxyMethod* proxyM
             goto incompatible;
         }
     }
-    if (!rvmIsAssignableFrom(env, proxyRetType, methodRetType) && !rvmIsAssignableFrom(env, methodRetType, proxyRetType)) {
+    if (!bugvmIsAssignableFrom(env, proxyRetType, methodRetType) && !bugvmIsAssignableFrom(env, methodRetType, proxyRetType)) {
         // Otherwise, one of the methods must have a return type that is assignable 
         // to all of the return types of the rest of the methods.
         goto incompatible;
     }
     return TRUE;
 incompatible:
-    rvmThrowNewf(env, java_lang_IllegalArgumentException, "Incompatible methods %s.%s%s and %s.%s%s", 
-        rvmToBinaryClassName(env, proxyMethod->proxiedMethod->clazz->name),
+    bugvmThrowNewf(env, java_lang_IllegalArgumentException, "Incompatible methods %s.%s%s and %s.%s%s",
+        bugvmToBinaryClassName(env, proxyMethod->proxiedMethod->clazz->name),
         proxyMethod->method.name, proxyMethod->method.desc, 
-        rvmToBinaryClassName(env, method->clazz->name),
+        bugvmToBinaryClassName(env, method->clazz->name),
         method->name, method->desc);
     return FALSE;
 }
 
 static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, jint access, ProxyClassData* proxyClassData) {
     ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
-    if (rvmExceptionOccurred(env)) return FALSE;
+    if (bugvmExceptionOccurred(env)) return FALSE;
     if (!proxyMethod) {
         proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
         if (!proxyMethod) return FALSE;
-        ObjectArray* exceptionTypes = rvmAttributeGetExceptions(env, method);        
+        ObjectArray* exceptionTypes = bugvmAttributeGetExceptions(env, method);
         if (!exceptionTypes) return FALSE;
         jint i;
         for (i = exceptionTypes->length - 1; i >= 0; i--) {
-            ProxyMethodException* pme = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethodException));
+            ProxyMethodException* pme = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethodException));
             if (!pme) {
                 return FALSE;
             }
@@ -123,12 +123,12 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
         }
         // t1 is the current return type of proxyMethod. If t2 
         // is more specific then use that instead.
-        if (!CLASS_IS_PRIMITIVE(t1) && rvmIsAssignableFrom(env, t2, t1)) {
+        if (!CLASS_IS_PRIMITIVE(t1) && bugvmIsAssignableFrom(env, t2, t1)) {
             proxyMethod->method.desc = method->desc;
         }
 
         // Remove exceptions from the proxied method that aren't thrown by all methods
-        ObjectArray* exceptionTypes = rvmAttributeGetExceptions(env, method);        
+        ObjectArray* exceptionTypes = bugvmAttributeGetExceptions(env, method);
         if (!exceptionTypes) return FALSE;
         ProxyMethodException* pme = NULL;
         ProxyMethodException* tmp = NULL;
@@ -137,9 +137,9 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
             jint i;
             for (i = 0; i < exceptionTypes->length; i++) {
                 Class* exClazz = (Class*) exceptionTypes->values[i];
-                if (rvmIsSubClass(pme->clazz, exClazz)) {
+                if (bugvmIsSubClass(pme->clazz, exClazz)) {
                     // exClazz is compatible with pme->clazz. Don't delete.
-                    if (!matchExClazz || rvmIsSubClass(exClazz, matchExClazz)) {
+                    if (!matchExClazz || bugvmIsSubClass(exClazz, matchExClazz)) {
                         // The previously found compatible exception class is 
                         // equal to or more specific than this one. Use this one.
                         matchExClazz = exClazz;
@@ -150,7 +150,7 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
                 pme->clazz = matchExClazz;
             } else {
                 LL_DELETE(proxyMethod->allowedExceptions, pme);
-                rvmFreeMemoryUncollectable(env, pme);
+                bugvmFreeMemoryUncollectable(env, pme);
             }
         }
     }
@@ -166,14 +166,14 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
 
 static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, ProxyClassData* proxyClassData) {
     // Add constructors from the super class and override all overridable methods. Constructors will use 
-    // the same impl as the superclass. Overridden methods will have _rvmProxy0 as its impl.
+    // the same impl as the superclass. Overridden methods will have _bugvmProxy0 as its impl.
 
     if (clazz->superclass) {
         if (!addProxyMethods(env, proxyClass, clazz->superclass, proxyClassData)) return FALSE;
     }
 
-    Method* method = rvmGetMethods(env, clazz);
-    if (rvmExceptionOccurred(env)) return FALSE;
+    Method* method = bugvmGetMethods(env, clazz);
+    if (bugvmExceptionOccurred(env)) return FALSE;
     for (; method != NULL; method = method->next) {
         if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method)
                 && (!METHOD_IS_CONSTRUCTOR(method) || clazz == proxyClass->superclass)) {
@@ -201,8 +201,8 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
 static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, Interface* interfaze, ProxyClassData* proxyClassData) {
     if (!interfaze) return TRUE;
 
-    Method* method = rvmGetMethods(env, interfaze->interfaze);
-    if (rvmExceptionOccurred(env)) return FALSE;
+    Method* method = bugvmGetMethods(env, interfaze->interfaze);
+    if (bugvmExceptionOccurred(env)) return FALSE;
     for (; method != NULL; method = method->next) {
         if (!METHOD_IS_CLASS_INITIALIZER(method)) {
             jint access = (method->access & (~ACC_ABSTRACT)) | ACC_FINAL;
@@ -211,8 +211,8 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     }
 
     // Interfaces are implemented depth-first so call recursively with the super interfaces of the current interface first
-    Interface* interfaceInterfaces = rvmGetInterfaces(env, interfaze->interfaze);
-    if (rvmExceptionCheck(env)) return FALSE;
+    Interface* interfaceInterfaces = bugvmGetInterfaces(env, interfaze->interfaze);
+    if (bugvmExceptionCheck(env)) return FALSE;
     if (!implementAbstractInterfaceMethods(env, proxyClass, interfaceInterfaces, proxyClassData)) return FALSE;
     // Now proceed with the next interface
     if (!implementAbstractInterfaceMethods(env, proxyClass, interfaze->next, proxyClassData)) return FALSE;
@@ -220,7 +220,7 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     return TRUE;
 }
 
-jboolean rvmInitProxy(Env* env) {
+jboolean bugvmInitProxy(Env* env) {
     lookupEntryGCKind = gcNewDirectBitmapKind(LOOKUP_ENTRY_GC_BITMAP);
     return TRUE;
 }
@@ -233,7 +233,7 @@ static TypeInfo* createTypeInfo(Env* env, Class* superclass, jint interfacesCoun
         ifTypesCount += interfaces[i]->typeInfo->interfaceCount;
     }
 
-    TypeInfo* typeInfo = rvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t) * (classTypesCount + ifTypesCount));
+    TypeInfo* typeInfo = bugvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t) * (classTypesCount + ifTypesCount));
     if (!typeInfo) return NULL;
     uint32_t classId = nextClassId();
     typeInfo->id = classId;
@@ -260,13 +260,13 @@ static TypeInfo* createTypeInfo(Env* env, Class* superclass, jint interfacesCoun
 }
 
 static VITable* createVTable(Env* env, Class* superclass) {
-    VITable* vtable = rvmCopyMemoryAtomic(env, superclass->vitable, offsetof(VITable, table) + sizeof(void*) * superclass->vitable->size);
+    VITable* vtable = bugvmCopyMemoryAtomic(env, superclass->vitable, offsetof(VITable, table) + sizeof(void*) * superclass->vitable->size);
     if (!vtable) return NULL;
 
     Class* c = superclass;
     while (c) {
-        Method* method = rvmGetMethods(env, c);
-        if (rvmExceptionOccurred(env)) return NULL;
+        Method* method = bugvmGetMethods(env, c);
+        if (bugvmExceptionOccurred(env)) return NULL;
         for (; method != NULL; method = method->next) {
             // Static/private methods and constructors which don't belong in the vtable
             // have vitableIndex=-1. Also, we mustn't override final methods.
@@ -280,7 +280,7 @@ static VITable* createVTable(Env* env, Class* superclass) {
 }
 
 static ITable* createITable(Env* env, Class* interfaze) {
-    ITable* itable = rvmAllocateMemoryAtomic(env, offsetof(ITable, table) 
+    ITable* itable = bugvmAllocateMemoryAtomic(env, offsetof(ITable, table)
         + offsetof(VITable, table) + sizeof(void*) * interfaze->vitable->size);
     if (!itable) return NULL;
 
@@ -295,12 +295,12 @@ static ITable* createITable(Env* env, Class* interfaze) {
 }
 
 static uint32_t countInterfacesForITables(Env* env, Class* c) {
-    Interface* ifs = rvmGetInterfaces(env, c);
-    if (rvmExceptionOccurred(env)) return 0;
+    Interface* ifs = bugvmGetInterfaces(env, c);
+    if (bugvmExceptionOccurred(env)) return 0;
     uint32_t count = c->vitable->size;
     for (; ifs; ifs = ifs->next) {
         count += countInterfacesForITables(env, ifs->interfaze);
-        if (rvmExceptionOccurred(env)) return 0;
+        if (bugvmExceptionOccurred(env)) return 0;
     }
     return count;
 }
@@ -312,11 +312,11 @@ static void initITableArray(Env* env, Class* c, jint* index, ITable** array) {
         array[*index] = itable;
         (*index)++;
     }
-    Interface* ifs = rvmGetInterfaces(env, c);
-    if (rvmExceptionOccurred(env)) return;
+    Interface* ifs = bugvmGetInterfaces(env, c);
+    if (bugvmExceptionOccurred(env)) return;
     for (; ifs; ifs = ifs->next) {
         initITableArray(env, ifs->interfaze, index, array);
-        if (rvmExceptionOccurred(env)) return;
+        if (bugvmExceptionOccurred(env)) return;
     }
 }
 
@@ -325,25 +325,25 @@ static ITables* createITables(Env* env, Class* superclass, jint interfacesCount,
     jint i;
     for (i = 0; i < interfacesCount; i++) {
         count += countInterfacesForITables(env, interfaces[i]);
-        if (rvmExceptionOccurred(env)) return NULL;
+        if (bugvmExceptionOccurred(env)) return NULL;
     }
     if (count == 0) return NULL;
 
-    ITables* itables = rvmAllocateMemory(env, sizeof(ITables) + sizeof(ITable*) * count);
+    ITables* itables = bugvmAllocateMemory(env, sizeof(ITables) + sizeof(ITable*) * count);
     if (!itables) return NULL;
 
     itables->count = count;
     jint index = 0;
     for (i = 0; i < interfacesCount; i++) {
         initITableArray(env, interfaces[i], &index, itables->table);
-        if (rvmExceptionOccurred(env)) return NULL;
+        if (bugvmExceptionOccurred(env)) return NULL;
     }
     itables->cache = itables->table[0];
 
     return itables;
 }
 
-Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader, char* className, jint interfacesCount, Class** interfaces,
+Class* bugvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader, char* className, jint interfacesCount, Class** interfaces,
         jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler) {
 
     TypeInfo* typeInfo = createTypeInfo(env, superclass, interfacesCount, interfaces);
@@ -353,10 +353,10 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader
     ITables* itables = createITables(env, superclass, interfacesCount, interfaces);
     if (!itables) return NULL;
 
-    rvmObtainClassLock(env);
+    bugvmObtainClassLock(env);
 
     // Allocate the proxy class.
-    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo, vtable, itables,
+    Class* proxyClass = bugvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo, vtable, itables,
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, 1, instanceRefCount, NULL, NULL);
     if (!proxyClass) goto error;
 
@@ -366,32 +366,32 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader
     // Add interfaces
     jint i;
     for (i = 0; i < interfacesCount; i++) {
-        if (!rvmAddInterface(env, proxyClass, (Class*) interfaces[i])) goto error;
+        if (!bugvmAddInterface(env, proxyClass, (Class*) interfaces[i])) goto error;
     }
 
-    // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this proxy class
+    // Initialize methods to NULL to prevent bugvmGetMethods() from trying to load the methods if called with this proxy class
     proxyClass->_methods = NULL;
 
     if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) goto error;
 
     Class* c = proxyClass;
     while (c) {
-        Interface* interfaze = rvmGetInterfaces(env, c);
-        if (rvmExceptionCheck(env)) goto error;
+        Interface* interfaze = bugvmGetInterfaces(env, c);
+        if (bugvmExceptionCheck(env)) goto error;
         if (!implementAbstractInterfaceMethods(env, proxyClass, interfaze, proxyClassData)) goto error;
         c = c->superclass;
     }
 
-    if (!rvmRegisterClass(env, proxyClass)) goto error;
+    if (!bugvmRegisterClass(env, proxyClass)) goto error;
 
-    rvmReleaseClassLock(env);
+    bugvmReleaseClassLock(env);
     return proxyClass;
 error:
-    rvmReleaseClassLock(env);
+    bugvmReleaseClassLock(env);
     return NULL;
 }
 
-void _rvmProxyHandler(CallInfo* callInfo) {
+void _bugvmProxyHandler(CallInfo* callInfo) {
     Env* env = (Env*) proxy0NextPtr(callInfo);
     Object* receiver = (Object*) proxy0NextPtr(callInfo);
     Class* proxyClass = receiver->clazz;
@@ -404,15 +404,15 @@ void _rvmProxyHandler(CallInfo* callInfo) {
     LookupEntry* entry;
     HASH_FIND(hh, proxyClassData->lookupsHash, &key, sizeof(LookupKey), entry);
     if (!entry) {
-        rvmThrowNoSuchMethodError(env, "Failed to determine which method was called on proxy class");
+        bugvmThrowNoSuchMethodError(env, "Failed to determine which method was called on proxy class");
         goto error;
     }
 
     ProxyMethod* method = entry->method;
 
-    rvmPushGatewayFrameProxy(env, method);
+    bugvmPushGatewayFrameProxy(env, method);
 
-    jint argsCount = rvmGetParameterCount((Method*) method);
+    jint argsCount = bugvmGetParameterCount((Method*) method);
     jvalue *jvalueArgs = NULL;
     if (argsCount > 0) {
         jvalueArgs = (jvalue*) alloca(sizeof(jvalue) * argsCount);
@@ -420,7 +420,7 @@ void _rvmProxyHandler(CallInfo* callInfo) {
         const char* desc = method->method.desc;
         const char* c;
         jint i = 0;
-        while ((c = rvmGetNextParameterType(&desc))) {
+        while ((c = bugvmGetNextParameterType(&desc))) {
             switch (c[0]) {
             case 'B':
                 jvalueArgs[i++].b = (jbyte) proxy0NextInt(callInfo);
@@ -457,12 +457,12 @@ void _rvmProxyHandler(CallInfo* callInfo) {
     jvalue returnValue;
     proxyClassData->handler(env, receiver, method, jvalueArgs, &returnValue);
 
-    rvmPopGatewayFrame(env);
+    bugvmPopGatewayFrame(env);
 
-    if (rvmExceptionCheck(env)) goto error;
+    if (bugvmExceptionCheck(env)) goto error;
 
     proxy0ReturnInt(callInfo, 0);
-    switch (rvmGetReturnType(method->method.desc)[0]) {
+    switch (bugvmGetReturnType(method->method.desc)[0]) {
     case 'B':
         proxy0ReturnInt(callInfo, (jint) returnValue.b);
         break;
@@ -496,6 +496,6 @@ void _rvmProxyHandler(CallInfo* callInfo) {
     return;
 
 error:
-    rvmRaiseException(env, rvmExceptionOccurred(env));
+    bugvmRaiseException(env, bugvmExceptionOccurred(env));
 }
 

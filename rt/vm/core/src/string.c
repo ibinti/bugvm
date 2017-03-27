@@ -43,11 +43,11 @@ static CacheEntry* internedStrings = NULL;
 static Mutex internedStringsLock;
 
 static inline void obtainInternedStringsLock() {
-    rvmLockMutex(&internedStringsLock);
+    bugvmLockMutex(&internedStringsLock);
 }
 
 static inline void releaseInternedStringsLock() {
-    rvmUnlockMutex(&internedStringsLock);
+    bugvmUnlockMutex(&internedStringsLock);
 }
 
 /**
@@ -200,11 +200,11 @@ static void unicodeToUtf8(char* utf8String, const jchar* unicode, jint unicodeLe
 }
 
 static inline Object* newString(Env* env, CharArray* value, jint offset, jint length) {
-    return rvmRTNewString(env, value, offset, length);
+    return bugvmRTNewString(env, value, offset, length);
 }
 
-jboolean rvmInitStrings(Env* env) {
-    if (rvmInitMutex(&internedStringsLock) != 0) {
+jboolean bugvmInitStrings(Env* env) {
+    if (bugvmInitMutex(&internedStringsLock) != 0) {
         return FALSE;
     }
 
@@ -214,15 +214,15 @@ jboolean rvmInitStrings(Env* env) {
     return TRUE;
 }
 
-Object* rvmNewStringNoCopy(Env* env, CharArray* value, jint offset, jint length) {
+Object* bugvmNewStringNoCopy(Env* env, CharArray* value, jint offset, jint length) {
     return newString(env, value, offset, length);
 }
 
-Object* rvmNewStringAscii(Env* env, const char* s, jint length) {
+Object* bugvmNewStringAscii(Env* env, const char* s, jint length) {
     if (length == 0) s = "";
     if (!s) return NULL;
     length = (length == -1) ? strlen(s) : length;
-    CharArray* value = rvmNewCharArray(env, length);
+    CharArray* value = bugvmNewCharArray(env, length);
     if (!value) return NULL;
     jint i;
     for (i = 0; i < length; i++) {
@@ -231,26 +231,26 @@ Object* rvmNewStringAscii(Env* env, const char* s, jint length) {
     return newString(env, value, 0, length);
 }
 
-Object* rvmNewStringUTF(Env* env, const char* s, jint length) {
+Object* bugvmNewStringUTF(Env* env, const char* s, jint length) {
     if (length == 0) s = "";
     if (!s) return NULL;
     length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
-    CharArray* value = rvmNewCharArray(env, length);
+    CharArray* value = bugvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);
     return newString(env, value, 0, length);
 }
 
-Object* rvmNewString(Env* env, const jchar* chars, jint length) {
+Object* bugvmNewString(Env* env, const jchar* chars, jint length) {
     if (length == 0) chars = &EMPTY_JCHARS;
     if (!chars) return NULL;
-    CharArray* value = rvmNewCharArray(env, length);
+    CharArray* value = bugvmNewCharArray(env, length);
     if (!value) return NULL;
     memcpy(value->values, chars, sizeof(jchar) * length);
     return newString(env, value, 0, length);
 }
 
-Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
+Object* bugvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     if (length == 0) s = "";
     if (!s) return NULL;
 
@@ -260,7 +260,7 @@ Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     Object* string = findInternedString(env, s);
     if (!string) {
         length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
-        CharArray* value = rvmNewCharArray(env, length);
+        CharArray* value = bugvmNewCharArray(env, length);
         if (value) {
             utf8ToUnicode(value->values, s);
             Object* str = newString(env, value, 0, length);
@@ -275,14 +275,14 @@ Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     return string;
 }
 
-Object* rvmInternString(Env* env, Object* str) {
+Object* bugvmInternString(Env* env, Object* str) {
     if (!str) return NULL;
 
     obtainInternedStringsLock();
 
     Object* string = NULL;
 
-    char* s = rvmGetStringUTFChars(env, str);
+    char* s = bugvmGetStringUTFChars(env, str);
     if (s) {
         // Check the cache first.
         string = findInternedString(env, s);
@@ -298,43 +298,43 @@ Object* rvmInternString(Env* env, Object* str) {
     return string;
 }
 
-jint rvmGetStringLength(Env* env, Object* str) {
-    return rvmRTGetStringLength(env, str);
+jint bugvmGetStringLength(Env* env, Object* str) {
+    return bugvmRTGetStringLength(env, str);
 }
 
-jchar* rvmGetStringChars(Env* env, Object* str) {
-    return rvmRTGetStringChars(env, str);
+jchar* bugvmGetStringChars(Env* env, Object* str) {
+    return bugvmRTGetStringChars(env, str);
 }
 
-jint rvmGetStringUTFLength(Env* env, Object* str) {
-    jchar* chars = rvmGetStringChars(env, str);
-    jint count = rvmGetStringLength(env, str);
+jint bugvmGetStringUTFLength(Env* env, Object* str) {
+    jchar* chars = bugvmGetStringChars(env, str);
+    jint count = bugvmGetStringLength(env, str);
     return getUtf8LengthOfUnicode(chars, count);
 }
 
-char* rvmGetStringUTFChars(Env* env, Object* str) {
-    jchar* chars = rvmGetStringChars(env, str);
-    jint count = rvmGetStringLength(env, str);
+char* bugvmGetStringUTFChars(Env* env, Object* str) {
+    jchar* chars = bugvmGetStringChars(env, str);
+    jint count = bugvmGetStringLength(env, str);
     jint length = getUtf8LengthOfUnicode(chars, count);
 
-    char* result = rvmAllocateMemoryAtomic(env, length + 1);
+    char* result = bugvmAllocateMemoryAtomic(env, length + 1);
     if (!result) return NULL;
 
     unicodeToUtf8(result, chars, count);
     return result;
 }
 
-void rvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf) {
+void bugvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf) {
     // TODO: Check bounds
-    jchar* chars = rvmGetStringChars(env, str);
-    //jint count = rvmGetStringLength(env, str);
+    jchar* chars = bugvmGetStringChars(env, str);
+    //jint count = bugvmGetStringLength(env, str);
     memcpy(buf, chars + start, sizeof(jchar) * len);
 }
 
-void rvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* buf) {
+void bugvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* buf) {
     // TODO: Check bounds
-    jchar* chars = rvmGetStringChars(env, str);
-    //jint count = rvmGetStringLength(env, str);
+    jchar* chars = bugvmGetStringChars(env, str);
+    //jint count = bugvmGetStringLength(env, str);
     unicodeToUtf8(buf, chars + start, len);
 }
 

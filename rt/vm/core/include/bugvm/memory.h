@@ -16,40 +16,40 @@
 #ifndef BUGVM_MEMORY_H
 #define BUGVM_MEMORY_H
 
-extern jboolean rvmInitMemory(Env* env);
-extern Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize);
-extern void rvmSetupGcDescriptor(Env* env, Class* clazz);
-extern Object* rvmAllocateMemoryForObject(Env* env, Class* clazz);
-extern jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable);
-extern void rvmRegisterFinalizer(Env* env, Object* obj);
-extern void rvmRegisterReference(Env* env, Object* reference, Object* referent);
-extern void rvmRegisterDisappearingLink(Env* env, void** address, Object* obj);
-extern void rvmUnregisterDisappearingLink(Env* env, void** address);
-extern Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length);
-extern void* rvmAllocateMemory(Env* env, size_t size);
-extern void* rvmAllocateMemoryUncollectable(Env* env, size_t size);
-extern void* rvmAllocateMemoryAtomic(Env* env, size_t size);
-extern void* rvmAllocateMemoryAtomicUncollectable(Env* env, size_t size);
-extern void rvmFreeMemoryUncollectable(Env* env, void* m);
-extern void rvmGCCollect(Env* env);
-extern jboolean rvmInitRefTable(Env* env, RefTable* refTable, jint size);
-extern jboolean rvmAddGlobalRef(Env* env, Object* object);
-extern jboolean rvmRemoveGlobalRef(Env* env, Object* object);
-extern jboolean rvmAddRef(Env* env, RefTable* refTable, Object* object);
-extern jboolean rvmRemoveRef(Env* env, RefTable* refTable, Object* object);
-extern jlong rvmGetFreeMemory(Env* env);
-extern jlong rvmGetTotalMemory(Env* env);
-extern jlong rvmGetMaxMemory(Env* env);
-extern void* rvmCopyMemoryAtomic(Env* env, const void* src, size_t size);
-extern void* rvmCopyMemoryAtomicZ(Env* env, const char* src);
-extern void* rvmCopyMemory(Env* env, const void* src, size_t size);
-extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
-extern void* rvmGetDirectBufferAddress(Env* env, Object* buf);
-extern jlong rvmGetDirectBufferCapacity(Env* env, Object* buf);
-extern void rvmGenerateHeapDump(Env* env);
+extern jboolean bugvmInitMemory(Env* env);
+extern Class* bugvmAllocateMemoryForClass(Env* env, jint classDataSize);
+extern void bugvmSetupGcDescriptor(Env* env, Class* clazz);
+extern Object* bugvmAllocateMemoryForObject(Env* env, Class* clazz);
+extern jboolean bugvmIsCriticalOutOfMemoryError(Env* env, Object* throwable);
+extern void bugvmRegisterFinalizer(Env* env, Object* obj);
+extern void bugvmRegisterReference(Env* env, Object* reference, Object* referent);
+extern void bugvmRegisterDisappearingLink(Env* env, void** address, Object* obj);
+extern void bugvmUnregisterDisappearingLink(Env* env, void** address);
+extern Array* bugvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length);
+extern void* bugvmAllocateMemory(Env* env, size_t size);
+extern void* bugvmAllocateMemoryUncollectable(Env* env, size_t size);
+extern void* bugvmAllocateMemoryAtomic(Env* env, size_t size);
+extern void* bugvmAllocateMemoryAtomicUncollectable(Env* env, size_t size);
+extern void bugvmFreeMemoryUncollectable(Env* env, void* m);
+extern void bugvmGCCollect(Env* env);
+extern jboolean bugvmInitRefTable(Env* env, RefTable* refTable, jint size);
+extern jboolean bugvmAddGlobalRef(Env* env, Object* object);
+extern jboolean bugvmRemoveGlobalRef(Env* env, Object* object);
+extern jboolean bugvmAddRef(Env* env, RefTable* refTable, Object* object);
+extern jboolean bugvmRemoveRef(Env* env, RefTable* refTable, Object* object);
+extern jlong bugvmGetFreeMemory(Env* env);
+extern jlong bugvmGetTotalMemory(Env* env);
+extern jlong bugvmGetMaxMemory(Env* env);
+extern void* bugvmCopyMemoryAtomic(Env* env, const void* src, size_t size);
+extern void* bugvmCopyMemoryAtomicZ(Env* env, const char* src);
+extern void* bugvmCopyMemory(Env* env, const void* src, size_t size);
+extern Object* bugvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
+extern void* bugvmGetDirectBufferAddress(Env* env, Object* buf);
+extern jlong bugvmGetDirectBufferCapacity(Env* env, Object* buf);
+extern void bugvmGenerateHeapDump(Env* env);
 
 // Moves n 16-bit values from src to dest. src and dest must be 16-bit aligned.
-static inline void rvmMoveMemory16(void* dest, const void* src, size_t n) {
+static inline void bugvmMoveMemory16(void* dest, const void* src, size_t n) {
     // This function is a modified version of the move16 function in Android's java_lang_System.cpp
     assert((((uintptr_t) dest | (uintptr_t) src) & 0x01) == 0);
 
@@ -72,7 +72,7 @@ static inline void rvmMoveMemory16(void* dest, const void* src, size_t n) {
 }
 
 // Moves n 32-bit values from src to dest. src and dest must be 32-bit aligned.
-static inline void rvmMoveMemory32(void* dest, const void* src, size_t n) {
+static inline void bugvmMoveMemory32(void* dest, const void* src, size_t n) {
     // This function is a modified version of the move32 function in Android's java_lang_System.cpp
     assert((((uintptr_t) dest | (uintptr_t) src) & 0x03) == 0);
 

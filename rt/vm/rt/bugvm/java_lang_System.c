@@ -67,29 +67,29 @@ ObjectArray* Java_java_lang_System_bugvmSpecialProperties(Env* env, Class* c) {
     getDarwinLocaleParts(userLanguage, userRegion, userVariant);
     jboolean hasLocale = strcmp(userLanguage, "user.language=") != 0;
 
-    ObjectArray* result = rvmNewObjectArray(env, hasLocale ? 6 : 3, java_lang_String, NULL, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, hasLocale ? 6 : 3, java_lang_String, NULL, NULL);
     if (!result) return NULL;
 
-    result->values[0] = rvmNewStringUTF(env, osName, -1);
+    result->values[0] = bugvmNewStringUTF(env, osName, -1);
     if (!result->values[0]) return NULL;
-    result->values[1] = rvmNewStringUTF(env, osVersion, -1);
+    result->values[1] = bugvmNewStringUTF(env, osVersion, -1);
     if (!result->values[1]) return NULL;
-    result->values[2] = rvmNewStringUTF(env, osArch, -1);
+    result->values[2] = bugvmNewStringUTF(env, osArch, -1);
     if (!result->values[2]) return NULL;
     if (hasLocale) {
-        result->values[3] = rvmNewStringUTF(env, userLanguage, -1);
+        result->values[3] = bugvmNewStringUTF(env, userLanguage, -1);
         if (!result->values[3]) return NULL;
-        result->values[4] = rvmNewStringUTF(env, userRegion, -1);
+        result->values[4] = bugvmNewStringUTF(env, userRegion, -1);
         if (!result->values[4]) return NULL;
-        result->values[5] = rvmNewStringUTF(env, userVariant, -1);
+        result->values[5] = bugvmNewStringUTF(env, userVariant, -1);
         if (!result->values[5]) return NULL;
     }
 
     return result;
 #else
-    ObjectArray* result = rvmNewObjectArray(env, 1, java_lang_String, NULL, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, 1, java_lang_String, NULL, NULL);
     if (!result) return NULL;
-    result->values[0] = rvmNewStringUTF(env, osArch, -1);
+    result->values[0] = bugvmNewStringUTF(env, osArch, -1);
     if (!result->values[0]) return NULL;
     return result;
 #endif

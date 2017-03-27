@@ -124,7 +124,7 @@ extern Class* array_J;
 extern Class* array_F;
 extern Class* array_D;
 
-static inline jboolean rvmIsInterfaceTypeInfoAssignable(Env* env, TypeInfo* sti, TypeInfo* tti) {
+static inline jboolean bugvmIsInterfaceTypeInfoAssignable(Env* env, TypeInfo* sti, TypeInfo* tti) {
     uint32_t id = tti->id;
     uint32_t ifCount = sti->interfaceCount;
     uint32_t* base = (uint32_t*) ((((char*) sti) + sti->offset) + sizeof(uint32_t));
@@ -135,7 +135,7 @@ static inline jboolean rvmIsInterfaceTypeInfoAssignable(Env* env, TypeInfo* sti,
     }
     return FALSE;
 }
-static inline jboolean rvmIsClassTypeInfoAssignable(Env* env, TypeInfo* sti, TypeInfo* tti) {
+static inline jboolean bugvmIsClassTypeInfoAssignable(Env* env, TypeInfo* sti, TypeInfo* tti) {
     uint32_t id = tti->id;
     if (tti->offset <= sti->offset) {
         uint32_t* base = (uint32_t*) (((char*) sti) + tti->offset);
@@ -144,89 +144,89 @@ static inline jboolean rvmIsClassTypeInfoAssignable(Env* env, TypeInfo* sti, Typ
     return FALSE;
 }
 
-extern jboolean rvmInitClasses(Env* env);
-extern jboolean rvmInitPrimitiveWrapperClasses(Env* env);
+extern jboolean bugvmInitClasses(Env* env);
+extern jboolean bugvmInitPrimitiveWrapperClasses(Env* env);
 
-extern Object* rvmGetParentClassLoader(Env* env, Object* classLoader);
-extern Object* rvmGetParentParentClassLoader(Env* env, Object* classLoader);
+extern Object* bugvmGetParentClassLoader(Env* env, Object* classLoader);
+extern Object* bugvmGetParentParentClassLoader(Env* env, Object* classLoader);
 
-extern Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Object* classLoader, jint flags, TypeInfo* typeInfo,
+extern Class* bugvmAllocateClass(Env* env, const char* className, Class* superclass, Object* classLoader, jint flags, TypeInfo* typeInfo,
 		VITable* vitable, ITables* itables, jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, unsigned short instanceRefCount, 
         void* attributes, void* initializer);
-extern Interface* rvmAllocateInterface(Env* env, Class* interf);
-extern Field* rvmAllocateField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
-extern Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes);
-extern BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
+extern Interface* bugvmAllocateInterface(Env* env, Class* interf);
+extern Field* bugvmAllocateField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
+extern Method* bugvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes);
+extern BridgeMethod* bugvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl,
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
-extern CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
+extern CallbackMethod* bugvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl,
 		void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes);
-extern jboolean rvmAddInterface(Env* env, Class* clazz, Class* interfaze);
-extern Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
-extern Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes);
-extern BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
+extern jboolean bugvmAddInterface(Env* env, Class* clazz, Class* interfaze);
+extern Field* bugvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
+extern Method* bugvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes);
+extern BridgeMethod* bugvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl,
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
-extern CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
+extern CallbackMethod* bugvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl,
 		void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes);
-extern jboolean rvmRegisterClass(Env* env, Class* clazz);
+extern jboolean bugvmRegisterClass(Env* env, Class* clazz);
 
-extern Class* rvmFindClass(Env* env, const char* className);
-extern Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, Object* classLoader);
-extern Class* rvmFindClassUsingLoader(Env* env, const char* className, Object* classLoader);
-extern Class* rvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader);
-extern Class* rvmFindLoadedClass(Env* env, const char* className, Object* classLoader);
-extern Object* rvmGetSystemClassLoader(Env* env);
+extern Class* bugvmFindClass(Env* env, const char* className);
+extern Class* bugvmFindClassInClasspathForLoader(Env* env, const char* className, Object* classLoader);
+extern Class* bugvmFindClassUsingLoader(Env* env, const char* className, Object* classLoader);
+extern Class* bugvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader);
+extern Class* bugvmFindLoadedClass(Env* env, const char* className, Object* classLoader);
+extern Object* bugvmGetSystemClassLoader(Env* env);
 
-extern Interface* rvmGetInterfaces(Env* env, Class* clazz);
-extern Field* rvmGetFields(Env* env, Class* clazz);
-extern Method* rvmGetMethods(Env* env, Class* clazz);
+extern Interface* bugvmGetInterfaces(Env* env, Class* clazz);
+extern Field* bugvmGetFields(Env* env, Class* clazz);
+extern Method* bugvmGetMethods(Env* env, Class* clazz);
 
-extern void rvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data);
+extern void bugvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data);
 
 /**
  * Creates a new instance of the specified class.
  */
-extern Object* rvmAllocateObject(Env* env, Class* clazz);
-extern void rvmInitialize(Env* env, Class* clazz);
-extern Object* rvmNewObject(Env* env, Class* clazz, Method* method, ...);
-extern Object* rvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
-extern Object* rvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
+extern Object* bugvmAllocateObject(Env* env, Class* clazz);
+extern void bugvmInitialize(Env* env, Class* clazz);
+extern Object* bugvmNewObject(Env* env, Class* clazz, Method* method, ...);
+extern Object* bugvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
+extern Object* bugvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
 
-extern Boolean* rvmBoxBoolean(Env* env, jboolean value);
-extern Byte* rvmBoxByte(Env* env, jbyte value);
-extern Short* rvmBoxShort(Env* env, jshort value);
-extern Character* rvmBoxChar(Env* env, jchar value);
-extern Integer* rvmBoxInt(Env* env, jint value);
-extern Long* rvmBoxLong(Env* env, jlong value);
-extern Float* rvmBoxFloat(Env* env, jfloat value);
-extern Double* rvmBoxDouble(Env* env, jdouble value);
-extern Object* rvmBox(Env* env, Class* type, jvalue* value);
-extern jboolean rvmUnboxBoolean(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxByte(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxShort(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxChar(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxInt(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxLong(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxFloat(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnboxDouble(Env* env, Object* arg, jvalue* value);
-extern jboolean rvmUnbox(Env* env, Object* arg, Class* type, jvalue* value);
+extern Boolean* bugvmBoxBoolean(Env* env, jboolean value);
+extern Byte* bugvmBoxByte(Env* env, jbyte value);
+extern Short* bugvmBoxShort(Env* env, jshort value);
+extern Character* bugvmBoxChar(Env* env, jchar value);
+extern Integer* bugvmBoxInt(Env* env, jint value);
+extern Long* bugvmBoxLong(Env* env, jlong value);
+extern Float* bugvmBoxFloat(Env* env, jfloat value);
+extern Double* bugvmBoxDouble(Env* env, jdouble value);
+extern Object* bugvmBox(Env* env, Class* type, jvalue* value);
+extern jboolean bugvmUnboxBoolean(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxByte(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxShort(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxChar(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxInt(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxLong(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxFloat(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnboxDouble(Env* env, Object* arg, jvalue* value);
+extern jboolean bugvmUnbox(Env* env, Object* arg, Class* type, jvalue* value);
 
-extern Object* rvmCloneObject(Env* env, Object* obj);
+extern Object* bugvmCloneObject(Env* env, Object* obj);
 
-extern char* rvmToBinaryClassName(Env* env, const char* className);
-extern char* rvmFromBinaryClassName(Env* env, const char* binaryClassName);
-extern const char* rvmGetClassDescriptor(Env* env, Class* clazz);
-extern const char* rvmGetHumanReadableClassName(Env* env, Class* clazz);
+extern char* bugvmToBinaryClassName(Env* env, const char* className);
+extern char* bugvmFromBinaryClassName(Env* env, const char* binaryClassName);
+extern const char* bugvmGetClassDescriptor(Env* env, Class* clazz);
+extern const char* bugvmGetHumanReadableClassName(Env* env, Class* clazz);
 
-extern jboolean rvmIsSubClass(Class* superclass, Class* clazz);
-extern jboolean rvmIsSamePackage(Class* c1, Class* c2);
+extern jboolean bugvmIsSubClass(Class* superclass, Class* clazz);
+extern jboolean bugvmIsSamePackage(Class* c1, Class* c2);
 
-extern jboolean rvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
-extern jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
+extern jboolean bugvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
+extern jboolean bugvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
 
-extern ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, Object* classLoader);
+extern ObjectArray* bugvmListClasses(Env* env, Class* instanceofClass, Object* classLoader);
 
-extern void rvmObtainClassLock(Env* env);
-extern void rvmReleaseClassLock(Env* env);
+extern void bugvmObtainClassLock(Env* env);
+extern void bugvmReleaseClassLock(Env* env);
 
 #endif
 

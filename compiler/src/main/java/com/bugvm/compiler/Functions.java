@@ -91,7 +91,7 @@ public class Functions {
     public static final FunctionRef BC_POP_CALLBACK_FRAME = new FunctionRef("_bcPopCallbackFrame", new FunctionType(Type.VOID, Types.ENV_PTR));
     public static final FunctionRef BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcAttachThreadFromCallback", new FunctionType(Types.ENV_PTR));
     public static final FunctionRef BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcDetachThreadFromCallback", new FunctionType(Type.VOID, Types.ENV_PTR));
-    public static final FunctionRef RVM_TRYCATCH_ENTER = new FunctionRef("rvmTrycatchEnter", new FunctionType(Type.I32, Types.ENV_PTR, Types.TRYCATCH_CONTEXT_PTR));
+    public static final FunctionRef RVM_TRYCATCH_ENTER = new FunctionRef("bugvmTrycatchEnter", new FunctionType(Type.I32, Types.ENV_PTR, Types.TRYCATCH_CONTEXT_PTR));
     public static final FunctionRef BC_TRYCATCH_LEAVE = new FunctionRef("_bcTrycatchLeave", new FunctionType(Type.VOID, Types.ENV_PTR));
     public static final FunctionRef BC_ABSTRACT_METHOD_CALLED = new FunctionRef("_bcAbstractMethodCalled", new FunctionType(Type.VOID, Types.ENV_PTR, Types.OBJECT_PTR));
     public static final FunctionRef BC_NON_PUBLIC_METHOD_CALLED = new FunctionRef("_bcNonPublicMethodCalled", new FunctionType(Type.VOID, Types.ENV_PTR, Types.OBJECT_PTR));

@@ -149,7 +149,7 @@ static jboolean addLoadedClass(Env* env, Class* clazz) {
     // LoadedClassEntrys are allocated atomically. Classes are always GC roots 
     // which means that the class and it's name will be reachable regardless of 
     // whether this is allocated atomically or not.
-    LoadedClassEntry* entry = rvmAllocateMemoryAtomicUncollectable(env, sizeof(LoadedClassEntry));
+    LoadedClassEntry* entry = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(LoadedClassEntry));
     if (!entry) return FALSE;
     entry->key = clazz->name;
     entry->clazz = clazz;
@@ -158,16 +158,16 @@ static jboolean addLoadedClass(Env* env, Class* clazz) {
 }
 
 static inline void obtainClassLock() {
-    rvmLockMutex(&classLock);
+    bugvmLockMutex(&classLock);
 }
 
 static inline void releaseClassLock() {
-    rvmUnlockMutex(&classLock);
+    bugvmUnlockMutex(&classLock);
 }
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
     uint32_t classId = nextClassId();
-    TypeInfo* typeInfo = rvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t));
+    TypeInfo* typeInfo = bugvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t));
     if (!typeInfo) return NULL;
     typeInfo->id = classId;
     typeInfo->offset = sizeof(TypeInfo);
@@ -175,26 +175,26 @@ static Class* createPrimitiveClass(Env* env, const char* desc) {
     typeInfo->classCount = 1;
     typeInfo->types[0] = classId;
 
-    Class* clazz = rvmAllocateClass(env, desc, NULL, NULL,
+    Class* clazz = bugvmAllocateClass(env, desc, NULL, NULL,
         CLASS_TYPE_PRIMITIVE | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo, NULL, NULL,
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->_interfaces = NULL;
     clazz->_fields = NULL;
     clazz->_methods = NULL;
-    if (!rvmAddGlobalRef(env, (Object*) clazz)) return NULL;
+    if (!bugvmAddGlobalRef(env, (Object*) clazz)) return NULL;
     clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
     return clazz;
 }
 
 static Class* createArrayClass(Env* env, Class* componentType) {
     // Create a TypeInfo for the new array class. This TypeInfo is incomplete.
-    // It only contains C[], Object, Cloneable and Serializable. rvmIsAssignableFrom
+    // It only contains C[], Object, Cloneable and Serializable. bugvmIsAssignableFrom
     // will also check the componentType if no match can be found in the TypeInfo for
     // annary classes.
     TypeInfo* typeInfo = NULL;
     uint32_t classId = nextClassId();
-    typeInfo = rvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t) * 4);
+    typeInfo = bugvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t) * 4);
     if (!typeInfo) return NULL;
     typeInfo->id = classId;
     typeInfo->offset = sizeof(TypeInfo) + sizeof(uint32_t);
@@ -211,12 +211,12 @@ static Class* createArrayClass(Env* env, Class* componentType) {
 
     jint access = componentType->flags & 0x7; // ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED are in the 3 least significant bits
     if (CLASS_IS_ARRAY(componentType) || CLASS_IS_PRIMITIVE(componentType)) {
-        desc = rvmAllocateMemoryAtomic(env, length + 2);
+        desc = bugvmAllocateMemoryAtomic(env, length + 2);
         if (!desc) return NULL;
         desc[0] = '[';
         strcat(desc, componentType->name);
     } else {
-        desc = rvmAllocateMemoryAtomic(env, length + 4);
+        desc = bugvmAllocateMemoryAtomic(env, length + 4);
         if (!desc) return NULL;
         desc[0] = '[';
         desc[1] = 'L';
@@ -225,22 +225,22 @@ static Class* createArrayClass(Env* env, Class* componentType) {
 
         // For inner classes we also have to check the INNERCLASS attribute for the real access value.
         jint innerAccess = 0;
-        if (rvmAttributeGetInnerClass(env, componentType, NULL, &innerAccess)) {
+        if (bugvmAttributeGetInnerClass(env, componentType, NULL, &innerAccess)) {
             access = innerAccess & 0x7;
         }
-        if (rvmExceptionCheck(env)) return NULL;
+        if (bugvmExceptionCheck(env)) return NULL;
     }
 
-    Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader,
+    Class* clazz = bugvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader,
         CLASS_TYPE_ARRAY | access | ACC_FINAL | ACC_ABSTRACT, typeInfo, java_lang_Object->vitable, NULL,
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
-    // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this array class
+    // Initialize methods to NULL to prevent bugvmGetMethods() from trying to load the methods if called with this array class
     clazz->_methods = NULL;
-    if (!rvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
-    if (!rvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
-    if (!rvmRegisterClass(env, clazz)) return NULL;
+    if (!bugvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
+    if (!bugvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
+    if (!bugvmRegisterClass(env, clazz)) return NULL;
 
     clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
 
@@ -262,16 +262,16 @@ static Class* findClass(Env* env, const char* className, Object* classLoader, Cl
         }
         if (!componentType)  {
             releaseClassLock();
-            Object* exception = rvmExceptionOccurred(env);
+            Object* exception = bugvmExceptionOccurred(env);
             if (exception && exception->clazz == java_lang_ClassNotFoundException) {
                 // Assume that the ClassNotFoundException was thrown because the component
                 // type could not be found. Throw a new ClassNotFoundException with className
                 // as message.
-                rvmExceptionClear(env);
-                rvmThrowClassNotFoundException(env, className);
+                bugvmExceptionClear(env);
+                bugvmThrowClassNotFoundException(env, className);
             } else if (!strcmp("[V", className)) {
                 // Array of void is not possible
-                rvmThrowClassNotFoundException(env, className);
+                bugvmThrowClassNotFoundException(env, className);
             }
             return NULL;
         }
@@ -283,16 +283,16 @@ static Class* findClass(Env* env, const char* className, Object* classLoader, Cl
     TRACEF("Class '%s' not loaded", className);
 
     clazz = loaderFunc(env, className, classLoader);
-    if (rvmExceptionOccurred(env)) {
+    if (bugvmExceptionOccurred(env)) {
         releaseClassLock();
         return NULL;
     }
 
     if (clazz == NULL) {
         if (!strcmp(className, "java/lang/ClassNotFoundException")) {
-            rvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
+            bugvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
         }
-        rvmThrowClassNotFoundException(env, className);
+        bugvmThrowClassNotFoundException(env, className);
     }
 
     TRACEF("Class '%s' loaded successfully", className);
@@ -302,11 +302,11 @@ static Class* findClass(Env* env, const char* className, Object* classLoader, Cl
 
 static Class* findBootClass(Env* env, const char* className) {
     Class* clazz = findClass(env, className, NULL, env->vm->options->loadBootClass);
-    if (rvmExceptionOccurred(env)) return NULL;
+    if (bugvmExceptionOccurred(env)) return NULL;
     if (clazz != NULL) {
         if (clazz->classLoader != NULL) {
             // Not a boot class
-            rvmThrowClassNotFoundException(env, className);
+            bugvmThrowClassNotFoundException(env, className);
             return NULL;
         }
     }
@@ -339,13 +339,13 @@ static Class* findClassByDescriptor(Env* env, const char* desc, Object* classLoa
     }
     assert(desc[0] == 'L');
     jint length = strlen(desc);
-    char* className = rvmAllocateMemoryAtomic(env, length - 2 + 1);
+    char* className = bugvmAllocateMemoryAtomic(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
     return findClass(env, className, classLoader, loaderFunc);
 }
 
-Class* rvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader) {
+Class* bugvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -366,18 +366,18 @@ Class* rvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader)
     case 'V':
         return prim_V;
     case '[':
-        return rvmFindClassUsingLoader(env, desc, classLoader);
+        return bugvmFindClassUsingLoader(env, desc, classLoader);
     }
     assert(desc[0] == 'L');
     jint length = strlen(desc);
-    char* className = rvmAllocateMemoryAtomic(env, length - 2 + 1);
+    char* className = bugvmAllocateMemoryAtomic(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
-    return rvmFindClassUsingLoader(env, className, classLoader);
+    return bugvmFindClassUsingLoader(env, className, classLoader);
 }
 
-char* rvmToBinaryClassName(Env* env, const char* className) {
-    char* binName = rvmCopyMemoryAtomicZ(env, className);
+char* bugvmToBinaryClassName(Env* env, const char* className) {
+    char* binName = bugvmCopyMemoryAtomicZ(env, className);
     if (!binName) return NULL;
     jint i = 0;
     for (i = 0; binName[i] != '\0'; i++) {
@@ -386,8 +386,8 @@ char* rvmToBinaryClassName(Env* env, const char* className) {
     return binName;
 }
 
-char* rvmFromBinaryClassName(Env* env, const char* binaryClassName) {
-    char* className = rvmCopyMemoryAtomicZ(env, binaryClassName);
+char* bugvmFromBinaryClassName(Env* env, const char* binaryClassName) {
+    char* className = bugvmCopyMemoryAtomicZ(env, binaryClassName);
     if (!className) return NULL;
     jint i = 0;
     for (i = 0; className[i] != '\0'; i++) {
@@ -396,7 +396,7 @@ char* rvmFromBinaryClassName(Env* env, const char* binaryClassName) {
     return className;
 }
 
-const char* rvmGetHumanReadableClassName(Env* env, Class* clazz) {
+const char* bugvmGetHumanReadableClassName(Env* env, Class* clazz) {
     // This code is a port of the dvmHumanReadableDescriptor() function in Android's Exception.cpp
 
     // Count the number of '['s to get the dimensionality.
@@ -430,7 +430,7 @@ const char* rvmGetHumanReadableClassName(Env* env, Class* clazz) {
 
     // At this point, 'c' is a string of the form "fully/qualified/Type;"
     // or "primitive;". Rewrite the type with '.' instead of '/':
-    char* result = rvmAllocateMemoryAtomic(env, strlen(c) + dim * 2 + 1);
+    char* result = bugvmAllocateMemoryAtomic(env, strlen(c) + dim * 2 + 1);
     if (!result) return NULL;
     const char* p = c;
     jint index = 0;
@@ -449,14 +449,14 @@ const char* rvmGetHumanReadableClassName(Env* env, Class* clazz) {
     return result;
 }
 
-const char* rvmGetClassDescriptor(Env* env, Class* clazz) {
+const char* bugvmGetClassDescriptor(Env* env, Class* clazz) {
     jint length = strlen(clazz->name);
     char* desc = NULL;
 
     if (CLASS_IS_ARRAY(clazz) || CLASS_IS_PRIMITIVE(clazz)) {
         desc = (char*) clazz->name;
     } else {
-        desc = rvmAllocateMemoryAtomic(env, length + 3);
+        desc = bugvmAllocateMemoryAtomic(env, length + 3);
         if (!desc) return NULL;
         desc[0] = 'L';
         strcat(desc, clazz->name);
@@ -466,7 +466,7 @@ const char* rvmGetClassDescriptor(Env* env, Class* clazz) {
     return (const char*) desc;
 }
 
-jboolean rvmIsSubClass(Class* superclass, Class* clazz) {
+jboolean bugvmIsSubClass(Class* superclass, Class* clazz) {
     // TODO: Array types
     while (clazz && clazz != superclass) {
         clazz = clazz->superclass;
@@ -474,7 +474,7 @@ jboolean rvmIsSubClass(Class* superclass, Class* clazz) {
     return clazz == superclass;
 }
 
-jboolean rvmIsSamePackage(Class* c1, Class* c2) {
+jboolean bugvmIsSamePackage(Class* c1, Class* c2) {
     if (c1 == c2) return TRUE;
     if (c1->classLoader != c2->classLoader) return FALSE;
     // TODO: Array types
@@ -491,7 +491,7 @@ jboolean rvmIsSamePackage(Class* c1, Class* c2) {
     return strncmp(c1->name, c2->name, l1) == 0;
 }
 
-jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
+jboolean bugvmIsAssignableFrom(Env* env, Class* s, Class* t) {
     // TODO: What if s or t are NULL?
     if (s == t || t == java_lang_Object) {
         return TRUE;
@@ -505,17 +505,17 @@ jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
     }
 
     if (CLASS_IS_INTERFACE(t)) {
-        if (rvmIsInterfaceTypeInfoAssignable(env, sti, tti)) goto found;
+        if (bugvmIsInterfaceTypeInfoAssignable(env, sti, tti)) goto found;
         return FALSE;
     }
 
     // t must be a class or array class
-    if (rvmIsClassTypeInfoAssignable(env, sti, tti)) goto found;
+    if (bugvmIsClassTypeInfoAssignable(env, sti, tti)) goto found;
 
     // The TypeInfo of array classes doesn't give the complete information.
     if (CLASS_IS_ARRAY(t) && CLASS_IS_ARRAY(s) 
             && !CLASS_IS_PRIMITIVE(t->componentType) && !CLASS_IS_PRIMITIVE(s->componentType)) {
-        return rvmIsAssignableFrom(env, s->componentType, t->componentType);
+        return bugvmIsAssignableFrom(env, s->componentType, t->componentType);
     }
 
     return FALSE;
@@ -525,21 +525,21 @@ found:
     return TRUE;
 }
 
-jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
+jboolean bugvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
     if (!obj) return FALSE;
-    return rvmIsAssignableFrom(env, obj->clazz, clazz);
+    return bugvmIsAssignableFrom(env, obj->clazz, clazz);
 }
 
 static jboolean fixClassPointer(Env* env, Class* c, void* data) {
     c->object.clazz = java_lang_Class;
     // Make sure the GC descriptor has been set properly as well.
-    rvmSetupGcDescriptor(env, c);
+    bugvmSetupGcDescriptor(env, c);
     return TRUE;
 }
 
-jboolean rvmInitClasses(Env* env) {
+jboolean bugvmInitClasses(Env* env) {
 
-    if (rvmInitMutex(&classLock) != 0) {
+    if (bugvmInitMutex(&classLock) != 0) {
         return FALSE;
     }
 
@@ -552,7 +552,7 @@ jboolean rvmInitClasses(Env* env) {
     if (!java_lang_Class) return FALSE;
 
     // Fix object.clazz pointers for the classes loaded so far
-    rvmIterateLoadedClasses(env, fixClassPointer, NULL);
+    bugvmIterateLoadedClasses(env, fixClassPointer, NULL);
 
     java_lang_ClassLoader = findBootClass(env, "java/lang/ClassLoader");
     if (!java_lang_ClassLoader) return FALSE;
@@ -691,117 +691,117 @@ jboolean rvmInitClasses(Env* env) {
     return TRUE;
 }
 
-jboolean rvmInitPrimitiveWrapperClasses(Env* env) {
+jboolean bugvmInitPrimitiveWrapperClasses(Env* env) {
     Class* c = NULL;
     ClassField* f = NULL;
 
-    f = rvmGetClassField(env, java_lang_Boolean, "TRUE", "Ljava/lang/Boolean;");
+    f = bugvmGetClassField(env, java_lang_Boolean, "TRUE", "Ljava/lang/Boolean;");
     if (!f) return FALSE;
-    java_lang_Boolean_TRUE = (Boolean*) rvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
+    java_lang_Boolean_TRUE = (Boolean*) bugvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
     if (!java_lang_Boolean_TRUE) return FALSE;
 
-    f = rvmGetClassField(env, java_lang_Boolean, "FALSE", "Ljava/lang/Boolean;");
+    f = bugvmGetClassField(env, java_lang_Boolean, "FALSE", "Ljava/lang/Boolean;");
     if (!f) return FALSE;
-    java_lang_Boolean_FALSE = (Boolean*) rvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
+    java_lang_Boolean_FALSE = (Boolean*) bugvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
     if (!java_lang_Boolean_FALSE) return FALSE;
 
-    java_lang_Byte_valueOf = rvmGetClassMethod(env, java_lang_Byte, "valueOf", "(B)Ljava/lang/Byte;");
+    java_lang_Byte_valueOf = bugvmGetClassMethod(env, java_lang_Byte, "valueOf", "(B)Ljava/lang/Byte;");
     if (!java_lang_Byte_valueOf) return FALSE;
-    f = rvmGetClassField(env, java_lang_Byte, "VALUES", "[Ljava/lang/Byte;");
+    f = bugvmGetClassField(env, java_lang_Byte, "VALUES", "[Ljava/lang/Byte;");
     if (!f) return FALSE;
-    bytesCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, java_lang_Byte, f);
+    bytesCache = (ObjectArray*) bugvmGetObjectClassFieldValue(env, java_lang_Byte, f);
     if (!bytesCache) return FALSE;
 
-    java_lang_Short_valueOf = rvmGetClassMethod(env, java_lang_Short, "valueOf", "(S)Ljava/lang/Short;");
+    java_lang_Short_valueOf = bugvmGetClassMethod(env, java_lang_Short, "valueOf", "(S)Ljava/lang/Short;");
     if (!java_lang_Short_valueOf) return FALSE;
-    f = rvmGetClassField(env, java_lang_Short, "SMALL_VALUES", "[Ljava/lang/Short;");
+    f = bugvmGetClassField(env, java_lang_Short, "SMALL_VALUES", "[Ljava/lang/Short;");
     if (!f) return FALSE;
-    shortsCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
+    shortsCache = (ObjectArray*) bugvmGetObjectClassFieldValue(env, c, f);
     if (!shortsCache) return FALSE;
 
-    java_lang_Character_valueOf = rvmGetClassMethod(env, java_lang_Character, "valueOf", "(C)Ljava/lang/Character;");
+    java_lang_Character_valueOf = bugvmGetClassMethod(env, java_lang_Character, "valueOf", "(C)Ljava/lang/Character;");
     if (!java_lang_Character_valueOf) return FALSE;
-    f = rvmGetClassField(env, java_lang_Character, "SMALL_VALUES", "[Ljava/lang/Character;");
+    f = bugvmGetClassField(env, java_lang_Character, "SMALL_VALUES", "[Ljava/lang/Character;");
     if (!f) return FALSE;
-    charactersCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
+    charactersCache = (ObjectArray*) bugvmGetObjectClassFieldValue(env, c, f);
     if (!charactersCache) return FALSE;
 
-    java_lang_Integer_valueOf = rvmGetClassMethod(env, java_lang_Integer, "valueOf", "(I)Ljava/lang/Integer;");
+    java_lang_Integer_valueOf = bugvmGetClassMethod(env, java_lang_Integer, "valueOf", "(I)Ljava/lang/Integer;");
     if (!java_lang_Integer_valueOf) return FALSE;
-    f = rvmGetClassField(env, java_lang_Integer, "SMALL_VALUES", "[Ljava/lang/Integer;");
+    f = bugvmGetClassField(env, java_lang_Integer, "SMALL_VALUES", "[Ljava/lang/Integer;");
     if (!f) return FALSE;
-    integersCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
+    integersCache = (ObjectArray*) bugvmGetObjectClassFieldValue(env, c, f);
     if (!integersCache) return FALSE;
 
-    java_lang_Long_valueOf = rvmGetClassMethod(env, java_lang_Long, "valueOf", "(J)Ljava/lang/Long;");
+    java_lang_Long_valueOf = bugvmGetClassMethod(env, java_lang_Long, "valueOf", "(J)Ljava/lang/Long;");
     if (!java_lang_Long_valueOf) return FALSE;
-    f = rvmGetClassField(env, java_lang_Long, "SMALL_VALUES", "[Ljava/lang/Long;");
+    f = bugvmGetClassField(env, java_lang_Long, "SMALL_VALUES", "[Ljava/lang/Long;");
     if (!f) return FALSE;
-    longsCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
+    longsCache = (ObjectArray*) bugvmGetObjectClassFieldValue(env, c, f);
     if (!longsCache) return FALSE;
 
-    java_lang_Float_valueOf = rvmGetClassMethod(env, java_lang_Float, "valueOf", "(F)Ljava/lang/Float;");
+    java_lang_Float_valueOf = bugvmGetClassMethod(env, java_lang_Float, "valueOf", "(F)Ljava/lang/Float;");
     if (!java_lang_Float_valueOf) return FALSE;
 
-    java_lang_Double_valueOf = rvmGetClassMethod(env, java_lang_Double, "valueOf", "(D)Ljava/lang/Double;");
+    java_lang_Double_valueOf = bugvmGetClassMethod(env, java_lang_Double, "valueOf", "(D)Ljava/lang/Double;");
     if (!java_lang_Double_valueOf) return FALSE;
 
     return TRUE;
 }
 
-Class* rvmFindClass(Env* env, const char* className) {
-    Method* method = rvmGetCallingMethod(env);
-    if (rvmExceptionOccurred(env)) return NULL;
+Class* bugvmFindClass(Env* env, const char* className) {
+    Method* method = bugvmGetCallingMethod(env);
+    if (bugvmExceptionOccurred(env)) return NULL;
     Object* classLoader = method ? method->clazz->classLoader : systemClassLoader;
-    return rvmFindClassUsingLoader(env, className, classLoader);
+    return bugvmFindClassUsingLoader(env, className, classLoader);
 }
 
-Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, Object* classLoader) {
-    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
+Class* bugvmFindClassInClasspathForLoader(Env* env, const char* className, Object* classLoader) {
+    if (!classLoader || bugvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         return findBootClass(env, className);
     }
-    if (rvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
+    if (bugvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
         // This is the system classloader
         Class* clazz = findClass(env, className, classLoader, env->vm->options->loadUserClass);
-        if (rvmExceptionOccurred(env)) return NULL;
+        if (bugvmExceptionOccurred(env)) return NULL;
         return clazz;
     }
-    rvmThrowClassNotFoundException(env, className);
+    bugvmThrowClassNotFoundException(env, className);
     return NULL;
 }
 
-Class* rvmFindClassUsingLoader(Env* env, const char* className, Object* classLoader) {
-    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
+Class* bugvmFindClassUsingLoader(Env* env, const char* className, Object* classLoader) {
+    if (!classLoader || bugvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader. No need to call ClassLoader.loadClass()
         return findBootClass(env, className);
     }
-    char* binaryClassName = rvmToBinaryClassName(env, className);
+    char* binaryClassName = bugvmToBinaryClassName(env, className);
     if (!binaryClassName) return NULL;
-    Object* binaryClassNameString = rvmNewInternedStringUTF(env, binaryClassName, -1);
+    Object* binaryClassNameString = bugvmNewInternedStringUTF(env, binaryClassName, -1);
     if (!binaryClassNameString) return NULL;
-    Method* loadClassMethod = rvmGetInstanceMethod(env, java_lang_ClassLoader, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
+    Method* loadClassMethod = bugvmGetInstanceMethod(env, java_lang_ClassLoader, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
     if (!loadClassMethod) return NULL;
-    Object* clazz = rvmCallObjectInstanceMethod(env, (Object*) classLoader, loadClassMethod, binaryClassNameString);
-    if (rvmExceptionOccurred(env)) return NULL;
+    Object* clazz = bugvmCallObjectInstanceMethod(env, (Object*) classLoader, loadClassMethod, binaryClassNameString);
+    if (bugvmExceptionOccurred(env)) return NULL;
     return (Class*) clazz;
 }
 
-Class* rvmFindLoadedClass(Env* env, const char* className, Object* classLoader) {
+Class* bugvmFindLoadedClass(Env* env, const char* className, Object* classLoader) {
     Class* clazz = getLoadedClass(env, className);
-    if (rvmExceptionOccurred(env)) return NULL;
+    if (bugvmExceptionOccurred(env)) return NULL;
     return clazz;
 }
 
-Object* rvmGetSystemClassLoader(Env* env) {
-    Class* holder = rvmFindClassUsingLoader(env, "java/lang/ClassLoader$SystemClassLoader", NULL);
+Object* bugvmGetSystemClassLoader(Env* env) {
+    Class* holder = bugvmFindClassUsingLoader(env, "java/lang/ClassLoader$SystemClassLoader", NULL);
     if (!holder) return NULL;
-    ClassField* field = rvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
+    ClassField* field = bugvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
     if (!field) return NULL;
-    return (Object*) rvmGetObjectClassFieldValue(env, holder, field);
+    return (Object*) bugvmGetObjectClassFieldValue(env, holder, field);
 }
 
-Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Object* classLoader, jint flags, TypeInfo* typeInfo,
+Class* bugvmAllocateClass(Env* env, const char* className, Class* superclass, Object* classLoader, jint flags, TypeInfo* typeInfo,
         VITable* vitable, ITables* itables, jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
         unsigned short instanceRefCount, void* attributes, void* initializer) {
 
@@ -809,19 +809,19 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Obje
 
     if (superclass && CLASS_IS_INTERFACE(superclass)) {
         // TODO: Message should look like ?
-        rvmThrowIncompatibleClassChangeError(env, "");
+        bugvmThrowIncompatibleClassChangeError(env, "");
         return NULL;
     }
 
-    Class* clazz = rvmAllocateMemoryForClass(env, classDataSize);
+    Class* clazz = bugvmAllocateMemoryForClass(env, classDataSize);
     if (!clazz) return NULL;
 
     /*
-     * NOTE: rvmAllocateMemoryForClass() will set a fake clazz->object.clazz value for allocated classes
+     * NOTE: bugvmAllocateMemoryForClass() will set a fake clazz->object.clazz value for allocated classes
      * just to make sure it has a valid GC descriptor at all times. Before we have cached java.lang.Class
      * we don't want to overwrite this fake value which is why we test if java_lang_Class has been set
      * below. Since java.lang.Class extends java.lang.Object there will be a short period of time
-     * when the java_lang_Object global will have this fake value as clazz. rvmInitClasses() fixes
+     * when the java_lang_Object global will have this fake value as clazz. bugvmInitClasses() fixes
      * this right after both java.lang.Object and java.lang.Class have been loaded.
      */
 
@@ -865,21 +865,21 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Obje
     return clazz;
 }
 
-Interface* rvmAllocateInterface(Env* env, Class* interf) {
-    Interface* interfaze = rvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
+Interface* bugvmAllocateInterface(Env* env, Class* interf) {
+    Interface* interfaze = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
     if (!interfaze) return NULL;
     interfaze->interfaze = interf;
     return interfaze;
 }
 
-jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
+jboolean bugvmAddInterface(Env* env, Class* clazz, Class* interf) {
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
     if (!CLASS_IS_INTERFACE(interf)) {
         // TODO: Message should look like ?
-        rvmThrowIncompatibleClassChangeError(env, "");
+        bugvmThrowIncompatibleClassChangeError(env, "");
         return FALSE;
     }
-    Interface* interfaze = rvmAllocateInterface(env, interf);
+    Interface* interfaze = bugvmAllocateInterface(env, interf);
     if (!interfaze) return FALSE;
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
         clazz->_interfaces = NULL;
@@ -888,10 +888,10 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+Method* bugvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc,
         jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes) {
 
-    Method* method = rvmAllocateMemoryAtomicUncollectable(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
+    Method* method = bugvmAllocateMemoryAtomicUncollectable(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
     method->name = name;
@@ -906,11 +906,11 @@ Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* 
     return method;
 }
 
-Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+Method* bugvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
         jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes) {
 
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    Method* method = rvmAllocateMethod(env, clazz, name, desc, vitableIndex, access, size, impl, synchronizedImpl, linetable, attributes);
+    Method* method = bugvmAllocateMethod(env, clazz, name, desc, vitableIndex, access, size, impl, synchronizedImpl, linetable, attributes);
     if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
@@ -925,7 +925,7 @@ Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
 
 ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl) {
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    ProxyMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethod));
+    ProxyMethod* method = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = proxiedMethod->name;
@@ -946,11 +946,11 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     return method;
 }
 
-BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+BridgeMethod* bugvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc,
         jint vitableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
 
-    BridgeMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(BridgeMethod));
+    BridgeMethod* method = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(BridgeMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = name;
@@ -965,12 +965,12 @@ BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, 
     return method;
 }
 
-BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+BridgeMethod* bugvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc,
         jint vitableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
     
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    BridgeMethod* method = rvmAllocateBridgeMethod(env, clazz, name, desc, access, 
+    BridgeMethod* method = bugvmAllocateBridgeMethod(env, clazz, name, desc, access,
                                     vitableIndex, size, impl, synchronizedImpl, 
                                     targetFnPtr, attributes);
     if (!method) return NULL;
@@ -985,11 +985,11 @@ BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     return method;
 }
 
-CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+CallbackMethod* bugvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc,
         jint vitableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes) {
 
-    CallbackMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallbackMethod));
+    CallbackMethod* method = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(CallbackMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = name;
@@ -1005,12 +1005,12 @@ CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* na
     return method;
 }
 
-CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+CallbackMethod* bugvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc,
         jint vitableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes) {
     
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    CallbackMethod* method = rvmAllocateCallbackMethod(env, clazz, name, desc, access, 
+    CallbackMethod* method = bugvmAllocateCallbackMethod(env, clazz, name, desc, access,
                                         vitableIndex, size, impl, synchronizedImpl, 
                                         linetable, callbackImpl, attributes);
     if (!method) return NULL;
@@ -1025,8 +1025,8 @@ CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
     return method;
 }
 
-Field* rvmAllocateField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
-    Field* field = rvmAllocateMemoryAtomicUncollectable(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
+Field* bugvmAllocateField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
+    Field* field = bugvmAllocateMemoryAtomicUncollectable(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;
     field->clazz = clazz;
     field->name = name;
@@ -1041,9 +1041,9 @@ Field* rvmAllocateField(Env* env, Class* clazz, const char* name, const char* de
     return field;
 }
 
-Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
+Field* bugvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    Field* field = rvmAllocateField(env, clazz, name, desc, access, offset, attributes);
+    Field* field = bugvmAllocateField(env, clazz, name, desc, access, offset, attributes);
     if (!field) return NULL;
 
     if (clazz->_fields == &FIELDS_NOT_LOADED) {
@@ -1056,56 +1056,56 @@ Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, j
     return field;
 }
 
-Interface* rvmGetInterfaces(Env* env, Class* clazz) {
+Interface* bugvmGetInterfaces(Env* env, Class* clazz) {
     if (clazz->_interfaces != &INTERFACES_NOT_LOADED) return clazz->_interfaces;
 
     obtainClassLock();
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
         Interface* interfaces = env->vm->options->loadInterfaces(env, clazz);
-        if (!rvmExceptionCheck(env)) {
-            rvmAtomicStorePtr((void**) &clazz->_interfaces, interfaces);
+        if (!bugvmExceptionCheck(env)) {
+            bugvmAtomicStorePtr((void**) &clazz->_interfaces, interfaces);
         }
     }
     releaseClassLock();
-    if (rvmExceptionCheck(env)) return NULL;
+    if (bugvmExceptionCheck(env)) return NULL;
     return clazz->_interfaces;
 }
 
-Field* rvmGetFields(Env* env, Class* clazz) {
+Field* bugvmGetFields(Env* env, Class* clazz) {
     if (clazz->_fields != &FIELDS_NOT_LOADED) return clazz->_fields;
 
     obtainClassLock();
     if (clazz->_fields == &FIELDS_NOT_LOADED) {
         Field* fields = env->vm->options->loadFields(env, clazz);
-        if (!rvmExceptionCheck(env)) {
-            rvmAtomicStorePtr((void**) &clazz->_fields, fields);
+        if (!bugvmExceptionCheck(env)) {
+            bugvmAtomicStorePtr((void**) &clazz->_fields, fields);
         }
     }
     releaseClassLock();
-    if (rvmExceptionCheck(env)) return NULL;
+    if (bugvmExceptionCheck(env)) return NULL;
     return clazz->_fields;
 }
 
-Method* rvmGetMethods(Env* env, Class* clazz) {
+Method* bugvmGetMethods(Env* env, Class* clazz) {
     if (clazz->_methods != &METHODS_NOT_LOADED) return clazz->_methods;
 
     obtainClassLock();
     if (clazz->_methods == &METHODS_NOT_LOADED) {
         Method* methods = env->vm->options->loadMethods(env, clazz);
-        if (!rvmExceptionCheck(env)) {
-            rvmAtomicStorePtr((void**) &clazz->_methods, methods);
+        if (!bugvmExceptionCheck(env)) {
+            bugvmAtomicStorePtr((void**) &clazz->_methods, methods);
         }
     }
     releaseClassLock();
-    if (rvmExceptionCheck(env)) return NULL;
+    if (bugvmExceptionCheck(env)) return NULL;
     return clazz->_methods;
 }
 
-jboolean rvmRegisterClass(Env* env, Class* clazz) {
+jboolean bugvmRegisterClass(Env* env, Class* clazz) {
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
 
     // We should now have enough of the class set up to build its GC descriptor
-    rvmSetupGcDescriptor(env, clazz);
+    bugvmSetupGcDescriptor(env, clazz);
 
     // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
@@ -1116,7 +1116,7 @@ jboolean rvmRegisterClass(Env* env, Class* clazz) {
         return FALSE;
     }
 
-    if (!rvmAddGlobalRef(env, (Object*) clazz)) {
+    if (!bugvmAddGlobalRef(env, (Object*) clazz)) {
         releaseClassLock();
         return FALSE;
     }
@@ -1127,7 +1127,7 @@ jboolean rvmRegisterClass(Env* env, Class* clazz) {
     return TRUE;
 }
 
-void rvmInitialize(Env* env, Class* clazz) {
+void bugvmInitialize(Env* env, Class* clazz) {
     assert(env->currentThread != NULL);
 
     if (CLASS_IS_STATE_INITIALIZED(clazz)) {
@@ -1135,15 +1135,15 @@ void rvmInitialize(Env* env, Class* clazz) {
     }
 
     // The initialization of a class or interface is described in the JVMS JavaSE7 edition section 5.5
-    rvmLockObject(env, (Object*) clazz);
+    bugvmLockObject(env, (Object*) clazz);
 
     while (CLASS_IS_STATE_INITIALIZING(clazz)) {
 
          if (clazz->initThread != env->currentThread) {
-            rvmObjectWait(env, (Object*) clazz, 0, 0, FALSE);
+            bugvmObjectWait(env, (Object*) clazz, 0, 0, FALSE);
          } else {
             // Recursive initialization. Release lock and return normally.
-            rvmUnlockObject(env, (Object*) clazz);
+            bugvmUnlockObject(env, (Object*) clazz);
             return;
          }
 
@@ -1151,14 +1151,14 @@ void rvmInitialize(Env* env, Class* clazz) {
 
     if (CLASS_IS_STATE_INITIALIZED(clazz)) {
         // Initialized. Release lock and return normally.
-        rvmUnlockObject(env, (Object*) clazz);
+        bugvmUnlockObject(env, (Object*) clazz);
         return;
     }
 
     if (CLASS_IS_STATE_ERROR(clazz)) {
-        rvmThrowNewf(env, java_lang_NoClassDefFoundError, "Could not initialize class %s", 
-            rvmToBinaryClassName(env, clazz->name));
-        rvmUnlockObject(env, (Object*) clazz);
+        bugvmThrowNewf(env, java_lang_NoClassDefFoundError, "Could not initialize class %s",
+            bugvmToBinaryClassName(env, clazz->name));
+        bugvmUnlockObject(env, (Object*) clazz);
         return;
     }
 
@@ -1168,7 +1168,7 @@ void rvmInitialize(Env* env, Class* clazz) {
     // Indicate that this thread is currently initializing the class and release the lock.
     clazz->initThread = env->currentThread;
     clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZING;
-    rvmUnlockObject(env, (Object*) clazz);
+    bugvmUnlockObject(env, (Object*) clazz);
 
     TRACEF("Initializing class %s", clazz->name);
 
@@ -1176,12 +1176,12 @@ void rvmInitialize(Env* env, Class* clazz) {
     // superclass. Dalvik initializes the superclass first. We do what Dalvik does.
     if (clazz->superclass) {
         // Initialize the superclass
-        rvmInitialize(env, clazz->superclass);
-        if (rvmExceptionOccurred(env)) {
-            rvmLockObject(env, (Object*) clazz);
+        bugvmInitialize(env, clazz->superclass);
+        if (bugvmExceptionOccurred(env)) {
+            bugvmLockObject(env, (Object*) clazz);
             clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ERROR;
-            rvmObjectNotifyAll(env, (Object*) clazz);
-            rvmUnlockObject(env, (Object*) clazz);
+            bugvmObjectNotifyAll(env, (Object*) clazz);
+            bugvmUnlockObject(env, (Object*) clazz);
             return;
         }
     }
@@ -1192,354 +1192,354 @@ void rvmInitialize(Env* env, Class* clazz) {
         if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
             env->vm->options->classInitialized(env, clazz);
         }
-        rvmLockObject(env, (Object*) clazz);
+        bugvmLockObject(env, (Object*) clazz);
         clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
-        rvmObjectNotifyAll(env, (Object*) clazz);
-        rvmUnlockObject(env, (Object*) clazz);
+        bugvmObjectNotifyAll(env, (Object*) clazz);
+        bugvmUnlockObject(env, (Object*) clazz);
         return;
     }
 
     CallInfo* callInfo = CALL0_ALLOCATE_CALL_INFO(env, initializer, 1, 0, 0, 0, 0);
     call0AddPtr(callInfo, env);
     void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
 
-    Object* exception = rvmExceptionClear(env);
+    Object* exception = bugvmExceptionClear(env);
     if (!exception) {
         // Successful initialization
         if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
             env->vm->options->classInitialized(env, clazz);
         }
-        rvmLockObject(env, (Object*) clazz);
+        bugvmLockObject(env, (Object*) clazz);
         clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
-        rvmObjectNotifyAll(env, (Object*) clazz);
-        rvmUnlockObject(env, (Object*) clazz);
+        bugvmObjectNotifyAll(env, (Object*) clazz);
+        bugvmUnlockObject(env, (Object*) clazz);
         return;
     }
 
     // <clinit> failed with an exception
 
-    if (!rvmIsInstanceOf(env, exception, java_lang_Error)) {
+    if (!bugvmIsInstanceOf(env, exception, java_lang_Error)) {
         // If exception isn't an instance of java.lang.Error 
         // we must wrap it in a java.lang.ExceptionInInitializerError
-        Method* constructor = rvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
+        Method* constructor = bugvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
         if (constructor) {
-            Object* wrappedException = rvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
+            Object* wrappedException = bugvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
             if (wrappedException) {
-                rvmThrow(env, wrappedException);
+                bugvmThrow(env, wrappedException);
             }
         }
     } else {
-        rvmThrow(env, exception);
+        bugvmThrow(env, exception);
     }
 
-    rvmLockObject(env, (Object*) clazz);
+    bugvmLockObject(env, (Object*) clazz);
     clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ERROR;
-    rvmObjectNotifyAll(env, (Object*) clazz);
-    rvmUnlockObject(env, (Object*) clazz);
+    bugvmObjectNotifyAll(env, (Object*) clazz);
+    bugvmUnlockObject(env, (Object*) clazz);
 }
 
-Object* rvmAllocateObject(Env* env, Class* clazz) {
+Object* bugvmAllocateObject(Env* env, Class* clazz) {
     if (CLASS_IS_ABSTRACT(clazz) || CLASS_IS_INTERFACE(clazz)) {
-        rvmThrowNewf(env, java_lang_InstantiationException,
+        bugvmThrowNewf(env, java_lang_InstantiationException,
              "Cannot allocate an instance of %s %s",
              CLASS_IS_INTERFACE(clazz) ? "interface" : "abstract class",
              clazz->name);
         return NULL;
     }
     if (!CLASS_IS_STATE_INITIALIZED(clazz)) {
-        rvmInitialize(env, clazz);
-        if (rvmExceptionOccurred(env)) return NULL;
+        bugvmInitialize(env, clazz);
+        if (bugvmExceptionOccurred(env)) return NULL;
     }
-    Object* obj = rvmAllocateMemoryForObject(env, clazz);
+    Object* obj = bugvmAllocateMemoryForObject(env, clazz);
     if (!obj) return NULL;
     obj->clazz = clazz;
     return obj;
 }
 
-Object* rvmNewObject(Env* env, Class* clazz, Method* method, ...) {
+Object* bugvmNewObject(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmNewObjectV(env, clazz, method, args);
+    return bugvmNewObjectV(env, clazz, method, args);
 }
 
-Object* rvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
-    Object* obj = rvmAllocateObject(env, clazz);
+Object* bugvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
+    Object* obj = bugvmAllocateObject(env, clazz);
     if (!obj) return NULL;
-    rvmCallNonvirtualVoidInstanceMethodA(env, obj, method, args);
-    if (rvmExceptionOccurred(env)) return NULL;
+    bugvmCallNonvirtualVoidInstanceMethodA(env, obj, method, args);
+    if (bugvmExceptionOccurred(env)) return NULL;
     return obj;
 }
 
-Object* rvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
-    Object* obj = rvmAllocateObject(env, clazz);
+Object* bugvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
+    Object* obj = bugvmAllocateObject(env, clazz);
     if (!obj) return NULL;
-    rvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
-    if (rvmExceptionOccurred(env)) return NULL;
+    bugvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
+    if (bugvmExceptionOccurred(env)) return NULL;
     return obj;
 }
 
-Boolean* rvmBoxBoolean(Env* env, jboolean value) {
+Boolean* bugvmBoxBoolean(Env* env, jboolean value) {
     return value ? java_lang_Boolean_TRUE : java_lang_Boolean_FALSE;
 }
 
-Byte* rvmBoxByte(Env* env, jbyte value) {
+Byte* bugvmBoxByte(Env* env, jbyte value) {
     jint index = value + 128;
     if (index >= 0 && index < bytesCache->length && bytesCache->values[index] != NULL) {
         return (Byte*) bytesCache->values[index];
     }
     jvalue args[1];
     args[0].b = value;
-    return (Byte*) rvmCallObjectClassMethodA(env, java_lang_Byte, java_lang_Byte_valueOf, args);
+    return (Byte*) bugvmCallObjectClassMethodA(env, java_lang_Byte, java_lang_Byte_valueOf, args);
 }
 
-Short* rvmBoxShort(Env* env, jshort value) {
+Short* bugvmBoxShort(Env* env, jshort value) {
     jint index = value + 128;
     if (index >= 0 && index < shortsCache->length && shortsCache->values[index] != NULL) {
         return (Short*) shortsCache->values[index];
     }
     jvalue args[1];
     args[0].s = value;
-    return (Short*) rvmCallObjectClassMethodA(env, java_lang_Short, java_lang_Short_valueOf, args);
+    return (Short*) bugvmCallObjectClassMethodA(env, java_lang_Short, java_lang_Short_valueOf, args);
 }
 
-Character* rvmBoxChar(Env* env, jchar value) {
+Character* bugvmBoxChar(Env* env, jchar value) {
     jint index = value;
     if (index >= 0 && index < charactersCache->length && charactersCache->values[index] != NULL) {
         return (Character*) charactersCache->values[index];
     }
     jvalue args[1];
     args[0].c = value;
-    return (Character*) rvmCallObjectClassMethodA(env, java_lang_Character, java_lang_Character_valueOf, args);
+    return (Character*) bugvmCallObjectClassMethodA(env, java_lang_Character, java_lang_Character_valueOf, args);
 }
 
-Integer* rvmBoxInt(Env* env, jint value) {
+Integer* bugvmBoxInt(Env* env, jint value) {
     jint index = value + 128;
     if (index >= 0 && index < integersCache->length && integersCache->values[index] != NULL) {
         return (Integer*) integersCache->values[index];
     }
     jvalue args[1];
     args[0].i = value;
-    return (Integer*) rvmCallObjectClassMethodA(env, java_lang_Integer, java_lang_Integer_valueOf, args);
+    return (Integer*) bugvmCallObjectClassMethodA(env, java_lang_Integer, java_lang_Integer_valueOf, args);
 }
 
-Long* rvmBoxLong(Env* env, jlong value) {
+Long* bugvmBoxLong(Env* env, jlong value) {
     jint index = value + 128;
     if (index >= 0 && index < longsCache->length && longsCache->values[index] != NULL) {
         return (Long*) longsCache->values[index];
     }
     jvalue args[1];
     args[0].j = value;
-    return (Long*) rvmCallObjectClassMethodA(env, java_lang_Long, java_lang_Long_valueOf, args);
+    return (Long*) bugvmCallObjectClassMethodA(env, java_lang_Long, java_lang_Long_valueOf, args);
 }
 
-Float* rvmBoxFloat(Env* env, jfloat value) {
+Float* bugvmBoxFloat(Env* env, jfloat value) {
     jvalue args[1];
     args[0].f = value;
-    return (Float*) rvmCallObjectClassMethodA(env, java_lang_Float, java_lang_Float_valueOf, args);
+    return (Float*) bugvmCallObjectClassMethodA(env, java_lang_Float, java_lang_Float_valueOf, args);
 }
 
-Double* rvmBoxDouble(Env* env, jdouble value) {
+Double* bugvmBoxDouble(Env* env, jdouble value) {
     jvalue args[1];
     args[0].d = value;
-    return (Double*) rvmCallObjectClassMethodA(env, java_lang_Double, java_lang_Double_valueOf, args);
+    return (Double*) bugvmCallObjectClassMethodA(env, java_lang_Double, java_lang_Double_valueOf, args);
 }
 
-Object* rvmBox(Env* env, Class* type, jvalue* value) {
+Object* bugvmBox(Env* env, Class* type, jvalue* value) {
     if (CLASS_IS_PRIMITIVE(type)) {
         switch (type->name[0]) {
         case 'Z':
-            return (Object*) rvmBoxBoolean(env, value->z);
+            return (Object*) bugvmBoxBoolean(env, value->z);
         case 'B':
-            return (Object*) rvmBoxByte(env, value->b);
+            return (Object*) bugvmBoxByte(env, value->b);
         case 'S':
-            return (Object*) rvmBoxShort(env, value->s);
+            return (Object*) bugvmBoxShort(env, value->s);
         case 'C':
-            return (Object*) rvmBoxChar(env, value->c);
+            return (Object*) bugvmBoxChar(env, value->c);
         case 'I':
-            return (Object*) rvmBoxInt(env, value->i);
+            return (Object*) bugvmBoxInt(env, value->i);
         case 'J':
-            return (Object*) rvmBoxLong(env, value->j);
+            return (Object*) bugvmBoxLong(env, value->j);
         case 'F':
-            return (Object*) rvmBoxFloat(env, value->f);
+            return (Object*) bugvmBoxFloat(env, value->f);
         case 'D':
-            return (Object*) rvmBoxDouble(env, value->d);
+            return (Object*) bugvmBoxDouble(env, value->d);
         }
     }
     return (Object*) value->l;
 }
 
-jboolean rvmUnboxBoolean(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxBoolean(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Boolean) {
-        rvmThrowClassCastException(env, java_lang_Boolean, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Boolean, arg->clazz);
         return FALSE;
     }
     value->z = ((Boolean*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxByte(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxByte(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Byte) {
-        rvmThrowClassCastException(env, java_lang_Byte, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Byte, arg->clazz);
         return FALSE;
     }
     value->b = ((Byte*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxChar(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxChar(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Character) {
-        rvmThrowClassCastException(env, java_lang_Character, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Character, arg->clazz);
         return FALSE;
     }
     value->c = ((Character*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxShort(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxShort(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Short) {
-        if (rvmUnboxByte(env, arg, value)) {
+        if (bugvmUnboxByte(env, arg, value)) {
             value->s = value->b;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        rvmThrowClassCastException(env, java_lang_Short, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Short, arg->clazz);
         return FALSE;
     }
     value->s = ((Short*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxInt(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxInt(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Integer) {
-        if (rvmUnboxChar(env, arg, value)) {
+        if (bugvmUnboxChar(env, arg, value)) {
             value->i = value->c;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        if (rvmUnboxShort(env, arg, value)) {
+        if (bugvmUnboxShort(env, arg, value)) {
             value->i = value->s;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        rvmThrowClassCastException(env, java_lang_Integer, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Integer, arg->clazz);
         return FALSE;
     }
     value->i = ((Integer*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxLong(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxLong(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Long) {
-        if (rvmUnboxInt(env, arg, value)) {
+        if (bugvmUnboxInt(env, arg, value)) {
             value->j = value->i;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        rvmThrowClassCastException(env, java_lang_Long, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Long, arg->clazz);
         return FALSE;
     }
     value->j = ((Long*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxFloat(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxFloat(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Float) {
-        if (rvmUnboxLong(env, arg, value)) {
+        if (bugvmUnboxLong(env, arg, value)) {
             value->f = value->j;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        rvmThrowClassCastException(env, java_lang_Float, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Float, arg->clazz);
         return FALSE;
     }
     value->f = ((Float*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnboxDouble(Env* env, Object* arg, jvalue* value) {
+jboolean bugvmUnboxDouble(Env* env, Object* arg, jvalue* value) {
     if (!arg) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     if (arg->clazz != java_lang_Double) {
-        if (rvmUnboxLong(env, arg, value)) {
+        if (bugvmUnboxLong(env, arg, value)) {
             value->d = value->j;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        if (rvmUnboxFloat(env, arg, value)) {
+        if (bugvmUnboxFloat(env, arg, value)) {
             value->d = value->f;
             return TRUE;
         } else {
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
         }
-        rvmThrowClassCastException(env, java_lang_Double, arg->clazz);
+        bugvmThrowClassCastException(env, java_lang_Double, arg->clazz);
         return FALSE;
     }
     value->d = ((Double*) arg)->value;
     return TRUE;
 }
 
-jboolean rvmUnbox(Env* env, Object* arg, Class* type, jvalue* value) {
+jboolean bugvmUnbox(Env* env, Object* arg, Class* type, jvalue* value) {
     jboolean (*unboxFunc)(Env*, Object*, jvalue*) = NULL;
     if (type == prim_Z) {
-        unboxFunc = rvmUnboxBoolean;
+        unboxFunc = bugvmUnboxBoolean;
     } else if (type == prim_B) {
-        unboxFunc = rvmUnboxByte;
+        unboxFunc = bugvmUnboxByte;
     } else if (type == prim_C) {
-        unboxFunc = rvmUnboxChar;
+        unboxFunc = bugvmUnboxChar;
     } else if (type == prim_S) {
-        unboxFunc = rvmUnboxShort;
+        unboxFunc = bugvmUnboxShort;
     } else if (type == prim_I) {
-        unboxFunc = rvmUnboxInt;
+        unboxFunc = bugvmUnboxInt;
     } else if (type == prim_J) {
-        unboxFunc = rvmUnboxLong;
+        unboxFunc = bugvmUnboxLong;
     } else if (type == prim_F) {
-        unboxFunc = rvmUnboxFloat;
+        unboxFunc = bugvmUnboxFloat;
     } else if (type == prim_D) {
-        unboxFunc = rvmUnboxDouble;
+        unboxFunc = bugvmUnboxDouble;
     }
 
     if (!unboxFunc) {
@@ -1550,23 +1550,23 @@ jboolean rvmUnbox(Env* env, Object* arg, Class* type, jvalue* value) {
     return unboxFunc(env, arg, value);
 }
 
-Object* rvmCloneObject(Env* env, Object* obj) {
+Object* bugvmCloneObject(Env* env, Object* obj) {
     if (CLASS_IS_ARRAY(obj->clazz)) {
-        return (Object*) rvmCloneArray(env, (Array*) obj);
+        return (Object*) bugvmCloneArray(env, (Array*) obj);
     }
     jint size = obj->clazz->instanceDataSize;
-    Object* copy = rvmAllocateMemoryForObject(env, obj->clazz);
+    Object* copy = bugvmAllocateMemoryForObject(env, obj->clazz);
     if (!copy) return NULL;
     memcpy(copy, obj, size);
     copy->lock = 0;
     if (CLASS_IS_FINALIZABLE(copy->clazz)) {
-        rvmRegisterFinalizer(env, copy);
-        if (rvmExceptionCheck(env)) return NULL;
+        bugvmRegisterFinalizer(env, copy);
+        if (bugvmExceptionCheck(env)) return NULL;
     }
     return copy;
 }
 
-void rvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data) {
+void bugvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data) {
     LoadedClassEntry* entry;
     for (entry = loadedClasses; entry != NULL; entry = entry->hh.next) {
         if (!f(env, entry->clazz, data)) return;
@@ -1578,30 +1578,30 @@ static jboolean dumpClassesIterator(Env* env, Class* clazz, void* d) {
     return TRUE;
 }
 
-void rvmDumpLoadedClasses(Env* env) {
-    rvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
+void bugvmDumpLoadedClasses(Env* env) {
+    bugvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
 }
 
-ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, Object* classLoader) {
-    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
+ObjectArray* bugvmListClasses(Env* env, Class* instanceofClass, Object* classLoader) {
+    if (!classLoader || bugvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         return env->vm->options->listBootClasses(env, instanceofClass);
     }
     return env->vm->options->listUserClasses(env, instanceofClass);
 }
 
-void rvmObtainClassLock(Env* env) {
+void bugvmObtainClassLock(Env* env) {
     obtainClassLock();
 }
-void rvmReleaseClassLock(Env* env) {
+void bugvmReleaseClassLock(Env* env) {
     releaseClassLock();
 }
 
-Object* rvmGetParentClassLoader(Env* env, Object* classLoader) {
-    return rvmRTGetParentClassLoader(env, classLoader);
+Object* bugvmGetParentClassLoader(Env* env, Object* classLoader) {
+    return bugvmRTGetParentClassLoader(env, classLoader);
 }
 
-Object* rvmGetParentParentClassLoader(Env* env, Object* classLoader) {
-    Object* cl = rvmRTGetParentClassLoader(env, classLoader);
-    return cl ? rvmRTGetParentClassLoader(env, cl) : NULL;
+Object* bugvmGetParentParentClassLoader(Env* env, Object* classLoader) {
+    Object* cl = bugvmRTGetParentClassLoader(env, classLoader);
+    return cl ? bugvmRTGetParentClassLoader(env, cl) : NULL;
 }

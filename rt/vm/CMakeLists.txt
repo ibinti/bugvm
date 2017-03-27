@@ -258,7 +258,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/ibinti/bugvm-bdwgc.git
-  GIT_TAG 0458ff8c3cc04376bb4584de7729e6dbb6384bad
+  GIT_TAG 0f0cafd392e033ce110cf8f512803985b40158d5
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

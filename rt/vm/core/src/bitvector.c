@@ -32,7 +32,7 @@ typedef uint32_t u4;
  * Allocate a bit vector with enough space to hold at least the specified
  * number of bits.
  */
-BitVector* rvmAllocBitVector(uint32_t startBits, jboolean expandable)
+BitVector* bugvmAllocBitVector(uint32_t startBits, jboolean expandable)
 {
     BitVector* bv;
     unsigned int count;
@@ -53,7 +53,7 @@ BitVector* rvmAllocBitVector(uint32_t startBits, jboolean expandable)
 /*
  * Free a BitVector.
  */
-void rvmFreeBitVector(BitVector* pBits)
+void bugvmFreeBitVector(BitVector* pBits)
 {
     if (pBits == NULL)
         return;
@@ -69,7 +69,7 @@ void rvmFreeBitVector(BitVector* pBits)
  * lock that prevents multiple threads from executing simultaneously in
  * dvmAllocBit/dvmFreeBit.
  */
-jint rvmAllocBit(BitVector* pBits)
+jint bugvmAllocBit(BitVector* pBits)
 {
     unsigned int word, bit;
 
@@ -103,13 +103,13 @@ jint rvmAllocBit(BitVector* pBits)
 /*
  * Mark the specified bit as "set".
  */
-void rvmSetBit(BitVector* pBits, uint32_t num)
+void bugvmSetBit(BitVector* pBits, uint32_t num)
 {
     if (num >= pBits->storageSize * sizeof(u4) * 8) {
         if (!pBits->expandable) {
-            rvmLogf(LOG_LEVEL_FATAL, LOG_TAG, "Attempt to set bit outside valid range (%d, limit is %d)",
+            bugvmLogf(LOG_LEVEL_FATAL, LOG_TAG, "Attempt to set bit outside valid range (%d, limit is %d)",
                     num, pBits->storageSize * sizeof(u4) * 8);
-            rvmAbort(NULL);
+            bugvmAbort(NULL);
         }
 
         /* Round up to word boundaries for "num+1" bits */
@@ -117,8 +117,8 @@ void rvmSetBit(BitVector* pBits, uint32_t num)
         assert(newSize > pBits->storageSize);
         pBits->storage = (u4*)realloc(pBits->storage, newSize * sizeof(u4));
         if (pBits->storage == NULL) {
-            rvmLogf(LOG_LEVEL_FATAL, LOG_TAG, "BitVector expansion to %d failed", newSize * sizeof(u4));
-            rvmAbort(NULL);
+            bugvmLogf(LOG_LEVEL_FATAL, LOG_TAG, "BitVector expansion to %d failed", newSize * sizeof(u4));
+            bugvmAbort(NULL);
         }
         memset(&pBits->storage[pBits->storageSize], 0x00,
                 (newSize - pBits->storageSize) * sizeof(u4));
@@ -131,7 +131,7 @@ void rvmSetBit(BitVector* pBits, uint32_t num)
 /*
  * Mark the specified bit as "clear".
  */
-void rvmClearBit(BitVector* pBits, uint32_t num)
+void bugvmClearBit(BitVector* pBits, uint32_t num)
 {
     assert(num < pBits->storageSize * sizeof(u4) * 8);
 
@@ -141,7 +141,7 @@ void rvmClearBit(BitVector* pBits, uint32_t num)
 /*
  * Mark all bits bit as "clear".
  */
-void rvmClearAllBits(BitVector* pBits)
+void bugvmClearAllBits(BitVector* pBits)
 {
     unsigned int count = pBits->storageSize;
     memset(pBits->storage, 0, count * sizeof(u4));
@@ -152,7 +152,7 @@ void rvmClearAllBits(BitVector* pBits)
  * since there might be unused bits - setting those to one will confuse the
  * iterator.
  */
-void rvmSetInitialBits(BitVector* pBits, uint32_t numBits)
+void bugvmSetInitialBits(BitVector* pBits, uint32_t numBits)
 {
     unsigned int idx;
     assert(((numBits + 31) >> 5) <= pBits->storageSize);
@@ -168,7 +168,7 @@ void rvmSetInitialBits(BitVector* pBits, uint32_t numBits)
 /*
  * Determine whether or not the specified bit is set.
  */
-jboolean rvmIsBitSet(const BitVector* pBits, uint32_t num)
+jboolean bugvmIsBitSet(const BitVector* pBits, uint32_t num)
 {
     assert(num < pBits->storageSize * sizeof(u4) * 8);
 
@@ -179,7 +179,7 @@ jboolean rvmIsBitSet(const BitVector* pBits, uint32_t num)
 /*
  * Count the number of bits that are set.
  */
-jint rvmCountSetBits(const BitVector* pBits)
+jint bugvmCountSetBits(const BitVector* pBits)
 {
     unsigned int word;
     unsigned int count = 0;
@@ -209,9 +209,9 @@ jint rvmCountSetBits(const BitVector* pBits)
 static void checkSizes(const BitVector* bv1, const BitVector* bv2)
 {
     if (bv1->storageSize != bv2->storageSize) {
-        rvmLogf(LOG_LEVEL_FATAL, LOG_TAG, "Mismatched vector sizes (%d, %d)",
+        bugvmLogf(LOG_LEVEL_FATAL, LOG_TAG, "Mismatched vector sizes (%d, %d)",
                 bv1->storageSize, bv2->storageSize);
-        rvmAbort(NULL);
+        bugvmAbort(NULL);
     }
 }
 
@@ -219,7 +219,7 @@ static void checkSizes(const BitVector* bv1, const BitVector* bv2)
  * Copy a whole vector to the other. Only do that when the both vectors have
  * the same size.
  */
-void rvmCopyBitVector(BitVector *dest, const BitVector *src)
+void bugvmCopyBitVector(BitVector *dest, const BitVector *src)
 {
     /* if dest is expandable and < src, we could expand dest to match */
     checkSizes(dest, src);
@@ -230,7 +230,7 @@ void rvmCopyBitVector(BitVector *dest, const BitVector *src)
 /*
  * Intersect two bit vectors and store the result to the dest vector.
  */
-jboolean rvmIntersectBitVectors(BitVector *dest, const BitVector *src1,
+jboolean bugvmIntersectBitVectors(BitVector *dest, const BitVector *src1,
         const BitVector *src2)
 {
     if (dest->storageSize != src1->storageSize ||
@@ -249,7 +249,7 @@ jboolean rvmIntersectBitVectors(BitVector *dest, const BitVector *src1,
 /*
  * Unify two bit vectors and store the result to the dest vector.
  */
-jboolean rvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
+jboolean bugvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
         const BitVector *src2)
 {
     if (dest->storageSize != src1->storageSize ||
@@ -268,7 +268,7 @@ jboolean rvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
 /*
  * Compare two bit vectors and return TRUE if difference is seen.
  */
-jboolean rvmCompareBitVectors(const BitVector *src1, const BitVector *src2)
+jboolean bugvmCompareBitVectors(const BitVector *src1, const BitVector *src2)
 {
     if (src1->storageSize != src2->storageSize ||
             src1->expandable != src2->expandable)
@@ -282,7 +282,7 @@ jboolean rvmCompareBitVectors(const BitVector *src1, const BitVector *src2)
 }
 
 /* Initialize the iterator structure */
-void rvmBitVectorIteratorInit(BitVector* pBits, BitVectorIterator* iterator)
+void bugvmBitVectorIteratorInit(BitVector* pBits, BitVectorIterator* iterator)
 {
     iterator->pBits = pBits;
     iterator->bitSize = pBits->storageSize * sizeof(u4) * 8;
@@ -290,7 +290,7 @@ void rvmBitVectorIteratorInit(BitVector* pBits, BitVectorIterator* iterator)
 }
 
 /* Return the next position set to 1. -1 means end-of-element reached */
-int rvmBitVectorIteratorNext(BitVectorIterator* iterator)
+int bugvmBitVectorIteratorNext(BitVectorIterator* iterator)
 {
     const BitVector* pBits = iterator->pBits;
     u4 bitIndex = iterator->idx;
@@ -317,7 +317,7 @@ int rvmBitVectorIteratorNext(BitVectorIterator* iterator)
  *
  * Returns "TRUE" if the contents of the destination vector were modified.
  */
-jboolean rvmCheckMergeBitVectors(BitVector* dst, const BitVector* src)
+jboolean bugvmCheckMergeBitVectors(BitVector* dst, const BitVector* src)
 {
     jboolean changed = FALSE;
 

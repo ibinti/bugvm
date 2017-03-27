@@ -410,17 +410,17 @@ static void freeHeapStatsHash(HeapStat* statsHash) {
 }
 
 static void logGcHeapStats() {
-    Env* env = rvmGetEnv();
+    Env* env = bugvmGetEnv();
     if (!env) {
         return;
     }
 
     LoadedClass* loadedClassesHash = NULL;
-    rvmIterateLoadedClasses(env, buildLoadedClassesHash, &loadedClassesHash);
+    bugvmIterateLoadedClasses(env, buildLoadedClassesHash, &loadedClassesHash);
 
     HeapStat* statsHash = NULL;
     HeapStatsCallbackData data = {loadedClassesHash, &statsHash};
-    GC_rvm_apply_to_each_object(heapStatsCallback, &data);
+    GC_bugvm_apply_to_each_object(heapStatsCallback, &data);
 
     time_t timestamp;
     struct tm timeinfo;
@@ -450,7 +450,7 @@ static void logGcHeapStats() {
 
 void gcHeapDump(Env* env) {
     fprintf(stderr, "digraph {\n");
-    GC_rvm_apply_to_each_live_object(heapDumpCallback, NULL);
+    GC_bugvm_apply_to_each_live_object(heapDumpCallback, NULL);
     fprintf(stderr, "}\n");
 }
 
@@ -482,10 +482,10 @@ jboolean initGC(Options* options) {
     memset(&fakeClass, 0, sizeof(Class));
     fakeClass.gcDescriptor = (void*) ((sizeof(Class) << GC_DS_TAG_BITS) | GC_DS_LENGTH);
 
-    if (rvmInitMutex(&referentsLock) != 0) {
+    if (bugvmInitMutex(&referentsLock) != 0) {
         return FALSE;
     }
-    if (rvmInitMutex(&globalRefsLock) != 0) {
+    if (bugvmInitMutex(&globalRefsLock) != 0) {
         return FALSE;
     }
 
@@ -598,15 +598,15 @@ static void enqueuePendingReference(Env* env, Object* ref, Object** list) {
     // This code is a port of the enqueuePendingReference() function in Android's MarkSweep.cpp
     if (*list == NULL) {
         // ref.pendingNext = ref
-        rvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_pendingNext, ref);
+        bugvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_pendingNext, ref);
         *list = ref;
     } else {
         // head = list.pendingNext
-        Object* head = rvmGetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext);
+        Object* head = bugvmGetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext);
         // ref.pendingNext = head
-        rvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_pendingNext, head);
+        bugvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_pendingNext, head);
         // list.pendingNext = ref
-        rvmSetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext, ref);
+        bugvmSetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext, ref);
     }
 }
 
@@ -619,19 +619,19 @@ static Object* dequeuePendingReference(Env* env, Object** list) {
     assert(list != NULL);
     assert(*list != NULL);
     // head = list.pendingNext
-    Object* head = rvmGetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext);
+    Object* head = bugvmGetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext);
     Object* ref;
     if (*list == head) {
         ref = *list;
         *list = NULL;
     } else {
         // next = head.pendingNext
-        Object* next = rvmGetObjectInstanceFieldValue(env, head, java_lang_ref_Reference_pendingNext);
+        Object* next = bugvmGetObjectInstanceFieldValue(env, head, java_lang_ref_Reference_pendingNext);
         // list.pendingNext = next
-        rvmSetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext, next);
+        bugvmSetObjectInstanceFieldValue(env, *list, java_lang_ref_Reference_pendingNext, next);
         ref = head;
     }
-    rvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_pendingNext, NULL);
+    bugvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_pendingNext, NULL);
     return ref;
 }
 
@@ -640,7 +640,7 @@ static Object* dequeuePendingReference(Env* env, Object** list) {
  */
 static void clearReference(Env* env, Object* reference) {
     // This code is a port of the clearReference() function in Android's MarkSweep.cpp
-    rvmSetObjectInstanceFieldValue(env, reference, java_lang_ref_Reference_referent, NULL);
+    bugvmSetObjectInstanceFieldValue(env, reference, java_lang_ref_Reference_referent, NULL);
 }
 
 /*
@@ -650,8 +650,8 @@ static void clearReference(Env* env, Object* reference) {
 static jboolean isEnqueuable(Env* env, Object* reference) {
     // This code is a port of the isEnqueuable() function in Android's MarkSweep.cpp
     assert(reference != NULL);
-    Object* queue = rvmGetObjectInstanceFieldValue(env, reference, java_lang_ref_Reference_queue);
-    Object* queueNext = rvmGetObjectInstanceFieldValue(env, reference, java_lang_ref_Reference_queueNext);
+    Object* queue = bugvmGetObjectInstanceFieldValue(env, reference, java_lang_ref_Reference_queue);
+    Object* queueNext = bugvmGetObjectInstanceFieldValue(env, reference, java_lang_ref_Reference_queueNext);
     return (queue != NULL && queueNext == NULL) ? TRUE : FALSE;
 }
 
@@ -676,7 +676,7 @@ static void clearAndEnqueueReferences(Env* env, Object** list, Object** cleared)
     assert(cleared != NULL);
     while (*list != NULL) {
         Object* ref = dequeuePendingReference(env, list);
-        Object* referent = rvmGetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_referent);
+        Object* referent = bugvmGetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_referent);
         if (referent != NULL) {
             clearReference(env, ref);
             if (isEnqueuable(env, ref)) {
@@ -697,12 +697,12 @@ static void enqueueFinalizerReferences(Env* env, Object** list, Object** cleared
     assert(list != NULL);
     while (*list != NULL) {
         Object* ref = dequeuePendingReference(env, list);
-        Object* referent = rvmGetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_referent);
+        Object* referent = bugvmGetObjectInstanceFieldValue(env, ref, java_lang_ref_Reference_referent);
         if (referent != NULL) {
             /* If the referent is non-null the reference must queuable. */
             assert(isEnqueuable(env, ref));
             // Copy the referent to the zombie field
-            rvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_FinalizerReference_zombie, referent);
+            bugvmSetObjectInstanceFieldValue(env, ref, java_lang_ref_FinalizerReference_zombie, referent);
             // Clear the referent
             clearReference(env, ref);
             enqueueReference(env, ref, cleared);
@@ -716,7 +716,7 @@ static void _finalizeObject(GC_PTR addr, GC_PTR client_data);
 static void finalizeObject(Env* env, Object* obj) {
 //    TRACEF("finalizeObject: %p (%s)\n", obj, obj->clazz->name);
 
-    rvmLockMutex(&referentsLock);
+    bugvmLockMutex(&referentsLock);
     void* key = (void*) GC_HIDE_POINTER(obj);
     ReferentEntry* referentEntry;
     HASH_FIND_PTR(referents, &key, referentEntry);
@@ -726,13 +726,13 @@ static void finalizeObject(Env* env, Object* obj) {
     if (referentEntry->references == NULL) {
         // The object is not referenced by any type of reference and can never be resurrected.
         HASH_DEL(referents, referentEntry);
-        rvmUnlockMutex(&referentsLock);
+        bugvmUnlockMutex(&referentsLock);
         // Run all cleanup handlers registered for the object
         CleanupHandlerList* l = referentEntry->cleanupHandlers;
         while (l) {
             l->handler(env, obj);
             // Discard any exception thrown by the cleanup handler
-            rvmExceptionClear(env);
+            bugvmExceptionClear(env);
             l = l->next;
         }
         return;
@@ -750,13 +750,13 @@ static void finalizeObject(Env* env, Object* obj) {
         LL_DELETE(referentEntry->references, refNode);
         Object** list = NULL;
         Object* reference = refNode->reference;
-        if (rvmIsSubClass(java_lang_ref_SoftReference, reference->clazz)) {
+        if (bugvmIsSubClass(java_lang_ref_SoftReference, reference->clazz)) {
             list = &softReferences;
-        } else if (rvmIsSubClass(java_lang_ref_WeakReference, reference->clazz)) {
+        } else if (bugvmIsSubClass(java_lang_ref_WeakReference, reference->clazz)) {
             list = &weakReferences;
-        } else if (rvmIsSubClass(java_lang_ref_FinalizerReference, reference->clazz)) {
+        } else if (bugvmIsSubClass(java_lang_ref_FinalizerReference, reference->clazz)) {
             list = &finalizerReferences;
-        } else if (rvmIsSubClass(java_lang_ref_PhantomReference, reference->clazz)) {
+        } else if (bugvmIsSubClass(java_lang_ref_PhantomReference, reference->clazz)) {
             list = &phantomReferences;
         }
         enqueuePendingReference(env, reference, list);
@@ -772,31 +772,31 @@ static void finalizeObject(Env* env, Object* obj) {
     // next time it gets finalized we know it will never be resurrected.
     GC_REGISTER_FINALIZER_NO_ORDER(obj, _finalizeObject, NULL, NULL, NULL);
 
-    rvmUnlockMutex(&referentsLock);
+    bugvmUnlockMutex(&referentsLock);
 
     if (clearedReferences != NULL) {
-        rvmCallVoidClassMethod(env, java_lang_ref_ReferenceQueue, java_lang_ref_ReferenceQueue_add, clearedReferences);
-        assert(rvmExceptionOccurred(env) == NULL);
+        bugvmCallVoidClassMethod(env, java_lang_ref_ReferenceQueue, java_lang_ref_ReferenceQueue_add, clearedReferences);
+        assert(bugvmExceptionOccurred(env) == NULL);
     }
 }
 
 static void _finalizeObject(GC_PTR addr, GC_PTR client_data) {
     Object* obj = (Object*) addr;
-    Env* env = rvmGetEnv();
-    // When attaching a thread (except the main thread) there's a slight chance that the call to rvmCreateEnv()
+    Env* env = bugvmGetEnv();
+    // When attaching a thread (except the main thread) there's a slight chance that the call to bugvmCreateEnv()
     // first triggers a GC. If there are finalize objects this function will be called with no Env associated 
     // with the current thread. In such cases we reregister the object for finalization and it will be finalized later.
-    if (rvmHasCurrentThread(env)) {
+    if (bugvmHasCurrentThread(env)) {
         finalizeObject(env, obj);
     } else {
         GC_REGISTER_FINALIZER_NO_ORDER(obj, _finalizeObject, NULL, NULL, NULL);
     }
 }
 
-void rvmRegisterFinalizer(Env* env, Object* obj) {
+void bugvmRegisterFinalizer(Env* env, Object* obj) {
     // Call java.lang.FinalizerReference.add(obj)
-    // A FinalizerReference will be created for obj and that reference will be registered using rvmRegisterReference().
-    rvmCallVoidClassMethod(env, java_lang_ref_FinalizerReference, java_lang_ref_FinalizerReference_add, obj);
+    // A FinalizerReference will be created for obj and that reference will be registered using bugvmRegisterReference().
+    bugvmCallVoidClassMethod(env, java_lang_ref_FinalizerReference, java_lang_ref_FinalizerReference_add, obj);
 }
 
 /**
@@ -818,8 +818,8 @@ static ReferentEntry* getReferentEntryForObject(Env* env, Object* o) {
 }
 
 void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler) {
-    rvmLockMutex(&referentsLock);
-    CleanupHandlerList* l = rvmAllocateMemory(env, sizeof(CleanupHandlerList));
+    bugvmLockMutex(&referentsLock);
+    CleanupHandlerList* l = bugvmAllocateMemory(env, sizeof(CleanupHandlerList));
     if (!l) goto done; // OOM thrown
     l->handler = handler;
     ReferentEntry* referentEntry = getReferentEntryForObject(env, object);
@@ -830,15 +830,15 @@ void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler) {
     GC_REGISTER_FINALIZER_NO_ORDER(object, _finalizeObject, NULL, NULL, NULL);
 
 done:
-    rvmUnlockMutex(&referentsLock);
+    bugvmUnlockMutex(&referentsLock);
 }
 
-void rvmRegisterReference(Env* env, Object* reference, Object* referent) {
+void bugvmRegisterReference(Env* env, Object* reference, Object* referent) {
     if (referent) {
         // Add 'reference' to the references list for 'referent' in the referents hashtable
-        rvmLockMutex(&referentsLock);
+        bugvmLockMutex(&referentsLock);
 
-        ReferenceList* l = rvmAllocateMemory(env, sizeof(ReferenceList));
+        ReferenceList* l = bugvmAllocateMemory(env, sizeof(ReferenceList));
         if (!l) goto done; // OOM thrown
         l->reference = reference;
         ReferentEntry* referentEntry = getReferentEntryForObject(env, referent);
@@ -849,76 +849,76 @@ void rvmRegisterReference(Env* env, Object* reference, Object* referent) {
         GC_REGISTER_FINALIZER_NO_ORDER(referent, _finalizeObject, NULL, NULL, NULL);
 
 done:
-        rvmUnlockMutex(&referentsLock);
+        bugvmUnlockMutex(&referentsLock);
     }
 }
 
-void rvmRegisterDisappearingLink(Env* env, void** address, Object* obj) {
+void bugvmRegisterDisappearingLink(Env* env, void** address, Object* obj) {
     GC_GENERAL_REGISTER_DISAPPEARING_LINK(address, obj);
 }
 
-void rvmUnregisterDisappearingLink(Env* env, void** address) {
+void bugvmUnregisterDisappearingLink(Env* env, void** address) {
     GC_unregister_disappearing_link(address);
 }
 
-jboolean rvmInitMemory(Env* env) {
+jboolean bugvmInitMemory(Env* env) {
     vm = env->vm;
 
     gcAddRoot(&referents);
 
-    java_lang_ref_Reference_referent = rvmGetInstanceField(env, java_lang_ref_Reference, "referent", "Ljava/lang/Object;");
+    java_lang_ref_Reference_referent = bugvmGetInstanceField(env, java_lang_ref_Reference, "referent", "Ljava/lang/Object;");
     if (!java_lang_ref_Reference_referent) return FALSE;
-    java_lang_ref_Reference_pendingNext = rvmGetInstanceField(env, java_lang_ref_Reference, "pendingNext", "Ljava/lang/ref/Reference;");
+    java_lang_ref_Reference_pendingNext = bugvmGetInstanceField(env, java_lang_ref_Reference, "pendingNext", "Ljava/lang/ref/Reference;");
     if (!java_lang_ref_Reference_pendingNext) return FALSE;
-    java_lang_ref_Reference_queue = rvmGetInstanceField(env, java_lang_ref_Reference, "queue", "Ljava/lang/ref/ReferenceQueue;");
+    java_lang_ref_Reference_queue = bugvmGetInstanceField(env, java_lang_ref_Reference, "queue", "Ljava/lang/ref/ReferenceQueue;");
     if (!java_lang_ref_Reference_queue) return FALSE;
-    java_lang_ref_Reference_queueNext = rvmGetInstanceField(env, java_lang_ref_Reference, "queueNext", "Ljava/lang/ref/Reference;");
+    java_lang_ref_Reference_queueNext = bugvmGetInstanceField(env, java_lang_ref_Reference, "queueNext", "Ljava/lang/ref/Reference;");
     if (!java_lang_ref_Reference_queueNext) return FALSE;
-    java_lang_ref_PhantomReference = rvmFindClassUsingLoader(env, "java/lang/ref/PhantomReference", NULL);
+    java_lang_ref_PhantomReference = bugvmFindClassUsingLoader(env, "java/lang/ref/PhantomReference", NULL);
     if (!java_lang_ref_PhantomReference) return FALSE;
-    java_lang_ref_WeakReference = rvmFindClassUsingLoader(env, "java/lang/ref/WeakReference", NULL);
+    java_lang_ref_WeakReference = bugvmFindClassUsingLoader(env, "java/lang/ref/WeakReference", NULL);
     if (!java_lang_ref_WeakReference) return FALSE;
-    java_lang_ref_SoftReference = rvmFindClassUsingLoader(env, "java/lang/ref/SoftReference", NULL);
+    java_lang_ref_SoftReference = bugvmFindClassUsingLoader(env, "java/lang/ref/SoftReference", NULL);
     if (!java_lang_ref_SoftReference) return FALSE;
-    java_lang_ref_FinalizerReference = rvmFindClassUsingLoader(env, "java/lang/ref/FinalizerReference", NULL);
+    java_lang_ref_FinalizerReference = bugvmFindClassUsingLoader(env, "java/lang/ref/FinalizerReference", NULL);
     if (!java_lang_ref_FinalizerReference) return FALSE;
-    java_lang_ref_FinalizerReference_add = rvmGetClassMethod(env, java_lang_ref_FinalizerReference, "add", "(Ljava/lang/Object;)V");
+    java_lang_ref_FinalizerReference_add = bugvmGetClassMethod(env, java_lang_ref_FinalizerReference, "add", "(Ljava/lang/Object;)V");
     if (!java_lang_ref_FinalizerReference_add) return FALSE;
-    java_lang_ref_FinalizerReference_zombie = rvmGetInstanceField(env, java_lang_ref_FinalizerReference, "zombie", "Ljava/lang/Object;");
+    java_lang_ref_FinalizerReference_zombie = bugvmGetInstanceField(env, java_lang_ref_FinalizerReference, "zombie", "Ljava/lang/Object;");
     if (!java_lang_ref_FinalizerReference_zombie) return FALSE;
-    java_lang_ref_ReferenceQueue = rvmFindClassUsingLoader(env, "java/lang/ref/ReferenceQueue", NULL);
+    java_lang_ref_ReferenceQueue = bugvmFindClassUsingLoader(env, "java/lang/ref/ReferenceQueue", NULL);
     if (!java_lang_ref_ReferenceQueue) return FALSE;
-    java_lang_ref_ReferenceQueue_add = rvmGetClassMethod(env, java_lang_ref_ReferenceQueue, "add", "(Ljava/lang/ref/Reference;)V");
+    java_lang_ref_ReferenceQueue_add = bugvmGetClassMethod(env, java_lang_ref_ReferenceQueue, "add", "(Ljava/lang/ref/Reference;)V");
     if (!java_lang_ref_ReferenceQueue_add) return FALSE;
-    java_nio_DirectByteBuffer = rvmFindClassUsingLoader(env, "java/nio/DirectByteBuffer", NULL);
+    java_nio_DirectByteBuffer = bugvmFindClassUsingLoader(env, "java/nio/DirectByteBuffer", NULL);
     if (!java_nio_DirectByteBuffer) return FALSE;
-    java_nio_DirectByteBuffer_init = rvmGetInstanceMethod(env, java_nio_DirectByteBuffer, "<init>", "(JI)V");
+    java_nio_DirectByteBuffer_init = bugvmGetInstanceMethod(env, java_nio_DirectByteBuffer, "<init>", "(JI)V");
     if (!java_nio_DirectByteBuffer_init) return FALSE;
-    Class* java_nio_Buffer = rvmFindClassUsingLoader(env, "java/nio/Buffer", NULL);
+    Class* java_nio_Buffer = bugvmFindClassUsingLoader(env, "java/nio/Buffer", NULL);
     if (!java_nio_Buffer) return FALSE;
-    java_nio_Buffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_Buffer, "effectiveDirectAddress", "J");
+    java_nio_Buffer_effectiveDirectAddress = bugvmGetInstanceField(env, java_nio_Buffer, "effectiveDirectAddress", "J");
     if (!java_nio_Buffer_effectiveDirectAddress) return FALSE;
-    java_nio_Buffer_capacity = rvmGetInstanceField(env, java_nio_Buffer, "capacity", "I");
+    java_nio_Buffer_capacity = bugvmGetInstanceField(env, java_nio_Buffer, "capacity", "I");
     if (!java_nio_Buffer_capacity) return FALSE;
-    java_lang_Throwable_stackState = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
+    java_lang_Throwable_stackState = bugvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
     if (!java_lang_Throwable_stackState) return FALSE;
-    com_bugvm_rt_bro_Struct = rvmFindClassUsingLoader(env, "com/bugvm/rt/bro/Struct", NULL);
+    com_bugvm_rt_bro_Struct = bugvmFindClassUsingLoader(env, "com/bugvm/rt/bro/Struct", NULL);
     if (!com_bugvm_rt_bro_Struct) {
         // We don't need Struct if it hasn't been compiled in
-        rvmExceptionClear(env);
+        bugvmExceptionClear(env);
     } else {
-        com_bugvm_rt_bro_Struct_handle = rvmGetInstanceField(env, com_bugvm_rt_bro_Struct, "handle", "J");
+        com_bugvm_rt_bro_Struct_handle = bugvmGetInstanceField(env, com_bugvm_rt_bro_Struct, "handle", "J");
         if (!com_bugvm_rt_bro_Struct_handle) return FALSE;
     }
-    java_nio_MemoryBlock = rvmFindClassUsingLoader(env, "java/nio/MemoryBlock", NULL);
+    java_nio_MemoryBlock = bugvmFindClassUsingLoader(env, "java/nio/MemoryBlock", NULL);
     if (!java_nio_MemoryBlock) return FALSE;
-    java_nio_MemoryBlock_address = rvmGetInstanceField(env, java_nio_MemoryBlock, "address", "J");
+    java_nio_MemoryBlock_address = bugvmGetInstanceField(env, java_nio_MemoryBlock, "address", "J");
     if (!java_nio_MemoryBlock_address) return FALSE;
 
-    criticalOutOfMemoryError = rvmAllocateMemoryForObject(env, java_lang_OutOfMemoryError);
+    criticalOutOfMemoryError = bugvmAllocateMemoryForObject(env, java_lang_OutOfMemoryError);
     if (!criticalOutOfMemoryError) return FALSE;
     criticalOutOfMemoryError->clazz = java_lang_OutOfMemoryError;
-    if (!rvmAddGlobalRef(env, criticalOutOfMemoryError)) return FALSE;
+    if (!bugvmAddGlobalRef(env, criticalOutOfMemoryError)) return FALSE;
 
     return TRUE;
 }
@@ -939,7 +939,7 @@ static void* buildGcBitmapDescriptor(Class* clazz) {
     return (void*) (descriptor | GC_DS_BITMAP);
 }
 
-void rvmSetupGcDescriptor(Env* env, Class* clazz) {
+void bugvmSetupGcDescriptor(Env* env, Class* clazz) {
     if (clazz->object.clazz == &fakeClass) {
         // The proper class has not been set yet. We will be called again.
         return;
@@ -953,7 +953,7 @@ void rvmSetupGcDescriptor(Env* env, Class* clazz) {
     } else if (clazz == java_lang_Class || CLASS_IS_FINALIZABLE(clazz) || CLASS_IS_REFERENCE(clazz) 
         || (clazz->superclass && clazz->superclass == com_bugvm_rt_bro_Struct)
         || (clazz->superclass && clazz->superclass == java_nio_MemoryBlock)
-        || (clazz == java_nio_MemoryBlock) || rvmIsSubClass(java_lang_Throwable, clazz)) {
+        || (clazz == java_nio_MemoryBlock) || bugvmIsSubClass(java_lang_Throwable, clazz)) {
 
         // These types of objects must be marked specially. We could probably
         // do this using GC bitmap descriptors instead.
@@ -977,16 +977,16 @@ void rvmSetupGcDescriptor(Env* env, Class* clazz) {
     }
 }
 
-Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
+Class* bugvmAllocateMemoryForClass(Env* env, jint classDataSize) {
     Class* m = (Class*) gcAllocateObject(classDataSize, &fakeClass);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
+Object* bugvmAllocateMemoryForObject(Env* env, Class* clazz) {
     Object* m = (Object*) gcAllocateObject(clazz->instanceDataSize, clazz);
     if (!m) {
         if (clazz == java_lang_OutOfMemoryError) {
@@ -995,16 +995,16 @@ Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
             // object.
             return criticalOutOfMemoryError;
         }
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
-    jlong size = rvmGetArraySize(env, arrayClass, length);
+Array* bugvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
+    jlong size = bugvmGetArraySize(env, arrayClass, length);
     if (size > 0xffffffffLL) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     Array* m = NULL;
@@ -1020,7 +1020,7 @@ Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
         m = (Array*) gcAllocateKind((size_t) size, objectArrayGCKind);
     }
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
@@ -1029,50 +1029,50 @@ Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
 void* allocateMemoryOfKind(Env* env, size_t size, uint32_t kind) {
     void* m = gcAllocateKind(size, kind);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-void* rvmAllocateMemory(Env* env, size_t size) {
+void* bugvmAllocateMemory(Env* env, size_t size) {
     void* m = gcAllocate(size);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-void* rvmAllocateMemoryUncollectable(Env* env, size_t size) {
+void* bugvmAllocateMemoryUncollectable(Env* env, size_t size) {
     void* m = gcAllocateUncollectable(size);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-void* rvmAllocateMemoryAtomic(Env* env, size_t size) {
+void* bugvmAllocateMemoryAtomic(Env* env, size_t size) {
     void* m = gcAllocateAtomic(size);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-void* rvmAllocateMemoryAtomicUncollectable(Env* env, size_t size) {
+void* bugvmAllocateMemoryAtomicUncollectable(Env* env, size_t size) {
     void* m = gcAllocateAtomicUncollectable(size);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return m;
 }
 
-jboolean rvmInitRefTable(Env* env, RefTable* refTable, jint size) {
-    refTable->entries = rvmAllocateMemoryUncollectable(env, size * sizeof(void*));
+jboolean bugvmInitRefTable(Env* env, RefTable* refTable, jint size) {
+    refTable->entries = bugvmAllocateMemoryUncollectable(env, size * sizeof(void*));
     if (!refTable->entries) {
         return FALSE;
     }
@@ -1080,42 +1080,42 @@ jboolean rvmInitRefTable(Env* env, RefTable* refTable, jint size) {
     return TRUE;
 }
 
-jboolean rvmAddGlobalRef(Env* env, Object* object) {
+jboolean bugvmAddGlobalRef(Env* env, Object* object) {
     if (!object) {
         return TRUE;
     }
-    rvmLockMutex(&globalRefsLock);
+    bugvmLockMutex(&globalRefsLock);
     if (!globalRefs.entries) {
-        if (!rvmInitRefTable(env, &globalRefs, GLOBAL_REFS_INITIAL_SIZE)) {
-            rvmUnlockMutex(&globalRefsLock);
+        if (!bugvmInitRefTable(env, &globalRefs, GLOBAL_REFS_INITIAL_SIZE)) {
+            bugvmUnlockMutex(&globalRefsLock);
             return FALSE;
         }
     }
-    jboolean result = rvmAddRef(env, &globalRefs, object);
-    rvmUnlockMutex(&globalRefsLock);
+    jboolean result = bugvmAddRef(env, &globalRefs, object);
+    bugvmUnlockMutex(&globalRefsLock);
     return result;
 }
 
-jboolean rvmRemoveGlobalRef(Env* env, Object* object) {
+jboolean bugvmRemoveGlobalRef(Env* env, Object* object) {
     if (!object) {
         return TRUE;
     }
-    rvmLockMutex(&globalRefsLock);
-    jboolean result = rvmRemoveRef(env, &globalRefs, object);
-    rvmUnlockMutex(&globalRefsLock);
+    bugvmLockMutex(&globalRefsLock);
+    jboolean result = bugvmRemoveRef(env, &globalRefs, object);
+    bugvmUnlockMutex(&globalRefsLock);
     return result;
 }
 
-jboolean rvmAddRef(Env* env, RefTable* refTable, Object* object) {
+jboolean bugvmAddRef(Env* env, RefTable* refTable, Object* object) {
     jint index = refTable->count;
     if (index >= refTable->size) {
         jint newSize = refTable->size << 1;
-        void** tmp = rvmAllocateMemoryUncollectable(env, newSize * sizeof(void*));
+        void** tmp = bugvmAllocateMemoryUncollectable(env, newSize * sizeof(void*));
         if (!tmp) {
             return FALSE;
         }
         memcpy(tmp, refTable->entries, refTable->size * sizeof(void*));
-        rvmFreeMemoryUncollectable(env, refTable->entries);
+        bugvmFreeMemoryUncollectable(env, refTable->entries);
         refTable->entries = tmp;
         refTable->size = newSize;
     }
@@ -1124,7 +1124,7 @@ jboolean rvmAddRef(Env* env, RefTable* refTable, Object* object) {
     return TRUE;
 }
 
-jboolean rvmRemoveRef(Env* env, RefTable* refTable, Object* object) {
+jboolean bugvmRemoveRef(Env* env, RefTable* refTable, Object* object) {
     // FIXME: Inefficient implementation
     // Find the object from the end of the entries in the table.
     for (jint i = refTable->count - 1; i >= 0; i--) {
@@ -1142,31 +1142,31 @@ jboolean rvmRemoveRef(Env* env, RefTable* refTable, Object* object) {
     return FALSE;
 }
 
-jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable) {
+jboolean bugvmIsCriticalOutOfMemoryError(Env* env, Object* throwable) {
     return throwable == criticalOutOfMemoryError;
 }
 
-void rvmFreeMemoryUncollectable(Env* env, void* m) {
+void bugvmFreeMemoryUncollectable(Env* env, void* m) {
     GC_FREE(m);
 }
 
-void rvmGCCollect(Env* env) {
+void bugvmGCCollect(Env* env) {
     GC_gcollect();
 }
 
-jlong rvmGetFreeMemory(Env* env) {
+jlong bugvmGetFreeMemory(Env* env) {
     GC_word pfree_bytes;
     GC_CALL GC_get_heap_usage_safe(NULL, &pfree_bytes, NULL, NULL, NULL);
     return (jlong) pfree_bytes;
 }
 
-jlong rvmGetTotalMemory(Env* env) {
+jlong bugvmGetTotalMemory(Env* env) {
     GC_word pheap_size;
     GC_CALL GC_get_heap_usage_safe(&pheap_size, NULL, NULL, NULL, NULL);
     return (jlong) pheap_size;
 }
 
-jlong rvmGetMaxMemory(Env* env) {
+jlong bugvmGetMaxMemory(Env* env) {
     if (env->vm->options->maxHeapSize > 0) {
         return env->vm->options->maxHeapSize;
     }
@@ -1174,45 +1174,45 @@ jlong rvmGetMaxMemory(Env* env) {
     return 0x7fffffffffffffffLL;
 }
 
-void* rvmCopyMemoryAtomic(Env* env, const void* src, size_t size) {
-    void* dest = rvmAllocateMemoryAtomic(env, size);
+void* bugvmCopyMemoryAtomic(Env* env, const void* src, size_t size) {
+    void* dest = bugvmAllocateMemoryAtomic(env, size);
     if (!dest) return NULL;
     memcpy(dest, src, size);
     return dest;
 }
 
-void* rvmCopyMemoryAtomicZ(Env* env, const char* src) {
-    return rvmCopyMemoryAtomic(env, src, strlen(src) + 1);
+void* bugvmCopyMemoryAtomicZ(Env* env, const char* src) {
+    return bugvmCopyMemoryAtomic(env, src, strlen(src) + 1);
 }
 
-void* rvmCopyMemory(Env* env, const void* src, size_t size) {
-    void* dest = rvmAllocateMemory(env, size);
+void* bugvmCopyMemory(Env* env, const void* src, size_t size) {
+    void* dest = bugvmAllocateMemory(env, size);
     if (!dest) return NULL;
     memcpy(dest, src, size);
     return dest;
 }
 
-void* rvmCopyMemoryZ(Env* env, const char* src) {
-    return rvmCopyMemory(env, src, strlen(src) + 1);
+void* bugvmCopyMemoryZ(Env* env, const char* src) {
+    return bugvmCopyMemory(env, src, strlen(src) + 1);
 }
 
-Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
+Object* bugvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
     jvalue args[2];
     args[0].j = (jlong) address;
     args[1].i = (jint) capacity;
-    return rvmNewObjectA(env, java_nio_DirectByteBuffer, java_nio_DirectByteBuffer_init, args);
+    return bugvmNewObjectA(env, java_nio_DirectByteBuffer, java_nio_DirectByteBuffer_init, args);
 }
 
-void* rvmGetDirectBufferAddress(Env* env, Object* buf) {
-    jlong effectiveDirectAddress = rvmGetLongInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
+void* bugvmGetDirectBufferAddress(Env* env, Object* buf) {
+    jlong effectiveDirectAddress = bugvmGetLongInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
     return (void*) (intptr_t) effectiveDirectAddress;
 }
 
-jlong rvmGetDirectBufferCapacity(Env* env, Object* buf) {
-    jlong capacity = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_capacity);
+jlong bugvmGetDirectBufferCapacity(Env* env, Object* buf) {
+    jlong capacity = bugvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_capacity);
     return capacity & 0x00000000ffffffffULL;
 }
 
-void rvmGenerateHeapDump(Env* env) {
+void bugvmGenerateHeapDump(Env* env) {
     gcHeapDump(env);
 }

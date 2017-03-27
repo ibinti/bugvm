@@ -26,7 +26,7 @@ static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first
         if (entry) length++; // Make room for the :
     }
 
-    char* p = rvmAllocateMemoryAtomic(env, length + 1);
+    char* p = bugvmAllocateMemoryAtomic(env, length + 1);
     if (!p) return NULL;
 
     entry = first;
@@ -42,27 +42,27 @@ static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first
 Object* Java_com_bugvm_rt_VM_bootClassPath(Env* env, Class* c) {
     char* bootclasspath = createClasspathFromClasspathEntries(env, env->vm->options->bootclasspath);
     if (!bootclasspath) return NULL;
-    return rvmNewStringUTF(env, bootclasspath, -1);
+    return bugvmNewStringUTF(env, bootclasspath, -1);
 }
 
 Object* Java_com_bugvm_rt_VM_classPath(Env* env, Class* c) {
     char* classpath = createClasspathFromClasspathEntries(env, env->vm->options->classpath);
     if (!classpath) return NULL;
-    return rvmNewStringUTF(env, classpath, -1);
+    return bugvmNewStringUTF(env, classpath, -1);
 }
 
 Object* Java_com_bugvm_rt_VM_resourcesPath(Env* env, Class* c) {
-    return rvmNewStringUTF(env, env->vm->options->resourcesPath, -1);
+    return bugvmNewStringUTF(env, env->vm->options->resourcesPath, -1);
 }
 
 Object* Java_com_bugvm_rt_VM_imagePath(Env* env, Class* c) {
-    return rvmNewStringUTF(env, env->vm->options->imagePath, -1);
+    return bugvmNewStringUTF(env, env->vm->options->imagePath, -1);
 }
 
 ObjectArray* Java_com_bugvm_rt_VM_staticLibs(Env* env, Class* c) {
     Options* options = env->vm->options;
     if (!options->staticLibs || options->staticLibs[0] == NULL) {
-        return rvmNewObjectArray(env, 0, java_lang_String, NULL, NULL);
+        return bugvmNewObjectArray(env, 0, java_lang_String, NULL, NULL);
     }
 
     jint length = 0;
@@ -70,12 +70,12 @@ ObjectArray* Java_com_bugvm_rt_VM_staticLibs(Env* env, Class* c) {
         length++;
     }
 
-    ObjectArray* result = rvmNewObjectArray(env, length, java_lang_String, NULL, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, length, java_lang_String, NULL, NULL);
     if (!result) return NULL;
 
     jint i;
     for (i = 0; i < length; i++) {
-        Object* s = rvmNewStringUTF(env, options->staticLibs[i], -1);
+        Object* s = bugvmNewStringUTF(env, options->staticLibs[i], -1);
         if (!s) return NULL;
         result->values[i] = s;
     }
@@ -94,7 +94,7 @@ ByteArray* Java_com_bugvm_rt_VM_getRuntimeData0(Env* env, Class* c) {
         return NULL;
     }
     p += sizeof(jint);
-    ByteArray* data = rvmNewByteArray(env, length);
+    ByteArray* data = bugvmNewByteArray(env, length);
     if (!data) {
         return NULL;
     }
@@ -103,15 +103,15 @@ ByteArray* Java_com_bugvm_rt_VM_getRuntimeData0(Env* env, Class* c) {
 }
 
 ObjectArray* Java_com_bugvm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
-    CallStack* callStack = rvmCaptureCallStack(env);
+    CallStack* callStack = bugvmCaptureCallStack(env);
     if (!callStack) return NULL;
 
     jint index = 0;
-    rvmGetNextCallStackMethod(env, callStack, &index); // Skip VM.getStackClasses()
-    rvmGetNextCallStackMethod(env, callStack, &index); // Skip caller of VM.getStackClasses()
+    bugvmGetNextCallStackMethod(env, callStack, &index); // Skip VM.getStackClasses()
+    bugvmGetNextCallStackMethod(env, callStack, &index); // Skip caller of VM.getStackClasses()
 
     while (skipNum > 0) {
-        CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+        CallStackFrame* frame = bugvmGetNextCallStackMethod(env, callStack, &index);
         if (!frame) return NULL;
         skipNum--;
     }
@@ -119,52 +119,52 @@ ObjectArray* Java_com_bugvm_rt_VM_getStackClasses(Env* env, Class* c, jint skipN
     jint first = index;
 
     jint depth = 0;
-    while (rvmGetNextCallStackMethod(env, callStack, &index)) {
+    while (bugvmGetNextCallStackMethod(env, callStack, &index)) {
         depth++;
     }
     if (maxDepth > -1 && maxDepth < depth) {
         depth = maxDepth;
     }
     
-    ObjectArray* result = rvmNewObjectArray(env, depth, java_lang_Class, NULL, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, depth, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i;
     index = first;
     for (i = 0; i < depth; i++) {
-        CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+        CallStackFrame* frame = bugvmGetNextCallStackMethod(env, callStack, &index);
         result->values[i] = (Object*) frame->method->clazz;
     }
     return result;
 }
 
 jlong Java_com_bugvm_rt_VM_allocateMemory(Env* env, Class* c, jint size) {
-    return PTR_TO_LONG(rvmAllocateMemory(env, size));
+    return PTR_TO_LONG(bugvmAllocateMemory(env, size));
 }
 
 jlong Java_com_bugvm_rt_VM_allocateMemoryUncollectable(Env* env, Class* c, jint size) {
-    return PTR_TO_LONG(rvmAllocateMemoryUncollectable(env, size));
+    return PTR_TO_LONG(bugvmAllocateMemoryUncollectable(env, size));
 }
 
 jlong Java_com_bugvm_rt_VM_allocateMemoryAtomic(Env* env, Class* c, jint size) {
-    return PTR_TO_LONG(rvmAllocateMemoryAtomic(env, size));
+    return PTR_TO_LONG(bugvmAllocateMemoryAtomic(env, size));
 }
 
 void Java_com_bugvm_rt_VM_freeMemoryUncollectable(Env* env, Class* c, jlong address) {
-    rvmFreeMemoryUncollectable(env, LONG_TO_PTR(address));
+    bugvmFreeMemoryUncollectable(env, LONG_TO_PTR(address));
 }
 
 void Java_com_bugvm_rt_VM_registerDisappearingLink(Env* env, Class* c, jlong address, Object* obj) {
-    rvmRegisterDisappearingLink(env, LONG_TO_PTR(address), obj);
+    bugvmRegisterDisappearingLink(env, LONG_TO_PTR(address), obj);
 }
 
 void Java_com_bugvm_rt_VM_unregisterDisappearingLink(Env* env, Class* c, jlong address) {
-    rvmUnregisterDisappearingLink(env, LONG_TO_PTR(address));
+    bugvmUnregisterDisappearingLink(env, LONG_TO_PTR(address));
 }
 
 jlong Java_com_bugvm_rt_VM_malloc(Env* env, Class* c, jint size) {
     void* m = malloc(size);
     if (!m) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return 0;
     }
     memset(m, 0, size);
@@ -176,15 +176,15 @@ void Java_com_bugvm_rt_VM_free(Env* env, Class* c, jlong address) {
 }
 
 Object* Java_com_bugvm_rt_VM_allocateObject(Env* env, Class* c, Class* cls) {
-    Object *o = rvmAllocateObject(env, cls);
+    Object *o = bugvmAllocateObject(env, cls);
     if (o && CLASS_IS_FINALIZABLE(cls)) {
-        rvmRegisterFinalizer(env, o);
+        bugvmRegisterFinalizer(env, o);
     }
     return o;
 }
 
 Object* Java_com_bugvm_rt_VM_newDirectByteBuffer(Env* env, Class* c, jlong address, jlong capacity) {
-    return rvmNewDirectByteBuffer(env, LONG_TO_PTR(address), capacity);
+    return bugvmNewDirectByteBuffer(env, LONG_TO_PTR(address), capacity);
 }
 
 void Java_com_bugvm_rt_VM_memcpy(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
@@ -196,15 +196,15 @@ void Java_com_bugvm_rt_VM_memmove8(Env* env, Class* c, jlong s1, jlong s2, jlong
 }
 
 void Java_com_bugvm_rt_VM_memmove16(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
-    rvmMoveMemory16(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
+    bugvmMoveMemory16(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
 }
 
 void Java_com_bugvm_rt_VM_memmove32(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
-    rvmMoveMemory32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
+    bugvmMoveMemory32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
 }
 
 void Java_com_bugvm_rt_VM_memmove64(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
-    rvmMoveMemory32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) (n << 1));
+    bugvmMoveMemory32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) (n << 1));
 }
 
 void Java_com_bugvm_rt_VM_memset(Env* env, Class* cls, jlong s, jbyte c, jlong n) {
@@ -332,15 +332,15 @@ void Java_com_bugvm_rt_VM_setPointer(Env* env, Class* c, jlong address, jlong va
 }
 
 jlong Java_com_bugvm_rt_VM_getStringUTFChars(Env* env, Class* c, Object* s) {
-    return PTR_TO_LONG(rvmGetStringUTFChars(env, s));
+    return PTR_TO_LONG(bugvmGetStringUTFChars(env, s));
 }
 
 Object* Java_com_bugvm_rt_VM_newStringUTF(Env* env, Class* c, jlong address) {
-    return rvmNewStringUTF(env, (char*) LONG_TO_PTR(address), -1);
+    return bugvmNewStringUTF(env, (char*) LONG_TO_PTR(address), -1);
 }
 
 Object* Java_com_bugvm_rt_VM_newStringNoCopy(Env* env, Class* c, CharArray* value, jint offset, jint length) {
-    return rvmNewStringNoCopy(env, value, offset, length);
+    return bugvmNewStringNoCopy(env, value, offset, length);
 }
 
 jlong Java_com_bugvm_rt_VM_getArrayValuesAddress(Env* env, Class* c, Array* array) {
@@ -372,7 +372,7 @@ jlong Java_com_bugvm_rt_VM_getArrayValuesAddress(Env* env, Class* c, Array* arra
 }
 
 BooleanArray* Java_com_bugvm_rt_VM_newBooleanArray(Env* env, Class* c, jlong address, jint size) {
-    BooleanArray* array = rvmNewBooleanArray(env, size);
+    BooleanArray* array = bugvmNewBooleanArray(env, size);
     if (array) {
         jbyte* data = (jbyte*) LONG_TO_PTR(address);
         jint i = 0;
@@ -385,7 +385,7 @@ BooleanArray* Java_com_bugvm_rt_VM_newBooleanArray(Env* env, Class* c, jlong add
 }
 
 ByteArray* Java_com_bugvm_rt_VM_newByteArray(Env* env, Class* c, jlong address, jint size) {
-    ByteArray* array = rvmNewByteArray(env, size);
+    ByteArray* array = bugvmNewByteArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jbyte));
     }
@@ -393,7 +393,7 @@ ByteArray* Java_com_bugvm_rt_VM_newByteArray(Env* env, Class* c, jlong address, 
 }
 
 CharArray* Java_com_bugvm_rt_VM_newCharArray(Env* env, Class* c, jlong address, jint size) {
-    CharArray* array = rvmNewCharArray(env, size);
+    CharArray* array = bugvmNewCharArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jchar));
     }
@@ -401,7 +401,7 @@ CharArray* Java_com_bugvm_rt_VM_newCharArray(Env* env, Class* c, jlong address, 
 }
 
 ShortArray* Java_com_bugvm_rt_VM_newShortArray(Env* env, Class* c, jlong address, jint size) {
-    ShortArray* array = rvmNewShortArray(env, size);
+    ShortArray* array = bugvmNewShortArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jshort));
     }
@@ -409,7 +409,7 @@ ShortArray* Java_com_bugvm_rt_VM_newShortArray(Env* env, Class* c, jlong address
 }
 
 IntArray* Java_com_bugvm_rt_VM_newIntArray(Env* env, Class* c, jlong address, jint size) {
-    IntArray* array = rvmNewIntArray(env, size);
+    IntArray* array = bugvmNewIntArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jint));
     }
@@ -417,7 +417,7 @@ IntArray* Java_com_bugvm_rt_VM_newIntArray(Env* env, Class* c, jlong address, ji
 }
 
 LongArray* Java_com_bugvm_rt_VM_newLongArray(Env* env, Class* c, jlong address, jint size) {
-    LongArray* array = rvmNewLongArray(env, size);
+    LongArray* array = bugvmNewLongArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jlong));
     }
@@ -425,7 +425,7 @@ LongArray* Java_com_bugvm_rt_VM_newLongArray(Env* env, Class* c, jlong address, 
 }
 
 FloatArray* Java_com_bugvm_rt_VM_newFloatArray(Env* env, Class* c, jlong address, jint size) {
-    FloatArray* array = rvmNewFloatArray(env, size);
+    FloatArray* array = bugvmNewFloatArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jfloat));
     }
@@ -433,7 +433,7 @@ FloatArray* Java_com_bugvm_rt_VM_newFloatArray(Env* env, Class* c, jlong address
 }
 
 DoubleArray* Java_com_bugvm_rt_VM_newDoubleArray(Env* env, Class* c, jlong address, jint size) {
-    DoubleArray* array = rvmNewDoubleArray(env, size);
+    DoubleArray* array = bugvmNewDoubleArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jdouble));
     }
@@ -441,9 +441,9 @@ DoubleArray* Java_com_bugvm_rt_VM_newDoubleArray(Env* env, Class* c, jlong addre
 }
 
 ObjectArray* Java_com_bugvm_rt_VM_listClasses0(Env* env, Class* c, Class* instanceofClass, Object* classLoader) {
-    return rvmListClasses(env, instanceofClass, classLoader);
+    return bugvmListClasses(env, instanceofClass, classLoader);
 }
 
 void Java_com_bugvm_rt_VM_generateHeapDump(Env* env, Class* c) {
-    rvmGenerateHeapDump(env);
+    bugvmGenerateHeapDump(env);
 }

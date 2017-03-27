@@ -32,12 +32,12 @@ Env_trycatchContext_offset = 56
     .text
 
 /*
- * rvmTrycatchEnter(Env* env, TrycatchContext* tc) 
+ * bugvmTrycatchEnter(Env* env, TrycatchContext* tc)
  */
-    .globl rvmTrycatchEnter
+    .globl bugvmTrycatchEnter
     .align    16, 0x90
-    .type    rvmTrycatchEnter, @function
-rvmTrycatchEnter:
+    .type    bugvmTrycatchEnter, @function
+bugvmTrycatchEnter:
     # env is in %rdi
     # tc is in %rsi
     mov %rbp, fp_offset(%rsi)       # tc->fp = %rbp
@@ -63,12 +63,12 @@ rvmTrycatchEnter:
     ret
 
 /*
- * rvmTrycatchJump(TrycatchContext* tc) 
+ * bugvmTrycatchJump(TrycatchContext* tc)
  */
-    .globl rvmTrycatchJump
+    .globl bugvmTrycatchJump
     .align    16, 0x90
-    .type    rvmTrycatchEnter, @function
-rvmTrycatchJump:
+    .type    bugvmTrycatchEnter, @function
+bugvmTrycatchJump:
     # tc is in %rdi
     mov fp_offset(%rdi), %rbp       # %rbp = tc->fp
     mov rbx_offset(%rdi), %rbx      # %rbx = tc->rbx
@@ -80,10 +80,10 @@ rvmTrycatchJump:
     ldmxcsr mxcsr_offset(%rdi)      # %mxcsr = tc->mxcsr
     fldcw fpucw_offset(%rdi)        # %fpucw = tc->fpucw
 
-    # Remove the return address of the caller of rvmTrycatchEnter from the stack
+    # Remove the return address of the caller of bugvmTrycatchEnter from the stack
     pop %rax
 
-    # Set the return value that the call to rvmTrycatchEnter will return
+    # Set the return value that the call to bugvmTrycatchEnter will return
     mov sel_offset(%rdi), %rax
-    # Jump to the return address from the initial call to rvmTrycatchEnter
+    # Jump to the return address from the initial call to bugvmTrycatchEnter
     jmp *pc_offset(%rdi)

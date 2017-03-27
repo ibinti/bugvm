@@ -16,9 +16,9 @@
 #ifndef BUGVM_NATIVE_H
 #define BUGVM_NATIVE_H
 
-extern void rvmInitJavaVM(VM* vm);
-extern void rvmInitJNIEnv(Env* env);
-extern jboolean rvmInitJNI(Env* env);
+extern void bugvmInitJavaVM(VM* vm);
+extern void bugvmInitJNIEnv(Env* env);
+extern jboolean bugvmInitJNI(Env* env);
 
 #endif
 

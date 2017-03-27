@@ -16,10 +16,10 @@
 #include <bugvm.h>
 
 Object* Java_java_lang_ClassCache_loadReflectionAccess(Env* env, Class* c) {
-    Class* ao = rvmFindClassUsingLoader(env, "java/lang/reflect/AccessibleObject", NULL);
+    Class* ao = bugvmFindClassUsingLoader(env, "java/lang/reflect/AccessibleObject", NULL);
     if (!ao) return NULL;
-    ClassField* f = rvmGetClassField(env, ao, "REFLECTION_ACCESS", "Lcom/bugvm/rt/ReflectionAccess;");
+    ClassField* f = bugvmGetClassField(env, ao, "REFLECTION_ACCESS", "Lcom/bugvm/rt/ReflectionAccess;");
     if (!f) return NULL;
-    return rvmGetObjectClassFieldValue(env, ao, f);
+    return bugvmGetObjectClassFieldValue(env, ao, f);
 }
 

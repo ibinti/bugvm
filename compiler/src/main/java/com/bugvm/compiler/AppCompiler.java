@@ -647,7 +647,7 @@ public class AppCompiler {
                     }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
-                } else if (args[i].startsWith("-rvm:")) {
+                } else if (args[i].startsWith("-bugvm:")) {
                     runArgs.add(args[i]);
                 } else if (args[i].startsWith("-")) {
                     String argName = args[i].substring(1, args[i].length());

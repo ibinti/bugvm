@@ -28,11 +28,11 @@ Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* 
     jvalue* jvalueArgs = validateAndUnwrapArgs(env, parameterTypes, args);
     if (!jvalueArgs) return NULL;
 
-    Object* o = rvmNewObjectA(env, method->clazz, method, jvalueArgs);
+    Object* o = bugvmNewObjectA(env, method->clazz, method, jvalueArgs);
     if (!o) {
-        Object* exception = rvmExceptionOccurred(env);
+        Object* exception = bugvmExceptionOccurred(env);
         if (exception->clazz != java_lang_ExceptionInInitializerError) {
-            throwInvocationTargetException(env, rvmExceptionOccurred(env));
+            throwInvocationTargetException(env, bugvmExceptionOccurred(env));
         }
         return NULL;
     }

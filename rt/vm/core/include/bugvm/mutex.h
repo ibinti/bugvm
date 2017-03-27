@@ -19,22 +19,22 @@
 #include <pthread.h>
 
 /* Mutex wrappers around pthread mutexes */
-static inline jint rvmInitMutex(Mutex* mutex) {
+static inline jint bugvmInitMutex(Mutex* mutex) {
     pthread_mutexattr_t mutexAttrs;
     pthread_mutexattr_init(&mutexAttrs);
     pthread_mutexattr_settype(&mutexAttrs, PTHREAD_MUTEX_RECURSIVE);
     return pthread_mutex_init(mutex, &mutexAttrs);
 }
-static inline jint rvmDestroyMutex(Mutex* mutex) {
+static inline jint bugvmDestroyMutex(Mutex* mutex) {
     return pthread_mutex_destroy(mutex);
 }
-static inline jint rvmLockMutex(Mutex* mutex) {
+static inline jint bugvmLockMutex(Mutex* mutex) {
     return pthread_mutex_lock(mutex);
 }
-static inline jint rvmTryLockMutex(Mutex* mutex) {
+static inline jint bugvmTryLockMutex(Mutex* mutex) {
     return pthread_mutex_trylock(mutex);
 }
-static inline jint rvmUnlockMutex(Mutex* mutex) {
+static inline jint bugvmUnlockMutex(Mutex* mutex) {
     return pthread_mutex_unlock(mutex);
 }
 

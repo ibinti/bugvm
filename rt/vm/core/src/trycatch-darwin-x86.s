@@ -30,11 +30,11 @@ Env_trycatchContext_offset = 28
     .section    __TEXT,__text,regular,pure_instructions
 
 /*
- * rvmTrycatchEnter(Env* env, TrycatchContext* tc) 
+ * bugvmTrycatchEnter(Env* env, TrycatchContext* tc)
  */
-    .globl _rvmTrycatchEnter
+    .globl _bugvmTrycatchEnter
     .align 4, 0x90
-_rvmTrycatchEnter:
+_bugvmTrycatchEnter:
     mov   8(%esp), %eax          # %eax = tc
     mov   %ebp, fp_offset(%eax)
     mov   (%esp), %ecx           # %ecx = return address
@@ -59,11 +59,11 @@ _rvmTrycatchEnter:
     ret
 
 /*
- * rvmTrycatchJump(TrycatchContext* tc) 
+ * bugvmTrycatchJump(TrycatchContext* tc)
  */
-    .globl _rvmTrycatchJump
+    .globl _bugvmTrycatchJump
     .align 4, 0x90
-_rvmTrycatchJump:
+_bugvmTrycatchJump:
     mov   4(%esp), %ecx        # %ecx = tc
     mov   fp_offset(%ecx), %ebp
     mov   esp_offset(%ecx), %esp
@@ -73,10 +73,10 @@ _rvmTrycatchJump:
     ldmxcsr mxcsr_offset(%ecx)
     fldcw fpucw_offset(%ecx)
 
-    # Remove the return address of the caller of rvmTrycatchEnter from the stack
+    # Remove the return address of the caller of bugvmTrycatchEnter from the stack
     pop   %eax
 
-    # Set the return value that the call to rvmTrycatchEnter will return
+    # Set the return value that the call to bugvmTrycatchEnter will return
     mov   sel_offset(%ecx), %eax
-    # Jump to the return address from the initial call to rvmTrycatchEnter
+    # Jump to the return address from the initial call to bugvmTrycatchEnter
     jmp   *pc_offset(%ecx)

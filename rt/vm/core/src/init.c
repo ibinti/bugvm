@@ -89,7 +89,7 @@ static jboolean ignoreSignal(int signo) {
 static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, ClasspathEntry** first) {
     jint i = 0;
     while (raw[i]) {
-        ClasspathEntry* entry = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ClasspathEntry));
+        ClasspathEntry* entry = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(ClasspathEntry));
         if (!entry) return FALSE;
         absolutize(basePath, raw[i], entry->jarPath);
         LL_APPEND(*first, entry);
@@ -99,7 +99,7 @@ static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, Class
     return TRUE;
 }
 
-void rvmParseOption(char* arg, Options* options) {
+void bugvmParseOption(char* arg, Options* options) {
     if (startsWith(arg, "log=trace")) {
         if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
     } else if (startsWith(arg, "log=debug")) {
@@ -203,7 +203,7 @@ static void parseBugVMIni(Options* options) {
         while ((linelen = getline(&line, &linecap, f)) > 0) {
             line = trim(line);
             if (strlen(line) > 0 && line[0] != '#') {
-                rvmParseOption(line, options);
+                bugvmParseOption(line, options);
             }
         }
         if (line) {
@@ -213,7 +213,7 @@ static void parseBugVMIni(Options* options) {
     }
 }
 
-jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
+jboolean bugvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
     if (argc > 0) {
         // We're called from a BugVM executable
         if (!realpath(argv[0], options->imagePath)) {
@@ -224,8 +224,8 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
         // imagePath. If not we try to determine it via dladdr().
         if (strlen(options->imagePath) == 0) {
             Dl_info dlinfo;
-            if (dladdr(rvmInitOptions, &dlinfo) == 0 || dlinfo.dli_fname == NULL) {
-                rvmAbort("Could not determine image path using dladdr()");
+            if (dladdr(bugvmInitOptions, &dlinfo) == 0 || dlinfo.dli_fname == NULL) {
+                bugvmAbort("Could not determine image path using dladdr()");
             }
             strncpy(options->imagePath, dlinfo.dli_fname, sizeof(options->imagePath) - 1);
         }
@@ -256,10 +256,10 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
     if (argc > 0) {
         jint firstJavaArg = 1;
         for (jint i = 1; i < argc; i++) {
-            if (startsWith(argv[i], "-rvm:")) {
+            if (startsWith(argv[i], "-bugvm:")) {
                 if (!ignoreRvmArgs) {
                     char* arg = &argv[i][5];
-                    rvmParseOption(arg, options);
+                    bugvmParseOption(arg, options);
                 }
                 firstJavaArg++;
             } else {
@@ -279,15 +279,15 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
     return TRUE;
 }
 
-VM* rvmCreateVM(Options* options) {
+VM* bugvmCreateVM(Options* options) {
     VM* vm = gcAllocate(sizeof(VM));
     if (!vm) return NULL;
     vm->options = options;
-    rvmInitJavaVM(vm);
+    bugvmInitJavaVM(vm);
     return vm;
 }
 
-Env* rvmCreateEnv(VM* vm) {
+Env* bugvmCreateEnv(VM* vm) {
     Env* env = gcAllocateUncollectable(vm->options->enableHooks ? sizeof(DebugEnv) : sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
@@ -296,15 +296,15 @@ Env* rvmCreateEnv(VM* vm) {
         debugEnv->reqId = 0;
         debugEnv->suspended = FALSE;
     }
-    rvmInitJNIEnv(env);
+    bugvmInitJNIEnv(env);
     return env;
 }
 
-Env* rvmStartup(Options* options) {
+Env* bugvmStartup(Options* options) {
     // TODO: Error handling
 
     TRACE("Initializing logging");
-    if (!rvmInitLog(options)) return NULL;
+    if (!bugvmInitLog(options)) return NULL;
 
 #if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
     // Enable IEEE-754 denormal support.
@@ -331,8 +331,8 @@ Env* rvmStartup(Options* options) {
     // setup the TCP channel socket and wait
     // for the debugger to connect
     if(options->enableHooks) {
-        if(!rvmHookSetupTCPChannel(options)) return NULL;
-        if(!rvmHookHandshake(options)) return NULL;
+        if(!bugvmHookSetupTCPChannel(options)) return NULL;
+        if(!bugvmHookHandshake(options)) return NULL;
     }
 
     TRACE("Initializing GC");
@@ -346,10 +346,10 @@ Env* rvmStartup(Options* options) {
     // of the current process (at least on Darwin) using pwrite().
     if (!ignoreSignal(SIGXFSZ)) return NULL;
 
-    VM* vm = rvmCreateVM(options);
+    VM* vm = bugvmCreateVM(options);
     if (!vm) return NULL;
 
-    Env* env = rvmCreateEnv(vm);
+    Env* env = bugvmCreateEnv(vm);
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
 
@@ -358,37 +358,37 @@ Env* rvmStartup(Options* options) {
 
     // Add the current image (executable) to the list of native libs used for
     // resolution of native methods in classes loaded by the boot ClassLoader.
-    rvmLoadNativeLibrary(env, NULL, NULL);
+    bugvmLoadNativeLibrary(env, NULL, NULL);
 
     // Call init on modules
     TRACE("Initializing classes");
-    if (!rvmInitClasses(env)) return NULL;
+    if (!bugvmInitClasses(env)) return NULL;
     TRACE("Initializing memory");
-    if (!rvmInitMemory(env)) return NULL;
+    if (!bugvmInitMemory(env)) return NULL;
     TRACE("Initializing methods");
-    if (!rvmInitMethods(env)) return NULL;
+    if (!bugvmInitMethods(env)) return NULL;
     TRACE("Initializing strings");
-    if (!rvmInitStrings(env)) return NULL;
+    if (!bugvmInitStrings(env)) return NULL;
     TRACE("Initializing monitors");
-    if (!rvmInitMonitors(env)) return NULL;
+    if (!bugvmInitMonitors(env)) return NULL;
     TRACE("Initializing proxy");
-    if (!rvmInitProxy(env)) return NULL;
+    if (!bugvmInitProxy(env)) return NULL;
     TRACE("Initializing threads");
-    if (!rvmInitThreads(env)) return NULL;
+    if (!bugvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
-    if (!rvmInitAttributes(env)) return NULL;
+    if (!bugvmInitAttributes(env)) return NULL;
     TRACE("Initializing primitive wrapper classes");
-    if (!rvmInitPrimitiveWrapperClasses(env)) return NULL;
+    if (!bugvmInitPrimitiveWrapperClasses(env)) return NULL;
     TRACE("Initializing exceptions");
-    if (!rvmInitExceptions(env)) return NULL;
+    if (!bugvmInitExceptions(env)) return NULL;
     TRACE("Initializing signals");
-    if (!rvmInitSignals(env)) return NULL;
+    if (!bugvmInitSignals(env)) return NULL;
     TRACE("Initializing JNI");
-    if (!rvmInitJNI(env)) return NULL;
+    if (!bugvmInitJNI(env)) return NULL;
 
     // Initialize the rt JNI code
-    TRACEF("Initializing the %s runtime library", rvmRTGetName());
-    if (!rvmRTInit(env)) return NULL;
+    TRACEF("Initializing the %s runtime library", bugvmRTGetName());
+    if (!bugvmRTInit(env)) return NULL;
 
 #ifdef DARWIN
     TRACE("Initializing JAR NSURLProtocol");
@@ -396,25 +396,25 @@ Env* rvmStartup(Options* options) {
 #endif
 
     TRACE("Creating system ClassLoader");
-    systemClassLoader = rvmGetSystemClassLoader(env);
-    if (rvmExceptionOccurred(env)) goto error_system_ClassLoader;
-    rvmRTSetThreadContextClassLoader(env, env->currentThread->threadObj, systemClassLoader);
+    systemClassLoader = bugvmGetSystemClassLoader(env);
+    if (bugvmExceptionOccurred(env)) goto error_system_ClassLoader;
+    bugvmRTSetThreadContextClassLoader(env, env->currentThread->threadObj, systemClassLoader);
 
     // Add the current image (executable) to the list of native libs used for
     // resolution of native methods in classes loaded by the system ClassLoader.
-    rvmLoadNativeLibrary(env, NULL, systemClassLoader);
+    bugvmLoadNativeLibrary(env, NULL, systemClassLoader);
 
     TRACE("Initialization done");
     env->vm->initialized = TRUE;
     
     // Start Daemons
     TRACE("Starting Daemons");
-    java_lang_Daemons = rvmFindClassUsingLoader(env, "java/lang/Daemons", NULL);
+    java_lang_Daemons = bugvmFindClassUsingLoader(env, "java/lang/Daemons", NULL);
     if (!java_lang_Daemons) goto error_daemons;
-    java_lang_Daemons_start = rvmGetClassMethod(env, java_lang_Daemons, "start", "()V");
+    java_lang_Daemons_start = bugvmGetClassMethod(env, java_lang_Daemons, "start", "()V");
     if (!java_lang_Daemons_start) goto error_daemons;
-    rvmCallVoidClassMethod(env, java_lang_Daemons, java_lang_Daemons_start);
-    if (rvmExceptionCheck(env)) goto error_daemons;
+    bugvmCallVoidClassMethod(env, java_lang_Daemons, java_lang_Daemons_start);
+    if (bugvmExceptionCheck(env)) goto error_daemons;
     TRACE("Daemons started");
 
     jboolean errorDuringSetup = FALSE;
@@ -422,10 +422,10 @@ Env* rvmStartup(Options* options) {
     //If our options has any properties, let's set them before we call our main.
     if (options->properties) {
         //First, find java.lang.System, which has the setProperty method.
-        Class* clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
+        Class* clazz = bugvmFindClassUsingLoader(env, "java/lang/System", NULL);
         if (clazz) {
             //Get the setProperty method.
-            Method* method = rvmGetClassMethod(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
+            Method* method = bugvmGetClassMethod(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
             if (method) {
                 SystemProperty* property = options->properties;
 
@@ -435,20 +435,20 @@ Env* rvmStartup(Options* options) {
                     Object* value = NULL;
                     //The key is not allowed to be an empty string, so don't set it if we don't get a key.
                     if(property->key && strlen(property->key) > 0) {
-                        key = rvmNewStringUTF(env, property->key, -1);
+                        key = bugvmNewStringUTF(env, property->key, -1);
                     } else {
                         FATAL("Cannot have empty key in system property.");
                         errorDuringSetup = TRUE;
                         break;
                     }
                     if (property->value) {
-                        value = rvmNewStringUTF(env, property->value, -1);
+                        value = bugvmNewStringUTF(env, property->value, -1);
                     } else {
-                        value = rvmNewStringUTF(env, "", -1);
+                        value = bugvmNewStringUTF(env, "", -1);
                     }
 
                     if (key && value) {
-                        rvmCallObjectClassMethod(env, clazz, method, key, value);
+                        bugvmCallObjectClassMethod(env, clazz, method, key, value);
                     } else {
                         if (!key) {
                             FATALF("Error creating string from system property key: %s", property->key);
@@ -469,61 +469,61 @@ Env* rvmStartup(Options* options) {
 
 error_daemons:
 error_system_ClassLoader:
-    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
+    bugvmDetachCurrentThread(env->vm, TRUE, FALSE);
 
     return NULL;
 }
 
-jboolean rvmRun(Env* env) {
+jboolean bugvmRun(Env* env) {
     Options* options = env->vm->options;
     Class* clazz = NULL;
 
-    rvmHookBeforeAppEntryPoint(env, options->mainClass);
-    clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+    bugvmHookBeforeAppEntryPoint(env, options->mainClass);
+    clazz = bugvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
     if (clazz) {
-        Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+        Method* method = bugvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
         if (method) {
-            ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+            ObjectArray* args = bugvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
             if (args) {
                 jint i = 0;
                 for (i = 0; i < args->length; i++) {
                     // TODO: Don't assume modified UTF-8
-                    args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                    args->values[i] = bugvmNewStringUTF(env, options->commandLineArgs[i], -1);
                     if (!args->values[i]) {
                         args = NULL;
                         break;
                     }
                 }
                 if (args) {
-                    rvmCallVoidClassMethod(env, clazz, method, args);
+                    bugvmCallVoidClassMethod(env, clazz, method, args);
                 }
             }
         }
     }
 
-    return rvmDestroyVM(env->vm);
+    return bugvmDestroyVM(env->vm);
 }
 
-jboolean rvmDestroyVM(VM* vm) {
+jboolean bugvmDestroyVM(VM* vm) {
     Env* env;
-    if (JNI_OK != rvmAttachCurrentThread(vm, &env, NULL, NULL) ) {
-        WARN("rvmDestroy() failed to attach current thread.");
+    if (JNI_OK != bugvmAttachCurrentThread(vm, &env, NULL, NULL) ) {
+        WARN("bugvmDestroy() failed to attach current thread.");
         return FALSE;
     }
-    Object* throwable = rvmExceptionOccurred(env);
-    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
+    Object* throwable = bugvmExceptionOccurred(env);
+    bugvmDetachCurrentThread(env->vm, TRUE, FALSE);
 
-    rvmJoinNonDaemonThreads(env);
+    bugvmJoinNonDaemonThreads(env);
 
     return throwable == NULL ? TRUE : FALSE;
 }
 
-void rvmShutdown(Env* env, jint code) {
+void bugvmShutdown(Env* env, jint code) {
     // TODO: Cleanup, stop threads.
     exit(code);
 }
 
-void rvmAbort(char* format, ...) {
+void bugvmAbort(char* format, ...) {
     va_list args;
     if (format) {
         va_start(args, format);
@@ -542,7 +542,7 @@ void rvmAbort(char* format, ...) {
     abort();
 }
 
-DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
+DynamicLib* bugvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
     *errorMsg = NULL;
     DynamicLib* dlib = NULL;
 
@@ -557,7 +557,7 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
         TRACEF("Opening dynamic library '%s'", file);
     }
 
-    dlib = rvmAllocateMemoryAtomicUncollectable(env, sizeof(DynamicLib));
+    dlib = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(DynamicLib));
     if (!dlib) {
         dlclose(handle);
         return NULL;
@@ -573,12 +573,12 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
     return dlib;
 }
 
-void rvmCloseDynamicLib(Env* env, DynamicLib* lib) {
+void bugvmCloseDynamicLib(Env* env, DynamicLib* lib) {
     dlclose(lib->handle);
-    rvmFreeMemoryUncollectable(env, lib);
+    bugvmFreeMemoryUncollectable(env, lib);
 }
 
-jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
+jboolean bugvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
     DynamicLib* dlib = NULL;
     LL_FOREACH(libs, dlib) {
         if (dlib->handle == lib->handle) {
@@ -588,11 +588,11 @@ jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
     return FALSE;
 }
 
-void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs) {
+void bugvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs) {
     LL_APPEND(*libs, lib);
 }
 
-void* rvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {
+void* bugvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {
     TRACEF("Searching for symbol '%s'", symbol);
 
     DynamicLib* dlib = NULL;

@@ -16,8 +16,8 @@
 #ifndef BUGVM_LOG_H
 #define BUGVM_LOG_H
 
-#define LOG(level, text) rvmLog(level, LOG_TAG, text)
-#define LOGF(level, format, ...) rvmLogf(level, LOG_TAG, format, __VA_ARGS__)
+#define LOG(level, text) bugvmLog(level, LOG_TAG, text)
+#define LOGF(level, format, ...) bugvmLogf(level, LOG_TAG, format, __VA_ARGS__)
 #define TRACE(text) LOG(LOG_LEVEL_TRACE, text)
 #define TRACEF(format, ...) LOGF(LOG_LEVEL_TRACE, format, __VA_ARGS__)
 #define DEBUG(text) LOG(LOG_LEVEL_DEBUG, text)
@@ -30,12 +30,12 @@
 #define ERRORF(format, ...) LOGF(LOG_LEVEL_ERROR, format, __VA_ARGS__)
 #define FATAL(text) LOG(LOG_LEVEL_FATAL, text)
 #define FATALF(format, ...) LOGF(LOG_LEVEL_FATAL, format, __VA_ARGS__)
-#define IS_TRACE_ENABLED (rvmLogIsTraceEnabled())
-#define IS_DEBUG_ENABLED (rvmLogIsDebugEnabled())
-#define IS_INFO_ENABLED (rvmLogIsInfoEnabled())
-#define IS_WARN_ENABLED (rvmLogIsWarnEnabled())
-#define IS_ERROR_ENABLED (rvmLogIsErrorEnabled())
-#define IS_FATAL_ENABLED (rvmLogIsFatalEnabled())
+#define IS_TRACE_ENABLED (bugvmLogIsTraceEnabled())
+#define IS_DEBUG_ENABLED (bugvmLogIsDebugEnabled())
+#define IS_INFO_ENABLED (bugvmLogIsInfoEnabled())
+#define IS_WARN_ENABLED (bugvmLogIsWarnEnabled())
+#define IS_ERROR_ENABLED (bugvmLogIsErrorEnabled())
+#define IS_FATAL_ENABLED (bugvmLogIsFatalEnabled())
 
 /*
  * Log levels. The values must match the values used 
@@ -52,16 +52,16 @@ typedef enum LogLevel {
     LOG_LEVEL_SILENT,
 } LogLevel;
 
-extern jboolean rvmInitLog(Options* options);
-extern jboolean rvmLogIsTraceEnabled();
-extern jboolean rvmLogIsDebugEnabled();
-extern jboolean rvmLogIsInfoEnabled();
-extern jboolean rvmLogIsWarnEnabled();
-extern jboolean rvmLogIsErrorEnabled();
-extern jboolean rvmLogIsFatalEnabled();
-extern int rvmLog(int level, const char* tag, const char* text);
-extern int rvmLogf(int level, const char* tag, const char* format, ...);
-extern int rvmLogfv(int level, const char* tag, const char* format, va_list ap);
+extern jboolean bugvmInitLog(Options* options);
+extern jboolean bugvmLogIsTraceEnabled();
+extern jboolean bugvmLogIsDebugEnabled();
+extern jboolean bugvmLogIsInfoEnabled();
+extern jboolean bugvmLogIsWarnEnabled();
+extern jboolean bugvmLogIsErrorEnabled();
+extern jboolean bugvmLogIsFatalEnabled();
+extern int bugvmLog(int level, const char* tag, const char* text);
+extern int bugvmLogf(int level, const char* tag, const char* format, ...);
+extern int bugvmLogfv(int level, const char* tag, const char* format, va_list ap);
 
 #endif
 

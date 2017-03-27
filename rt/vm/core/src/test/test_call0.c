@@ -21,7 +21,7 @@
 int main(int argc, char* argv[]) __attribute__ ((weak));
 int runTests(int argc, char* argv[]);
 
-void* rvmAllocateMemory(Env* env, size_t size) {
+void* bugvmAllocateMemory(Env* env, size_t size) {
     return calloc(1, size);
 }
 

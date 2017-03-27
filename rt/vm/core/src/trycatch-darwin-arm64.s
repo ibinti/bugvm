@@ -44,11 +44,11 @@ Env_trycatchContext_offset = 56
     .section    __TEXT,__text,regular,pure_instructions
     
 /*
- * rvmTrycatchEnter(Env* env, TrycatchContext* tc) 
+ * bugvmTrycatchEnter(Env* env, TrycatchContext* tc)
  */    
-    .globl    _rvmTrycatchEnter
+    .globl    _bugvmTrycatchEnter
     .align    2
-_rvmTrycatchEnter:
+_bugvmTrycatchEnter:
 
     mov x9, sp
     stp  x9, x19, [x1, sp_offset + 16 * 0]
@@ -76,11 +76,11 @@ _rvmTrycatchEnter:
     ret
 
 /*
- * rvmTrycatchJump(TrycatchContext* tc) 
+ * bugvmTrycatchJump(TrycatchContext* tc)
  */
-    .globl    _rvmTrycatchJump
+    .globl    _bugvmTrycatchJump
     .align    2
-_rvmTrycatchJump:
+_bugvmTrycatchJump:
     ldp  x9, x19, [x0, sp_offset + 16 * 0]
     ldp x20, x21, [x0, sp_offset + 16 * 1]
     ldp x22, x23, [x0, sp_offset + 16 * 2]
@@ -96,7 +96,7 @@ _rvmTrycatchJump:
 
     mov sp, x9
 
-    // Set the return value that the call to rvmTrycatchEnter will return
+    // Set the return value that the call to bugvmTrycatchEnter will return
     ldr x0, [x0, #sel_offset]
-    // Jump to the return address from the initial call to rvmTrycatchEnter
+    // Jump to the return address from the initial call to bugvmTrycatchEnter
     br lr

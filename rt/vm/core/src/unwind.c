@@ -92,13 +92,13 @@ static jboolean unwindCallStack(UnwindContext* context, void* _data) {
 }
 
 void unwindIterateCallStack(Env* env, void* fp, jboolean (*it)(Env*, void*, void*, ProxyMethod*, void*), void* data) {
-    jboolean calledFromNative = !rvmIsNonNativeFrame(env);
+    jboolean calledFromNative = !bugvmIsNonNativeFrame(env);
     if (calledFromNative) {
         if (!fp) {
-            rvmPushGatewayFrame(env);
+            bugvmPushGatewayFrame(env);
             UnwindCallStackData d = {it, env, env->gatewayFrames, data};
             unwindBacktrace(fp, unwindCallStack, &d);
-            rvmPopGatewayFrame(env);
+            bugvmPopGatewayFrame(env);
         } else {
             // Fake a frame which points to startFrame
             Frame* startFrame = fp;
@@ -106,11 +106,11 @@ void unwindIterateCallStack(Env* env, void* fp, jboolean (*it)(Env*, void*, void
             fakeFrame1.prev = startFrame;
             // unwindBacktrace always drops the first frame so fake one more
             fakeFrame2.prev = &fakeFrame1;
-            rvmPushGatewayFrameAddress(env, &fakeFrame1);
+            bugvmPushGatewayFrameAddress(env, &fakeFrame1);
             startFrame = &fakeFrame2;
             UnwindCallStackData d = {it, env, env->gatewayFrames, data};
             unwindBacktrace(startFrame, unwindCallStack, &d);
-            rvmPopGatewayFrame(env);
+            bugvmPopGatewayFrame(env);
         }
     } else {
         UnwindCallStackData d = {it, env, env->gatewayFrames, data};

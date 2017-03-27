@@ -32,7 +32,7 @@ jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
 }
 
 jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
-    return rvmAttributeIsAnonymousClass(env, thiz);
+    return bugvmAttributeIsAnonymousClass(env, thiz);
 }
 
 jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
@@ -41,21 +41,21 @@ jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
 
 jboolean Java_java_lang_Class_isAssignableFrom(Env* env, Class* thiz, Class* that) {
     if (!that) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
-    return rvmIsAssignableFrom(env, that, thiz);
+    return bugvmIsAssignableFrom(env, that, thiz);
 }
 
 jboolean Java_java_lang_Class_isInstance(Env* env, Class* thiz, Object* object) {
-    return rvmIsInstanceOf(env, object, thiz);
+    return bugvmIsInstanceOf(env, object, thiz);
 }
 
 jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
     jint modifiers = thiz->flags & CLASS_ACCESS_MASK;
     if (!ignoreInnerClassesAttrib) {
         jint innerModifiers = 0;
-        if (rvmAttributeGetInnerClass(env, thiz, NULL, &innerModifiers)) {
+        if (bugvmAttributeGetInnerClass(env, thiz, NULL, &innerModifiers)) {
             modifiers = innerModifiers & CLASS_ACCESS_MASK;
         }
     }
@@ -63,68 +63,68 @@ jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean
 }
 
 Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
-    return rvmAttributeGetClassSignature(env, thiz);
+    return bugvmAttributeGetClassSignature(env, thiz);
 }
 
 Object* Java_java_lang_Class_getInnerClassName(Env* env, Class* thiz) {
     Object* innerClassName = NULL;
-    rvmAttributeGetInnerClass(env, thiz, &innerClassName, NULL);
+    bugvmAttributeGetInnerClass(env, thiz, &innerClassName, NULL);
     return innerClassName;
 }
 
 Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
-    return rvmNewStringUTF(env, thiz->name, -1);
+    return bugvmNewStringUTF(env, thiz->name, -1);
 }
 
 Class* Java_java_lang_Class_getDeclaringClass(Env* env, Class* thiz) {
-    return rvmAttributeGetDeclaringClass(env, thiz);
+    return bugvmAttributeGetDeclaringClass(env, thiz);
 }
 
 Class* Java_java_lang_Class_getEnclosingClass(Env* env, Class* thiz) {
-    Class* enclosingClass = rvmAttributeGetEnclosingClass(env, thiz);
-    if (rvmExceptionCheck(env) && rvmExceptionOccurred(env)->clazz != java_lang_ClassNotFoundException) {
+    Class* enclosingClass = bugvmAttributeGetEnclosingClass(env, thiz);
+    if (bugvmExceptionCheck(env) && bugvmExceptionOccurred(env)->clazz != java_lang_ClassNotFoundException) {
         return NULL;
     }
     if (!enclosingClass) {
-        rvmExceptionClear(env);
-        return rvmAttributeGetDeclaringClass(env, thiz);
+        bugvmExceptionClear(env);
+        return bugvmAttributeGetDeclaringClass(env, thiz);
     }
     return enclosingClass;
 }
 
 Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
-    Method* method = rvmAttributeGetEnclosingMethod(env, thiz);
+    Method* method = bugvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || METHOD_IS_CONSTRUCTOR(method)) return NULL;
-    Class* jlr_Method = rvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
+    Class* jlr_Method = bugvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
     if (!jlr_Method) return NULL;
-    Method* constructor = rvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
+    Method* constructor = bugvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
     if (!constructor) return NULL;
     jvalue args[1];
     args[0].j = PTR_TO_LONG(method);
-    return rvmNewObjectA(env, jlr_Method, constructor, args);
+    return bugvmNewObjectA(env, jlr_Method, constructor, args);
 }
 
 Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
-    Method* method = rvmAttributeGetEnclosingMethod(env, thiz);
+    Method* method = bugvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || !METHOD_IS_CONSTRUCTOR(method)) return NULL;
-    Class* jlr_Constructor = rvmFindClassUsingLoader(env, "java/lang/reflect/Constructor", NULL);
+    Class* jlr_Constructor = bugvmFindClassUsingLoader(env, "java/lang/reflect/Constructor", NULL);
     if (!jlr_Constructor) return NULL;
-    Method* constructor = rvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
+    Method* constructor = bugvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
     if (!constructor) return NULL;
     jvalue args[1];
     args[0].j = PTR_TO_LONG(method);
-    return rvmNewObjectA(env, jlr_Constructor, constructor, args);
+    return bugvmNewObjectA(env, jlr_Constructor, constructor, args);
 }
 
 ObjectArray* Java_java_lang_Class_getInterfaces(Env* env, Class* thiz) {
-    Interface* interfaces = rvmGetInterfaces(env, thiz);
-    if (rvmExceptionCheck(env)) return NULL;
+    Interface* interfaces = bugvmGetInterfaces(env, thiz);
+    if (bugvmExceptionCheck(env)) return NULL;
     Interface* interfaze;
     jint length = 0;
     LL_FOREACH(interfaces, interfaze) {
         length++;
     }
-    ObjectArray* result = rvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i = 0;
     LL_FOREACH(interfaces, interfaze) {
@@ -147,7 +147,7 @@ Object* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* clazz) {
 
 ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
-    ObjectArray* result = rvmAttributeGetDeclaredClasses(env, clazz);
+    ObjectArray* result = bugvmAttributeGetDeclaredClasses(env, clazz);
     if (!result || result->length == 0 || !publicOnly) {
         return result;
     }
@@ -163,7 +163,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jb
 
     if (length == 0) return NULL;
 
-    ObjectArray* publicResult = rvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+    ObjectArray* publicResult = bugvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
     if (!publicResult) return NULL;
     jint index = 0;
     for (i = 0; i < result->length; i++) {
@@ -179,8 +179,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jb
 ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
 
-    Method* methods = rvmGetMethods(env, clazz);
-    if (rvmExceptionCheck(env)) return NULL;
+    Method* methods = bugvmGetMethods(env, clazz);
+    if (bugvmExceptionCheck(env)) return NULL;
 
     Method* method;
     jint length = 0;
@@ -200,7 +200,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
                 Object* c = createConstructorObject(env, method);
                 if (!c) return NULL;
                 if (!result) {
-                    result = rvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                    result = bugvmNewObjectArray(env, length, c->clazz, NULL, NULL);
                     if (!result) return NULL;
                 }
                 result->values[i++] = c;
@@ -214,8 +214,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
 ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
 
-    Method* methods = rvmGetMethods(env, clazz);
-    if (rvmExceptionCheck(env)) return NULL;
+    Method* methods = bugvmGetMethods(env, clazz);
+    if (bugvmExceptionCheck(env)) return NULL;
 
     Method* method;
     jint length = 0;
@@ -235,7 +235,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
                 Object* c = createMethodObject(env, method);
                 if (!c) return NULL;
                 if (!result) {
-                    result = rvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                    result = bugvmNewObjectArray(env, length, c->clazz, NULL, NULL);
                     if (!result) return NULL;
                 }
                 result->values[i++] = c;
@@ -249,8 +249,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
 ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
 
-    Field* fields = rvmGetFields(env, clazz);
-    if (rvmExceptionCheck(env)) return NULL;
+    Field* fields = bugvmGetFields(env, clazz);
+    if (bugvmExceptionCheck(env)) return NULL;
 
     Field* field;
     jint length = 0;
@@ -267,7 +267,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
             Object* c = createFieldObject(env, field);
             if (!c) return NULL;
             if (!result) {
-                result = rvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                result = bugvmNewObjectArray(env, length, c->clazz, NULL, NULL);
                 if (!result) return NULL;
             }
             result->values[i++] = c;
@@ -278,19 +278,19 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredAnnotations0(Env* env, Class* clazz) {
-    return rvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
+    return bugvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
 }
 
 Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className, jboolean initializeBoolean,
             Object* classLoader) {
 
     if (!className) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return NULL;
     }
     char* classNameUTF = toBinaryName(env, className);
     if (!classNameUTF) return NULL;
-    Class* clazz = rvmFindClassUsingLoader(env, classNameUTF, classLoader);
+    Class* clazz = bugvmFindClassUsingLoader(env, classNameUTF, classLoader);
     if (!clazz) {
         char* p = classNameUTF;
         while (*p != '\0') {
@@ -305,8 +305,8 @@ Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className
         return NULL;
     }
     if (initializeBoolean) {
-        rvmInitialize(env, clazz);
-        if (rvmExceptionCheck(env)) return NULL;
+        bugvmInitialize(env, clazz);
+        if (bugvmExceptionCheck(env)) return NULL;
     }
     return clazz;
 }

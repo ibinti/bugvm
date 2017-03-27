@@ -30,14 +30,14 @@ Env_trycatchContext_offset = 28
     .text
 
 /*
- * rvmTrycatchEnter(Env* env, TrycatchContext* tc) 
+ * bugvmTrycatchEnter(Env* env, TrycatchContext* tc)
  */
-    .globl rvmTrycatchEnter
+    .globl bugvmTrycatchEnter
     
     .align    16, 0x90
-    .type    rvmTrycatchEnter, @function
-rvmTrycatchEnter:
-.LrvmTrycatchEnterBegin:
+    .type    bugvmTrycatchEnter, @function
+bugvmTrycatchEnter:
+.LbugvmTrycatchEnterBegin:
     mov   8(%esp), %eax          # %eax = tc
     mov   %ebp, fp_offset(%eax)
     mov   (%esp), %ecx           # %ecx = return address
@@ -61,18 +61,18 @@ rvmTrycatchEnter:
 
     ret
 
-    .size rvmTrycatchEnter, . - .LrvmTrycatchEnterBegin
-.LrvmTrycatchEnterEnd:
+    .size bugvmTrycatchEnter, . - .LbugvmTrycatchEnterBegin
+.LbugvmTrycatchEnterEnd:
 
 /*
- * rvmTrycatchJump(TrycatchContext* tc) 
+ * bugvmTrycatchJump(TrycatchContext* tc)
  */
-    .globl rvmTrycatchJump
+    .globl bugvmTrycatchJump
     
     .align    16, 0x90
-    .type    rvmTrycatchJump, @function
-rvmTrycatchJump:
-.LrvmTrycatchJumpBegin:
+    .type    bugvmTrycatchJump, @function
+bugvmTrycatchJump:
+.LbugvmTrycatchJumpBegin:
     mov   4(%esp), %ecx        # %ecx = tc
     mov   fp_offset(%ecx), %ebp
     mov   esp_offset(%ecx), %esp
@@ -82,13 +82,13 @@ rvmTrycatchJump:
     ldmxcsr mxcsr_offset(%ecx)
     fldcw fpucw_offset(%ecx)
 
-    # Remove the return address of the caller of rvmTrycatchJump from the stack
+    # Remove the return address of the caller of bugvmTrycatchJump from the stack
     pop   %eax
 
-    # Set the return value that the call to rvmTrycatchEnter will return
+    # Set the return value that the call to bugvmTrycatchEnter will return
     mov   sel_offset(%ecx), %eax
-    # Jump to the return address from the initial call to rvmTrycatchEnter
+    # Jump to the return address from the initial call to bugvmTrycatchEnter
     jmp   *pc_offset(%ecx)
 
-    .size rvmTrycatchJump, . - .LrvmTrycatchJumpBegin
-.LrvmTrycatchJumpEnd:
+    .size bugvmTrycatchJump, . - .LbugvmTrycatchJumpBegin
+.LbugvmTrycatchJumpEnd:

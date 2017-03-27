@@ -71,14 +71,14 @@ static jlong getUniqueThreadId(pthread_t thread) {
 }
 
 static void addToDetachedList(pthread_t thread) {
-    rvmLockMutex(&detachedThreadsLock);
+    bugvmLockMutex(&detachedThreadsLock);
     DetachedThread* dt = (DetachedThread*)malloc(sizeof(DetachedThread));
     dt->threadId = getUniqueThreadId(thread);
     dt->thread = thread;
     dt->next = detachedThreads? detachedThreads: NULL;
     DEBUGF("Added thread with tid %llu to detach list", dt->threadId);
     detachedThreads = dt;
-    rvmUnlockMutex(&detachedThreadsLock);
+    bugvmUnlockMutex(&detachedThreadsLock);
 }
 
 static void cleanupDetachedList() {
@@ -92,7 +92,7 @@ static void cleanupDetachedList() {
     // This means we leak memory on Linux (one DetachedThread struct
     // per thread that's been created. FIXME
 #if defined(DARWIN)
-    rvmLockMutex(&detachedThreadsLock);
+    bugvmLockMutex(&detachedThreadsLock);
     DetachedThread* dt = detachedThreads;
     DetachedThread* prev = NULL;
 
@@ -114,13 +114,13 @@ static void cleanupDetachedList() {
             dt = dt->next;
         }
     }
-    rvmUnlockMutex(&detachedThreadsLock);
+    bugvmUnlockMutex(&detachedThreadsLock);
 #endif
 }
 
-jboolean rvmHasThreadBeenDetached() {
+jboolean bugvmHasThreadBeenDetached() {
     pthread_t self = pthread_self();
-    rvmLockMutex(&detachedThreadsLock);
+    bugvmLockMutex(&detachedThreadsLock);
     DetachedThread* dt = detachedThreads;
     jboolean result = FALSE;
     jlong threadId = getUniqueThreadId(self);
@@ -131,19 +131,19 @@ jboolean rvmHasThreadBeenDetached() {
         }
         dt = dt->next;
     }
-    rvmUnlockMutex(&detachedThreadsLock);
+    bugvmUnlockMutex(&detachedThreadsLock);
     if(result) {
         DEBUGF("Thread with tid %llu has been detached already", threadId);
     }
     return result;
 }
 
-inline void rvmLockThreadsList() {
-    rvmLockMutex(&threadsLock);
+inline void bugvmLockThreadsList() {
+    bugvmLockMutex(&threadsLock);
 }
 
-inline void rvmUnlockThreadsList() {
-    rvmUnlockMutex(&threadsLock);
+inline void bugvmUnlockThreadsList() {
+    bugvmUnlockMutex(&threadsLock);
 }
 
 #if defined(DARWIN)
@@ -209,7 +209,7 @@ static Thread* allocThread(Env* env) {
 static jint getNextThreadId() {
     // NOTE: threadsLock must be held
     // thread ids start at 1
-    jint threadId = rvmAllocBit(threadIdMap) + 1;
+    jint threadId = bugvmAllocBit(threadIdMap) + 1;
     assert(threadId != 0);
     return threadId;
 }
@@ -218,23 +218,23 @@ static void freeThreadId(jint threadId) {
     // NOTE: threadsLock must be held
     // thread ids start at 1
     assert(threadId != 0);
-    rvmClearBit(threadIdMap, threadId - 1);
-    assert(!rvmIsBitSet(threadIdMap, threadId - 1));
+    bugvmClearBit(threadIdMap, threadId - 1);
+    assert(!bugvmIsBitSet(threadIdMap, threadId - 1));
 }
 
 static jboolean initThread(Env* env, Thread* thread, Object* threadObj) {
     // NOTE: threadsLock must be held
     int err = 0;
     pthread_cond_init(&thread->waitCond, NULL);
-    if ((err = rvmInitMutex(&thread->waitMutex)) != 0) {
-        rvmThrowInternalErrorErrno(env, err);
+    if ((err = bugvmInitMutex(&thread->waitMutex)) != 0) {
+        bugvmThrowInternalErrorErrno(env, err);
         return FALSE;
     }
     if (env->vm->options->enableHooks) {
         DebugEnv* debugEnv = (DebugEnv*) env;
-        if ((err = rvmInitMutex(&debugEnv->suspendMutex)) != 0 
+        if ((err = bugvmInitMutex(&debugEnv->suspendMutex)) != 0
                 || (err = pthread_cond_init(&debugEnv->suspendCond, NULL)) != 0) {
-            rvmThrowInternalErrorErrno(env, err);
+            bugvmThrowInternalErrorErrno(env, err);
             return FALSE;
         }
     }
@@ -243,18 +243,18 @@ static jboolean initThread(Env* env, Thread* thread, Object* threadObj) {
     thread->env = env;
     env->currentThread = thread;
     env->attachCount = 1;
-    rvmRTSetNativeThread(env, threadObj, thread);
+    bugvmRTSetNativeThread(env, threadObj, thread);
     return TRUE;
 }
 
 static void cleanupThreadMutex(Env* env, Thread* thread) {
     // NOTE: threadsLock must be held
     pthread_cond_destroy(&thread->waitCond);
-    rvmDestroyMutex(&thread->waitMutex);
+    bugvmDestroyMutex(&thread->waitMutex);
     if (env->vm->options->enableHooks) {
         DebugEnv* debugEnv = (DebugEnv*) env;
         pthread_cond_destroy(&debugEnv->suspendCond);
-        rvmDestroyMutex(&debugEnv->suspendMutex);
+        bugvmDestroyMutex(&debugEnv->suspendMutex);
     }
 }
 
@@ -265,7 +265,7 @@ static void setThreadEnv(Env* env) {
     int err = pthread_setspecific(tlsEnvKey, env);
     assert(err == 0);
     if (err != 0) {
-        rvmThrowInternalErrorErrno(env, err);
+        bugvmThrowInternalErrorErrno(env, err);
     }
 }
 
@@ -280,7 +280,7 @@ static void setThreadTLS(Env* env, Thread* thread) {
     int err = pthread_setspecific(tlsThreadKey, thread);
     assert(err == 0);
     if (err != 0) {
-        rvmThrowInternalErrorErrno(env, err);
+        bugvmThrowInternalErrorErrno(env, err);
     }
 }
 
@@ -289,7 +289,7 @@ static void clearThreadTLS() {
 }
 
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
-    Env* env = *envPtr; // env is NULL if rvmAttachCurrentThread() was called. If non NULL rvmInitThreads() was called.
+    Env* env = *envPtr; // env is NULL if bugvmAttachCurrentThread() was called. If non NULL bugvmInitThreads() was called.
     if (!env) {
         // If the thread was already attached there's an Env* and a Thread* associated with the thread.
         env = (Env*) pthread_getspecific(tlsEnvKey);
@@ -305,56 +305,56 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     gcRegisterCurrentThread();
 
     if (!env) {
-        env = rvmCreateEnv(vm);
+        env = bugvmCreateEnv(vm);
         if (!env) goto error;
     }
 
     setThreadEnv(env);
-    if (rvmExceptionOccurred(env)) goto error;
+    if (bugvmExceptionOccurred(env)) goto error;
 
     Thread* thread = allocThread(env);
     if (!thread) goto error;
     thread->stackAddr = getStackAddress();
     thread->pThread = pthread_self();
     env->currentThread = thread;
-    rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
+    bugvmChangeThreadStatus(env, thread, THREAD_RUNNING);
     
-    Object* threadObj = rvmAllocateObject(env, java_lang_Thread);
+    Object* threadObj = bugvmAllocateObject(env, java_lang_Thread);
     if (!threadObj) goto error;
 
-    rvmLockThreadsList();
+    bugvmLockThreadsList();
     if (!initThread(env, thread, threadObj)) {
-        rvmUnlockThreadsList();
+        bugvmUnlockThreadsList();
         goto error;
     }
-    if (!rvmInstallThreadSignalMask(env)) {
-        rvmUnlockThreadsList();
+    if (!bugvmInstallThreadSignalMask(env)) {
+        bugvmUnlockThreadsList();
         goto error;
     }
     DL_PREPEND(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 
     Object* threadName = NULL;
     if (name) {
-        threadName = rvmNewStringUTF(env, name, -1);
+        threadName = bugvmNewStringUTF(env, name, -1);
         if (!threadName) goto error_remove;
     }
 
-    rvmRTInitAttachedThread(env, threadObj, thread, threadName, group, daemon);
-    if (rvmExceptionOccurred(env)) goto error_remove;
+    bugvmRTInitAttachedThread(env, threadObj, thread, threadName, group, daemon);
+    if (bugvmExceptionOccurred(env)) goto error_remove;
 
     *envPtr = env;
-    rvmHookThreadAttached(env, threadObj, thread);
+    bugvmHookThreadAttached(env, threadObj, thread);
 
     setThreadTLS(env, thread);
     return JNI_OK;
 
 error_remove:
-    rvmLockThreadsList();
+    bugvmLockThreadsList();
     DL_DELETE(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 error:
     if (env) env->currentThread = NULL;
     clearThreadEnv();
@@ -363,20 +363,20 @@ error:
 }
 
 static void threadExitUncaughtException(Env* env, Thread* thread) {
-    Object* throwable = rvmExceptionClear(env);
-    Object* handler = rvmCallObjectInstanceMethod(env, (Object*) thread->threadObj, getUncaughtExceptionHandlerMethod);
+    Object* throwable = bugvmExceptionClear(env);
+    Object* handler = bugvmCallObjectInstanceMethod(env, (Object*) thread->threadObj, getUncaughtExceptionHandlerMethod);
     // Ignore exception thrown by getUncaughtException()
-    rvmExceptionClear(env);
+    bugvmExceptionClear(env);
     if (!handler) {
-        handler = rvmRTGetThreadGroup(env, thread->threadObj);
+        handler = bugvmRTGetThreadGroup(env, thread->threadObj);
     }
     if (handler) {
-        rvmCallVoidInstanceMethod(env, handler, uncaughtExceptionMethod, thread->threadObj, throwable);
+        bugvmCallVoidInstanceMethod(env, handler, uncaughtExceptionMethod, thread->threadObj, throwable);
     } else {
-        rvmPrintStackTrace(env, throwable);
+        bugvmPrintStackTrace(env, throwable);
     }
-    // Ignore exception thrown by uncaughtException() or rvmPrintStackTrace()
-    rvmExceptionClear(env);
+    // Ignore exception thrown by uncaughtException() or bugvmPrintStackTrace()
+    bugvmExceptionClear(env);
 }
 
 static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregisterGC, jboolean wasAttached) {
@@ -387,7 +387,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     env->attachCount = 0;
 
     if (env->gatewayFrames) {
-        rvmAbort("Cannot detach thread when there are non native frames on the call stack");
+        bugvmAbort("Cannot detach thread when there are non native frames on the call stack");
     }
 
     // TODO: Release all monitors still held by this thread (should only be monitors acquired from JNI code)
@@ -396,25 +396,25 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     Object* threadObj = thread->threadObj;
 
     if (wasAttached) {
-        rvmHookThreadDetaching(env, threadObj, thread, env->throwable);
+        bugvmHookThreadDetaching(env, threadObj, thread, env->throwable);
     }
 
-    if (rvmExceptionOccurred(env)) {
+    if (bugvmExceptionOccurred(env)) {
         threadExitUncaughtException(env, thread);
     }
 
-    Object* group = rvmRTGetThreadGroup(env, threadObj);
+    Object* group = bugvmRTGetThreadGroup(env, threadObj);
     if (group) {
-        rvmCallVoidInstanceMethod(env, group, removeThreadMethod, threadObj);
-        rvmExceptionClear(env);
+        bugvmCallVoidInstanceMethod(env, group, removeThreadMethod, threadObj);
+        bugvmExceptionClear(env);
     }
 
     // Set threadPtr to null
-    rvmRTClearNativeThread(env, thread->threadObj);
+    bugvmRTClearNativeThread(env, thread->threadObj);
 
-    rvmRTResumeJoiningThreads(env, threadObj);
+    bugvmRTResumeJoiningThreads(env, threadObj);
 
-    rvmLockThreadsList();
+    bugvmLockThreadsList();
     thread->status = THREAD_ZOMBIE;
     DL_DELETE(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
@@ -423,7 +423,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     clearThreadTLS();
     freeThreadId(thread->threadId);
     cleanupThreadMutex(env, thread);
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 
     if (unregisterGC) {
         // Unregister the thread with the GC
@@ -460,46 +460,46 @@ static void attachedThreadExiting(Env* env) {
     }
 }
 
-jboolean rvmInitThreads(Env* env) {
+jboolean bugvmInitThreads(Env* env) {
     gcAddRoot(&threads);
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
-    if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
-    if (rvmInitMutex(&threadsLock) != 0) return FALSE;
-    if (rvmInitMutex(&detachedThreadsLock) != 0) return FALSE;
+    if ((threadIdMap = bugvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
+    if (bugvmInitMutex(&threadsLock) != 0) return FALSE;
+    if (bugvmInitMutex(&detachedThreadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, (void (*)(void *)) attachedThreadExiting) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadsChangedCond, NULL) != 0) return FALSE;
 
-    getUncaughtExceptionHandlerMethod = rvmGetInstanceMethod(env, java_lang_Thread, "getUncaughtExceptionHandler", "()Ljava/lang/Thread$UncaughtExceptionHandler;");
+    getUncaughtExceptionHandlerMethod = bugvmGetInstanceMethod(env, java_lang_Thread, "getUncaughtExceptionHandler", "()Ljava/lang/Thread$UncaughtExceptionHandler;");
     if (!getUncaughtExceptionHandlerMethod) return FALSE;
-    Class* uncaughtExceptionHandler = rvmFindClassInClasspathForLoader(env, "java/lang/Thread$UncaughtExceptionHandler", NULL);
+    Class* uncaughtExceptionHandler = bugvmFindClassInClasspathForLoader(env, "java/lang/Thread$UncaughtExceptionHandler", NULL);
     if (!uncaughtExceptionHandler) return FALSE;
-    uncaughtExceptionMethod = rvmGetInstanceMethod(env, uncaughtExceptionHandler, "uncaughtException", "(Ljava/lang/Thread;Ljava/lang/Throwable;)V");
+    uncaughtExceptionMethod = bugvmGetInstanceMethod(env, uncaughtExceptionHandler, "uncaughtException", "(Ljava/lang/Thread;Ljava/lang/Throwable;)V");
     if (!uncaughtExceptionMethod) return FALSE;
-    removeThreadMethod = rvmGetInstanceMethod(env, java_lang_ThreadGroup, "removeThread", "(Ljava/lang/Thread;)V");
+    removeThreadMethod = bugvmGetInstanceMethod(env, java_lang_ThreadGroup, "removeThread", "(Ljava/lang/Thread;)V");
     if (!removeThreadMethod) return FALSE;
-    rvmHookBeforeMainThreadAttached(env);
+    bugvmHookBeforeMainThreadAttached(env);
     return attachThread(env->vm, &env, "main", NULL, FALSE) == JNI_OK;
 }
 
-jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
+jint bugvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
     *env = NULL;
     return attachThread(vm, env, name, group, FALSE);
 }
 
-jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group) {
+jint bugvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group) {
     *env = NULL;
     return attachThread(vm, env, name, group, TRUE);
 }
 
-Env* rvmGetEnv(void) {
+Env* bugvmGetEnv(void) {
     // If the thread is attached there's an Env* associated with the thread.
     return (Env*) pthread_getspecific(tlsEnvKey);
 }
 
-jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregisterGC) {
-    Env* env = rvmGetEnv();
+jint bugvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregisterGC) {
+    Env* env = bugvmGetEnv();
     if (!env) return JNI_EDETACHED;
     return detachThread(env, ignoreAttachCount, unregisterGC, TRUE);
 }
@@ -516,13 +516,13 @@ static void* startThreadEntryPoint(void* _args) {
     Thread* thread = args->thread;
     Object* threadObj = args->threadObj;
 
-    rvmLockThreadsList();
+    bugvmLockThreadsList();
     jboolean failure = TRUE;
 
     setThreadEnv(env);
-    if (!rvmExceptionOccurred(env)) {
+    if (!bugvmExceptionOccurred(env)) {
         if (initThread(env, thread, threadObj)) {
-            if (rvmInstallThreadSignalMask(env)) {
+            if (bugvmInstallThreadSignalMask(env)) {
                 failure = FALSE;
                 thread->stackAddr = getStackAddress();
             }
@@ -534,19 +534,19 @@ static void* startThreadEntryPoint(void* _args) {
     while (thread->status != THREAD_VMWAIT) {
         pthread_cond_wait(&threadStartCond, &threadsLock);
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 
     if (!failure) {
-        rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
+        bugvmChangeThreadStatus(env, thread, THREAD_RUNNING);
 
-        rvmChangeThreadPriority(env, thread, rvmRTGetThreadPriority(env, thread->threadObj));
+        bugvmChangeThreadPriority(env, thread, bugvmRTGetThreadPriority(env, thread->threadObj));
 
-        rvmHookThreadStarting(env, threadObj, thread);
-        Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
+        bugvmHookThreadStarting(env, threadObj, thread);
+        Method* run = bugvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
         if (run) {
             setThreadTLS(env, thread);
             jvalue emptyArgs[0];
-            rvmCallVoidInstanceMethodA(env, threadObj, run, emptyArgs);
+            bugvmCallVoidInstanceMethodA(env, threadObj, run, emptyArgs);
         }
     }
 
@@ -556,26 +556,26 @@ static void* startThreadEntryPoint(void* _args) {
     return NULL;
 }
 
-jlong rvmStartThread(Env* env, Object* threadObj) {
-    Env* newEnv = rvmCreateEnv(env->vm);
+jlong bugvmStartThread(Env* env, Object* threadObj) {
+    Env* newEnv = bugvmCreateEnv(env->vm);
     if (!newEnv) {
-        rvmThrowOutOfMemoryError(env); // rvmCreateEnv() doesn't throw OutOfMemoryError if allocation fails
+        bugvmThrowOutOfMemoryError(env); // bugvmCreateEnv() doesn't throw OutOfMemoryError if allocation fails
         return 0;
     }
 
-    rvmLockThreadsList();
-    if (rvmRTGetNativeThread(env, threadObj) != NULL) {
-        rvmThrowIllegalStateException(env, "thread has already been started");
-        rvmUnlockThreadsList();
+    bugvmLockThreadsList();
+    if (bugvmRTGetNativeThread(env, threadObj) != NULL) {
+        bugvmThrowIllegalStateException(env, "thread has already been started");
+        bugvmUnlockThreadsList();
         return 0;
     }
     Thread* thread = allocThread(env);
     if (!thread) {
-        rvmUnlockThreadsList();
+        bugvmUnlockThreadsList();
         return 0;
     }
 
-    size_t stackSize = (size_t) rvmRTGetThreadStackSize(env, threadObj);
+    size_t stackSize = (size_t) bugvmRTGetThreadStackSize(env, threadObj);
     if (stackSize == 0) {
         stackSize = THREAD_DEFAULT_STACK_SIZE;
     } else if (stackSize < THREAD_MIN_STACK_SIZE) {
@@ -596,8 +596,8 @@ jlong rvmStartThread(Env* env, Object* threadObj) {
     args.threadObj = threadObj;
     int err = 0;
     if ((err = pthread_create(&thread->pThread, &threadAttr, startThreadEntryPoint, &args)) != 0) {
-        rvmUnlockThreadsList();
-        rvmThrowInternalErrorErrno(env, err);
+        bugvmUnlockThreadsList();
+        bugvmThrowInternalErrorErrno(env, err);
         return 0;
     }
 
@@ -610,7 +610,7 @@ jlong rvmStartThread(Env* env, Object* threadObj) {
     
     thread->status = THREAD_VMWAIT;
     pthread_cond_broadcast(&threadStartCond);
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 
     return PTR_TO_LONG(thread);
 }
@@ -620,17 +620,17 @@ jlong rvmStartThread(Env* env, Object* threadObj) {
  * from the main thread after it has been detached. Calling this from an
  * attached thread is not supported.
  */
-void rvmJoinNonDaemonThreads(Env* env) {
+void bugvmJoinNonDaemonThreads(Env* env) {
     assert(env->currentThread == NULL);
 
-    rvmLockThreadsList();
+    bugvmLockThreadsList();
     while (1) {
         // Count the number of non-daemon thread.
         jint count = 0;
         Thread* thread = NULL;
         DL_FOREACH(threads, thread) {
             assert(thread->threadObj != NULL);
-            if (!rvmRTIsDaemonThread(env, thread->threadObj)) {
+            if (!bugvmRTIsDaemonThread(env, thread->threadObj)) {
                 count++;
             }
         }
@@ -640,29 +640,29 @@ void rvmJoinNonDaemonThreads(Env* env) {
         // Wait for changes to the threads list
         pthread_cond_wait(&threadsChangedCond, &threadsLock);
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 }
 
-jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus) {
+jint bugvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus) {
     jint oldStatus = thread->status;
     if (oldStatus == newStatus) return newStatus;
-    rvmAtomicStoreInt(&thread->status, newStatus);
+    bugvmAtomicStoreInt(&thread->status, newStatus);
     return oldStatus;
 }
 
-void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority) {
-    // TODO: Implement rvmChangeThreadPriority()
+void bugvmChangeThreadPriority(Env* env, Thread* thread, jint priority) {
+    // TODO: Implement bugvmChangeThreadPriority()
 }
 
-void rvmThreadNameChanged(Env* env, Thread* thread) {
+void bugvmThreadNameChanged(Env* env, Thread* thread) {
     // Signal the threadsChangedCond conditional variable to notify anyone
     // interested (debugger).
-    rvmLockThreadsList();
+    bugvmLockThreadsList();
     pthread_cond_broadcast(&threadsChangedCond);
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 }
 
-jboolean rvmHasCurrentThread(Env* env) {
+jboolean bugvmHasCurrentThread(Env* env) {
     // check env separately so we don't have to
     // do a TLS lookup
     if(!env) {
@@ -674,8 +674,8 @@ jboolean rvmHasCurrentThread(Env* env) {
     return TRUE;
 }
 
-Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId) {
-    rvmLockThreadsList();
+Thread* bugvmGetThreadByThreadId(Env* env, uint32_t threadId) {
+    bugvmLockThreadsList();
     Thread* result = NULL;
     Thread* thread = NULL;
     DL_FOREACH(threads, thread) {
@@ -684,6 +684,6 @@ Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId) {
             break;
         }
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
     return result;
 }

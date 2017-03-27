@@ -18,8 +18,8 @@
 
 typedef void (*ProxyHandler)(Env*, Object*, ProxyMethod*, jvalue*, jvalue*);
 
-extern jboolean rvmInitProxy(Env* env);
-extern Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader, char* className, jint interfacesCount, Class** interfaces,
+extern jboolean bugvmInitProxy(Env* env);
+extern Class* bugvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader, char* className, jint interfacesCount, Class** interfaces,
 	jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler);
 
 #endif

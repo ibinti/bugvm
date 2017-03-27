@@ -36,29 +36,29 @@ static Method* java_lang_StackTraceElement_constructor = NULL;
 static ObjectArray* empty_java_lang_StackTraceElement_array = NULL;
 
 
-// A shared CallStack struct used by rvmCaptureCallStackForThread() that can store at most MAX_CALL_STACK_LENGTH 
+// A shared CallStack struct used by bugvmCaptureCallStackForThread() that can store at most MAX_CALL_STACK_LENGTH
 // frames. dumpThreadStackTrace() assumes MAX_CALL_STACK_LENGTH.
 static CallStack* shared_callStack = NULL;
 
 static inline void obtainNativeLibsLock() {
-    rvmLockMutex(&nativeLibsLock);
+    bugvmLockMutex(&nativeLibsLock);
 }
 
 static inline void releaseNativeLibsLock() {
-    rvmUnlockMutex(&nativeLibsLock);
+    bugvmUnlockMutex(&nativeLibsLock);
 }
 
 static inline void obtainThreadStackTraceLock() {
-    rvmLockMutex(&threadStackTraceLock);
+    bugvmLockMutex(&threadStackTraceLock);
 }
 
 static inline void releaseThreadStackTraceLock() {
-    rvmUnlockMutex(&threadStackTraceLock);
+    bugvmUnlockMutex(&threadStackTraceLock);
 }
 
 static Method* findMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = rvmGetMethods(env, clazz);
-    if (rvmExceptionCheck(env)) return NULL;
+    Method* method = bugvmGetMethods(env, clazz);
+    if (bugvmExceptionCheck(env)) return NULL;
     for (; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
             return method;
@@ -76,7 +76,7 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
     Class* c = clazz;
     for (c = clazz; c != NULL; c = c->superclass) {
         Method* method = findMethod(env, c, name, desc);
-        if (rvmExceptionCheck(env)) return NULL;
+        if (bugvmExceptionCheck(env)) return NULL;
         if (method) return method;
     }
 
@@ -85,11 +85,11 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
      * TODO: Should we really do this? Does the JNI GetMethodID() function do this?
      */
     for (c = clazz; c != NULL; c = c->superclass) {
-        Interface* interfaze = rvmGetInterfaces(env, c);
-        if (rvmExceptionCheck(env)) return NULL;
+        Interface* interfaze = bugvmGetInterfaces(env, c);
+        if (bugvmExceptionCheck(env)) return NULL;
         for (; interfaze != NULL; interfaze = interfaze->next) {
             Method* method = getMethod(env, interfaze->interfaze, name, desc);
-            if (rvmExceptionCheck(env)) return NULL;
+            if (bugvmExceptionCheck(env)) return NULL;
             if (method) return method;
         }
     }
@@ -105,80 +105,80 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
     return NULL;
 }
 
-jboolean rvmInitMethods(Env* env) {
-    if (rvmInitMutex(&nativeLibsLock) != 0) {
+jboolean bugvmInitMethods(Env* env) {
+    if (bugvmInitMutex(&nativeLibsLock) != 0) {
         return FALSE;
     }
-    if (rvmInitMutex(&threadStackTraceLock) != 0) {
+    if (bugvmInitMutex(&threadStackTraceLock) != 0) {
         return FALSE;
     }
-    java_lang_StackTraceElement = rvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
+    java_lang_StackTraceElement = bugvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
     if (!java_lang_StackTraceElement) {
         return FALSE;
     }
-    java_lang_StackTraceElement_constructor = rvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>",
+    java_lang_StackTraceElement_constructor = bugvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>",
                                       "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V");
     if (!java_lang_StackTraceElement_constructor) {
         return FALSE;
     }
-    empty_java_lang_StackTraceElement_array = rvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
+    empty_java_lang_StackTraceElement_array = bugvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
     if (!empty_java_lang_StackTraceElement_array) {
         return FALSE;
     }
-    if (!rvmAddGlobalRef(env, (Object*) empty_java_lang_StackTraceElement_array)) {
+    if (!bugvmAddGlobalRef(env, (Object*) empty_java_lang_StackTraceElement_array)) {
         return FALSE;
     }
 
     return TRUE;
 }
 
-jboolean rvmHasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+jboolean bugvmHasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = getMethod(env, clazz, name, desc);
-    if (rvmExceptionCheck(env)) return FALSE;
+    if (bugvmExceptionCheck(env)) return FALSE;
     return method ? TRUE : FALSE;
 }
 
-Method* rvmGetMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+Method* bugvmGetMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = getMethod(env, clazz, name, desc);
-    if (rvmExceptionCheck(env)) return NULL;
+    if (bugvmExceptionCheck(env)) return NULL;
     if (!method) {
-        rvmThrowNoSuchMethodError(env, name);
+        bugvmThrowNoSuchMethodError(env, name);
         return NULL;
     }
     return method;
 }
 
-Method* rvmGetClassMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = rvmGetMethod(env, clazz, name, desc);
+Method* bugvmGetClassMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+    Method* method = bugvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
     if (!METHOD_IS_STATIC(method)) {
         // TODO: JNI spec doesn't say anything about throwing this
-        rvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
+        bugvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
         return NULL;
     }
     return method;
 }
 
-Method* rvmGetClassInitializer(Env* env, Class* clazz) {
+Method* bugvmGetClassInitializer(Env* env, Class* clazz) {
     return getMethod(env, clazz, "<clinit>", "()V");
 }
 
-Method* rvmGetInstanceMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = rvmGetMethod(env, clazz, name, desc);
+Method* bugvmGetInstanceMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+    Method* method = bugvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
     if (METHOD_IS_STATIC(method)) {
         // TODO: JNI spec doesn't say anything about throwing this
-        rvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
+        bugvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
         return NULL;
     }
     return method;
 }
 
-Method* rvmFindMethodAtAddress(Env* env, void* address) {
+Method* bugvmFindMethodAtAddress(Env* env, void* address) {
     Class* clazz = env->vm->options->findClassAt(env, address);
     if (!clazz) return NULL;
-    Method* method = rvmGetMethods(env, clazz);
-    if (rvmExceptionCheck(env)) return NULL;
+    Method* method = bugvmGetMethods(env, clazz);
+    if (bugvmExceptionCheck(env)) return NULL;
     for (; method != NULL; method = method->next) {
         void* start = method->impl;
         void* end = start + method->size;
@@ -193,7 +193,7 @@ Method* rvmFindMethodAtAddress(Env* env, void* address) {
 static jboolean getCallingMethodIterator(Env* env, void* pc, void* fp, ProxyMethod* proxyMethod, void* data) {
     Method** result = data;
 
-    Method* method = rvmFindMethodAtAddress(env, pc);
+    Method* method = bugvmFindMethodAtAddress(env, pc);
     if (method) {
         *result = method;
         return FALSE; // Stop iterating
@@ -201,7 +201,7 @@ static jboolean getCallingMethodIterator(Env* env, void* pc, void* fp, ProxyMeth
     return TRUE;
 }
 
-Method* rvmGetCallingMethod(Env* env) {
+Method* bugvmGetCallingMethod(Env* env) {
     Method* result = NULL;
     unwindIterateCallStack(env, NULL, getCallingMethodIterator, &result);
     return result;
@@ -235,7 +235,7 @@ jint countCallStackFrames(Env* env, Frame* fp) {
 }
 
 CallStack* allocateCallStackFrames(Env* env, jint maxLength) {
-    return rvmAllocateMemoryAtomic(env, sizeof(CallStack) + sizeof(CallStackFrame) * maxLength);
+    return bugvmAllocateMemoryAtomic(env, sizeof(CallStack) + sizeof(CallStackFrame) * maxLength);
 }
 
 void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength) {
@@ -245,28 +245,28 @@ void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength) {
 
 CallStack* captureCallStackFromFrame(Env* env, Frame* fp) {
     jint count = countCallStackFrames(env, fp);
-    if (rvmExceptionOccurred(env)) return NULL;
+    if (bugvmExceptionOccurred(env)) return NULL;
     CallStack* data = allocateCallStackFrames(env, count);
     if (!data) return NULL;
     captureCallStack(env, fp, data, count);
-    if (rvmExceptionOccurred(env)) return NULL;
+    if (bugvmExceptionOccurred(env)) return NULL;
     return data;
 }
 
-CallStack* rvmCaptureCallStack(Env* env) {
+CallStack* bugvmCaptureCallStack(Env* env) {
     return captureCallStackFromFrame(env, NULL);
 }
 
-CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread) {
+CallStack* bugvmCaptureCallStackForThread(Env* env, Thread* thread) {
     if (thread == env->currentThread) {
-        return rvmCaptureCallStack(env);
+        return bugvmCaptureCallStack(env);
     }
 
     // dumpThreadStackTrace() must not be called concurrently
     obtainThreadStackTraceLock();
     
     if (!shared_callStack) {
-        shared_callStack = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
+        shared_callStack = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
         if (!shared_callStack) {
             releaseThreadStackTraceLock();
             return NULL;
@@ -275,7 +275,7 @@ CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread) {
 
     memset(shared_callStack, 0, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
     dumpThreadStackTrace(env, thread, shared_callStack);
-    if (rvmExceptionOccurred(env)) {
+    if (bugvmExceptionOccurred(env)) {
         releaseThreadStackTraceLock();
         return NULL;
     }
@@ -354,7 +354,7 @@ static jint getLineNumber(CallStackFrame* frame) {
     return firstLineNumber + getLineTableEntry(lineOffsets, lineOffsetSize, index);
 }
 
-CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
+CallStackFrame* bugvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
     if (frame->pc == NULL && frame->method == NULL) {
         // We've already tried to resolve this frame but 
         // it doesn't correspond to any method
@@ -362,11 +362,11 @@ CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
     }
     if (frame->method != NULL) {
         // We've already resolved this frame successfully or
-        // the method is a ProxyMethod so no call to rvmFindMethodAtAddress()
+        // the method is a ProxyMethod so no call to bugvmFindMethodAtAddress()
         // is required
         return frame;
     }
-    frame->method = rvmFindMethodAtAddress(env, frame->pc);
+    frame->method = bugvmFindMethodAtAddress(env, frame->pc);
     if (!frame->method) {
         frame->pc = NULL;
         return NULL;
@@ -375,7 +375,7 @@ CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
     return frame;
 }
 
-ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first) {
+ObjectArray* bugvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first) {
     if (!callStack || callStack->length == 0) {
         return empty_java_lang_StackTraceElement_array;
     }
@@ -383,7 +383,7 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
     // Count the number of methods
     jint index = first;
     jint length = 0;
-    while (rvmGetNextCallStackMethod(env, callStack, &index)) {
+    while (bugvmGetNextCallStackMethod(env, callStack, &index)) {
         length++;
     }
 
@@ -391,7 +391,7 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
         return empty_java_lang_StackTraceElement_array;
     }
 
-    ObjectArray* array = rvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
+    ObjectArray* array = bugvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
     if (!array) return NULL;
 
     if (length > 0) {
@@ -399,17 +399,17 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
         index = first;
         jint i;
         for (i = 0; i < length; i++) {
-            CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+            CallStackFrame* frame = bugvmGetNextCallStackMethod(env, callStack, &index);
             Method* m = frame->method;
             args[0].l = (jobject) m->clazz;
-            args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
+            args[1].l = (jobject) bugvmNewStringUTF(env, m->name, -1);
             if (!args[1].l) return NULL;
-            args[2].l = (jobject) rvmAttributeGetClassSourceFile(env, m->clazz);
-            if (rvmExceptionOccurred(env)) {
+            args[2].l = (jobject) bugvmAttributeGetClassSourceFile(env, m->clazz);
+            if (bugvmExceptionOccurred(env)) {
                 return NULL;
             }
             args[3].i = frame->lineNumber;
-            array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, 
+            array->values[i] = bugvmNewObjectA(env, java_lang_StackTraceElement,
                 java_lang_StackTraceElement_constructor, args);
             if (!array->values[i]) return NULL;
         }
@@ -418,13 +418,13 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
     return array;
 }
 
-const char* rvmGetReturnType(const char* desc) {
+const char* bugvmGetReturnType(const char* desc) {
     while (*desc != ')') desc++;
     desc++;
     return desc;
 }
 
-const char* rvmGetNextParameterType(const char** desc) {
+const char* bugvmGetNextParameterType(const char** desc) {
     const char* s = *desc;
     (*desc)++;
     switch (s[0]) {
@@ -438,22 +438,22 @@ const char* rvmGetNextParameterType(const char** desc) {
     case 'D':
         return s;
     case '[':
-        rvmGetNextParameterType(desc);
+        bugvmGetNextParameterType(desc);
         return s;
     case 'L':
         while (**desc != ';') (*desc)++;
         (*desc)++;
         return s;
     case '(':
-        return rvmGetNextParameterType(desc);
+        return bugvmGetNextParameterType(desc);
     }
     return 0;
 }
 
-jint rvmGetParameterCount(Method* method) {
+jint bugvmGetParameterCount(Method* method) {
     const char* desc = method->desc;
     jint count = 0;
-    while (rvmGetNextParameterType(&desc)) {
+    while (bugvmGetNextParameterType(&desc)) {
         count++;
     }
     return count;
@@ -473,7 +473,7 @@ static void countArgs(Env* env, Method* method, ArgsCount* argsCount) {
 
     const char* desc = method->desc;
     const char* c;
-    while ((c = rvmGetNextParameterType(&desc))) {
+    while ((c = bugvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
         case 'B':
@@ -514,7 +514,7 @@ static void setArgs(Env* env, Object* obj, Method* method, CallInfo* callInfo, j
     const char* desc = method->desc;
     const char* c;
     jint i = 0;
-    while ((c = rvmGetNextParameterType(&desc))) {
+    while ((c = bugvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
             call0AddInt(callInfo, (jint) args[i++].z);
@@ -552,7 +552,7 @@ static void setArgs(Env* env, Object* obj, Method* method, CallInfo* callInfo, j
     CallInfo* _callInfo = NULL; \
     if (_virtual && !(_method->access & ACC_PRIVATE)) { \
         /* Lookup the real method to be invoked */ \
-        _method = rvmGetMethod(_env, ((Object*) _obj)->clazz, _method->name, _method->desc); \
+        _method = bugvmGetMethod(_env, ((Object*) _obj)->clazz, _method->name, _method->desc); \
     } \
     if (_method) { \
         ArgsCount _argsCount; \
@@ -565,19 +565,19 @@ static void setArgs(Env* env, Object* obj, Method* method, CallInfo* callInfo, j
 })
 
 static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
-    jint argsCount = rvmGetParameterCount(method);
+    jint argsCount = bugvmGetParameterCount(method);
 
     if (argsCount == 0) {
         return emptyJValueArgs;
     }
 
-    jvalue *jvalueArgs = (jvalue*) rvmAllocateMemory(env, sizeof(jvalue) * argsCount);
+    jvalue *jvalueArgs = (jvalue*) bugvmAllocateMemory(env, sizeof(jvalue) * argsCount);
     if (!jvalueArgs) return NULL;
 
     const char* desc = method->desc;
     const char* c;
     jint i = 0;
-    while ((c = rvmGetNextParameterType(&desc))) {
+    while ((c = bugvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'B':
             jvalueArgs[i++].b = (jbyte) va_arg(args, jint);
@@ -615,41 +615,41 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
 
 static void callVoidMethod(Env* env, CallInfo* callInfo) {
     void (*f)(CallInfo*) = _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
 }
 
 static Object* callObjectMethod(Env* env, CallInfo* callInfo) {
     Object* result = NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         result = f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
     return result;
 }
 
 static jint callIntMethod(Env* env, CallInfo* callInfo) {
     jint result = 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         result = f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
     return result;
 }
 
@@ -672,46 +672,46 @@ static jshort callShortMethod(Env* env, CallInfo* callInfo) {
 static jlong callLongMethod(Env* env, CallInfo* callInfo) {
     jlong result = 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         result = f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
     return result;
 }
 
 static jfloat callFloatMethod(Env* env, CallInfo* callInfo) {
     jfloat result = 0;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         result = f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
     return result;
 }
 
 static jdouble callDoubleMethod(Env* env, CallInfo* callInfo) {
     jdouble result = 0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
     TrycatchContext tc = {0};
     tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
+    if (!bugvmTrycatchEnter(env, &tc)) {
         result = f(callInfo);
     }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
+    bugvmTrycatchLeave(env);
+    bugvmPopGatewayFrame(env);
     return result;
 }
 
-void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+void bugvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -721,19 +721,19 @@ void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* a
     callVoidMethod(env, callInfo);
 }
 
-void rvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+void bugvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    rvmCallVoidInstanceMethodA(env, obj, method, jargs);
+    bugvmCallVoidInstanceMethodA(env, obj, method, jargs);
 }
 
-void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+void bugvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    rvmCallVoidInstanceMethodV(env, obj, method, args);
+    bugvmCallVoidInstanceMethodV(env, obj, method, args);
 }
 
-Object* rvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+Object* bugvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return NULL;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -743,19 +743,19 @@ Object* rvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jval
     return callObjectMethod(env, callInfo);
 }
 
-Object* rvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+Object* bugvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return NULL;
-    return rvmCallObjectInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallObjectInstanceMethodA(env, obj, method, jargs);
 }
 
-Object* rvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+Object* bugvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallObjectInstanceMethodV(env, obj, method, args);
+    return bugvmCallObjectInstanceMethodV(env, obj, method, args);
 }
 
-jboolean rvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jboolean bugvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return FALSE;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -765,19 +765,19 @@ jboolean rvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jv
     return callBooleanMethod(env, callInfo);
 }
 
-jboolean rvmCallBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jboolean bugvmCallBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return rvmCallBooleanInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallBooleanInstanceMethodA(env, obj, method, jargs);
 }
 
-jboolean rvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jboolean bugvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallBooleanInstanceMethodV(env, obj, method, args);
+    return bugvmCallBooleanInstanceMethodV(env, obj, method, args);
 }
 
-jbyte rvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jbyte bugvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -787,19 +787,19 @@ jbyte rvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* 
     return callByteMethod(env, callInfo);
 }
 
-jbyte rvmCallByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jbyte bugvmCallByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallByteInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallByteInstanceMethodA(env, obj, method, jargs);
 }
 
-jbyte rvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jbyte bugvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallByteInstanceMethodV(env, obj, method, args);
+    return bugvmCallByteInstanceMethodV(env, obj, method, args);
 }
 
-jchar rvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jchar bugvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -809,19 +809,19 @@ jchar rvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* 
     return callCharMethod(env, callInfo);
 }
 
-jchar rvmCallCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jchar bugvmCallCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallCharInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallCharInstanceMethodA(env, obj, method, jargs);
 }
 
-jchar rvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jchar bugvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallCharInstanceMethodV(env, obj, method, args);
+    return bugvmCallCharInstanceMethodV(env, obj, method, args);
 }
 
-jshort rvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jshort bugvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -831,19 +831,19 @@ jshort rvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue
     return callShortMethod(env, callInfo);
 }
 
-jshort rvmCallShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jshort bugvmCallShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallShortInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallShortInstanceMethodA(env, obj, method, jargs);
 }
 
-jshort rvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jshort bugvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallShortInstanceMethodV(env, obj, method, args);
+    return bugvmCallShortInstanceMethodV(env, obj, method, args);
 }
 
-jint rvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jint bugvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -853,19 +853,19 @@ jint rvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* ar
     return callIntMethod(env, callInfo);
 }
 
-jint rvmCallIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jint bugvmCallIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallIntInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallIntInstanceMethodA(env, obj, method, jargs);
 }
 
-jint rvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jint bugvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallIntInstanceMethodV(env, obj, method, args);
+    return bugvmCallIntInstanceMethodV(env, obj, method, args);
 }
 
-jlong rvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jlong bugvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -875,19 +875,19 @@ jlong rvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* 
     return callLongMethod(env, callInfo);
 }
 
-jlong rvmCallLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jlong bugvmCallLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallLongInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallLongInstanceMethodA(env, obj, method, jargs);
 }
 
-jlong rvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jlong bugvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallLongInstanceMethodV(env, obj, method, args);
+    return bugvmCallLongInstanceMethodV(env, obj, method, args);
 }
 
-jfloat rvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jfloat bugvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0f;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -897,19 +897,19 @@ jfloat rvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue
     return callFloatMethod(env, callInfo);
 }
 
-jfloat rvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jfloat bugvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0f;
-    return rvmCallFloatInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallFloatInstanceMethodA(env, obj, method, jargs);
 }
 
-jfloat rvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jfloat bugvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallFloatInstanceMethodV(env, obj, method, args);
+    return bugvmCallFloatInstanceMethodV(env, obj, method, args);
 }
 
-jdouble rvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jdouble bugvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -919,19 +919,19 @@ jdouble rvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jval
     return callDoubleMethod(env, callInfo);
 }
 
-jdouble rvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jdouble bugvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0;
-    return rvmCallDoubleInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallDoubleInstanceMethodA(env, obj, method, jargs);
 }
 
-jdouble rvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jdouble bugvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallDoubleInstanceMethodV(env, obj, method, args);
+    return bugvmCallDoubleInstanceMethodV(env, obj, method, args);
 }
 
-void rvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+void bugvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -941,19 +941,19 @@ void rvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method,
     callVoidMethod(env, callInfo);
 }
 
-void rvmCallNonvirtualVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+void bugvmCallNonvirtualVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    rvmCallNonvirtualVoidInstanceMethodA(env, obj, method, jargs);
+    bugvmCallNonvirtualVoidInstanceMethodA(env, obj, method, jargs);
 }
 
-void rvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+void bugvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    rvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
+    bugvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
 }
 
-Object* rvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+Object* bugvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return NULL;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -963,19 +963,19 @@ Object* rvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* me
     return callObjectMethod(env, callInfo);
 }
 
-Object* rvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+Object* bugvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return NULL;
-    return rvmCallNonvirtualObjectInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualObjectInstanceMethodA(env, obj, method, jargs);
 }
 
-Object* rvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+Object* bugvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualObjectInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualObjectInstanceMethodV(env, obj, method, args);
 }
 
-jboolean rvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jboolean bugvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return FALSE;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -985,19 +985,19 @@ jboolean rvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* 
     return callBooleanMethod(env, callInfo);
 }
 
-jboolean rvmCallNonvirtualBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jboolean bugvmCallNonvirtualBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return rvmCallNonvirtualBooleanInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualBooleanInstanceMethodA(env, obj, method, jargs);
 }
 
-jboolean rvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jboolean bugvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualBooleanInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualBooleanInstanceMethodV(env, obj, method, args);
 }
 
-jbyte rvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jbyte bugvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1007,19 +1007,19 @@ jbyte rvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method
     return callByteMethod(env, callInfo);
 }
 
-jbyte rvmCallNonvirtualByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jbyte bugvmCallNonvirtualByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallNonvirtualByteInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualByteInstanceMethodA(env, obj, method, jargs);
 }
 
-jbyte rvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jbyte bugvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualByteInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualByteInstanceMethodV(env, obj, method, args);
 }
 
-jchar rvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jchar bugvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1029,19 +1029,19 @@ jchar rvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method
     return callCharMethod(env, callInfo);
 }
 
-jchar rvmCallNonvirtualCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jchar bugvmCallNonvirtualCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallNonvirtualCharInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualCharInstanceMethodA(env, obj, method, jargs);
 }
 
-jchar rvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jchar bugvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualCharInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualCharInstanceMethodV(env, obj, method, args);
 }
 
-jshort rvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jshort bugvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1051,19 +1051,19 @@ jshort rvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* meth
     return callShortMethod(env, callInfo);
 }
 
-jshort rvmCallNonvirtualShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jshort bugvmCallNonvirtualShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallNonvirtualShortInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualShortInstanceMethodA(env, obj, method, jargs);
 }
 
-jshort rvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jshort bugvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualShortInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualShortInstanceMethodV(env, obj, method, args);
 }
 
-jint rvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jint bugvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1073,19 +1073,19 @@ jint rvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, 
     return callIntMethod(env, callInfo);
 }
 
-jint rvmCallNonvirtualIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jint bugvmCallNonvirtualIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallNonvirtualIntInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualIntInstanceMethodA(env, obj, method, jargs);
 }
 
-jint rvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jint bugvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualIntInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualIntInstanceMethodV(env, obj, method, args);
 }
 
-jlong rvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jlong bugvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1095,19 +1095,19 @@ jlong rvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method
     return callLongMethod(env, callInfo);
 }
 
-jlong rvmCallNonvirtualLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jlong bugvmCallNonvirtualLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallNonvirtualLongInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualLongInstanceMethodA(env, obj, method, jargs);
 }
 
-jlong rvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jlong bugvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualLongInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualLongInstanceMethodV(env, obj, method, args);
 }
 
-jfloat rvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jfloat bugvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0f;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1117,19 +1117,19 @@ jfloat rvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* meth
     return callFloatMethod(env, callInfo);
 }
 
-jfloat rvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jfloat bugvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0f;
-    return rvmCallNonvirtualFloatInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualFloatInstanceMethodA(env, obj, method, jargs);
 }
 
-jfloat rvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jfloat bugvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualFloatInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualFloatInstanceMethodV(env, obj, method, args);
 }
 
-jdouble rvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jdouble bugvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0;
     if (obj && CLASS_IS_PROXY(obj->clazz)) {
@@ -1139,253 +1139,253 @@ jdouble rvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* me
     return callDoubleMethod(env, callInfo);
 }
 
-jdouble rvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jdouble bugvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0;
-    return rvmCallNonvirtualDoubleInstanceMethodA(env, obj, method, jargs);
+    return bugvmCallNonvirtualDoubleInstanceMethodA(env, obj, method, jargs);
 }
 
-jdouble rvmCallNonvirtualDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jdouble bugvmCallNonvirtualDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallNonvirtualDoubleInstanceMethodV(env, obj, method, args);
+    return bugvmCallNonvirtualDoubleInstanceMethodV(env, obj, method, args);
 }
 
-void rvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+void bugvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return;
     callVoidMethod(env, callInfo);
 }
 
-void rvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+void bugvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    rvmCallVoidClassMethodA(env, clazz, method, jargs);
+    bugvmCallVoidClassMethodA(env, clazz, method, jargs);
 }
 
-void rvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
+void bugvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    rvmCallVoidClassMethodV(env, clazz, method, args);
+    bugvmCallVoidClassMethodV(env, clazz, method, args);
 }
 
-Object* rvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+Object* bugvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return NULL;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return NULL;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return NULL;
     return callObjectMethod(env, callInfo);
 }
 
-Object* rvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+Object* bugvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return NULL;
-    return rvmCallObjectClassMethodA(env, clazz, method, jargs);
+    return bugvmCallObjectClassMethodA(env, clazz, method, jargs);
 }
 
-Object* rvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
+Object* bugvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallObjectClassMethodV(env, clazz, method, args);
+    return bugvmCallObjectClassMethodV(env, clazz, method, args);
 }
 
-jboolean rvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jboolean bugvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return FALSE;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return FALSE;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return FALSE;
     return callBooleanMethod(env, callInfo);
 }
 
-jboolean rvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jboolean bugvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return rvmCallBooleanClassMethodA(env, clazz, method, jargs);
+    return bugvmCallBooleanClassMethodA(env, clazz, method, jargs);
 }
 
-jboolean rvmCallBooleanClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jboolean bugvmCallBooleanClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallBooleanClassMethodV(env, clazz, method, args);
+    return bugvmCallBooleanClassMethodV(env, clazz, method, args);
 }
 
-jbyte rvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jbyte bugvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0;
     return callByteMethod(env, callInfo);
 }
 
-jbyte rvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jbyte bugvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallByteClassMethodA(env, clazz, method, jargs);
+    return bugvmCallByteClassMethodA(env, clazz, method, jargs);
 }
 
-jbyte rvmCallByteClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jbyte bugvmCallByteClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallByteClassMethodV(env, clazz, method, args);
+    return bugvmCallByteClassMethodV(env, clazz, method, args);
 }
 
-jchar rvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jchar bugvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0;
     return callCharMethod(env, callInfo);
 }
 
-jchar rvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jchar bugvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallCharClassMethodA(env, clazz, method, jargs);
+    return bugvmCallCharClassMethodA(env, clazz, method, jargs);
 }
 
-jchar rvmCallCharClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jchar bugvmCallCharClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallCharClassMethodV(env, clazz, method, args);
+    return bugvmCallCharClassMethodV(env, clazz, method, args);
 }
 
-jshort rvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jshort bugvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0;
     return callShortMethod(env, callInfo);
 }
 
-jshort rvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jshort bugvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallShortClassMethodA(env, clazz, method, jargs);
+    return bugvmCallShortClassMethodA(env, clazz, method, jargs);
 }
 
-jshort rvmCallShortClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jshort bugvmCallShortClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallShortClassMethodV(env, clazz, method, args);
+    return bugvmCallShortClassMethodV(env, clazz, method, args);
 }
 
-jint rvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jint bugvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0;
     return callIntMethod(env, callInfo);
 }
 
-jint rvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jint bugvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallIntClassMethodA(env, clazz, method, jargs);
+    return bugvmCallIntClassMethodA(env, clazz, method, jargs);
 }
 
-jint rvmCallIntClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jint bugvmCallIntClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallIntClassMethodV(env, clazz, method, args);
+    return bugvmCallIntClassMethodV(env, clazz, method, args);
 }
 
-jlong rvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jlong bugvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0;
     return callLongMethod(env, callInfo);
 }
 
-jlong rvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jlong bugvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return rvmCallLongClassMethodA(env, clazz, method, jargs);
+    return bugvmCallLongClassMethodA(env, clazz, method, jargs);
 }
 
-jlong rvmCallLongClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jlong bugvmCallLongClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallLongClassMethodV(env, clazz, method, args);
+    return bugvmCallLongClassMethodV(env, clazz, method, args);
 }
 
-jfloat rvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jfloat bugvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0.0f;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0.0f;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0.0f;
     return callFloatMethod(env, callInfo);
 }
 
-jfloat rvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jfloat bugvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0f;
-    return rvmCallFloatClassMethodA(env, clazz, method, jargs);
+    return bugvmCallFloatClassMethodA(env, clazz, method, jargs);
 }
 
-jfloat rvmCallFloatClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jfloat bugvmCallFloatClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallFloatClassMethodV(env, clazz, method, args);
+    return bugvmCallFloatClassMethodV(env, clazz, method, args);
 }
 
-jdouble rvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jdouble bugvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = INIT_CALL_INFO(env, NULL, method, FALSE, args);
     if (!callInfo) return 0.0;
-    rvmInitialize(env, method->clazz);
-    if (rvmExceptionOccurred(env)) return 0.0;
+    bugvmInitialize(env, method->clazz);
+    if (bugvmExceptionOccurred(env)) return 0.0;
     return callDoubleMethod(env, callInfo);
 }
 
-jdouble rvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jdouble bugvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0;
-    return rvmCallDoubleClassMethodA(env, clazz, method, jargs);
+    return bugvmCallDoubleClassMethodA(env, clazz, method, jargs);
 }
 
-jdouble rvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jdouble bugvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return rvmCallDoubleClassMethodV(env, clazz, method, args);
+    return bugvmCallDoubleClassMethodV(env, clazz, method, args);
 }
 
-jboolean rvmRegisterNative(Env* env, NativeMethod* method, void* impl) {
+jboolean bugvmRegisterNative(Env* env, NativeMethod* method, void* impl) {
     method->nativeImpl = impl;
     return TRUE;
 }
 
-jboolean rvmUnregisterNative(Env* env, NativeMethod* method) {
+jboolean bugvmUnregisterNative(Env* env, NativeMethod* method) {
     method->nativeImpl = NULL;
     return TRUE;
 }
 
-void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, Object* classLoader, void** ptr) {
+void* bugvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, Object* classLoader, void** ptr) {
     void* f = method->nativeImpl;
     if (!f) {
         DynamicLib* nativeLibs = NULL;
-        if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
+        if (!classLoader || bugvmGetParentClassLoader(env, classLoader) == NULL) {
             // This is the bootstrap classloader
             nativeLibs = bootNativeLibs;
-        } else if (rvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
+        } else if (bugvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
             // This is the system classloader
             nativeLibs = mainNativeLibs;
         } else {
             // Unknown classloader
-            rvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
+            bugvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
             return NULL;
         }
 
         obtainNativeLibsLock();
 
         TRACEF("Searching for native method using short name: %s", shortMangledName);
-        f = rvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
+        f = bugvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
         if (f) {
             TRACEF("Found native method using short name: %s", shortMangledName);
         } else if (strcmp(shortMangledName, longMangledName)) {
             TRACEF("Searching for native method using long name: %s", longMangledName);
-            f = rvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
+            f = bugvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
             if (f) {
                 TRACEF("Found native method using long name: %s", longMangledName);
             }
@@ -1397,9 +1397,9 @@ void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
     }
 
     if (!f) {
-        char* className = rvmToBinaryClassName(env, method->method.clazz->name);
+        char* className = bugvmToBinaryClassName(env, method->method.clazz->name);
         if (className) {
-            rvmThrowNewf(env, java_lang_UnsatisfiedLinkError, "%s.%s%s", className, method->method.name, method->method.desc);
+            bugvmThrowNewf(env, java_lang_UnsatisfiedLinkError, "%s.%s%s", className, method->method.name, method->method.desc);
         }
         return NULL;
     }
@@ -1409,49 +1409,49 @@ void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
 }
 
 
-jboolean rvmLoadNativeLibrary(Env* env, const char* path, Object* classLoader) {
+jboolean bugvmLoadNativeLibrary(Env* env, const char* path, Object* classLoader) {
     DynamicLib** nativeLibs = NULL;
-    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
+    if (!classLoader || bugvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         nativeLibs = &bootNativeLibs;
-    } else if (rvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
+    } else if (bugvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
         // This is the system classloader
         nativeLibs = &mainNativeLibs;
     } else {
         // Unknown classloader
-        rvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
+        bugvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
         return FALSE;
     }
 
     char* errorMsg = NULL;
-    DynamicLib* lib = rvmOpenDynamicLib(env, path, &errorMsg);
+    DynamicLib* lib = bugvmOpenDynamicLib(env, path, &errorMsg);
     if (!lib) {
-        if (!rvmExceptionOccurred(env)) {
-            rvmThrowUnsatisfiedLinkError(env, errorMsg);
+        if (!bugvmExceptionOccurred(env)) {
+            bugvmThrowUnsatisfiedLinkError(env, errorMsg);
         }
         return FALSE;
     }
 
     obtainNativeLibsLock();
 
-    if (rvmHasDynamicLib(env, lib, *nativeLibs)) {
+    if (bugvmHasDynamicLib(env, lib, *nativeLibs)) {
         // The lib is already in nativeLibs
-        rvmCloseDynamicLib(env, lib);
+        bugvmCloseDynamicLib(env, lib);
         releaseNativeLibsLock();
         return TRUE;
     }
 
-    jint (*JNI_OnLoad)(JavaVM*, void*) = rvmFindDynamicLibSymbol(env, lib, "JNI_OnLoad", FALSE);
+    jint (*JNI_OnLoad)(JavaVM*, void*) = bugvmFindDynamicLibSymbol(env, lib, "JNI_OnLoad", FALSE);
     if (JNI_OnLoad) {
         // TODO: Check that JNI_OnLoad returns a supported JNI version?
         JNI_OnLoad(&env->vm->javaVM, NULL);
-        if (rvmExceptionOccurred(env)) {
+        if (bugvmExceptionOccurred(env)) {
             releaseNativeLibsLock();
             return FALSE;
         }
     }
 
-    rvmAddDynamicLib(env, lib, nativeLibs);
+    bugvmAddDynamicLib(env, lib, nativeLibs);
 
     releaseNativeLibsLock();
 
