@@ -79,14 +79,6 @@ public final class VMRuntime {
     }
 
     /**
-     * Returns the VM's version.
-     */
-    public String vmVersion() {
-        // BugVM note: This is native Android.
-        return VM.vmVersion();
-    }
-
-    /**
      * Gets the current ideal heap utilization, represented as a number
      * between zero and one.  After a GC happens, the Dalvik heap may
      * be resized so that (size of live objects) / (size of heap) is
