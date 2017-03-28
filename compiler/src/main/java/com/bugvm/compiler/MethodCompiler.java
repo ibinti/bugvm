@@ -363,7 +363,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             function.add(new Store(new ConstantBitcast(g.ref(), I8_PTR), bcCtxLandingPadsPtr.ref()));
             function.add(new Bitcast(ctx, bcCtx.ref(), Types.TRYCATCH_CONTEXT_PTR));
             trycatchContext = ctx.ref();
-            Value result = call(RVM_TRYCATCH_ENTER, env, trycatchContext);
+            Value result = call(BUGVM_TRYCATCH_ENTER, env, trycatchContext);
             Map<IntegerConstant, BasicBlockRef> alt = new TreeMap<IntegerConstant, BasicBlockRef>();
             for (Entry<Unit, Integer> entry : trapHandlers.entrySet()) {
                 alt.put(new IntegerConstant(entry.getValue() + 1), function.newBasicBlockRef(new Label(entry.getKey())));

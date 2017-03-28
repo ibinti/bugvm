@@ -34,13 +34,13 @@ jint Java_java_lang_System_identityHashCode(Env* env, Class* c, Object* o) {
 
 ObjectArray* Java_java_lang_System_bugvmSpecialProperties(Env* env, Class* c) {
     char* osArch = NULL;
-#if defined(RVM_X86)
+#if defined(BUGVM_X86)
     osArch = "os.arch=x86";
-#elif defined(RVM_X86_64)
+#elif defined(BUGVM_X86_64)
     osArch = "os.arch=x86_64";
-#elif defined(RVM_THUMBV7)
+#elif defined(BUGVM_THUMBV7)
     osArch = "os.arch=arm";
-#elif defined(RVM_ARM64)
+#elif defined(BUGVM_ARM64)
     osArch = "os.arch=aarch64";
 #else
 #   error Unsupported arch
@@ -48,7 +48,7 @@ ObjectArray* Java_java_lang_System_bugvmSpecialProperties(Env* env, Class* c) {
 
 #if defined(DARWIN)
     char* osName = NULL;
-#   if defined(IOS) && (defined(RVM_X86) || defined(RVM_X86_64))
+#   if defined(IOS) && (defined(BUGVM_X86) || defined(BUGVM_X86_64))
     osName = "os.name=iOS Simulator";
 #   elif defined(IOS)
     osName = "os.name=iOS";

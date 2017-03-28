@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include <dlfcn.h>
 #include <signal.h>
-#if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
+#if defined(IOS) && (defined(BUGVM_ARMV7) || defined(BUGVM_THUMBV7))
 #   include <fenv.h>
 #endif
 #include "private.h"
@@ -306,7 +306,7 @@ Env* bugvmStartup(Options* options) {
     TRACE("Initializing logging");
     if (!bugvmInitLog(options)) return NULL;
 
-#if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
+#if defined(IOS) && (defined(BUGVM_ARMV7) || defined(BUGVM_THUMBV7))
     // Enable IEEE-754 denormal support.
     // Without this the VFP treats numbers that are close to zero as zero itself.
     // See http://developer.apple.com/library/ios/#technotes/tn2293/_index.html.

@@ -31,7 +31,7 @@ typedef struct {
   Object* parkBlocker;
   Object* target;
   Object* uncaughtHandler;
-#if defined(RVM_THUMBV7)
+#if defined(BUGVM_THUMBV7)
   jlong id __attribute__ ((aligned (8))); // The compiler 8-byte aligns all long fields on ARM 32-bit.
 #else
   jlong id;

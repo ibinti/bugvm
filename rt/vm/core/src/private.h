@@ -103,7 +103,7 @@ struct CallInfo;
 extern void _call0(struct CallInfo*);
 extern void _proxy0(void);
 
-#ifdef RVM_X86_64
+#ifdef BUGVM_X86_64
 
 #define MAX_INT_ARGS 6
 #define MAX_FP_ARGS 8
@@ -233,7 +233,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
 }
 
 
-#elif RVM_X86
+#elif BUGVM_X86
 
 typedef struct CallInfo {
     void* function;
@@ -334,7 +334,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
     ci->returnType = RETURN_TYPE_DOUBLE;
 }
 
-#elif IOS && RVM_THUMBV7
+#elif IOS && BUGVM_THUMBV7
 
 #define MAX_REG_ARGS 4
 
@@ -447,7 +447,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
     ci->returnType = RETURN_TYPE_DOUBLE;
 }
 
-#elif IOS && RVM_ARM64
+#elif IOS && BUGVM_ARM64
 
 #define MAX_INT_ARGS 8
 #define MAX_FP_ARGS 8

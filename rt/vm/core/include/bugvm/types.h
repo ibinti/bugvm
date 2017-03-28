@@ -122,7 +122,7 @@ struct Interface {
 
 struct Object {
   Class* clazz;
-#if defined(RVM_X86_64) || defined(RVM_ARM64)
+#if defined(BUGVM_X86_64) || defined(BUGVM_ARM64)
   uint64_t lock;
 #else
   uint32_t lock;
@@ -401,7 +401,7 @@ typedef struct GatewayFrame {
 struct TrycatchContext {
     struct TrycatchContext* prev;
     jint sel;
-#if defined(RVM_X86_64)
+#if defined(BUGVM_X86_64)
     void* fp; // rbp
     void* pc;
     void* rbx;
@@ -412,7 +412,7 @@ struct TrycatchContext {
     void* r15;
     uint32_t mxcsr;
     uint16_t fpucw;
-#elif defined(RVM_X86)
+#elif defined(BUGVM_X86)
     void* fp;
     void* pc;
     void* esp;
@@ -421,7 +421,7 @@ struct TrycatchContext {
     void* edi;
     uint32_t mxcsr;
     uint16_t fpucw;
-#elif defined(DARWIN) && defined(RVM_THUMBV7)
+#elif defined(DARWIN) && defined(BUGVM_THUMBV7)
     void* sp; // r13
     void* r4;
     void* r5;
@@ -439,7 +439,7 @@ struct TrycatchContext {
     double d13;
     double d14;
     double d15;
-#elif defined(DARWIN) && defined(RVM_ARM64)
+#elif defined(DARWIN) && defined(BUGVM_ARM64)
     void* sp; // x31
     void* x19;
     void* x20;

@@ -239,21 +239,21 @@ void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack) {
 
 static inline void* getFramePointer(ucontext_t* context) {
 #if defined(DARWIN)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__ebp;
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__rbp;
-#   elif defined(RVM_THUMBV7)
+#   elif defined(BUGVM_THUMBV7)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__r[7];
-#   elif defined(RVM_ARM64)
+#   elif defined(BUGVM_ARM64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__fp;
 #   else
 #       error Unsupported arch
 #   endif
 #elif defined(LINUX)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_EBP];
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_RBP];
 #   else
 #       error Unsupported arch
@@ -263,21 +263,21 @@ static inline void* getFramePointer(ucontext_t* context) {
 
 static inline void* getPC(ucontext_t* context) {
 #if defined(DARWIN)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__eip;
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__rip;
-#   elif defined(RVM_THUMBV7)
+#   elif defined(BUGVM_THUMBV7)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__pc;
-#   elif defined(RVM_ARM64)
+#   elif defined(BUGVM_ARM64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__pc;
 #   else
 #       error Unsupported arch
 #   endif
 #elif defined(LINUX)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_EIP];
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_RIP];
 #   else
 #       error Unsupported arch
