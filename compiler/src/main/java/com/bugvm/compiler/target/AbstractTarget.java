@@ -522,7 +522,7 @@ public abstract class AbstractTarget implements Target {
         //issue #40
         if(output.getName().startsWith("bugvm-compiler")) {output.delete(); return;}
         else if(output.getName().startsWith("bugvm-apple")) {output.delete(); return;}
-        else if(output.getName().startsWith("bugvm-rt.jar")) {output.delete(); return;}
+//        else if(output.getName().startsWith("bugvm-rt.jar")) {output.delete(); return;}
         else config.getLogger().info("Creating stripped archive file %s", output);
 
         ZipOutputStream out = null;
