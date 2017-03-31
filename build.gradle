@@ -1,6 +1,14 @@
 buildscript {
     ext {
-        bugVMVersion = "1.2.3-SNAPSHOT"
+        bugVMVersion = "1.2.3"
+    }
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.7.0"
     }
 }
 
@@ -10,12 +18,16 @@ allprojects {
     version = bugVMVersion
 
     apply plugin: "java"
-    apply plugin: "maven-publish"
     apply plugin: "maven"
     apply plugin: "signing"
+    apply plugin: "com.bmuschko.nexus"
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
+
+    javadoc {
+        exclude "**"
+    }
 
     repositories {
         mavenLocal()
@@ -23,48 +35,23 @@ allprojects {
         mavenCentral()
     }
 
-    ext {
-        mavenUrlSnapshot = "https://oss.sonatype.org/content/repositories/snapshots"
-        mavenUsername = ""
-        mavenPassword = ""
-    }
+    modifyPom {
+        project {
+            url "https://bugvm.com"
 
-    publishing {
-        repositories {
-            maven {
-                url mavenUrlSnapshot
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
+            scm {
+                url "https://github.com/bugvm/bugvm"
+                connection "scm:git:git://github.com/bugvm/bugvm.git"
+                developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
             }
-        }
-    }
 
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-
-                snapshotRepository(url: mavenUrlSnapshot) {
-                    authentication(userName: mavenUsername, password: mavenPassword)
-                }
-
-                pom.project {
-                    url "https://bugvm.com"
-
-                    scm {
-                        url "https://github.com/bugvm/bugvm"
-                        connection "scm:git:git://github.com/bugvm/bugvm.git"
-                    }
-
-                    developers {
-                        developer {
-                            id "bugvm"
-                            name "We are the BugVM"
-                            email "bug@bugvm.com"
-                            url "https://bugvm.com"
-                        }
-                    }
+            developers {
+                developer {
+                    id "bugvm"
+                    name "We are the BugVM"
+                    email "bug@bugvm.com"
+                    organization "BugVM"
+                    organizationUrl "https://bugvm.com"
                 }
             }
         }
@@ -75,10 +62,7 @@ defaultTasks "install", "clean"
 
 task buildJar {
 
-    dependsOn publishToMavenLocal, build, clean
-
-    publishToMavenLocal.mustRunAfter build
-    build.mustRunAfter clean
+    dependsOn install, build, clean
 
 }
 
@@ -116,9 +100,9 @@ dependencies {
     compile project(":rt")
 }
 
-task targz(type: Tar) {
+task tgzTask(type: Tar) {
 
-    extension = "tar.gz"
+    extension = "tgz"
     compression = Compression.GZIP
 
     into ("bugvm-${version}/bin") {
@@ -164,20 +148,22 @@ task targz(type: Tar) {
 }
 
 artifacts {
-    archives targz
+    archives tgzTask
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            pom.project {
-                name project.archivesBaseName
-                description project.description
+modifyPom {
+    project {
+        name project.archivesBaseName
+        description project.description
+        licenses {
+            license {
+                name "GNU General Public License, version 2"
+                url "https://www.gnu.org/licenses/gpl-2.0.html"
+                distribution "repo"
             }
         }
     }
 }
-
 
 task listJars {
     doLast {

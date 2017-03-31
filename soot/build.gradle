@@ -10,21 +10,15 @@ sourceSets {
      }
 }
 
-publishing {
-     publications {
-          mavenJava(MavenPublication) {
-               artifactId project.archivesBaseName
-               from components.java
-          }
-     }
-}
-
-uploadArchives {
-     repositories {
-          mavenDeployer {
-               pom.project {
-                    name project.archivesBaseName
-                    description project.description
+modifyPom {
+     project {
+          name project.archivesBaseName
+          description project.description
+          licenses {
+               license {
+                    name "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
+                    url "https://www.gnu.org/licenses/lgpl-2.1.html"
+                    distribution "repo"
                }
           }
      }
