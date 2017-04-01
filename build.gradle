@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugVMVersion = "1.2.3"
+        bugVMVersion = "1.2.4-SNAPSHOT"
     }
     repositories {
         jcenter()
@@ -57,6 +57,8 @@ allprojects {
         }
     }
 }
+
+apply plugin: "io.codearte.nexus-staging"
 
 defaultTasks "install", "clean"
 
