@@ -94,7 +94,7 @@ task wrapper(type: Wrapper) {
 }
 
 archivesBaseName = "bugvm-dist"
-description = "BugVM Dist Package (tar.gz)"
+description = "BugVM Dist Package (tgz)"
 
 dependencies {
     compile project(":compiler")
