@@ -1,6 +1,6 @@
 # BugVM is a free open source native App builder.
 
-BugVM compiles JVM bytecode to native machine code and then links the compiled native code with other native libraries or frameworks to produce targeted platform App. Using BugVM, it is possible to build native apps easily in Java, Scala, or any other JVM languages.
+BugVM compiles JVM bytecode to native machine code and then links the compiled native code with other native libraries or frameworks to produce targeted platform App. Using BugVM, it is possible to build native apps easily in Java, Kotlin, and Scala.
 
 BugVM is composed by:
 
