@@ -19,6 +19,8 @@ Target Platform Apps:
 
 [Java HelloWorld](https://github.com/bugvm/bugvm-helloworld)
 
+[Kotlin HelloWorld](https://github.com/bugvm/bugvm-kotlin)
+
 [Scala HelloWorld](https://github.com/bugvm/bugvm-helloscala)
 
 
