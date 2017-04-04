@@ -1,9 +1,6 @@
 buildscript {
     ext {
-<<<<<<< HEAD
         bugVMVersion = "1.2.345678-SNAPSHOT"
-=======
-        bugVMVersion = "1.2.4-SNAPSHOT"
     }
     repositories {
         jcenter()
@@ -12,7 +9,6 @@ buildscript {
     dependencies {
         classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.7.0"
->>>>>>> master
     }
 }
 
