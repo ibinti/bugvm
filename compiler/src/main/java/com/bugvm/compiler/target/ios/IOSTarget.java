@@ -676,9 +676,7 @@ public class IOSTarget extends AbstractTarget {
                 putIfAbsent(dict, "DTXcode", dtXcode.toString());
                 putIfAbsent(dict, "DTXcodeBuild", dtXcodeBuild.toString());
             } catch (Exception e) {
-                config.getLogger()
-                        .warn("Failed to read DTXcodeBuild/DTXcode from current Xcode install. Will use fake values. (%s: %s)",
-                                e.getClass().getName(), e.getMessage());
+                config.getLogger().warn("Failed to read DTXcodeBuild/DTXcode from current Xcode install. Will use fake values. (%s: %s)", e.getClass().getName(), e.getMessage());
             }
             // Fake Xcode 6.1.1 values if the above fails.
             putIfAbsent(dict, "DTXcode", "0611");
