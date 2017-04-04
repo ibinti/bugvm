@@ -20,10 +20,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import libcore.util.EmptyArray;
 
@@ -62,15 +65,6 @@ public final class VM {
      * executable.
      */
     public static native String[] staticLibs();
-
-    /**
-     * Returns the VM's version.
-     */
-    public static String vmVersion() {
-
-        return VMVersion.VERSION;
-
-    }
 
     /**
      * Returns the defining classes of the methods in the call stack. If

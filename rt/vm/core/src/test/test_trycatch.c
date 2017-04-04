@@ -23,13 +23,13 @@ void testTrycatchEnterLeaveOnce(CuTest* tc) {
     Env env = {0};
     TrycatchContext ctx = {0};
     ctx.sel = 1;
-    rvmTrycatchEnter(&env, &ctx);
+    bugvmTrycatchEnter(&env, &ctx);
     CuAssertPtrEquals(tc, &ctx, env.trycatchContext);
     CuAssertIntEquals(tc, 1, ctx.sel);
     CuAssertTrue(tc, (void*) testTrycatchEnterLeaveOnce < ctx.pc);
     CuAssertTrue(tc, &&end > ctx.pc);
     CuAssertPtrEquals(tc, (void*) __builtin_frame_address(0), ctx.fp);
-    CuAssertPtrEquals(tc, &ctx, rvmTrycatchLeave(&env));
+    CuAssertPtrEquals(tc, &ctx, bugvmTrycatchLeave(&env));
     CuAssertPtrEquals(tc, NULL, env.trycatchContext);
 end:
     return;
@@ -44,20 +44,20 @@ void testTrycatchEnterLeaveMultiple(CuTest* tc) {
     ctx2.sel = 1;
     TrycatchContext ctx3 = {0};
     ctx3.sel = 1;
-    rvmTrycatchEnter(&env, &ctx1);
+    bugvmTrycatchEnter(&env, &ctx1);
     CuAssertPtrEquals(tc, &ctx1, env.trycatchContext);
     CuAssertPtrEquals(tc, NULL, ctx1.prev);
-    rvmTrycatchEnter(&env, &ctx2);
+    bugvmTrycatchEnter(&env, &ctx2);
     CuAssertPtrEquals(tc, &ctx2, env.trycatchContext);
     CuAssertPtrEquals(tc, &ctx1, ctx2.prev);
-    rvmTrycatchEnter(&env, &ctx3);
+    bugvmTrycatchEnter(&env, &ctx3);
     CuAssertPtrEquals(tc, &ctx3, env.trycatchContext);
     CuAssertPtrEquals(tc, &ctx2, ctx3.prev);
-    CuAssertPtrEquals(tc, &ctx3, rvmTrycatchLeave(&env));
+    CuAssertPtrEquals(tc, &ctx3, bugvmTrycatchLeave(&env));
     CuAssertPtrEquals(tc, &ctx2, env.trycatchContext);
-    CuAssertPtrEquals(tc, &ctx2, rvmTrycatchLeave(&env));
+    CuAssertPtrEquals(tc, &ctx2, bugvmTrycatchLeave(&env));
     CuAssertPtrEquals(tc, &ctx1, env.trycatchContext);
-    CuAssertPtrEquals(tc, &ctx1, rvmTrycatchLeave(&env));
+    CuAssertPtrEquals(tc, &ctx1, bugvmTrycatchLeave(&env));
     CuAssertPtrEquals(tc, NULL, env.trycatchContext);
 }
 
@@ -70,15 +70,15 @@ void testTrycatchJumpOnce(CuTest* tc) {
     volatile jint p1 = -1;
     volatile jint p2 = -1;
     volatile jint p3 = -1;
-    jint ret = rvmTrycatchEnter(&env, &ctx);
+    jint ret = bugvmTrycatchEnter(&env, &ctx);
     if (ret == 0) {
         p1 = ++count;
-        rvmTrycatchJump(&ctx);
+        bugvmTrycatchJump(&ctx);
         p2 = ++count;
     } else if (ret == 1) {
         p3 = ++count;
     }
-    rvmTrycatchLeave(&env);
+    bugvmTrycatchLeave(&env);
     CuAssertPtrEquals(tc, NULL, env.trycatchContext);
     CuAssertIntEquals(tc, 1, p1);
     CuAssertIntEquals(tc, -1, p2);
@@ -87,7 +87,7 @@ void testTrycatchJumpOnce(CuTest* tc) {
 
 
 __attribute__ ((noinline)) void inner(TrycatchContext* ctx) {
-    rvmTrycatchJump(ctx);
+    bugvmTrycatchJump(ctx);
 }
 void testTrycatchJumpNested(CuTest* tc) {
     Env env = {0};
@@ -97,7 +97,7 @@ void testTrycatchJumpNested(CuTest* tc) {
     volatile jint p1 = -1;
     volatile jint p2 = -1;
     volatile jint p3 = -1;
-    jint ret = rvmTrycatchEnter(&env, &ctx);
+    jint ret = bugvmTrycatchEnter(&env, &ctx);
     if (ret == 0) {
         p1 = ++count;
         inner(&ctx);
@@ -105,7 +105,7 @@ void testTrycatchJumpNested(CuTest* tc) {
     } else if (ret == 1) {
         p3 = ++count;
     }
-    rvmTrycatchLeave(&env);
+    bugvmTrycatchLeave(&env);
     CuAssertPtrEquals(tc, NULL, env.trycatchContext);
     CuAssertIntEquals(tc, 1, p1);
     CuAssertIntEquals(tc, -1, p2);

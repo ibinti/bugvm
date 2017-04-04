@@ -65,7 +65,7 @@ declare void @_bcMoveMemory32(i8*, i8*, i64)
 declare void @_bcThrow(%Env*, %Object*) noreturn
 declare void @_bcThrowIfExceptionOccurred(%Env*)
 declare %Object* @_bcExceptionClear(%Env*)
-declare i32 @rvmTrycatchEnter(%Env*, %TrycatchContext*) returns_twice
+declare i32 @bugvmTrycatchEnter(%Env*, %TrycatchContext*) returns_twice
 declare void @_bcTrycatchLeave(%Env*)
 declare void @_bcThrowNullPointerException(%Env*) noreturn
 declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32, i32) noreturn

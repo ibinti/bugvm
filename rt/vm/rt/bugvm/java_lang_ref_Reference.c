@@ -16,5 +16,5 @@
 #include <bugvm.h>
 
 void Java_java_lang_ref_Reference_register(Env* env, Object* thiz, Object* referent) {
-    rvmRegisterReference(env, thiz, referent);
+    bugvmRegisterReference(env, thiz, referent);
 }

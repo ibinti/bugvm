@@ -68,7 +68,7 @@
     REGISTER(register_sun_misc_Unsafe);
 #undef REGISTER
 
-// BugVM note: rvmInit() calls this on startup, so we can statically register all our native methods.
+// BugVM note: bugvmInit() calls this on startup, so we can statically register all our native methods.
 extern "C" int registerCoreLibrariesJni(JNIEnv* env) {
     ScopedLocalFrame localFrame(env);
 

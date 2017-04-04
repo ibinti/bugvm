@@ -91,7 +91,7 @@ public class Functions {
     public static final FunctionRef BC_POP_CALLBACK_FRAME = new FunctionRef("_bcPopCallbackFrame", new FunctionType(Type.VOID, Types.ENV_PTR));
     public static final FunctionRef BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcAttachThreadFromCallback", new FunctionType(Types.ENV_PTR));
     public static final FunctionRef BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcDetachThreadFromCallback", new FunctionType(Type.VOID, Types.ENV_PTR));
-    public static final FunctionRef RVM_TRYCATCH_ENTER = new FunctionRef("rvmTrycatchEnter", new FunctionType(Type.I32, Types.ENV_PTR, Types.TRYCATCH_CONTEXT_PTR));
+    public static final FunctionRef BUGVM_TRYCATCH_ENTER = new FunctionRef("bugvmTrycatchEnter", new FunctionType(Type.I32, Types.ENV_PTR, Types.TRYCATCH_CONTEXT_PTR));
     public static final FunctionRef BC_TRYCATCH_LEAVE = new FunctionRef("_bcTrycatchLeave", new FunctionType(Type.VOID, Types.ENV_PTR));
     public static final FunctionRef BC_ABSTRACT_METHOD_CALLED = new FunctionRef("_bcAbstractMethodCalled", new FunctionType(Type.VOID, Types.ENV_PTR, Types.OBJECT_PTR));
     public static final FunctionRef BC_NON_PUBLIC_METHOD_CALLED = new FunctionRef("_bcNonPublicMethodCalled", new FunctionType(Type.VOID, Types.ENV_PTR, Types.OBJECT_PTR));
@@ -311,7 +311,7 @@ public class Functions {
         Variable selPtr = fn.newVariable(new PointerType(Type.I32));
         fn.add(new Getelementptr(selPtr, ctx.ref(), 0, 1));
         fn.add(new Store(new IntegerConstant(-1), selPtr.ref()));        
-        Value result = call(fn, RVM_TRYCATCH_ENTER, env, ctx.ref());
+        Value result = call(fn, BUGVM_TRYCATCH_ENTER, env, ctx.ref());
         fn.add(new Switch(result, onException, new IntegerConstant(0), onNoException));        
     }
     

@@ -46,22 +46,22 @@ enum {
     THREAD_MAX_PRIORITY     = 10,
 };
 
-extern jboolean rvmInitThreads(Env* env);
-extern void rvmLockThreadsList();
-extern void rvmUnlockThreadsList();
-extern jlong rvmStartThread(Env* env, Object* threadObj);
-extern void rvmThreadYield(Env* env);
-extern jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
-extern jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);
-extern jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregisterGC);
-extern void rvmJoinNonDaemonThreads(Env* env);
-extern Env* rvmGetEnv();
-extern Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId);
-extern jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);
-extern void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority);
-extern void rvmThreadNameChanged(Env* env, Thread* thread);
-extern jboolean rvmHasCurrentThread(Env* env);
-extern jboolean rvmHasThreadBeenDetached();
+extern jboolean bugvmInitThreads(Env* env);
+extern void bugvmLockThreadsList();
+extern void bugvmUnlockThreadsList();
+extern jlong bugvmStartThread(Env* env, Object* threadObj);
+extern void bugvmThreadYield(Env* env);
+extern jint bugvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
+extern jint bugvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);
+extern jint bugvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregisterGC);
+extern void bugvmJoinNonDaemonThreads(Env* env);
+extern Env* bugvmGetEnv();
+extern Thread* bugvmGetThreadByThreadId(Env* env, uint32_t threadId);
+extern jint bugvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);
+extern void bugvmChangeThreadPriority(Env* env, Thread* thread, jint priority);
+extern void bugvmThreadNameChanged(Env* env, Thread* thread);
+extern jboolean bugvmHasCurrentThread(Env* env);
+extern jboolean bugvmHasThreadBeenDetached();
 
 #endif
 

@@ -39,43 +39,43 @@ static inline int logwrite(int level, const char* tag, const char* text) {
     return fprintf(stderr, "[%s] %s: %s\n", level2String(level), tag, text); \
 }
 
-jboolean rvmInitLog(Options* options) {
+jboolean bugvmInitLog(Options* options) {
     _logLevel = options->logLevel == 0 ? LOG_LEVEL_ERROR : options->logLevel;
     return TRUE;
 }
 
-jboolean rvmLogIsTraceEnabled() {
+jboolean bugvmLogIsTraceEnabled() {
     return IS_ENABLED(LOG_LEVEL_TRACE) ? TRUE : FALSE;
 }
 
-jboolean rvmLogIsDebugEnabled() {
+jboolean bugvmLogIsDebugEnabled() {
     return IS_ENABLED(LOG_LEVEL_DEBUG) ? TRUE : FALSE;
 }
 
-jboolean rvmLogIsInfoEnabled() {
+jboolean bugvmLogIsInfoEnabled() {
     return IS_ENABLED(LOG_LEVEL_INFO) ? TRUE : FALSE;
 }
 
-jboolean rvmLogIsWarnEnabled() {
+jboolean bugvmLogIsWarnEnabled() {
     return IS_ENABLED(LOG_LEVEL_WARN) ? TRUE : FALSE;
 }
 
-jboolean rvmLogIsErrorEnabled() {
+jboolean bugvmLogIsErrorEnabled() {
     return IS_ENABLED(LOG_LEVEL_ERROR) ? TRUE : FALSE;
 }
 
-jboolean rvmLogIsFatalEnabled() {
+jboolean bugvmLogIsFatalEnabled() {
     return IS_ENABLED(LOG_LEVEL_FATAL) ? TRUE : FALSE;
 }
 
-int rvmLog(int level, const char* tag, const char* text) {
+int bugvmLog(int level, const char* tag, const char* text) {
     if (IS_ENABLED(level)) {
         return logwrite(level, tag, text);
     }
     return 0;
 }
 
-int rvmLogf(int level, const char* tag, const char* format, ...) {
+int bugvmLogf(int level, const char* tag, const char* format, ...) {
     va_list ap;
     char buf[LOG_BUF_SIZE];
     if (IS_ENABLED(level)) {
@@ -87,7 +87,7 @@ int rvmLogf(int level, const char* tag, const char* format, ...) {
     return 0;
 }
 
-int rvmLogfv(int level, const char* tag, const char* format, va_list ap) {
+int bugvmLogfv(int level, const char* tag, const char* format, va_list ap) {
     char buf[LOG_BUF_SIZE];
     if (IS_ENABLED(level)) {
         vsnprintf(buf, LOG_BUF_SIZE, format, ap);
@@ -103,7 +103,7 @@ int rvmLogfv(int level, const char* tag, const char* format, va_list ap) {
 int __android_log_write(int prio, const char* tag, const char* text) {
     char realtag[128] = "android.";
     strcat(realtag, tag);
-    return rvmLog(prio, realtag, text);
+    return bugvmLog(prio, realtag, text);
 }
 
 int __android_log_print(int prio, const char* tag,  const char* fmt, ...) {
@@ -111,7 +111,7 @@ int __android_log_print(int prio, const char* tag,  const char* fmt, ...) {
     strcat(realtag, tag);
     va_list ap;
     va_start(ap, fmt);
-    int n = rvmLogfv(prio, realtag, fmt, ap);
+    int n = bugvmLogfv(prio, realtag, fmt, ap);
     va_end(ap);
     return n;
 }
@@ -121,8 +121,8 @@ void __android_log_assert(const char *cond, const char *tag,
     strcat(realtag, tag);
     va_list ap;
     va_start(ap, fmt);
-    rvmLogfv(LOG_LEVEL_FATAL, realtag, fmt, ap);
+    bugvmLogfv(LOG_LEVEL_FATAL, realtag, fmt, ap);
     va_end(ap);
-    rvmAbort(NULL);
+    bugvmAbort(NULL);
 }
 

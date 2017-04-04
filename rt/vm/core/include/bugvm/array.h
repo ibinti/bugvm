@@ -16,20 +16,20 @@
 #ifndef BUGVM_ARRAY_H
 #define BUGVM_ARRAY_H
 
-extern BooleanArray* rvmNewBooleanArray(Env* env, jint length);
-extern ByteArray* rvmNewByteArray(Env* env, jint length);
-extern CharArray* rvmNewCharArray(Env* env, jint length);
-extern ShortArray* rvmNewShortArray(Env* env, jint length);
-extern IntArray* rvmNewIntArray(Env* env, jint length);
-extern LongArray* rvmNewLongArray(Env* env, jint length);
-extern FloatArray* rvmNewFloatArray(Env* env, jint length);
-extern DoubleArray* rvmNewDoubleArray(Env* env, jint length);
-extern ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init);
-extern Array* rvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* type);
-extern Array* rvmCloneArray(Env* env, Array* array);
-extern jint rvmGetArrayDimensions(Env* env, Array* array);
-extern jint rvmGetArrayElementSize(Env* env, Class* arrayClass);
-extern jlong rvmGetArraySize(Env* env, Class* arrayClass, jint length);
+extern BooleanArray* bugvmNewBooleanArray(Env* env, jint length);
+extern ByteArray* bugvmNewByteArray(Env* env, jint length);
+extern CharArray* bugvmNewCharArray(Env* env, jint length);
+extern ShortArray* bugvmNewShortArray(Env* env, jint length);
+extern IntArray* bugvmNewIntArray(Env* env, jint length);
+extern LongArray* bugvmNewLongArray(Env* env, jint length);
+extern FloatArray* bugvmNewFloatArray(Env* env, jint length);
+extern DoubleArray* bugvmNewDoubleArray(Env* env, jint length);
+extern ObjectArray* bugvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init);
+extern Array* bugvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* type);
+extern Array* bugvmCloneArray(Env* env, Array* array);
+extern jint bugvmGetArrayDimensions(Env* env, Array* array);
+extern jint bugvmGetArrayElementSize(Env* env, Class* arrayClass);
+extern jlong bugvmGetArraySize(Env* env, Class* arrayClass, jint length);
 
 #endif
 

@@ -19,7 +19,7 @@
 
 static inline jboolean checkNull(Env* env, Object* o) {
     if (!o) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
     return TRUE;
@@ -65,25 +65,25 @@ jint Java_sun_misc_Unsafe_arrayBaseOffset0(Env* env, Object* unsafe, Class* claz
 }
 
 jint Java_sun_misc_Unsafe_arrayIndexScale0(Env* env, Object* unsafe, Class* clazz) {
-    return rvmGetArrayElementSize(env, clazz);
+    return bugvmGetArrayElementSize(env, clazz);
 }
 
 jboolean Java_sun_misc_Unsafe_compareAndSwapInt(Env* env, Object* unsafe, Object* obj, jlong offset, jint expectedValue, jint newValue) {
     if (!checkNull(env, obj)) return FALSE;
     jint* address = (jint*) getFieldAddress(obj, offset);
-    return rvmAtomicCompareAndSwapInt(address, expectedValue, newValue);
+    return bugvmAtomicCompareAndSwapInt(address, expectedValue, newValue);
 }
 
 jboolean Java_sun_misc_Unsafe_compareAndSwapLong(Env* env, Object* unsafe, Object* obj, jlong offset, jlong expectedValue, jlong newValue) {
     if (!checkNull(env, obj)) return FALSE;
     jlong* address = (jlong*) getFieldAddress(obj, offset);
-    return rvmAtomicCompareAndSwapLong(address, expectedValue, newValue);
+    return bugvmAtomicCompareAndSwapLong(address, expectedValue, newValue);
 }
 
 jboolean Java_sun_misc_Unsafe_compareAndSwapObject(Env* env, Object* unsafe, Object* obj, jlong offset, Object* expectedValue, Object* newValue) {
     if (!checkNull(env, obj)) return FALSE;
     void** address = (void**) getFieldAddress(obj, offset);
-    return rvmAtomicCompareAndSwapPtr(address, expectedValue, newValue);
+    return bugvmAtomicCompareAndSwapPtr(address, expectedValue, newValue);
 }
 
 jint Java_sun_misc_Unsafe_getInt(Env* env, Object* unsafe, Object* obj, jlong offset) {
@@ -95,7 +95,7 @@ jint Java_sun_misc_Unsafe_getInt(Env* env, Object* unsafe, Object* obj, jlong of
 jint Java_sun_misc_Unsafe_getIntVolatile(Env* env, Object* unsafe, Object* obj, jlong offset) {
     if (!checkNull(env, obj)) return 0;
     jint* address = (jint*) getFieldAddress(obj, offset);
-    return rvmAtomicLoadInt(address);
+    return bugvmAtomicLoadInt(address);
 }
 
 jlong Java_sun_misc_Unsafe_getLong(Env* env, Object* unsafe, Object* obj, jlong offset) {
@@ -107,7 +107,7 @@ jlong Java_sun_misc_Unsafe_getLong(Env* env, Object* unsafe, Object* obj, jlong 
 jlong Java_sun_misc_Unsafe_getLongVolatile(Env* env, Object* unsafe, Object* obj, jlong offset) {
     if (!checkNull(env, obj)) return 0;
     jlong* address = (jlong*) getFieldAddress(obj, offset);
-    return rvmAtomicLoadLong(address);
+    return bugvmAtomicLoadLong(address);
 }
 
 Object* Java_sun_misc_Unsafe_getObject(Env* env, Object* unsafe, Object* obj, jlong offset) {
@@ -119,7 +119,7 @@ Object* Java_sun_misc_Unsafe_getObject(Env* env, Object* unsafe, Object* obj, jl
 Object* Java_sun_misc_Unsafe_getObjectVolatile(Env* env, Object* unsafe, Object* obj, jlong offset) {
     if (!checkNull(env, obj)) return NULL;
     Object** address = (Object**) getFieldAddress(obj, offset);
-    return (Object*) rvmAtomicLoadPtr((void**) address);
+    return (Object*) bugvmAtomicLoadPtr((void**) address);
 }
 
 void Java_sun_misc_Unsafe_putInt(Env* env, Object* unsafe, Object* obj, jlong offset, jint newValue) {
@@ -131,7 +131,7 @@ void Java_sun_misc_Unsafe_putInt(Env* env, Object* unsafe, Object* obj, jlong of
 void Java_sun_misc_Unsafe_putIntVolatile(Env* env, Object* unsafe, Object* obj, jlong offset, jint newValue) {
     if (!checkNull(env, obj)) return;
     jint* address = (jint*) getFieldAddress(obj, offset);
-    rvmAtomicStoreInt(address, newValue);
+    bugvmAtomicStoreInt(address, newValue);
 }
 
 void Java_sun_misc_Unsafe_putLong(Env* env, Object* unsafe, Object* obj, jlong offset, jlong newValue) {
@@ -143,7 +143,7 @@ void Java_sun_misc_Unsafe_putLong(Env* env, Object* unsafe, Object* obj, jlong o
 void Java_sun_misc_Unsafe_putLongVolatile(Env* env, Object* unsafe, Object* obj, jlong offset, jlong newValue) {
     if (!checkNull(env, obj)) return;
     jlong* address = (jlong*) getFieldAddress(obj, offset);
-    rvmAtomicStoreLong(address, newValue);
+    bugvmAtomicStoreLong(address, newValue);
 }
 
 void Java_sun_misc_Unsafe_putObject(Env* env, Object* unsafe, Object* obj, jlong offset, Object* newValue) {
@@ -155,30 +155,30 @@ void Java_sun_misc_Unsafe_putObject(Env* env, Object* unsafe, Object* obj, jlong
 void Java_sun_misc_Unsafe_putObjectVolatile(Env* env, Object* unsafe, Object* obj, jlong offset, Object* newValue) {
     if (!checkNull(env, obj)) return;
     Object** address = (Object**) getFieldAddress(obj, offset);
-    rvmAtomicStorePtr((void**) address, newValue);
+    bugvmAtomicStorePtr((void**) address, newValue);
 }
 
 void Java_sun_misc_Unsafe_putOrderedInt(Env* env, Object* unsafe, Object* obj, jlong offset, jint newValue) {
     if (!checkNull(env, obj)) return;
     jint* address = (jint*) getFieldAddress(obj, offset);
-    rvmAtomicSynchronize();
+    bugvmAtomicSynchronize();
     *address = newValue;
 }
 
 void Java_sun_misc_Unsafe_putOrderedLong(Env* env, Object* unsafe, Object* obj, jlong offset, jlong newValue) {
     if (!checkNull(env, obj)) return;
     jlong* address = (jlong*) getFieldAddress(obj, offset);
-    rvmAtomicSynchronize();
+    bugvmAtomicSynchronize();
     *address = newValue;
 }
 
 void Java_sun_misc_Unsafe_putOrderedObject(Env* env, Object* unsafe, Object* obj, jlong offset, Object* newValue) {
     if (!checkNull(env, obj)) return;
     Object** address = (Object**) getFieldAddress(obj, offset);
-    rvmAtomicSynchronize();
+    bugvmAtomicSynchronize();
     *address = newValue;
 }
 
 Object* Java_sun_misc_Unsafe_allocateInstance(Env* env, Object* unsafe, Class* c) {
-  return rvmAllocateObject(env, c);
+  return bugvmAllocateObject(env, c);
 }

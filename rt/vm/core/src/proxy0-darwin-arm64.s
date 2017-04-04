@@ -61,7 +61,7 @@ __proxy0:
     str x0, [sp, stackArgs_offset]
 
     mov x0, sp
-    bl __rvmProxyHandler
+    bl __bugvmProxyHandler
 
     // Return value (if any) is now in x0 (int/long) or in d0 (float/double)
     ldr x0, [sp, returnValue_offset]

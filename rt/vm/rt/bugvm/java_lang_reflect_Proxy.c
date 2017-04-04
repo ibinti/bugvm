@@ -27,22 +27,22 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     Class* proxyClass = receiver->clazz;
     Class* java_lang_reflect_Proxy = proxyClass->superclass;
     if (!java_lang_reflect_InvocationHandler) {
-        java_lang_reflect_InvocationHandler = rvmFindClassUsingLoader(env, "java/lang/reflect/InvocationHandler", NULL);
+        java_lang_reflect_InvocationHandler = bugvmFindClassUsingLoader(env, "java/lang/reflect/InvocationHandler", NULL);
         if (!java_lang_reflect_InvocationHandler) return;
     }
     if (!java_lang_reflect_InvocationHandler_invoke) {
-        java_lang_reflect_InvocationHandler_invoke = rvmGetInstanceMethod(env, java_lang_reflect_InvocationHandler, 
+        java_lang_reflect_InvocationHandler_invoke = bugvmGetInstanceMethod(env, java_lang_reflect_InvocationHandler,
                 "invoke", "(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;");
         if (!java_lang_reflect_InvocationHandler_invoke) return;
     }
     if (!java_lang_reflect_Proxy_h) {
-        java_lang_reflect_Proxy_h = rvmGetInstanceField(env, java_lang_reflect_Proxy, "h", "Ljava/lang/reflect/InvocationHandler;");
+        java_lang_reflect_Proxy_h = bugvmGetInstanceField(env, java_lang_reflect_Proxy, "h", "Ljava/lang/reflect/InvocationHandler;");
         if (!java_lang_reflect_Proxy_h) return;
     }
-    Object* h = rvmGetObjectInstanceFieldValue(env, receiver, java_lang_reflect_Proxy_h);
-    if (rvmExceptionCheck(env)) return;
+    Object* h = bugvmGetObjectInstanceFieldValue(env, receiver, java_lang_reflect_Proxy_h);
+    if (bugvmExceptionCheck(env)) return;
     if (!h) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return;
     }
 
@@ -53,13 +53,13 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     const char* desc = method->method.desc;
     const char* c;
     jint i = 0;
-    while ((c = rvmGetNextParameterType(&desc))) {
+    while ((c = bugvmGetNextParameterType(&desc))) {
         if (c[0] != 'L' && c[0] != '[') {
             // Primitive. Needs wrapping.
             char typeName[2] = {c[0], 0};
-            Class* type = rvmFindClassByDescriptor(env, typeName, NULL);
+            Class* type = bugvmFindClassByDescriptor(env, typeName, NULL);
             if (!type) return;
-            args[i].l = (jobject) rvmBox(env, type, &args[i]);
+            args[i].l = (jobject) bugvmBox(env, type, &args[i]);
         }
         i++;
     }
@@ -67,7 +67,7 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     jint length = i;
     ObjectArray* argsArray = NULL;
     if (length > 0) {
-        argsArray = rvmNewObjectArray(env, length, java_lang_Object, NULL, NULL);
+        argsArray = bugvmNewObjectArray(env, length, java_lang_Object, NULL, NULL);
         if (!argsArray) return;
         for (i = 0; i < length; i++) {
             argsArray->values[i] = (Object*) args[i].l;
@@ -78,41 +78,41 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     invokeArgs[0].l = (jobject) receiver;
     invokeArgs[1].l = (jobject) methodObject;
     invokeArgs[2].l = (jobject) argsArray;
-    Object* result = rvmCallObjectInstanceMethodA(env, h, java_lang_reflect_InvocationHandler_invoke, invokeArgs);
-    Object* throwable = rvmExceptionOccurred(env);
+    Object* result = bugvmCallObjectInstanceMethodA(env, h, java_lang_reflect_InvocationHandler_invoke, invokeArgs);
+    Object* throwable = bugvmExceptionOccurred(env);
     if (throwable) {
-        if (rvmIsSubClass(java_lang_RuntimeException, throwable->clazz) || rvmIsSubClass(java_lang_Error, throwable->clazz)) {
+        if (bugvmIsSubClass(java_lang_RuntimeException, throwable->clazz) || bugvmIsSubClass(java_lang_Error, throwable->clazz)) {
             // Instances of java.lang.RuntimeException and java.lang.Error can always be thrown
             return;
         }
-        rvmExceptionClear(env);
+        bugvmExceptionClear(env);
 
         ProxyMethodException* pme = NULL;
         LL_FOREACH(method->allowedExceptions, pme) {
-            if (rvmIsSubClass(pme->clazz, throwable->clazz)) {
-                rvmThrow(env, throwable);
+            if (bugvmIsSubClass(pme->clazz, throwable->clazz)) {
+                bugvmThrow(env, throwable);
                 return;
             }
         }
 
         if (!java_lang_reflect_UndeclaredThrowableException) {
-            java_lang_reflect_UndeclaredThrowableException = rvmFindClassUsingLoader(env, 
+            java_lang_reflect_UndeclaredThrowableException = bugvmFindClassUsingLoader(env,
                 "java/lang/reflect/UndeclaredThrowableException", NULL);
             if (!java_lang_reflect_UndeclaredThrowableException) return;
         }
         if (!java_lang_reflect_UndeclaredThrowableException_init) {
-            java_lang_reflect_UndeclaredThrowableException_init = rvmGetInstanceMethod(env,
+            java_lang_reflect_UndeclaredThrowableException_init = bugvmGetInstanceMethod(env,
                 java_lang_reflect_UndeclaredThrowableException, 
                 "<init>", "(Ljava/lang/Throwable;)V");
             if (!java_lang_reflect_UndeclaredThrowableException_init) return;
         }
-        throwable = rvmNewObject(env, java_lang_reflect_UndeclaredThrowableException, java_lang_reflect_UndeclaredThrowableException_init, throwable);
+        throwable = bugvmNewObject(env, java_lang_reflect_UndeclaredThrowableException, java_lang_reflect_UndeclaredThrowableException_init, throwable);
         if (!throwable) return;
-        rvmThrow(env, throwable);
+        bugvmThrow(env, throwable);
         return;
     }
 
-    const char* returnTypeDesc = rvmGetReturnType(method->method.desc);
+    const char* returnTypeDesc = bugvmGetReturnType(method->method.desc);
     if (returnTypeDesc[0] == 'V') {
         // void method. Just return.
         return;
@@ -123,79 +123,79 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
             returnValue->l = NULL;
             return;
         }
-        Class* type = rvmFindClassByDescriptor(env, returnTypeDesc, proxyClass->classLoader);
-        if (rvmIsInstanceOf(env, result, type)) {
+        Class* type = bugvmFindClassByDescriptor(env, returnTypeDesc, proxyClass->classLoader);
+        if (bugvmIsInstanceOf(env, result, type)) {
             returnValue->l = (jobject) result;
             return;
         }
-        rvmThrowClassCastException(env, type, result->clazz);
+        bugvmThrowClassCastException(env, type, result->clazz);
         return;
     }
 
     // Must be primitive. Cannot be NULL.
     if (!result) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return;
     }
 
     // Unwrap primitive.
-    Class* type = rvmFindClassByDescriptor(env, returnTypeDesc, NULL);
+    Class* type = bugvmFindClassByDescriptor(env, returnTypeDesc, NULL);
     switch (type->name[0]) {
     case 'Z':
         if (result->clazz == java_lang_Boolean) {
             returnValue->z = ((Boolean*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Boolean, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Boolean, result->clazz);
         break;
     case 'B':
         if (result->clazz == java_lang_Byte) {
             returnValue->b = ((Byte*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Byte, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Byte, result->clazz);
         break;
     case 'S':
         if (result->clazz == java_lang_Short) {
             returnValue->s = ((Short*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Short, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Short, result->clazz);
         break;
     case 'C':
         if (result->clazz == java_lang_Character) {
             returnValue->c = ((Character*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Character, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Character, result->clazz);
         break;
     case 'I':
         if (result->clazz == java_lang_Integer) {
             returnValue->i = ((Integer*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Integer, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Integer, result->clazz);
         break;
     case 'J':
         if (result->clazz == java_lang_Long) {
             returnValue->j = ((Long*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Long, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Long, result->clazz);
         break;
     case 'F':
         if (result->clazz == java_lang_Float) {
             returnValue->f = ((Float*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Float, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Float, result->clazz);
         break;
     case 'D':
         if (result->clazz == java_lang_Double) {
             returnValue->d = ((Double*) result)->value;
             return;
         }
-        rvmThrowClassCastException(env, java_lang_Double, result->clazz);
+        bugvmThrowClassCastException(env, java_lang_Double, result->clazz);
         break;
     }
 }
@@ -203,9 +203,9 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
 Class* Java_java_lang_reflect_Proxy_generateProxy(Env* env, Class* java_lang_reflect_Proxy, 
       Object* name, ObjectArray* interfaces, Object* loader) {
 
-    char* cname = rvmGetStringUTFChars(env, name);
+    char* cname = bugvmGetStringUTFChars(env, name);
     if (!cname) return NULL;
 
-    return rvmProxyCreateProxyClass(env, java_lang_reflect_Proxy, loader, cname, interfaces->length, (Class**) interfaces->values, 
+    return bugvmProxyCreateProxyClass(env, java_lang_reflect_Proxy, loader, cname, interfaces->length, (Class**) interfaces->values,
                 java_lang_reflect_Proxy->instanceDataSize, java_lang_reflect_Proxy->instanceDataOffset, 0, handler);
 }

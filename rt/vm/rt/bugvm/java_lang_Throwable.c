@@ -17,28 +17,28 @@
 #include <bugvm.h>
 
 jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
-    if (rvmIsCriticalOutOfMemoryError(env, thiz)) {
+    if (bugvmIsCriticalOutOfMemoryError(env, thiz)) {
         // nativeFillInStackTrace() was called on the shared criticalOutOfMemoryError. 
         // Don't try to capture the call stack since it will most likely just 
         // lead to another OOM and more recursion.
         return 0;
     }
-    return PTR_TO_LONG(rvmCaptureCallStack(env));
+    return PTR_TO_LONG(bugvmCaptureCallStack(env));
 }
 
 ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz, jlong stackState) {
     CallStack* callStack = (CallStack*) LONG_TO_PTR(stackState);
     if (!callStack) {
-        return rvmCallStackToStackTraceElements(env, NULL, 0);
+        return bugvmCallStackToStackTraceElements(env, NULL, 0);
     }
 
     jint index = 0;
     jint first = 0;
-    CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+    CallStackFrame* frame = bugvmGetNextCallStackMethod(env, callStack, &index);
     if (frame && frame->method->clazz == java_lang_Throwable && !strcmp(frame->method->name, "nativeFillInStackTrace")) {
         // Skip Throwable.nativeFillInStackTrace()
-        rvmGetNextCallStackMethod(env, callStack, &index); // Skip Throwable.fillInStackTrace()
-        frame = rvmGetNextCallStackMethod(env, callStack, &index);
+        bugvmGetNextCallStackMethod(env, callStack, &index); // Skip Throwable.fillInStackTrace()
+        frame = bugvmGetNextCallStackMethod(env, callStack, &index);
         first = index;
         if (frame) {
             Class* clazz = frame->method->clazz;
@@ -47,7 +47,7 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
                 // Skip all constructors until the constructor of thiz->clazz
                 Class* superclass = java_lang_Object;
                 while (frame && METHOD_IS_CONSTRUCTOR(frame->method) && clazz != thiz->clazz && clazz->superclass == superclass) {
-                    frame = rvmGetNextCallStackMethod(env, callStack, &index);
+                    frame = bugvmGetNextCallStackMethod(env, callStack, &index);
                     if (frame && frame->method->clazz != clazz) {
                         superclass = clazz;
                         clazz = frame->method->clazz;
@@ -57,7 +57,7 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
                 // We're now at the constructor of thiz->clazz which called super(). 
                 // Skip all constructors belonging to thiz->clazz to get to the method which created the throwable
                 while (frame && METHOD_IS_CONSTRUCTOR(frame->method) && clazz == thiz->clazz) {
-                    frame = rvmGetNextCallStackMethod(env, callStack, &index);
+                    frame = bugvmGetNextCallStackMethod(env, callStack, &index);
                     if (frame) clazz = frame->method->clazz;
                     first = index - 1;
                 }
@@ -65,5 +65,5 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
         }
     }
 
-    return rvmCallStackToStackTraceElements(env, callStack, first);
+    return bugvmCallStackToStackTraceElements(env, callStack, first);
 }

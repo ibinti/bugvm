@@ -22,11 +22,11 @@ int main(int argc, char* argv[]) __attribute__ ((weak));
 int runTests(int argc, char* argv[]);
 
 void (*handler)(CallInfo*);
-void _rvmProxyHandler(CallInfo* ci) {
+void _bugvmProxyHandler(CallInfo* ci) {
     handler(ci);
 }
 
-void* rvmAllocateMemory(Env* env, size_t size) {
+void* bugvmAllocateMemory(Env* env, size_t size) {
     return calloc(1, size);
 }
 
@@ -269,7 +269,7 @@ void testProxy0Unwind(CuTest* tc) {
     void (*f)(void*) = (void (*)(void*)) _proxy0;
     f(callers);
     CuAssertPtrEquals(tc, testProxy0Unwind_handler, callers[0]);
-    CuAssertPtrEquals(tc, _rvmProxyHandler, callers[1]);
+    CuAssertPtrEquals(tc, _bugvmProxyHandler, callers[1]);
     CuAssertPtrEquals(tc, _proxy0, callers[2]);
     CuAssertPtrEquals(tc, testProxy0Unwind, callers[3]);
     CuAssertPtrEquals(tc, CuTestRun, callers[4]);
@@ -281,7 +281,7 @@ void testProxy0Unwind(CuTest* tc) {
 void* findFunctionAt(void* pc) {
     void* candidates[8] = {0};
     candidates[0] = testProxy0Unwind_handler;
-    candidates[1] = _rvmProxyHandler;
+    candidates[1] = _bugvmProxyHandler;
     candidates[2] = _proxy0;
     candidates[3] = testProxy0Unwind;
     candidates[4] = CuTestRun;

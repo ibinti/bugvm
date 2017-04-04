@@ -58,7 +58,7 @@ public class KeyStore {
     private static final String PROPERTY_NAME = "keystore.type";
 
     //  Store default KeyStore type
-    private static final String DEFAULT_KEYSTORE_TYPE = "jks";
+    private static final String DEFAULT_KEYSTORE_TYPE = "bks";
 
     // Store KeyStore state (initialized or not)
     private boolean isInit;

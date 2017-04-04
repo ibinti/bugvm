@@ -24,13 +24,13 @@ Env_trycatchContext_offset = 28
     .section    __TEXT,__text,regular,pure_instructions
     
 /*
- * rvmTrycatchEnter(Env* env, TrycatchContext* tc) 
+ * bugvmTrycatchEnter(Env* env, TrycatchContext* tc)
  */    
-    .globl    _rvmTrycatchEnter
+    .globl    _bugvmTrycatchEnter
     .align    2
     .code     16
-    .thumb_func _rvmTrycatchEnter
-_rvmTrycatchEnter:
+    .thumb_func _bugvmTrycatchEnter
+_bugvmTrycatchEnter:
     mov r2, r1
     /* sp (r13) is not allowed to be in the reg list of stmia so we store sp separately */
     str sp, [r2, #sp_offset]
@@ -50,20 +50,20 @@ _rvmTrycatchEnter:
     bx lr
 
 /*
- * rvmTrycatchJump(TrycatchContext* tc) 
+ * bugvmTrycatchJump(TrycatchContext* tc)
  */
-    .globl    _rvmTrycatchJump
+    .globl    _bugvmTrycatchJump
     .align    2
     .code     16
-    .thumb_func _rvmTrycatchJump
-_rvmTrycatchJump:
+    .thumb_func _bugvmTrycatchJump
+_bugvmTrycatchJump:
     mov r1, r0
     ldr sp, [r1, #sp_offset]
     add r1, r1, #r4_offset
     ldmia r1!, {r4-r8, r10, r11, lr}
     vldmia r1, {d8-d15}
 
-    @ Set the return value that the call to rvmTrycatchEnter will return
+    @ Set the return value that the call to bugvmTrycatchEnter will return
     ldr r0, [r0, #sel_offset]
-    @ Jump to the return address from the initial call to rvmTrycatchEnter
+    @ Jump to the return address from the initial call to bugvmTrycatchEnter
     bx lr

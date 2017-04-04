@@ -16,49 +16,49 @@
 #ifndef BUGVM_EXCEPTION_H
 #define BUGVM_EXCEPTION_H
 
-extern jboolean rvmInitExceptions(Env* env);
-extern void rvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f);
-extern void rvmPrintStackTrace(Env* env, Object* throwable);
-extern void rvmThrow(Env* env, Object* e);
-extern jboolean rvmThrowNew(Env* env, Class* clazz, const char* message);
-extern jboolean rvmThrowNewf(Env* env, Class* clazz, const char* format, ...);
-extern jboolean rvmThrowNewfv(Env* env, Class* clazz, const char* format, va_list ap);
-extern jboolean rvmThrowInternalErrorErrno(Env* env, int errnum);
-extern jboolean rvmThrowOutOfMemoryError(Env* env);
-extern jboolean rvmThrowNoClassDefFoundError(Env* env, const char* message);
-extern jboolean rvmThrowIllegalAccessError(Env* env, const char* message);
-extern jboolean rvmThrowNoSuchFieldError(Env* env, const char* message);
-extern jboolean rvmThrowNoSuchMethodError(Env* env, const char* message);
-extern jboolean rvmThrowIncompatibleClassChangeError(Env* env,const char* message);
-extern jboolean rvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, const char* name, const char* desc);
-extern jboolean rvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, const char* name, const char* desc);
-extern jboolean rvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, const char* name, const char* desc);
-extern jboolean rvmThrowInstantiationError(Env* env, const char* message);
-extern jboolean rvmThrowClassCastException(Env* env, Class* expectedType, Class* actualType);
-extern jboolean rvmThrowNullPointerException(Env* env);
-extern jboolean rvmThrowAbstractMethodError(Env* env, const char* message);
-extern jboolean rvmThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint index);
-extern jboolean rvmThrowArrayStoreException(Env* env, Class* elemType, Class* arrayType);
-extern jboolean rvmThrowNegativeArraySizeException(Env* env);
-extern jboolean rvmThrowClassNotFoundException(Env* env, const char* className);
-extern jboolean rvmThrowUnsatisfiedLinkError(Env* env, const char* message);
-extern jboolean rvmThrowIllegalArgumentException(Env* env, const char* message);
-extern jboolean rvmThrowArithmeticException(Env* env);
-extern jboolean rvmThrowLinkageError(Env* env);
-extern jboolean rvmThrowIllegalMonitorStateException(Env* env, const char* message);
-extern jboolean rvmThrowInterruptedException(Env* env);
-extern jboolean rvmThrowIllegalStateException(Env* env, const char* message);
-extern void rvmRaiseException(Env* env, Object* e);
+extern jboolean bugvmInitExceptions(Env* env);
+extern void bugvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f);
+extern void bugvmPrintStackTrace(Env* env, Object* throwable);
+extern void bugvmThrow(Env* env, Object* e);
+extern jboolean bugvmThrowNew(Env* env, Class* clazz, const char* message);
+extern jboolean bugvmThrowNewf(Env* env, Class* clazz, const char* format, ...);
+extern jboolean bugvmThrowNewfv(Env* env, Class* clazz, const char* format, va_list ap);
+extern jboolean bugvmThrowInternalErrorErrno(Env* env, int errnum);
+extern jboolean bugvmThrowOutOfMemoryError(Env* env);
+extern jboolean bugvmThrowNoClassDefFoundError(Env* env, const char* message);
+extern jboolean bugvmThrowIllegalAccessError(Env* env, const char* message);
+extern jboolean bugvmThrowNoSuchFieldError(Env* env, const char* message);
+extern jboolean bugvmThrowNoSuchMethodError(Env* env, const char* message);
+extern jboolean bugvmThrowIncompatibleClassChangeError(Env* env,const char* message);
+extern jboolean bugvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, const char* name, const char* desc);
+extern jboolean bugvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, const char* name, const char* desc);
+extern jboolean bugvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, const char* name, const char* desc);
+extern jboolean bugvmThrowInstantiationError(Env* env, const char* message);
+extern jboolean bugvmThrowClassCastException(Env* env, Class* expectedType, Class* actualType);
+extern jboolean bugvmThrowNullPointerException(Env* env);
+extern jboolean bugvmThrowAbstractMethodError(Env* env, const char* message);
+extern jboolean bugvmThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint index);
+extern jboolean bugvmThrowArrayStoreException(Env* env, Class* elemType, Class* arrayType);
+extern jboolean bugvmThrowNegativeArraySizeException(Env* env);
+extern jboolean bugvmThrowClassNotFoundException(Env* env, const char* className);
+extern jboolean bugvmThrowUnsatisfiedLinkError(Env* env, const char* message);
+extern jboolean bugvmThrowIllegalArgumentException(Env* env, const char* message);
+extern jboolean bugvmThrowArithmeticException(Env* env);
+extern jboolean bugvmThrowLinkageError(Env* env);
+extern jboolean bugvmThrowIllegalMonitorStateException(Env* env, const char* message);
+extern jboolean bugvmThrowInterruptedException(Env* env);
+extern jboolean bugvmThrowIllegalStateException(Env* env, const char* message);
+extern void bugvmRaiseException(Env* env, Object* e);
 
-static inline jboolean rvmExceptionCheck(Env* env) {
+static inline jboolean bugvmExceptionCheck(Env* env) {
     return env->throwable ? TRUE : FALSE;
 }
 
-static inline Object* rvmExceptionOccurred(Env* env) {
+static inline Object* bugvmExceptionOccurred(Env* env) {
     return env->throwable;
 }
 
-static inline Object* rvmExceptionClear(Env* env) {
+static inline Object* bugvmExceptionClear(Env* env) {
     Object* e = env->throwable;
     env->throwable = NULL;
     return e;

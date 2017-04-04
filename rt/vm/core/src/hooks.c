@@ -216,15 +216,15 @@ static jboolean checkError(ChannelError* error) {
     }
 }
 
-void rvmHookWaitForResume(Options* options) {
+void bugvmHookWaitForResume(Options* options) {
     // resumeFlag is modified in handleVmResume()
     // we sync on the write mutex to ensure
     // caches are flushed
     DEBUG("Waiting for debugger to resume");
     while(TRUE) {
-        rvmLockMutex(&writeMutex);
+        bugvmLockMutex(&writeMutex);
         jboolean isResumed = resumeFlag;
-        rvmUnlockMutex(&writeMutex);
+        bugvmUnlockMutex(&writeMutex);
         if (isResumed == FALSE) {
             nsleep(50);
         } else {
@@ -234,48 +234,48 @@ void rvmHookWaitForResume(Options* options) {
     }
 }
 
-void _rvmHookBeforeMainThreadAttached(Env* env) {
+void _bugvmHookBeforeMainThreadAttached(Env* env) {
     DEBUG("Before main thread attached");
 }
 
-void _rvmHookBeforeAppEntryPoint(Env* env, char* mainClass) {
+void _bugvmHookBeforeAppEntryPoint(Env* env, char* mainClass) {
     DEBUGF("Before app entry point %s", mainClass);
     if(env->vm->options->waitForResume) {
-        rvmHookWaitForResume(env->vm->options);
+        bugvmHookWaitForResume(env->vm->options);
     }
 }
 
-void _rvmHookThreadCreated(Env* env, Object* threadObj) {
-    DEBUGF("Thread %lld created", rvmRTGetThreadId(env, threadObj));
+void _bugvmHookThreadCreated(Env* env, Object* threadObj) {
+    DEBUGF("Thread %lld created", bugvmRTGetThreadId(env, threadObj));
 }
 
-void _rvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread) {
-    DEBUGF("Thread %p attached, threadObj: %p, thread: %p", rvmRTGetThreadId(env, threadObj), threadObj, thread);
-    rvmLockMutex(&writeMutex);
+void _bugvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread) {
+    DEBUGF("Thread %p attached, threadObj: %p, thread: %p", bugvmRTGetThreadId(env, threadObj), threadObj, thread);
+    bugvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelByte(clientSocket, EVT_THREAD_ATTACHED, &error);
     writeChannelLong(clientSocket, 0, &error);
     writeChannelLong(clientSocket, 16, &error);
     writeChannelLong(clientSocket, (jlong)threadObj, &error);
     writeChannelLong(clientSocket, (jlong)thread, &error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
-void _rvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread) {
-    DEBUGF("Thread %lld starting, threadObj: %p, thread: %p", rvmRTGetThreadId(env, threadObj), threadObj, thread);
-    rvmLockMutex(&writeMutex);
+void _bugvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread) {
+    DEBUGF("Thread %lld starting, threadObj: %p, thread: %p", bugvmRTGetThreadId(env, threadObj), threadObj, thread);
+    bugvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelByte(clientSocket, EVT_THREAD_STARTED, &error);
     writeChannelLong(clientSocket, 0, &error);
     writeChannelLong(clientSocket, 16, &error);
     writeChannelLong(clientSocket, (jlong)threadObj, &error);
     writeChannelLong(clientSocket, (jlong)thread, &error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
-void _rvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable) {
-    DEBUGF("Thread %p detaching, threadObj: %p, thread: %p, throwable: %p", rvmRTGetThreadId(env, threadObj), threadObj, thread, throwable);
-    rvmLockMutex(&writeMutex);
+void _bugvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable) {
+    DEBUGF("Thread %p detaching, threadObj: %p, thread: %p, throwable: %p", bugvmRTGetThreadId(env, threadObj), threadObj, thread, throwable);
+    bugvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelByte(clientSocket, EVT_THREAD_DETTACHED, &error);
     writeChannelLong(clientSocket, 0, &error);
@@ -283,10 +283,10 @@ void _rvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object
     writeChannelLong(clientSocket, (jlong)threadObj, &error);
     writeChannelLong(clientSocket, (jlong)thread, &error);
     writeChannelLong(clientSocket, (jlong)throwable, &error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
-jboolean _rvmHookSetupTCPChannel(Options* options) {
+jboolean _bugvmHookSetupTCPChannel(Options* options) {
     DEBUG("Setting up TCP channel");
     listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (listeningSocket < 0) {
@@ -326,7 +326,7 @@ jboolean _rvmHookSetupTCPChannel(Options* options) {
     return TRUE;
 }
 
-jboolean _rvmHookHandshake(Options* options) {
+jboolean _bugvmHookHandshake(Options* options) {
     DEBUG("Performing handshake");
     if (!listeningSocket) {
         DEBUG("Can't perform handshake, no listening socket");
@@ -334,8 +334,8 @@ jboolean _rvmHookHandshake(Options* options) {
     }
 
     // setup our write and class filter mutex
-    rvmInitMutex(&writeMutex);
-    rvmInitMutex(&classFilterMutex);
+    bugvmInitMutex(&writeMutex);
+    bugvmInitMutex(&classFilterMutex);
 
     DEBUG("Waiting for client connection");
     struct sockaddr_storage clientAddr;
@@ -359,7 +359,7 @@ jboolean _rvmHookHandshake(Options* options) {
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
 
     // Let's see if we are taking to a BugVM debug client
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelLong(clientSocket, HANDSHAKE_QUESTION, &error);
     jlong response = readChannelLong(clientSocket, &error);
@@ -371,7 +371,7 @@ jboolean _rvmHookHandshake(Options* options) {
 
     // send base symbol address to deal with PIE/ASLR
     writeChannelLong(clientSocket, (jlong) &bugvmBaseSymbol, &error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
     DEBUG("Handshake complete");
 
     // setup
@@ -393,12 +393,12 @@ static void handleReadMemory(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     // DEBUGF("Reading memory: %p, %u bytes", addr, numBytes);
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, numBytes, error);
     writeChannel(clientSocket, addr, numBytes, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleReadString(jlong reqId, ChannelError* error) {
@@ -406,13 +406,13 @@ static void handleReadString(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     // DEBUGF("Reading string: %p, %s", addr, (char*)addr);
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     size_t len = strlen((char*)addr);
     writeChannelByte(clientSocket, CMD_READ_CSTRING, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, len, error);
     writeChannel(clientSocket, addr, len, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleWriteMemory(jlong reqId, ChannelError* error) {
@@ -423,12 +423,12 @@ static void handleWriteMemory(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     // DEBUGF("Writing to memory %p, num bytes: %u", addr, numBytes);
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     readChannel(clientSocket, addr, numBytes, error);
     writeChannelByte(clientSocket, CMD_WRITE_MEMORY, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleAndBits(jlong reqId, ChannelError* error) {
@@ -438,7 +438,7 @@ static void handleAndBits(jlong reqId, ChannelError* error) {
     jbyte mask = readChannelByte(clientSocket, error);
     if(checkError(error)) return;
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     char orig = *((char*)addr);
     char value = orig & mask;
     *((char*)addr) = value;
@@ -446,7 +446,7 @@ static void handleAndBits(jlong reqId, ChannelError* error) {
     writeChannelByte(clientSocket, CMD_WRITE_AND_BITS, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleOrBits(jlong reqId, ChannelError* error) {
@@ -456,7 +456,7 @@ static void handleOrBits(jlong reqId, ChannelError* error) {
     jbyte mask = readChannelByte(clientSocket, error);
     if(checkError(error)) return;
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     char orig = *((char*)addr);
     char value = orig | mask;
     *((char*)addr) = value;
@@ -464,34 +464,34 @@ static void handleOrBits(jlong reqId, ChannelError* error) {
     writeChannelByte(clientSocket, CMD_WRITE_OR_BITS, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleAllocate(jlong reqId, ChannelError* error) {
     jint numBytes = readChannelInt(clientSocket, error);
     if(checkError(error)) return;
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     void* addr = calloc(numBytes, 1);
     // DEBUGF("Allocated %u bytes, at %p", numBytes, addr);
     writeChannelByte(clientSocket, CMD_ALLOCATE, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 8, error);
     writeChannelLong(clientSocket, (jlong)addr, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleFree(jlong reqId, ChannelError* error) {
     void* addr = (void*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     free(addr);
     // DEBUGF("Freed memory at %p", addr);
     writeChannelByte(clientSocket, CMD_FREE, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleClassFilter(jlong reqId, ChannelError* error) {
@@ -506,7 +506,7 @@ static void handleClassFilter(jlong reqId, ChannelError* error) {
         return;
     }
 
-    rvmLockMutex(&classFilterMutex);
+    bugvmLockMutex(&classFilterMutex);
     if(isSet) {
         ClassFilter* filter = (ClassFilter*)malloc(sizeof(ClassFilter));
         filter->className = className;
@@ -532,14 +532,14 @@ static void handleClassFilter(jlong reqId, ChannelError* error) {
             }
         }
     }
-    rvmUnlockMutex(&classFilterMutex);
+    bugvmUnlockMutex(&classFilterMutex);
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     // DEBUGF("Set/removed class filter, req id: %d", reqId);
     writeChannelByte(clientSocket, CMD_CLASS_FILTER, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleThreadSuspend(jlong reqId, ChannelError* error) {
@@ -547,7 +547,7 @@ static void handleThreadSuspend(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     DebugEnv* debugEnv = (DebugEnv*) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmLockMutex(&debugEnv->suspendMutex);
     // the order of the next few lines is important
     // as we don't use a lock in getSuspendedEvent()
     // around stepping and suspended.
@@ -557,14 +557,14 @@ static void handleThreadSuspend(jlong reqId, ChannelError* error) {
     debugEnv->pclow2 = 0;
     debugEnv->pchigh2 = 0;
     debugEnv->suspended = TRUE;
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
 
     DEBUGF("Suspending thread %p, id %u", thread, thread->threadId);
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_SUSPEND, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleThreadResume(jlong reqId, ChannelError* error) {
@@ -572,29 +572,29 @@ static void handleThreadResume(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     // special case: if thread is 0, we set the resumeFlag
-    // to true so rvmHookWaitForResume exits
+    // to true so bugvmHookWaitForResume exits
     if(thread == 0) {
         DEBUG("Resuming VM");
-        rvmLockMutex(&writeMutex);
+        bugvmLockMutex(&writeMutex);
         resumeFlag = TRUE;
-        rvmUnlockMutex(&writeMutex);
+        bugvmUnlockMutex(&writeMutex);
     } else {
-        rvmLockMutex(&writeMutex);
+        bugvmLockMutex(&writeMutex);
         resumeFlag = TRUE;
-        rvmUnlockMutex(&writeMutex);
+        bugvmUnlockMutex(&writeMutex);
         DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
         DebugEnv *debugEnv = (DebugEnv *) thread->env;
-        rvmLockMutex(&debugEnv->suspendMutex);
+        bugvmLockMutex(&debugEnv->suspendMutex);
         debugEnv->suspended = FALSE;
         pthread_cond_signal(&debugEnv->suspendCond);
-        rvmUnlockMutex(&debugEnv->suspendMutex);
+        bugvmUnlockMutex(&debugEnv->suspendMutex);
     }
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_RESUME, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleThreadStep(jlong reqId, ChannelError* error) {
@@ -615,7 +615,7 @@ static void handleThreadStep(jlong reqId, ChannelError* error) {
 
     DEBUGF("Stepping thread %p, id %u, pclow: %p, pchigh: %p, pclow2: %p, pchigh2: %p", thread, thread->threadId, pclow, pchigh, pclow2, pchigh2);
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmLockMutex(&debugEnv->suspendMutex);
     // the order of the next few lines is important
     // as we don't use a lock in getSuspendedEvent()
     // around stepping.
@@ -624,13 +624,13 @@ static void handleThreadStep(jlong reqId, ChannelError* error) {
     debugEnv->pclow2 = (void*)pclow2;
     debugEnv->pchigh2 = (void*)pchigh2;
     debugEnv->stepping = TRUE;
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_STEP, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static void handleThreadInvoke(jlong reqId, ChannelError* error) {
@@ -688,7 +688,7 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
     }
 
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmLockMutex(&debugEnv->suspendMutex);
     debugEnv->command = CMD_THREAD_INVOKE;
     debugEnv->reqId = reqId;
     debugEnv->classOrObjectPtr = classOrObjectPtr;
@@ -698,7 +698,7 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
     debugEnv->returnType = returnType;
     debugEnv->arguments = arguments;
     pthread_cond_signal(&debugEnv->suspendCond);
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
 static void handleNewInstance(jlong reqId, ChannelError* error) {
@@ -742,7 +742,7 @@ static void handleNewInstance(jlong reqId, ChannelError* error) {
     }
 
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmLockMutex(&debugEnv->suspendMutex);
     debugEnv->command = CMD_THREAD_NEWINSTANCE;
     debugEnv->reqId = reqId;
     debugEnv->classOrObjectPtr = classPtr;
@@ -752,7 +752,7 @@ static void handleNewInstance(jlong reqId, ChannelError* error) {
     debugEnv->returnType = 0;
     debugEnv->arguments = arguments;
     pthread_cond_signal(&debugEnv->suspendCond);
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
 static void handleNewString(jlong reqId, ChannelError* error) {
@@ -771,13 +771,13 @@ static void handleNewString(jlong reqId, ChannelError* error) {
     }
 
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmLockMutex(&debugEnv->suspendMutex);
     debugEnv->command = CMD_THREAD_NEWSTRING;
     debugEnv->reqId = reqId;
     debugEnv->string = string;
     debugEnv->stringLength = stringLength;
     pthread_cond_signal(&debugEnv->suspendCond);
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
 static void handleNewArray(jlong reqId, ChannelError* error) {
@@ -799,21 +799,21 @@ static void handleNewArray(jlong reqId, ChannelError* error) {
     }
 
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmLockMutex(&debugEnv->suspendMutex);
     debugEnv->command = CMD_THREAD_NEWARRAY;
     debugEnv->reqId = reqId;
     debugEnv->arrayLength = arrayLength;
     debugEnv->elementName = elementName;
     debugEnv->elementNameLength = elementNameLength;
     pthread_cond_signal(&debugEnv->suspendCond);
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
 static void addGcRoot(DebugEnv* debugEnv, Object* obj) {
     if(obj == NULL) {
         return;
     }
-    if(rvmExceptionCheck((Env*)debugEnv)) {
+    if(bugvmExceptionCheck((Env*)debugEnv)) {
         return;
     }
 
@@ -846,41 +846,41 @@ static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
     DEBUGF("Invoking class method %s%s on class %s", method->name, method->desc, clazz->name);
     switch(debugEnv->returnType) {
         case 'Z':
-            *((jboolean*)&result) = rvmCallBooleanClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jboolean*)&result) = bugvmCallBooleanClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'B':
-            *((jbyte*)&result) = rvmCallByteClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jbyte*)&result) = bugvmCallByteClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'C':
-            *((jchar*)&result) = rvmCallCharClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jchar*)&result) = bugvmCallCharClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'S':
-            *((jshort*)&result) = rvmCallShortClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jshort*)&result) = bugvmCallShortClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'I':
-            *((jint*)&result) = rvmCallIntClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jint*)&result) = bugvmCallIntClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'J':
-            *((jlong*)&result) = rvmCallLongClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jlong*)&result) = bugvmCallLongClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'F':
-            *((jfloat*)&result) = rvmCallFloatClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jfloat*)&result) = bugvmCallFloatClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'D':
-            *((jdouble*)&result) = rvmCallDoubleClassMethodA(env, clazz, method, debugEnv->arguments);
+            *((jdouble*)&result) = bugvmCallDoubleClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         case 'L':
-            result = (jlong)rvmCallObjectClassMethodA(env, clazz, method, debugEnv->arguments);
+            result = (jlong)bugvmCallObjectClassMethodA(env, clazz, method, debugEnv->arguments);
             addGcRoot(debugEnv, (Object*)result);
             break;
         case 'V':
-            rvmCallVoidClassMethodA(env, clazz, method, debugEnv->arguments);
+            bugvmCallVoidClassMethodA(env, clazz, method, debugEnv->arguments);
             break;
         default:
-            rvmThrowIllegalArgumentException(env, "Unknown return type");
+            bugvmThrowIllegalArgumentException(env, "Unknown return type");
     }
 
-    if(rvmExceptionCheck(env)) {
+    if(bugvmExceptionCheck(env)) {
         return 0;
     } else {
         return result;
@@ -895,41 +895,41 @@ static jlong invokeInstanceMethod(DebugEnv* debugEnv, Method* method) {
     DEBUGF("Invoking instance method %s%s on object %p", method->name, method->desc, obj);
     switch(debugEnv->returnType) {
         case 'Z':
-            *((jboolean*)&result) = rvmCallBooleanInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jboolean*)&result) = bugvmCallBooleanInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'B':
-            *((jbyte*)&result) = rvmCallByteInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jbyte*)&result) = bugvmCallByteInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'C':
-            *((jchar*)&result) = rvmCallCharInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jchar*)&result) = bugvmCallCharInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'S':
-            *((jshort*)&result) = rvmCallShortInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jshort*)&result) = bugvmCallShortInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'I':
-            *((jint*)&result) = rvmCallIntInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jint*)&result) = bugvmCallIntInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'J':
-            *((jlong*)&result) = rvmCallLongInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jlong*)&result) = bugvmCallLongInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'F':
-            *((jfloat*)&result) = rvmCallFloatInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jfloat*)&result) = bugvmCallFloatInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'D':
-            *((jdouble*)&result) = rvmCallDoubleInstanceMethodA(env, obj, method, debugEnv->arguments);
+            *((jdouble*)&result) = bugvmCallDoubleInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         case 'L':
-            result = (jlong)rvmCallObjectInstanceMethodA(env, obj, method, debugEnv->arguments);
+            result = (jlong)bugvmCallObjectInstanceMethodA(env, obj, method, debugEnv->arguments);
             addGcRoot(debugEnv, (Object*)result);
             break;
         case 'V':
-            rvmCallVoidInstanceMethodA(env, obj, method, debugEnv->arguments);
+            bugvmCallVoidInstanceMethodA(env, obj, method, debugEnv->arguments);
             break;
         default:
-            rvmThrowIllegalArgumentException(env, "Unknown return type");
+            bugvmThrowIllegalArgumentException(env, "Unknown return type");
     }
 
-    if(rvmExceptionCheck(env)) {
+    if(bugvmExceptionCheck(env)) {
         return 0;
     } else {
         return result;
@@ -938,16 +938,16 @@ static jlong invokeInstanceMethod(DebugEnv* debugEnv, Method* method) {
 
 static void invokeMethod(DebugEnv* debugEnv) {
     Class* clazz = debugEnv->isClassMethod? (Class*)debugEnv->classOrObjectPtr: ((Object*)debugEnv->classOrObjectPtr)->clazz;
-    Method* method = rvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
+    Method* method = bugvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
     if(!method) {
         ChannelError error;
-        rvmLockMutex(&writeMutex);
+        bugvmLockMutex(&writeMutex);
         writeChannelByte(clientSocket, CMD_THREAD_INVOKE, &error);
         writeChannelLong(clientSocket, debugEnv->reqId, &error);
         writeChannelLong(clientSocket, 16, &error);
         writeChannelLong(clientSocket, 0, &error);
-        writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
-        rvmUnlockMutex(&writeMutex);
+        writeChannelLong(clientSocket, (jlong)bugvmExceptionClear((Env*)debugEnv), &error);
+        bugvmUnlockMutex(&writeMutex);
         debugEnv->reqId = 0;
         free(debugEnv->methodName);
         free(debugEnv->descriptor);
@@ -962,13 +962,13 @@ static void invokeMethod(DebugEnv* debugEnv) {
     }
 
     ChannelError error;
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_INVOKE, &error);
     writeChannelLong(clientSocket, debugEnv->reqId, &error);
     writeChannelLong(clientSocket, 16, &error);
     writeChannelLong(clientSocket, result, &error);
-    writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env*)debugEnv), &error);
-    rvmUnlockMutex(&writeMutex);
+    writeChannelLong(clientSocket, (jlong) bugvmExceptionClear((Env*)debugEnv), &error);
+    bugvmUnlockMutex(&writeMutex);
     debugEnv->reqId = 0;
     free(debugEnv->methodName);
     free(debugEnv->descriptor);
@@ -976,33 +976,33 @@ static void invokeMethod(DebugEnv* debugEnv) {
 
 static void newInstance(DebugEnv* debugEnv) {
     Class* clazz = debugEnv->classOrObjectPtr;
-    Method* method = rvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
+    Method* method = bugvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
     if(!method) {
         ChannelError error;
-        rvmLockMutex(&writeMutex);
+        bugvmLockMutex(&writeMutex);
         writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
         writeChannelLong(clientSocket, debugEnv->reqId, &error);
         writeChannelLong(clientSocket, 16, &error);
         writeChannelLong(clientSocket, 0, &error);
-        writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
-        rvmUnlockMutex(&writeMutex);
+        writeChannelLong(clientSocket, (jlong)bugvmExceptionClear((Env*)debugEnv), &error);
+        bugvmUnlockMutex(&writeMutex);
         debugEnv->reqId = 0;
         free(debugEnv->methodName);
         free(debugEnv->descriptor);
         return;
     }
 
-    Object* obj = rvmAllocateObject((Env*)debugEnv, clazz);
+    Object* obj = bugvmAllocateObject((Env*)debugEnv, clazz);
     DEBUGF("Allocated new object of type %s (%p), using constructor %s%s", obj->clazz->name, obj, debugEnv->methodName, debugEnv->descriptor);
     if(!obj) {
         ChannelError error;
-        rvmLockMutex(&writeMutex);
+        bugvmLockMutex(&writeMutex);
         writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
         writeChannelLong(clientSocket, debugEnv->reqId, &error);
         writeChannelLong(clientSocket, 16, &error);
         writeChannelLong(clientSocket, 0, &error);
-        writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env *) debugEnv), &error);
-        rvmUnlockMutex(&writeMutex);
+        writeChannelLong(clientSocket, (jlong) bugvmExceptionClear((Env *) debugEnv), &error);
+        bugvmUnlockMutex(&writeMutex);
         debugEnv->reqId = 0;
         free(debugEnv->methodName);
         free(debugEnv->descriptor);
@@ -1015,13 +1015,13 @@ static void newInstance(DebugEnv* debugEnv) {
     addGcRoot(debugEnv, obj);
 
     ChannelError error;
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
     writeChannelLong(clientSocket, debugEnv->reqId, &error);
     writeChannelLong(clientSocket, 16, &error);
     writeChannelLong(clientSocket, (jlong)obj, &error);
-    writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
-    rvmUnlockMutex(&writeMutex);
+    writeChannelLong(clientSocket, (jlong)bugvmExceptionClear((Env*)debugEnv), &error);
+    bugvmUnlockMutex(&writeMutex);
     debugEnv->reqId = 0;
     free(debugEnv->methodName);
     free(debugEnv->descriptor);
@@ -1031,16 +1031,16 @@ static void newString(DebugEnv* debugEnv) {
     DEBUGF("Creating new string \"%s\"", debugEnv->string);
     ChannelError error;
 
-    Object* str = rvmNewStringUTF((Env*)debugEnv, debugEnv->string, debugEnv->stringLength);
+    Object* str = bugvmNewStringUTF((Env*)debugEnv, debugEnv->string, debugEnv->stringLength);
     addGcRoot(debugEnv, str);
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_NEWSTRING, &error);
     writeChannelLong(clientSocket, debugEnv->reqId, &error);
     writeChannelLong(clientSocket, 16, &error);
     writeChannelLong(clientSocket, (jlong) str, &error);
-    writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env*)debugEnv), &error);
-    rvmUnlockMutex(&writeMutex);
+    writeChannelLong(clientSocket, (jlong) bugvmExceptionClear((Env*)debugEnv), &error);
+    bugvmUnlockMutex(&writeMutex);
     free(debugEnv->string);
     debugEnv->reqId = 0;
 }
@@ -1048,41 +1048,41 @@ static void newString(DebugEnv* debugEnv) {
 static void newArray(DebugEnv* debugEnv) {
     DEBUGF("Creating new array, length: %d, element type: %s", debugEnv->arrayLength, debugEnv->elementName);
     ChannelError error;
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_NEWARRAY, &error);
     writeChannelLong(clientSocket, debugEnv->reqId, &error);
     writeChannelLong(clientSocket, 16, &error);
     Object* result = NULL;
     if (!strcmp(debugEnv->elementName, "Z")) {
-        result = (Object*)rvmNewBooleanArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewBooleanArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "B")) {
-        result = (Object*)rvmNewByteArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewByteArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "C")) {
-        result = (Object*)rvmNewCharArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewCharArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "S")) {
-        result = (Object*)rvmNewShortArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewShortArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "I")) {
-        result = (Object*)rvmNewIntArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewIntArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "J")) {
-        result = (Object*)rvmNewLongArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewLongArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "F")) {
-        result = (Object*)rvmNewFloatArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewFloatArray((Env *) debugEnv, debugEnv->arrayLength);
     } else if (!strcmp(debugEnv->elementName, "D")) {
-        result = (Object*)rvmNewDoubleArray((Env *) debugEnv, debugEnv->arrayLength);
+        result = (Object*)bugvmNewDoubleArray((Env *) debugEnv, debugEnv->arrayLength);
     } else {
-        Class* elementClass = rvmFindClass((Env *) debugEnv, debugEnv->elementName);
-        result = (Object*)rvmNewObjectArray((Env *) debugEnv, debugEnv->arrayLength, elementClass, NULL, NULL);
+        Class* elementClass = bugvmFindClass((Env *) debugEnv, debugEnv->elementName);
+        result = (Object*)bugvmNewObjectArray((Env *) debugEnv, debugEnv->arrayLength, elementClass, NULL, NULL);
     }
 
     if (!result) {
-        rvmThrowInstantiationError((Env*)debugEnv, "Couldn't instantiate array");
+        bugvmThrowInstantiationError((Env*)debugEnv, "Couldn't instantiate array");
     }
 
     addGcRoot(debugEnv, result);
 
     writeChannelLong(clientSocket, (jlong) result, &error);
-    writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env *) debugEnv), &error);
-    rvmUnlockMutex(&writeMutex);
+    writeChannelLong(clientSocket, (jlong) bugvmExceptionClear((Env *) debugEnv), &error);
+    bugvmUnlockMutex(&writeMutex);
     free(debugEnv->elementName);
     debugEnv->reqId = 0;
 }
@@ -1222,26 +1222,26 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
     removeGcRoots(debugEnv);
 
     DEBUGF("Thread %p, id %u resumed", debugEnv->env.currentThread, debugEnv->env.currentThread->threadId);
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, EVT_THREAD_RESUMED, &error);
     writeChannelLong(clientSocket, 0, &error);
     writeChannelLong(clientSocket, 16, &error);
     writeChannelLong(clientSocket, (jlong)debugEnv->env.currentThread->threadObj, &error);
     writeChannelLong(clientSocket, (jlong)debugEnv->env.currentThread, &error);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
 static jboolean prepareCallStack(Env* env, char event, CallStack** callStack, jint* length, jint* payloadSize, CallStackFrame** firstFrame) {
     DebugEnv* debugEnv = (DebugEnv*)env;
     // need to ignore exceptions, as the callstack unwinding
     // might throw one, resulting in infinite recursion in
-    // rvmHookExceptionRaised
+    // bugvmHookExceptionRaised
     jboolean oldIgnoreException = debugEnv->ignoreExceptions;
     debugEnv->ignoreExceptions = TRUE;
 
-    *callStack = rvmCaptureCallStack(env);
-    if (rvmExceptionCheck(env)) {
-        Object* ex = rvmExceptionClear(env);
+    *callStack = bugvmCaptureCallStack(env);
+    if (bugvmExceptionCheck(env)) {
+        Object* ex = bugvmExceptionClear(env);
         ERRORF("Failed to get a call stack for thread %p due to event %d. Got an exception of type: %s",
                 env->currentThread, event, ex->clazz->name);
         return FALSE;
@@ -1251,7 +1251,7 @@ static jboolean prepareCallStack(Env* env, char event, CallStack** callStack, ji
     jint classNamesSize = 0;
     CallStackFrame* frame = NULL;
     *firstFrame = NULL;
-    while ((frame = rvmGetNextCallStackMethod(env, *callStack, &index)) != NULL) {
+    while ((frame = bugvmGetNextCallStackMethod(env, *callStack, &index)) != NULL) {
         if(!*firstFrame) {
             *firstFrame = frame;
         }
@@ -1275,7 +1275,7 @@ static void writeCallstack(Env* env, jint length, CallStack* callStack ) {
     writeChannelInt(clientSocket, length, &error);
     jint index = 0;
     CallStackFrame* frame = NULL;
-    while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+    while ((frame = bugvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
         // TODO: Handle proxy methods
         writeChannelLong(clientSocket, (jlong)(frame->method->impl), &error);
         writeChannelInt(clientSocket, frame->lineNumber, &error);
@@ -1290,7 +1290,7 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, j
     ChannelError error = { 0 };
     int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + (event == EVT_EXCEPTION? 1: 0) + callStackPayloadSize;
 
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, event, &error);
     writeChannelLong(clientSocket, 0, &error);
     writeChannelLong(clientSocket, payLoadSize, &error);
@@ -1301,15 +1301,15 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, j
         writeChannelByte(clientSocket, isCaught? -1: 0, &error);
     }
     writeCallstack(env, callStackLength, callStack);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 }
 
-void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
+void _bugvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
     Object* javaThread = NULL;
     Thread* thread = NULL;
 
     // check if there's a filter for that class
-    rvmLockMutex(&classFilterMutex);
+    bugvmLockMutex(&classFilterMutex);
     for(ClassFilter* f = classFilters; f; f = f->next) {
         if(!strcmp(f->className, clazz->name)) {            
             if(env->currentThread) {
@@ -1319,7 +1319,7 @@ void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
             break;
         }
     }
-    rvmUnlockMutex(&classFilterMutex);
+    bugvmUnlockMutex(&classFilterMutex);
 
     CallStack* callStack = NULL;
     jint callStackLength = 0;
@@ -1347,7 +1347,7 @@ void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
 
     // DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p, Thread*: %p", clazz->name, clazz, classInfo, thread);
     DebugEnv* debugEnv = (DebugEnv*)env;
-    rvmLockMutex(&writeMutex);
+    bugvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelByte(clientSocket, EVT_CLASS_LOAD, &error);
     writeChannelLong(clientSocket, 0, &error);
@@ -1357,16 +1357,16 @@ void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
     writeChannelLong(clientSocket, (jlong)clazz, &error);
     writeChannelLong(clientSocket, (jlong)classInfo, &error);
     if(javaThread) writeCallstack(env, callStackLength, callStack);
-    rvmUnlockMutex(&writeMutex);
+    bugvmUnlockMutex(&writeMutex);
 
     if(javaThread) {
-        rvmLockMutex(&debugEnv->suspendMutex);
+        bugvmLockMutex(&debugEnv->suspendMutex);
         suspendLoop(debugEnv);
-        rvmUnlockMutex(&debugEnv->suspendMutex);
+        bugvmUnlockMutex(&debugEnv->suspendMutex);
     }
 }
 
-void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
+void _bugvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     DebugEnv* debugEnv = (DebugEnv*)env;
     // we might be invoking a function due to a debugger
     // request while suspended. Don't report the exception
@@ -1377,7 +1377,7 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
 
     // we need to temporarily clear the exception
     // for the code below to not get upset.
-    Object* exception = rvmExceptionClear(env);
+    Object* exception = bugvmExceptionClear(env);
 
     CallStack* callStack = NULL;
     jint callStackLength = 0;
@@ -1385,7 +1385,7 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     CallStackFrame* frame = NULL;
     jboolean error = !prepareCallStack(env, EVT_EXCEPTION, &callStack, &callStackLength, &callStackPayloadSize, &frame);
     if(error) {
-        rvmThrow(env, exception);
+        bugvmThrow(env, exception);
         return;
     }
 
@@ -1393,20 +1393,20 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     // report exceptions thrown by it.
     if(!strcmp(frame->method->name, "findClassInClasspathForLoader") &&
             !strcmp(frame->method->clazz->name, "java/lang/VMClassLoader")) {
-        rvmThrow(env, exception);
+        bugvmThrow(env, exception);
         return;
     }
 
-    rvmPushGatewayFrame(env);
-    rvmLockMutex(&debugEnv->suspendMutex);
+    bugvmPushGatewayFrame(env);
+    bugvmLockMutex(&debugEnv->suspendMutex);
 
     if (IS_DEBUG_ENABLED) {
         DEBUGF("Suspending thread %p with id %u due to exception %s", env->currentThread,
                 env->currentThread->threadId, throwable->clazz->name);
     }
 
-    if (rvmExceptionCheck(env)) {
-        Object* ex = rvmExceptionClear(env);
+    if (bugvmExceptionCheck(env)) {
+        Object* ex = bugvmExceptionClear(env);
         ERRORF("Failed to get a call stack for thread %p due to exception event. Got an exception of type: %s",
                 env->currentThread, ex->clazz->name);
     } else {
@@ -1414,22 +1414,22 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
         suspendLoop(debugEnv);
     }
 
-    rvmUnlockMutex(&debugEnv->suspendMutex);
-    rvmPopGatewayFrame(env);
+    bugvmUnlockMutex(&debugEnv->suspendMutex);
+    bugvmPopGatewayFrame(env);
 
-    rvmThrow(env, exception);
+    bugvmThrow(env, exception);
 }
 
-void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
+void _bugvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     Env* env = (Env*) debugEnv;
 
     char event = 0;
     if ((event = getSuspendedEvent(debugEnv, lineNumberOffset, bptable, pc)) != 0) {
 
-        rvmLockMutex(&debugEnv->suspendMutex);
+        bugvmLockMutex(&debugEnv->suspendMutex);
 
         if (IS_DEBUG_ENABLED) {
-            Method* method = rvmFindMethodAtAddress(env, pc);
+            Method* method = bugvmFindMethodAtAddress(env, pc);
             DEBUGF("Suspending thread %p with id %u due to event %d at %s.%s%s:%d (pc=%p)", env->currentThread,
                     env->currentThread->threadId, event, method->clazz->name,
                     method->name, method->desc, lineNumber, pc);
@@ -1440,13 +1440,13 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
         jint callStackPayloadSize = 0;
         CallStackFrame* frame = NULL;
         if(!prepareCallStack(env, event, &callStack, &callStackLength, &callStackPayloadSize, &frame)) {
-            rvmUnlockMutex(&debugEnv->suspendMutex);
+            bugvmUnlockMutex(&debugEnv->suspendMutex);
             return;
         }
 
         writeStopOrExceptionEvent(env, event, NULL, 0, callStack, callStackLength, callStackPayloadSize);
         suspendLoop(debugEnv);
 
-        rvmUnlockMutex(&debugEnv->suspendMutex);
+        bugvmUnlockMutex(&debugEnv->suspendMutex);
     }
 }

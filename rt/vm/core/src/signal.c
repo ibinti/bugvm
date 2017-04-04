@@ -87,8 +87,8 @@ void registerDarwinExceptionHandler(void) {
 }
 #endif
 
-jboolean rvmInitSignals(Env* env) {
-    throwableInitMethod = rvmGetClassMethod(env, java_lang_Throwable, "init", "(Ljava/lang/Throwable;J)V");
+jboolean bugvmInitSignals(Env* env) {
+    throwableInitMethod = bugvmGetClassMethod(env, java_lang_Throwable, "init", "(Ljava/lang/Throwable;J)V");
     if (!throwableInitMethod) return FALSE;
     if (sem_init(&dumpThreadStackTraceCallSemaphore, 0, 0) != 0) {
         return FALSE;
@@ -129,18 +129,18 @@ static jboolean installChainingSignals(Env* env) {
 #if defined(DARWIN)
     // On Darwin SIGBUS is generated when dereferencing NULL pointers
     if (installSignalHandlerIfNeeded(SIGBUS, create_sigaction(&signalHandler_npe_so_chaining), &sigbusFallback) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 #endif
 
     if (installSignalHandlerIfNeeded(SIGSEGV, create_sigaction(&signalHandler_npe_so_chaining), &sigsegvFallback) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
     if (installSignalHandlerIfNeeded(DUMP_THREAD_STACK_TRACE_SIGNAL, create_sigaction(&signalHandler_dump_thread), NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
@@ -149,12 +149,12 @@ static jboolean installChainingSignals(Env* env) {
 
 static jboolean reinstallSavedSignals(Env* env, SavedSignals* savedSignals) {
     if (installSignalHandlerIfNeeded(DUMP_THREAD_STACK_TRACE_SIGNAL, create_sigaction(&signalHandler_dump_thread), NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
     if (installSignalHandlerIfNeeded(BLOCKED_THREAD_SIGNAL, savedSignals->blockedThreadSignal, NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
@@ -165,41 +165,41 @@ static jboolean installNoChainingSignals(Env* env) {
 #if defined(DARWIN)
     // On Darwin SIGBUS is generated when dereferencing NULL pointers
     if (installSignalHandlerIfNeeded(SIGBUS, create_sigaction(&signalHandler_npe_so_nochaining), NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 #endif
 
     if (installSignalHandlerIfNeeded(SIGSEGV, create_sigaction(&signalHandler_npe_so_nochaining), NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
     if (installSignalHandlerIfNeeded(DUMP_THREAD_STACK_TRACE_SIGNAL, create_sigaction(&signalHandler_dump_thread), NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
+        bugvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
     return TRUE;
 }
 
-jboolean rvmInstallThreadSignalMask(Env* env) {
+jboolean bugvmInstallThreadSignalMask(Env* env) {
     int err;
     if ((err = pthread_sigmask(0, NULL, &env->currentThread->signalMask)) != 0) {
-        rvmThrowInternalErrorErrno(env, err);
+        bugvmThrowInternalErrorErrno(env, err);
         return FALSE;        
     }
     return TRUE;
 }
 
-jboolean rvmRestoreThreadSignalMask(Env* env) {
+jboolean bugvmRestoreThreadSignalMask(Env* env) {
     return pthread_sigmask(SIG_SETMASK, &env->currentThread->signalMask, NULL) == 0 ? TRUE : FALSE;
 }
 
-jboolean rvmInstallChainingSignals(Env* env) {
+jboolean bugvmInstallChainingSignals(Env* env) {
     static jboolean called = FALSE;
     if (called) {
-        FATAL("rvmInstallChainingSignals() called twice");
+        FATAL("bugvmInstallChainingSignals() called twice");
         abort();
     }
     jboolean r = installChainingSignals(env);
@@ -207,17 +207,17 @@ jboolean rvmInstallChainingSignals(Env* env) {
     return r;
 }
 
-jboolean rvmReinstallSavedSignals(Env* env, void* state) {
+jboolean bugvmReinstallSavedSignals(Env* env, void* state) {
     SavedSignals* savedSignals = (SavedSignals*) state;
     jboolean r = reinstallSavedSignals(env, savedSignals);
     free(savedSignals);
     return r;
 }
 
-void* rvmSaveSignals(Env* env) {
+void* bugvmSaveSignals(Env* env) {
     SavedSignals* state = malloc(sizeof(SavedSignals));
     if (!state) {
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     return state;
@@ -227,7 +227,7 @@ void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack) {
     // NOTE: This function must not be called concurrently. It uses global 
     // variables to transfer data to/from a signal handler.
 
-    rvmAtomicStorePtr((void**) &dumpThreadStackTraceCallStack, callStack);
+    bugvmAtomicStorePtr((void**) &dumpThreadStackTraceCallStack, callStack);
     if (pthread_kill(thread->pThread, DUMP_THREAD_STACK_TRACE_SIGNAL) != 0) {
         // The thread is probably not alive
         return;
@@ -239,21 +239,21 @@ void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack) {
 
 static inline void* getFramePointer(ucontext_t* context) {
 #if defined(DARWIN)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__ebp;
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__rbp;
-#   elif defined(RVM_THUMBV7)
+#   elif defined(BUGVM_THUMBV7)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__r[7];
-#   elif defined(RVM_ARM64)
+#   elif defined(BUGVM_ARM64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__fp;
 #   else
 #       error Unsupported arch
 #   endif
 #elif defined(LINUX)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_EBP];
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_RBP];
 #   else
 #       error Unsupported arch
@@ -263,21 +263,21 @@ static inline void* getFramePointer(ucontext_t* context) {
 
 static inline void* getPC(ucontext_t* context) {
 #if defined(DARWIN)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__eip;
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__rip;
-#   elif defined(RVM_THUMBV7)
+#   elif defined(BUGVM_THUMBV7)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__pc;
-#   elif defined(RVM_ARM64)
+#   elif defined(BUGVM_ARM64)
         return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__pc;
 #   else
 #       error Unsupported arch
 #   endif
 #elif defined(LINUX)
-#   if defined(RVM_X86)
+#   if defined(BUGVM_X86)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_EIP];
-#   elif defined(RVM_X86_64)
+#   elif defined(BUGVM_X86_64)
         return (void*) (ptrdiff_t) context->uc_mcontext.gregs[REG_RIP];
 #   else
 #       error Unsupported arch
@@ -288,8 +288,8 @@ static inline void* getPC(ucontext_t* context) {
 static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
     // SIGSEGV/SIGBUS are synchronous signals so we shouldn't have to worry about only calling
     // async-signal-safe functions here.
-    Env* env = rvmGetEnv();
-    if (env && rvmIsNonNativeFrame(env)) {
+    Env* env = bugvmGetEnv();
+    if (env && bugvmIsNonNativeFrame(env)) {
         // We now know the fault occurred in non-native code.
         void* faultAddr = info->si_addr;
         void* stackAddr = env->currentThread->stackAddr;
@@ -312,18 +312,18 @@ static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
             Object* throwable = NULL;
             CallStack* callStack = captureCallStackFromFrame(env, &fakeFrame);
             if (callStack) {
-                throwable = rvmAllocateObject(env, exClass);
+                throwable = bugvmAllocateObject(env, exClass);
                 if (throwable) {
-                    rvmCallVoidClassMethod(env, exClass, throwableInitMethod, throwable, PTR_TO_LONG(callStack));
-                    if (rvmExceptionCheck(env)) {
+                    bugvmCallVoidClassMethod(env, exClass, throwableInitMethod, throwable, PTR_TO_LONG(callStack));
+                    if (bugvmExceptionCheck(env)) {
                         throwable = NULL;
                     }
                 }
             }
             if (!throwable) {
-                throwable = rvmExceptionClear(env);
+                throwable = bugvmExceptionClear(env);
             }
-            rvmRaiseException(env, throwable); // Never returns!
+            bugvmRaiseException(env, throwable); // Never returns!
         }
     }
 }
@@ -360,10 +360,10 @@ static void signalHandler_npe_so_chaining(int signum, siginfo_t* info, void* con
 }
 
 static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context) {
-    Env* env = rvmGetEnv();
+    Env* env = bugvmGetEnv();
     if (env) {
         Frame fakeFrame;
-        if (rvmIsNonNativeFrame(env)) {
+        if (bugvmIsNonNativeFrame(env)) {
             // Signalled in non-native code
             fakeFrame.prev = (Frame*) getFramePointer((ucontext_t*) context);
             fakeFrame.returnAddress = getPC((ucontext_t*) context);

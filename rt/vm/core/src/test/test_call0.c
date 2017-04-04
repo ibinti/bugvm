@@ -21,7 +21,7 @@
 int main(int argc, char* argv[]) __attribute__ ((weak));
 int runTests(int argc, char* argv[]);
 
-void* rvmAllocateMemory(Env* env, size_t size) {
+void* bugvmAllocateMemory(Env* env, size_t size) {
     return calloc(1, size);
 }
 
@@ -228,7 +228,7 @@ static void testCall0ManyArgsOfEach(CuTest* tc) {
 }
 
 
-#if defined(RVM_X86_64) && (defined(DARWIN) || defined(LINUX))
+#if defined(BUGVM_X86_64) && (defined(DARWIN) || defined(LINUX))
 /*
  * On x86_64 Darwin and Linux the stack must be 16-byte aligned before a function call. 
  * This means that (%rsp & 0xf) == 8 must be true when that function is entered as CALL 
@@ -281,7 +281,7 @@ static void testCall0StackAlignment2(CuTest* tc) {
     void* result = f(ci);
     CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 8);
 }
-#elif defined(RVM_X86) && (defined(DARWIN) || defined(LINUX))
+#elif defined(BUGVM_X86) && (defined(DARWIN) || defined(LINUX))
 /*
  * On x86 Darwin and on Linux when using GCC 4.5+ the stack must be 16-byte aligned before 
  * a function call. This means that (%esp & 0xf) == 0xc must be true when that function is 
@@ -321,7 +321,7 @@ static void testCall0StackAlignment2(CuTest* tc) {
     void* result = f(ci);
     CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 0xc);
 }
-#elif defined(RVM_THUMBV7) && defined(DARWIN)
+#elif defined(BUGVM_THUMBV7) && defined(DARWIN)
 /*
  * On iOS ARM 32-bit the stack must be 4-byte aligned which
  * it's already known to be at all times.
@@ -330,7 +330,7 @@ static void testCall0StackAlignment1(CuTest* tc) {
 }
 static void testCall0StackAlignment2(CuTest* tc) {
 }
-#elif defined(RVM_ARM64) && defined(DARWIN)
+#elif defined(BUGVM_ARM64) && defined(DARWIN)
 /*
  * On ARM64 Darwin the stack must be 16-byte aligned before a function call. 
  * This means that (sp & 0xf) == 0 must be true when that function is entered (a 

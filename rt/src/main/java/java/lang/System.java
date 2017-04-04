@@ -455,7 +455,7 @@ public final class System {
         p.put("java.vm.specification.vendor", projectName);
         p.put("java.vm.specification.version", "0.9");
         p.put("java.vm.vendor", projectName);
-        p.put("java.vm.version", runtime.vmVersion());
+        p.put("java.vm.version", "0.0.0");
 
         p.put("file.separator", "/");
         p.put("line.separator", "\n");

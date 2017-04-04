@@ -17,27 +17,27 @@
 
 void Java_java_lang_Runtime_nativeExit(Env* env, Class* clazz, jint code) {
     // TODO: What about other threads? Should we stop them before shutting down?
-    rvmShutdown(env, code);
+    bugvmShutdown(env, code);
 }
 
 void Java_java_lang_Runtime_nativeLoad(Env* env, Class* clazz, Object* filename, Object* classLoader) {
-    char* path = rvmGetStringUTFChars(env, filename);
+    char* path = bugvmGetStringUTFChars(env, filename);
     if (!path) return;
-    rvmLoadNativeLibrary(env, path, classLoader);
+    bugvmLoadNativeLibrary(env, path, classLoader);
 }
 
 void Java_java_lang_Runtime_gc(Env* env, Object* thiz) {
-    rvmGCCollect(env);
+    bugvmGCCollect(env);
 }
 
 jlong Java_java_lang_Runtime_freeMemory(Env* env, Object* thiz) {
-    return rvmGetFreeMemory(env);
+    return bugvmGetFreeMemory(env);
 }
 
 jlong Java_java_lang_Runtime_totalMemory(Env* env, Object* thiz) {
-    return rvmGetTotalMemory(env);
+    return bugvmGetTotalMemory(env);
 }
 
 jlong Java_java_lang_Runtime_maxMemory(Env* env, Object* thiz) {
-    return rvmGetMaxMemory(env);
+    return bugvmGetMaxMemory(env);
 }

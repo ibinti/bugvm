@@ -46,8 +46,8 @@ struct BitVectorIterator {
 };
 
 /* allocate a bit vector with enough space to hold "startBits" bits */
-BitVector* rvmAllocBitVector(uint32_t startBits, jboolean expandable);
-void rvmFreeBitVector(BitVector* pBits);
+BitVector* bugvmAllocBitVector(uint32_t startBits, jboolean expandable);
+void bugvmFreeBitVector(BitVector* pBits);
 
 /*
  * dvmAllocBit always allocates the first possible bit.  If we run out of
@@ -62,29 +62,29 @@ void rvmFreeBitVector(BitVector* pBits);
  *
  * dvmIsBitSet returns "true" if the bit is set.
  */
-jint rvmAllocBit(BitVector* pBits);
-void rvmSetBit(BitVector* pBits, uint32_t num);
-void rvmClearBit(BitVector* pBits, uint32_t num);
-void rvmClearAllBits(BitVector* pBits);
-void rvmSetInitialBits(BitVector* pBits, uint32_t numBits);
-jboolean rvmIsBitSet(const BitVector* pBits, uint32_t num);
+jint bugvmAllocBit(BitVector* pBits);
+void bugvmSetBit(BitVector* pBits, uint32_t num);
+void bugvmClearBit(BitVector* pBits, uint32_t num);
+void bugvmClearAllBits(BitVector* pBits);
+void bugvmSetInitialBits(BitVector* pBits, uint32_t numBits);
+jboolean bugvmIsBitSet(const BitVector* pBits, uint32_t num);
 
 /* count the number of bits that have been set */
-jint rvmCountSetBits(const BitVector* pBits);
+jint bugvmCountSetBits(const BitVector* pBits);
 
 /* copy one vector to another of equal size */
-void rvmCopyBitVector(BitVector *dest, const BitVector *src);
+void bugvmCopyBitVector(BitVector *dest, const BitVector *src);
 
 /*
  * Intersect two bit vectors and store the result to the dest vector.
  */
-jboolean rvmIntersectBitVectors(BitVector *dest, const BitVector *src1,
+jboolean bugvmIntersectBitVectors(BitVector *dest, const BitVector *src1,
         const BitVector *src2);
 
 /*
  * Unify two bit vectors and store the result to the dest vector.
  */
-jboolean rvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
+jboolean bugvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
         const BitVector *src2);
 
 /*
@@ -93,17 +93,17 @@ jboolean rvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
  *
  * Returns "true" if the contents of the destination vector were modified.
  */
-jboolean rvmCheckMergeBitVectors(BitVector* dst, const BitVector* src);
+jboolean bugvmCheckMergeBitVectors(BitVector* dst, const BitVector* src);
 
 /*
  * Compare two bit vectors and return true if difference is seen.
  */
-jboolean rvmCompareBitVectors(const BitVector *src1, const BitVector *src2);
+jboolean bugvmCompareBitVectors(const BitVector *src1, const BitVector *src2);
 
 /* Initialize the iterator structure */
-void rvmBitVectorIteratorInit(BitVector* pBits, BitVectorIterator* iterator);
+void bugvmBitVectorIteratorInit(BitVector* pBits, BitVectorIterator* iterator);
 
 /* Return the next position set to 1. -1 means end-of-vector reached */
-jint rvmBitVectorIteratorNext(BitVectorIterator* iterator);
+jint bugvmBitVectorIteratorNext(BitVectorIterator* iterator);
 
 #endif  // BUGVM_BITVECTOR_H_

@@ -16,11 +16,11 @@
 #ifndef BUGVM_SIGNAL_H
 #define BUGVM_SIGNAL_H
 
-extern jboolean rvmInitSignals(Env* env);
-extern jboolean rvmInstallThreadSignalMask(Env* env);
-extern jboolean rvmRestoreThreadSignalMask(Env* env);
-extern jboolean rvmInstallChainingSignals(Env* env);
-extern jboolean rvmReinstallSavedSignals(Env* env, void* state);
-extern void* rvmSaveSignals(Env* env);
+extern jboolean bugvmInitSignals(Env* env);
+extern jboolean bugvmInstallThreadSignalMask(Env* env);
+extern jboolean bugvmRestoreThreadSignalMask(Env* env);
+extern jboolean bugvmInstallChainingSignals(Env* env);
+extern jboolean bugvmReinstallSavedSignals(Env* env, void* state);
+extern void* bugvmSaveSignals(Env* env);
 
 #endif

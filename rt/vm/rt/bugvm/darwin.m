@@ -5,7 +5,7 @@ void readDarwinOSVersionFromSystemVersionPList(char* buffer) {
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-#if defined(IOS) && defined(RVM_X86)
+#if defined(IOS) && defined(BUGVM_X86)
     // Prepend value of $IPHONE_SIMULATOR_ROOT environment variable
     NSString* plistPath = [NSString stringWithFormat:@"%s/System/Library/CoreServices/SystemVersion.plist", getenv("IPHONE_SIMULATOR_ROOT")];
 #else

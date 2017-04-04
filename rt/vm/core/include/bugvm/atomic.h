@@ -20,7 +20,7 @@
 #   include <libkern/OSAtomic.h>
 #endif
 
-static inline jboolean rvmAtomicCompareAndSwapInt(jint* ptr, jint oldval, jint newval) {
+static inline jboolean bugvmAtomicCompareAndSwapInt(jint* ptr, jint oldval, jint newval) {
 #if defined(DARWIN)
     return OSAtomicCompareAndSwap32(oldval, newval, ptr) ? TRUE : FALSE;
 #else
@@ -28,7 +28,7 @@ static inline jboolean rvmAtomicCompareAndSwapInt(jint* ptr, jint oldval, jint n
 #endif
 }
 
-static inline jboolean rvmAtomicCompareAndSwapLong(jlong* ptr, jlong oldval, jlong newval) {
+static inline jboolean bugvmAtomicCompareAndSwapLong(jlong* ptr, jlong oldval, jlong newval) {
 #if defined(DARWIN)
     return OSAtomicCompareAndSwap64(oldval, newval, ptr) ? TRUE : FALSE;
 #else
@@ -36,7 +36,7 @@ static inline jboolean rvmAtomicCompareAndSwapLong(jlong* ptr, jlong oldval, jlo
 #endif
 }
 
-static inline jboolean rvmAtomicCompareAndSwapPtr(void** ptr, void* oldval, void* newval) {
+static inline jboolean bugvmAtomicCompareAndSwapPtr(void** ptr, void* oldval, void* newval) {
 #if defined(DARWIN)
     return OSAtomicCompareAndSwapPtr(oldval, newval, ptr) ? TRUE : FALSE;
 #else
@@ -44,46 +44,46 @@ static inline jboolean rvmAtomicCompareAndSwapPtr(void** ptr, void* oldval, void
 #endif
 }
 
-static inline jint rvmAtomicLoadInt(jint* ptr) {
+static inline jint bugvmAtomicLoadInt(jint* ptr) {
     return __sync_fetch_and_or(ptr, 0);
 }
 
-static inline jlong rvmAtomicLoadLong(jlong* ptr) {
+static inline jlong bugvmAtomicLoadLong(jlong* ptr) {
     return __sync_fetch_and_or(ptr, 0LL);
 }
 
-static inline void* rvmAtomicLoadPtr(void** ptr) {
+static inline void* bugvmAtomicLoadPtr(void** ptr) {
     return __sync_fetch_and_or(ptr, NULL);
 }
 
-static inline jint rvmAtomicStoreInt(jint* ptr, jint newval) {
+static inline jint bugvmAtomicStoreInt(jint* ptr, jint newval) {
     while (TRUE) {
         jint oldval = *ptr;
-        if (rvmAtomicCompareAndSwapInt(ptr, oldval, newval)) {
+        if (bugvmAtomicCompareAndSwapInt(ptr, oldval, newval)) {
             return oldval;
         }
     }
 }
 
-static inline jlong rvmAtomicStoreLong(jlong* ptr, jlong newval) {
+static inline jlong bugvmAtomicStoreLong(jlong* ptr, jlong newval) {
     while (TRUE) {
         jlong oldval = *ptr;
-        if (rvmAtomicCompareAndSwapLong(ptr, oldval, newval)) {
+        if (bugvmAtomicCompareAndSwapLong(ptr, oldval, newval)) {
             return oldval;
         }
     }
 }
 
-static inline void* rvmAtomicStorePtr(void** ptr, void* newval) {
+static inline void* bugvmAtomicStorePtr(void** ptr, void* newval) {
     while (TRUE) {
         void* oldval = *ptr;
-        if (rvmAtomicCompareAndSwapPtr(ptr, oldval, newval)) {
+        if (bugvmAtomicCompareAndSwapPtr(ptr, oldval, newval)) {
             return oldval;
         }
     }
 }
 
-static inline void rvmAtomicSynchronize() {
+static inline void bugvmAtomicSynchronize() {
     __sync_synchronize();
 }
 

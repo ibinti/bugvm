@@ -19,10 +19,10 @@
 
 char* toBinaryName(Env* env, Object* className) {
     if (!className) {
-        rvmThrowNew(env, java_lang_NullPointerException, "className");
+        bugvmThrowNew(env, java_lang_NullPointerException, "className");
         return NULL;
     }
-    char* classNameUTF = rvmGetStringUTFChars(env, className);
+    char* classNameUTF = bugvmGetStringUTFChars(env, className);
     if (!classNameUTF) return NULL;
     jint i;
     for (i = 0; classNameUTF[i] != '\0'; i++) {
@@ -34,13 +34,13 @@ char* toBinaryName(Env* env, Object* className) {
 Class* Java_java_lang_VMClassLoader_findLoadedClass(Env* env, Class* cls, Object* cl, Object* name) {
     char* classNameUTF = toBinaryName(env, name);
     if (!classNameUTF) return NULL;
-    return rvmFindLoadedClass(env, classNameUTF, cl);
+    return bugvmFindLoadedClass(env, classNameUTF, cl);
 }
 
 Class* Java_java_lang_VMClassLoader_findClassInClasspathForLoader(Env* env, Class* cls, Object* cl, Object* name) {
     char* classNameUTF = toBinaryName(env, name);
     if (!classNameUTF) return NULL;
-    Class* clazz = rvmFindClassInClasspathForLoader(env, classNameUTF, cl);
+    Class* clazz = bugvmFindClassInClasspathForLoader(env, classNameUTF, cl);
     if (!clazz) {
         char* p = classNameUTF;
         while (*p != '\0') {

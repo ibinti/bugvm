@@ -18,10 +18,10 @@
 
 #define CATCH_ALL_SEL -1
 
-extern jint rvmTrycatchEnter(Env* env, TrycatchContext* tc) __attribute__((returns_twice));
-extern void rvmTrycatchJump(TrycatchContext* tc) __attribute__((noreturn));
+extern jint bugvmTrycatchEnter(Env* env, TrycatchContext* tc) __attribute__((returns_twice));
+extern void bugvmTrycatchJump(TrycatchContext* tc) __attribute__((noreturn));
 
-static inline TrycatchContext* rvmTrycatchLeave(Env* env) {
+static inline TrycatchContext* bugvmTrycatchLeave(Env* env) {
     TrycatchContext* tc = env->trycatchContext;
     env->trycatchContext = env->trycatchContext->prev;
     return tc;

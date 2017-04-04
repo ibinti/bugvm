@@ -464,17 +464,17 @@ public abstract class AbstractTarget implements Target {
             throw new IllegalStateException("Cannot skip linking if target should be run");
         }
         
-        // Add -rvm:log=warn to command line arguments if no logging level has been set explicitly
+        // Add -bugvm:log=warn to command line arguments if no logging level has been set explicitly
         boolean add = true;
         for (String arg : launchParameters.getArguments()) {
-            if (arg.startsWith("-rvm:log=")) {
+            if (arg.startsWith("-bugvm:log=")) {
                 add = false;
                 break;
             }
         }
         if (add) {
             List<String> args = new ArrayList<String>(launchParameters.getArguments());
-            args.add(0, "-rvm:log=warn");
+            args.add(0, "-bugvm:log=warn");
             launchParameters.setArguments(args);
         }
 
@@ -522,7 +522,7 @@ public abstract class AbstractTarget implements Target {
         //issue #40
         if(output.getName().startsWith("bugvm-compiler")) {output.delete(); return;}
         else if(output.getName().startsWith("bugvm-apple")) {output.delete(); return;}
-        else if(output.getName().startsWith("bugvm-rt.jar")) {output.delete(); return;}
+//        else if(output.getName().startsWith("bugvm-rt.jar")) {output.delete(); return;}
         else config.getLogger().info("Creating stripped archive file %s", output);
 
         ZipOutputStream out = null;

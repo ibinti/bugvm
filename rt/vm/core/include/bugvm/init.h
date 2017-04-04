@@ -18,21 +18,21 @@
 
 extern Object* systemClassLoader;
 
-extern void rvmParseOption(char* arg, Options* options);
-extern jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs);
-extern Env* rvmStartup(Options* options);
-extern VM* rvmCreateVM(Options* options);
-extern Env* rvmCreateEnv(VM* vm);
-extern jboolean rvmRun(Env* env);
-extern jboolean rvmDestroyVM(VM* vm);
-extern void rvmShutdown(Env* env, jint code);
-extern void rvmAbort(char* format, ...);
+extern void bugvmParseOption(char* arg, Options* options);
+extern jboolean bugvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs);
+extern Env* bugvmStartup(Options* options);
+extern VM* bugvmCreateVM(Options* options);
+extern Env* bugvmCreateEnv(VM* vm);
+extern jboolean bugvmRun(Env* env);
+extern jboolean bugvmDestroyVM(VM* vm);
+extern void bugvmShutdown(Env* env, jint code);
+extern void bugvmAbort(char* format, ...);
 
-extern DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg);
-extern void rvmCloseDynamicLib(Env* env, DynamicLib* lib);
-extern jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
-extern void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs);
-extern void* rvmFindDynamicLibSymbol(Env* env, DynamicLib* first, const char* symbol, jboolean searchAll);
+extern DynamicLib* bugvmOpenDynamicLib(Env* env, const char* file, char** errorMsg);
+extern void bugvmCloseDynamicLib(Env* env, DynamicLib* lib);
+extern jboolean bugvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
+extern void bugvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs);
+extern void* bugvmFindDynamicLibSymbol(Env* env, DynamicLib* first, const char* symbol, jboolean searchAll);
 
 #endif
 

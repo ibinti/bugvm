@@ -20,20 +20,20 @@ Object* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
 }
 
 void Java_java_lang_Thread_internalStart(Env* env, Class* cls, Object* t) {
-    rvmStartThread(env, t);
+    bugvmStartThread(env, t);
 }
 
 void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jint nanos) {
-    rvmThreadSleep(env, millis, nanos);
+    bugvmThreadSleep(env, millis, nanos);
 }
 
 void Java_java_lang_Thread_internalSetName(Env* env, Class* cls, Object* threadObj, Object* threadName) {
-    rvmLockThreadsList();
-    Thread* thread = rvmRTGetNativeThread(env, threadObj);
+    bugvmLockThreadsList();
+    Thread* thread = bugvmRTGetNativeThread(env, threadObj);
     if (thread) {
-        rvmThreadNameChanged(env, thread);
+        bugvmThreadNameChanged(env, thread);
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 }
 
 jboolean Java_java_lang_Thread_internalInterrupted(Env* env, Class* cls) {
@@ -43,33 +43,33 @@ jboolean Java_java_lang_Thread_internalInterrupted(Env* env, Class* cls) {
 }
 
 jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, Object* threadObj) {
-    rvmLockThreadsList();
-    Thread* thread = rvmRTGetNativeThread(env, threadObj);
+    bugvmLockThreadsList();
+    Thread* thread = bugvmRTGetNativeThread(env, threadObj);
     jboolean interrupted = FALSE;
     if (thread) {
         interrupted = thread->interrupted;
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
     return interrupted;
 }
 
 void Java_java_lang_Thread_internalInterrupt(Env* env, Class* cls, Object* threadObj) {
-    rvmLockThreadsList();
-    Thread* thread = rvmRTGetNativeThread(env, threadObj);
+    bugvmLockThreadsList();
+    Thread* thread = bugvmRTGetNativeThread(env, threadObj);
     if (thread) {
-        rvmThreadInterrupt(env, thread);
+        bugvmThreadInterrupt(env, thread);
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 }
 
 jboolean Java_java_lang_Thread_internalHoldsLock(Env* env, Class* cls, Object* obj) {
     if (!obj) {
-        rvmThrowNullPointerException(env);
+        bugvmThrowNullPointerException(env);
         return FALSE;
     }
-    rvmLockThreadsList();
-    jboolean result = rvmHoldsLock(env, env->currentThread, obj);
-    rvmUnlockThreadsList();
+    bugvmLockThreadsList();
+    jboolean result = bugvmHoldsLock(env, env->currentThread, obj);
+    bugvmUnlockThreadsList();
     return result;
 }
 
@@ -78,34 +78,34 @@ void Java_java_lang_Thread_internalYield(Env* env, Class* cls) {
 }
 
 jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, Object* threadObj) {
-    rvmLockThreadsList();
-    Thread* thread = rvmRTGetNativeThread(env, threadObj);
+    bugvmLockThreadsList();
+    Thread* thread = bugvmRTGetNativeThread(env, threadObj);
     jint status = THREAD_ZOMBIE; // If thread==NULL we assume the thread has been finished
     if (thread) {
         status = thread->status;
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
     return status;
 }
 
 void Java_java_lang_Thread_internalSetPriority(Env* env, Class* cls, Object* threadObj, jint priority) {
-    rvmLockThreadsList();
-    Thread* thread = rvmRTGetNativeThread(env, threadObj);
+    bugvmLockThreadsList();
+    Thread* thread = bugvmRTGetNativeThread(env, threadObj);
     if (thread) {
-        rvmChangeThreadPriority(env, thread, priority);
+        bugvmChangeThreadPriority(env, thread, priority);
     }
-    rvmUnlockThreadsList();
+    bugvmUnlockThreadsList();
 }
 
 ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, Object* threadObj) {
-    Thread* thread = rvmRTGetNativeThread(env, threadObj);
+    Thread* thread = bugvmRTGetNativeThread(env, threadObj);
     CallStack* callStack = NULL;
     if (thread) {
-        callStack = rvmCaptureCallStackForThread(env, thread);
+        callStack = bugvmCaptureCallStackForThread(env, thread);
     }
-    return rvmCallStackToStackTraceElements(env, callStack, 0);
+    return bugvmCallStackToStackTraceElements(env, callStack, 0);
 }
 
 void Java_java_lang_Thread_hookThreadCreated(Env* env, Class* cls, Object* threadObj) {
-    rvmHookThreadCreated(env, threadObj);
+    bugvmHookThreadCreated(env, threadObj);
 }

@@ -34,7 +34,7 @@
 #   ifdef assert
 #       undef assert
 #   endif
-#   define assert(e) ((void) ((e) ? 0 : rvmAbort(NULL)))
+#   define assert(e) ((void) ((e) ? 0 : bugvmAbort(NULL)))
 #endif
 
 #ifdef __cplusplus

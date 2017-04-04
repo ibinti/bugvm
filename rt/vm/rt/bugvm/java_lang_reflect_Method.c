@@ -30,88 +30,88 @@ Object* Java_java_lang_reflect_Method_internalInvoke(Env* env, Class* clazz, jlo
     jvalue* jvalueArgs = validateAndUnwrapArgs(env, parameterTypes, args);
     if (!jvalueArgs) return NULL;
 
-    const char* retDesc = rvmGetReturnType(method->desc);
+    const char* retDesc = bugvmGetReturnType(method->desc);
 
     jvalue jvalueRet[1];
     if (METHOD_IS_STATIC(method)) {
         switch (retDesc[0]) {
         case 'V':
-            rvmCallVoidClassMethodA(env, method->clazz, method, jvalueArgs);
+            bugvmCallVoidClassMethodA(env, method->clazz, method, jvalueArgs);
             jvalueRet->l = NULL;
             break;
         case 'Z':
-            jvalueRet->z = rvmCallBooleanClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->z = bugvmCallBooleanClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'B':
-            jvalueRet->b = rvmCallByteClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->b = bugvmCallByteClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'S':
-            jvalueRet->s = rvmCallShortClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->s = bugvmCallShortClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'C':
-            jvalueRet->c = rvmCallCharClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->c = bugvmCallCharClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'I':
-            jvalueRet->i = rvmCallIntClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->i = bugvmCallIntClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'J':
-            jvalueRet->j = rvmCallLongClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->j = bugvmCallLongClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'F':
-            jvalueRet->f = rvmCallFloatClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->f = bugvmCallFloatClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         case 'D':
-            jvalueRet->d = rvmCallDoubleClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->d = bugvmCallDoubleClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         default:
-            jvalueRet->l = (jobject) rvmCallObjectClassMethodA(env, method->clazz, method, jvalueArgs);
+            jvalueRet->l = (jobject) bugvmCallObjectClassMethodA(env, method->clazz, method, jvalueArgs);
             break;
         }
     } else {
         switch (retDesc[0]) {
         case 'V':
-            rvmCallVoidInstanceMethodA(env, receiver, method, jvalueArgs);
+            bugvmCallVoidInstanceMethodA(env, receiver, method, jvalueArgs);
             jvalueRet->l = NULL;
             break;
         case 'Z':
-            jvalueRet->z = rvmCallBooleanInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->z = bugvmCallBooleanInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'B':
-            jvalueRet->b = rvmCallByteInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->b = bugvmCallByteInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'S':
-            jvalueRet->s = rvmCallShortInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->s = bugvmCallShortInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'C':
-            jvalueRet->c = rvmCallCharInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->c = bugvmCallCharInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'I':
-            jvalueRet->i = rvmCallIntInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->i = bugvmCallIntInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'J':
-            jvalueRet->j = rvmCallLongInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->j = bugvmCallLongInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'F':
-            jvalueRet->f = rvmCallFloatInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->f = bugvmCallFloatInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         case 'D':
-            jvalueRet->d = rvmCallDoubleInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->d = bugvmCallDoubleInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         default:
-            jvalueRet->l = (jobject) rvmCallObjectInstanceMethodA(env, receiver, method, jvalueArgs);
+            jvalueRet->l = (jobject) bugvmCallObjectInstanceMethodA(env, receiver, method, jvalueArgs);
             break;
         }
     }
 
-    if (rvmExceptionCheck(env)) {
-        throwInvocationTargetException(env, rvmExceptionOccurred(env));
+    if (bugvmExceptionCheck(env)) {
+        throwInvocationTargetException(env, bugvmExceptionOccurred(env));
         return NULL;
     }
 
     if (retDesc[0] != 'L' && retDesc[0] != '[') {
         // Return type is primitive. Box it.
-        Class* retType = rvmFindClassByDescriptor(env, retDesc, NULL);
-        return rvmBox(env, retType, jvalueRet);
+        Class* retType = bugvmFindClassByDescriptor(env, retDesc, NULL);
+        return bugvmBox(env, retType, jvalueRet);
     } else {
         return (Object*) jvalueRet->l;
     }
@@ -129,41 +129,41 @@ jint Java_java_lang_reflect_Method_getModifiers(Env* env, Class* clazz, jlong me
 
 Object* Java_java_lang_reflect_Method_getName(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return rvmNewStringUTF(env, method->name, -1);
+    return bugvmNewStringUTF(env, method->name, -1);
 }
 
 Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return rvmFindClassByDescriptor(env, rvmGetReturnType(method->desc), method->clazz->classLoader);
+    return bugvmFindClassByDescriptor(env, bugvmGetReturnType(method->desc), method->clazz->classLoader);
 }
 
 Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    Class* java_lang_reflect_Proxy = rvmFindClassUsingLoader(env, "java/lang/reflect/Proxy", NULL);
+    Class* java_lang_reflect_Proxy = bugvmFindClassUsingLoader(env, "java/lang/reflect/Proxy", NULL);
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
-        return rvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
+        return bugvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
     }
-    return rvmAttributeGetMethodSignature(env, method);
+    return bugvmAttributeGetMethodSignature(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
 
-    jint argsCount = rvmGetParameterCount(method);
+    jint argsCount = bugvmGetParameterCount(method);
 
-    Class* array_java_lang_Class = rvmFindClassUsingLoader(env, "[Ljava/lang/Class;", NULL);
+    Class* array_java_lang_Class = bugvmFindClassUsingLoader(env, "[Ljava/lang/Class;", NULL);
     if (!array_java_lang_Class) return NULL;
-    ObjectArray* paramTypes = rvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
+    ObjectArray* paramTypes = bugvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
     if (!paramTypes) return NULL;
 
     const char* desc = method->desc;
     const char* s;
     jint i = 0;
-    while ((s = rvmGetNextParameterType(&desc))) {
-        char* paramTypeName = rvmAllocateMemoryAtomic(env, desc - s + 1);
+    while ((s = bugvmGetNextParameterType(&desc))) {
+        char* paramTypeName = bugvmAllocateMemoryAtomic(env, desc - s + 1);
         if (!paramTypeName) return NULL;
         strncpy(paramTypeName, s, desc - s);
-        Class* paramType = rvmFindClassByDescriptor(env, paramTypeName, method->clazz->classLoader);
+        Class* paramType = bugvmFindClassByDescriptor(env, paramTypeName, method->clazz->classLoader);
         if (!paramType) return NULL;
         paramTypes->values[i++] = (Object*) paramType;
     }
@@ -173,25 +173,25 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 
 ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    Class* java_lang_reflect_Proxy = rvmFindClassUsingLoader(env, "java/lang/reflect/Proxy", NULL);
+    Class* java_lang_reflect_Proxy = bugvmFindClassUsingLoader(env, "java/lang/reflect/Proxy", NULL);
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
-        return rvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
+        return bugvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
     }
-    return rvmAttributeGetExceptions(env, method);
+    return bugvmAttributeGetExceptions(env, method);
 }
 
 Object* Java_java_lang_reflect_Method_getDefaultValue(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return rvmAttributeGetAnnotationDefault(env, method);
+    return bugvmAttributeGetAnnotationDefault(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getDeclaredAnnotations(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return rvmAttributeGetMethodRuntimeVisibleAnnotations(env, method);
+    return bugvmAttributeGetMethodRuntimeVisibleAnnotations(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getParameterAnnotations(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return rvmAttributeGetMethodRuntimeVisibleParameterAnnotations(env, method);
+    return bugvmAttributeGetMethodRuntimeVisibleParameterAnnotations(env, method);
 }
 

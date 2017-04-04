@@ -36,19 +36,19 @@ static Class* java_lang_String_array = NULL;
 
 static void throwSocketExceptionErrno(Env* env, int errnum) {
     char message[512];
-    Class* exCls = rvmFindClassUsingLoader(env, "java/net/SocketException", NULL);
+    Class* exCls = bugvmFindClassUsingLoader(env, "java/net/SocketException", NULL);
     if (!exCls) {
         return;
     }
     if (strerror_r(errnum, message, 512) == 0) {
-        rvmThrowNew(env, exCls, message);
+        bugvmThrowNew(env, exCls, message);
     } else {
-        rvmThrowNew(env, exCls, NULL);
+        bugvmThrowNew(env, exCls, NULL);
     }
 }
 
 static jboolean ioctl_ifreq(Env* env, Object* interfaceName, struct ifreq* ifreq, int request) {
-    const char* name = rvmGetStringUTFChars(env, interfaceName);
+    const char* name = bugvmGetStringUTFChars(env, interfaceName);
     if (!name) {
         return FALSE;
     }
@@ -93,7 +93,7 @@ static jboolean iterateAddrInfo(Env* env, const char* interfaceName, jboolean (*
 
 ObjectArray* Java_java_net_NetworkInterface_getInterfaceNames(Env* env, Class* cls) {
     if (!java_lang_String_array) {
-        java_lang_String_array = rvmFindClassUsingLoader(env, "[Ljava/lang/String;", NULL);
+        java_lang_String_array = bugvmFindClassUsingLoader(env, "[Ljava/lang/String;", NULL);
         if (!java_lang_String_array) {
             return NULL;
         }
@@ -102,7 +102,7 @@ ObjectArray* Java_java_net_NetworkInterface_getInterfaceNames(Env* env, Class* c
     struct if_nameindex* ifs = if_nameindex();
     if (!ifs) {
         // Assume out of memory
-        rvmThrowOutOfMemoryError(env);
+        bugvmThrowOutOfMemoryError(env);
         return NULL;
     }
     jint count = 0;
@@ -110,14 +110,14 @@ ObjectArray* Java_java_net_NetworkInterface_getInterfaceNames(Env* env, Class* c
         count++;
     }
 
-    ObjectArray* result = rvmNewObjectArray(env, count, NULL, java_lang_String_array, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, count, NULL, java_lang_String_array, NULL);
     if (!result) {
         goto done;
     }
 
     jint i = 0;
     for (i = 0; i < count; i++) {
-        Object* name = rvmNewStringUTF(env, ifs[i].if_name, -1);
+        Object* name = bugvmNewStringUTF(env, ifs[i].if_name, -1);
         if (!name) {
             goto done;
         }
@@ -130,7 +130,7 @@ done:
 }
 
 jint Java_java_net_NetworkInterface_getInterfaceIndex(Env* env, Class* cls, Object* interfaceName) {
-    const char* name = rvmGetStringUTFChars(env, interfaceName);
+    const char* name = bugvmGetStringUTFChars(env, interfaceName);
     if (!name) {
         return 0;
     }
@@ -160,7 +160,7 @@ static jboolean getHardwareAddressIterator(Env* env, struct ifaddrs *ia, void* d
         struct sockaddr_dl* addr = (struct sockaddr_dl*) ia->ifa_addr;
         if (addr->sdl_alen == 6) {
             char* bytes = (char*) LLADDR(addr);
-            *resultPtr = rvmNewByteArray(env, 6);
+            *resultPtr = bugvmNewByteArray(env, 6);
             if (*resultPtr) {
                 memcpy((*resultPtr)->values, bytes, 6);
             }
@@ -171,7 +171,7 @@ static jboolean getHardwareAddressIterator(Env* env, struct ifaddrs *ia, void* d
 }
 #endif
 ByteArray* Java_java_net_NetworkInterface_getHardwareAddress(Env* env, Class* cls, Object* interfaceName) {
-    const char* name = rvmGetStringUTFChars(env, interfaceName);
+    const char* name = bugvmGetStringUTFChars(env, interfaceName);
     if (!name) {
         return NULL;
     }
@@ -185,7 +185,7 @@ ByteArray* Java_java_net_NetworkInterface_getHardwareAddress(Env* env, Class* cl
         return NULL;
     }
     if (ifreq.ifr_hwaddr.sa_family == ARPHRD_ETHER) {
-        result = rvmNewByteArray(env, 6);
+        result = bugvmNewByteArray(env, 6);
         if (result) {
             memcpy(result->values, ifreq.ifr_hwaddr.sa_data, 6);
         }
@@ -220,7 +220,7 @@ static jboolean getIpv6AddressesIterator(Env* env, struct ifaddrs *ia, void* _da
     return TRUE; // Continue iteration
 }
 ByteArray* Java_java_net_NetworkInterface_getIpv6Addresses(Env* env, Class* cls, Object* interfaceName) {
-    const char* name = rvmGetStringUTFChars(env, interfaceName);
+    const char* name = bugvmGetStringUTFChars(env, interfaceName);
     if (!name) {
         return NULL;
     }
@@ -233,7 +233,7 @@ ByteArray* Java_java_net_NetworkInterface_getIpv6Addresses(Env* env, Class* cls,
         return NULL;
     }
 
-    ByteArray* result = rvmNewByteArray(env, 16 * 2 * count);
+    ByteArray* result = bugvmNewByteArray(env, 16 * 2 * count);
     if (!result) {
         return NULL;
     }
@@ -275,7 +275,7 @@ static jboolean getIpv4AddressesIterator(Env* env, struct ifaddrs *ia, void* _da
     return TRUE; // Continue iteration
 }
 ByteArray* Java_java_net_NetworkInterface_getIpv4Addresses(Env* env, Class* cls, Object* interfaceName) {
-    const char* name = rvmGetStringUTFChars(env, interfaceName);
+    const char* name = bugvmGetStringUTFChars(env, interfaceName);
     if (!name) {
         return NULL;
     }
@@ -288,7 +288,7 @@ ByteArray* Java_java_net_NetworkInterface_getIpv4Addresses(Env* env, Class* cls,
         return NULL;
     }
 
-    ByteArray* result = rvmNewByteArray(env, IPV4_BYTES * 3 * count);
+    ByteArray* result = bugvmNewByteArray(env, IPV4_BYTES * 3 * count);
     if (!result) {
         return NULL;
     }

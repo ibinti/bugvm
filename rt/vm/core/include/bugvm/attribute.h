@@ -16,23 +16,23 @@
 #ifndef BUGVM_ATTRIBUTE_H
 #define BUGVM_ATTRIBUTE_H
 
-extern jboolean rvmInitAttributes(Env* env);
-extern Class* rvmAttributeGetDeclaringClass(Env* env, Class* clazz);
-extern Class* rvmAttributeGetEnclosingClass(Env* env, Class* clazz);
-extern Method* rvmAttributeGetEnclosingMethod(Env* env, Class* clazz);
-extern jboolean rvmAttributeIsAnonymousClass(Env* env, Class* clazz);
-extern Object* rvmAttributeGetClassSignature(Env* env, Class* clazz);
-extern Object* rvmAttributeGetClassSourceFile(Env* env, Class* clazz);
-extern Object* rvmAttributeGetMethodSignature(Env* env, Method* method);
-extern Object* rvmAttributeGetFieldSignature(Env* env, Field* field);
-extern Object* rvmAttributeGetAnnotationDefault(Env* env, Method* method);
-extern ObjectArray* rvmAttributeGetExceptions(Env* env, Method* method);
-extern ObjectArray* rvmAttributeGetClassRuntimeVisibleAnnotations(Env* env, Class* clazz);
-extern ObjectArray* rvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Method* method);
-extern ObjectArray* rvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field);
-extern ObjectArray* rvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method);
-extern ObjectArray* rvmAttributeGetDeclaredClasses(Env* env, Class* clazz);
-extern jboolean rvmAttributeGetInnerClass(Env* env, Class* clazz, Object** innerClassName, jint* access);
+extern jboolean bugvmInitAttributes(Env* env);
+extern Class* bugvmAttributeGetDeclaringClass(Env* env, Class* clazz);
+extern Class* bugvmAttributeGetEnclosingClass(Env* env, Class* clazz);
+extern Method* bugvmAttributeGetEnclosingMethod(Env* env, Class* clazz);
+extern jboolean bugvmAttributeIsAnonymousClass(Env* env, Class* clazz);
+extern Object* bugvmAttributeGetClassSignature(Env* env, Class* clazz);
+extern Object* bugvmAttributeGetClassSourceFile(Env* env, Class* clazz);
+extern Object* bugvmAttributeGetMethodSignature(Env* env, Method* method);
+extern Object* bugvmAttributeGetFieldSignature(Env* env, Field* field);
+extern Object* bugvmAttributeGetAnnotationDefault(Env* env, Method* method);
+extern ObjectArray* bugvmAttributeGetExceptions(Env* env, Method* method);
+extern ObjectArray* bugvmAttributeGetClassRuntimeVisibleAnnotations(Env* env, Class* clazz);
+extern ObjectArray* bugvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Method* method);
+extern ObjectArray* bugvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field);
+extern ObjectArray* bugvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method);
+extern ObjectArray* bugvmAttributeGetDeclaredClasses(Env* env, Class* clazz);
+extern jboolean bugvmAttributeGetInnerClass(Env* env, Class* clazz, Object** innerClassName, jint* access);
 
 #endif
 

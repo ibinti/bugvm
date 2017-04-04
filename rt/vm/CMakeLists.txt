@@ -189,13 +189,13 @@ elseif(DARWIN)
 endif()
 
 if (ARCH STREQUAL "x86_64")
-  add_definitions(-DRVM_X86_64)
+  add_definitions(-DBUGVM_X86_64)
 elseif (ARCH STREQUAL "x86")
-  add_definitions(-DRVM_X86)
+  add_definitions(-DBUGVM_X86)
 elseif (ARCH STREQUAL "thumbv7")
-  add_definitions(-DRVM_THUMBV7)
+  add_definitions(-DBUGVM_THUMBV7)
 elseif (ARCH STREQUAL "arm64")
-  add_definitions(-DRVM_ARM64)
+  add_definitions(-DBUGVM_ARM64)
 endif()
 
 set(LIB_SUFFIX ".a")
@@ -258,7 +258,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/ibinti/bugvm-bdwgc.git
-  GIT_TAG 0458ff8c3cc04376bb4584de7729e6dbb6384bad
+  GIT_TAG 0f0cafd392e033ce110cf8f512803985b40158d5
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

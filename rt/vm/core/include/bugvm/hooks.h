@@ -16,78 +16,78 @@
 #ifndef BUGVM_HOOKS_H
 #define BUGVM_HOOKS_H
 
-void _rvmHookBeforeAppEntryPoint(Env* env, char* mainClass);
-void _rvmHookBeforeMainThreadAttached(Env* env);
-void _rvmHookThreadCreated(Env* env, Object* threadObj);
-void _rvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread);
-void _rvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread);
-void _rvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable);
-void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo);
-void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught);
-jboolean _rvmHookSetupTCPChannel(Options* options);
-jboolean _rvmHookHandshake(Options* options);
-void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc);
+void _bugvmHookBeforeAppEntryPoint(Env* env, char* mainClass);
+void _bugvmHookBeforeMainThreadAttached(Env* env);
+void _bugvmHookThreadCreated(Env* env, Object* threadObj);
+void _bugvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread);
+void _bugvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread);
+void _bugvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable);
+void _bugvmHookClassLoaded(Env* env, Class* clazz, void* classInfo);
+void _bugvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught);
+jboolean _bugvmHookSetupTCPChannel(Options* options);
+jboolean _bugvmHookHandshake(Options* options);
+void _bugvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc);
 
-void rvmHookWaitForAttach(Options* options);
-void rvmHookDebuggerAttached(Options* options);
-static inline void rvmHookBeforeAppEntryPoint(Env* env, char* mainClass) {
+void bugvmHookWaitForAttach(Options* options);
+void bugvmHookDebuggerAttached(Options* options);
+static inline void bugvmHookBeforeAppEntryPoint(Env* env, char* mainClass) {
     if (env->vm->options->enableHooks) {
-        _rvmHookBeforeAppEntryPoint(env, mainClass);
+        _bugvmHookBeforeAppEntryPoint(env, mainClass);
     }
 }
-static inline void rvmHookBeforeMainThreadAttached(Env* env) {
+static inline void bugvmHookBeforeMainThreadAttached(Env* env) {
     if (env->vm->options->enableHooks) {
-        _rvmHookBeforeMainThreadAttached(env);
+        _bugvmHookBeforeMainThreadAttached(env);
     }
 }
-static inline void rvmHookThreadCreated(Env* env, Object* threadObj) {
+static inline void bugvmHookThreadCreated(Env* env, Object* threadObj) {
     if (env->vm->options->enableHooks) {
-        _rvmHookThreadCreated(env, threadObj);
+        _bugvmHookThreadCreated(env, threadObj);
     }
 }
-static inline void rvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread) {
+static inline void bugvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread) {
     if (env->vm->options->enableHooks) {
-        _rvmHookThreadAttached(env, threadObj, thread);
+        _bugvmHookThreadAttached(env, threadObj, thread);
     }
 }
-static inline void rvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread) {
+static inline void bugvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread) {
     if (env->vm->options->enableHooks) {
-        _rvmHookThreadStarting(env, threadObj, thread);
+        _bugvmHookThreadStarting(env, threadObj, thread);
     }
 }
-static inline void rvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable) {
+static inline void bugvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable) {
     if (env->vm->options->enableHooks) {
-        _rvmHookThreadDetaching(env, threadObj, thread, throwable);
+        _bugvmHookThreadDetaching(env, threadObj, thread, throwable);
     }
 }
-static inline void rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
+static inline void bugvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
     if (env->vm->options->enableHooks) {
-        _rvmHookClassLoaded(env, clazz, classInfo);
+        _bugvmHookClassLoaded(env, clazz, classInfo);
     }
 }
-static inline void rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
+static inline void bugvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     if(env->vm->options->enableHooks) {
-        _rvmHookExceptionRaised(env, throwable, isCaught);
+        _bugvmHookExceptionRaised(env, throwable, isCaught);
     }
 }
-static inline jboolean rvmHookSetupTCPChannel(Options* options) {
+static inline jboolean bugvmHookSetupTCPChannel(Options* options) {
     if(options->enableHooks) {
-        return _rvmHookSetupTCPChannel(options);
+        return _bugvmHookSetupTCPChannel(options);
     } else {
         return TRUE;
     }
 }
-static inline jboolean rvmHookHandshake(Options* options) {
+static inline jboolean bugvmHookHandshake(Options* options) {
     if(options->enableHooks) {
-        return _rvmHookHandshake(options);
+        return _bugvmHookHandshake(options);
     } else {
         return FALSE;
     }
 }
 
-static inline void rvmHookInstrumented(DebugEnv* env, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
+static inline void bugvmHookInstrumented(DebugEnv* env, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     if (env->env.vm->options->enableHooks) {
-        _rvmHookInstrumented(env, lineNumber, lineNumberOffset, bptable, pc);
+        _bugvmHookInstrumented(env, lineNumber, lineNumberOffset, bptable, pc);
     }
 }
 

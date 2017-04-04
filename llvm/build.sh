@@ -46,8 +46,7 @@ Linux)
   TARGETS="linux-x86_64"
   ;;
 Windows)
-  TARGETS="windows-x86"
-  #TARGETS="windows-x86_64 windows-x86"
+  TARGETS="windows-x86_64"
   ;;
 *)
   echo "Unsupported OS: $OS"
@@ -85,9 +84,7 @@ Linux)
   CXX=$(which g++)
   ;;
 Windows)
-  #CC=$(which i686-w64-mingw32-gcc)
   CC=$(which x86_64-w64-mingw32-gcc)
-  #CXX=$(which i686-w64-mingw32-g++)
   CXX=$(which x86_64-w64-mingw32-g++)
   WORKERS=1
   ;;

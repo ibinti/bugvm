@@ -84,18 +84,18 @@ static void initOptions() {
 static int bcmain(int argc, char* argv[]) {
     initOptions();
 
-    if (!rvmInitOptions(argc, argv, &options, FALSE)) {
-        fprintf(stderr, "rvmInitOptions(...) failed!\n");
+    if (!bugvmInitOptions(argc, argv, &options, FALSE)) {
+        fprintf(stderr, "bugvmInitOptions(...) failed!\n");
         return 1;
     }
-    Env* env = rvmStartup(&options);
+    Env* env = bugvmStartup(&options);
     if (!env) {
-        fprintf(stderr, "rvmStartup(...) failed!\n");
+        fprintf(stderr, "bugvmStartup(...) failed!\n");
         return 1;
     }
     vm = env->vm;
-    jint result = rvmRun(env) ? 0 : 1;
-    rvmShutdown(env, result);
+    jint result = bugvmRun(env) ? 0 : 1;
+    bugvmShutdown(env, result);
     return result;
 }
 
@@ -181,9 +181,9 @@ static ObjectArray* listClasses(Env* env, Class* instanceofClazz, Object* classL
             ClassInfoHeader* header = base[i];
             if ((header->flags & CI_ERROR) == 0) {
                 if ((!CLASS_IS_INTERFACE(instanceofClazz) 
-                    && rvmIsClassTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))
+                    && bugvmIsClassTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))
                     || (CLASS_IS_INTERFACE(instanceofClazz) 
-                    && rvmIsInterfaceTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))) {
+                    && bugvmIsInterfaceTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))) {
 
                     matches++;
                 }
@@ -192,7 +192,7 @@ static ObjectArray* listClasses(Env* env, Class* instanceofClazz, Object* classL
     }
 
     if (matches == 0) return NULL;
-    ObjectArray* result = rvmNewObjectArray(env, matches, java_lang_Class, NULL, NULL);
+    ObjectArray* result = bugvmNewObjectArray(env, matches, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
 
     jint j = 0;
@@ -200,12 +200,12 @@ static ObjectArray* listClasses(Env* env, Class* instanceofClazz, Object* classL
         ClassInfoHeader* header = base[i];
         if ((header->flags & CI_ERROR) == 0) {
             if (!instanceofTypeInfo || ((!CLASS_IS_INTERFACE(instanceofClazz) 
-                && rvmIsClassTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))
+                && bugvmIsClassTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))
                 || (CLASS_IS_INTERFACE(instanceofClazz) 
-                && rvmIsInterfaceTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo)))) {
+                && bugvmIsInterfaceTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo)))) {
 
                 result->values[j++] = (Object*) (header->clazz ? header->clazz : createClass(env, header, classLoader));
-                if (rvmExceptionOccurred(env)) return NULL;
+                if (bugvmExceptionOccurred(env)) return NULL;
             }
         }
     }
@@ -225,13 +225,13 @@ static Class* loadClass(Env* env, const char* className, Object* classLoader, vo
         ClassInfoError* error = (ClassInfoError*) header;
         switch (error->errorType) {
         case CI_ERROR_TYPE_NO_CLASS_DEF_FOUND:
-            rvmThrowNoClassDefFoundError(env, error->errorMessage);
+            bugvmThrowNoClassDefFoundError(env, error->errorMessage);
             break;
         case CI_ERROR_TYPE_ILLEGAL_ACCESS:
-            rvmThrowIllegalAccessError(env, error->errorMessage);
+            bugvmThrowIllegalAccessError(env, error->errorMessage);
             break;
         case CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE:
-            rvmThrowIncompatibleClassChangeError(env, error->errorMessage);
+            bugvmThrowIncompatibleClassChangeError(env, error->errorMessage);
             break;
         }
         return NULL;
@@ -249,28 +249,28 @@ static Class* loadUserClass(Env* env, const char* className, Object* classLoader
 }
 
 static void wrapClassNotFoundException(Env* env, const char* className) {
-    Object* exception = rvmExceptionOccurred(env);
+    Object* exception = bugvmExceptionOccurred(env);
     if (exception && exception->clazz == java_lang_ClassNotFoundException) {
         // If ClassNotFoundException is thrown we have to wrap it in a NoClassDefFoundError
-        exception = rvmExceptionClear(env);
-        Method* constructor = rvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "(Ljava/lang/String;)V");
+        exception = bugvmExceptionClear(env);
+        Method* constructor = bugvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "(Ljava/lang/String;)V");
         if (!constructor) return;
-        Object* message = rvmNewStringUTF(env, className, -1);
+        Object* message = bugvmNewStringUTF(env, className, -1);
         if (!message) return;
-        Object* wrappedException = rvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
+        Object* wrappedException = bugvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
         if (!wrappedException) return;
-        Class* java_lang_StackTraceElement = rvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
+        Class* java_lang_StackTraceElement = bugvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
         if (!java_lang_StackTraceElement) return;
-        ObjectArray* stackTrace = rvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
+        ObjectArray* stackTrace = bugvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
         if (!stackTrace) return;
-        Method* setStackTrace = rvmGetInstanceMethod(env, java_lang_Throwable, "setStackTrace", "([Ljava/lang/StackTraceElement;)V");
+        Method* setStackTrace = bugvmGetInstanceMethod(env, java_lang_Throwable, "setStackTrace", "([Ljava/lang/StackTraceElement;)V");
         if (!setStackTrace) return;
-        rvmCallVoidInstanceMethod(env, wrappedException, setStackTrace, stackTrace);
-        if (rvmExceptionCheck(env)) return;
-        Method* initCause = rvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
+        bugvmCallVoidInstanceMethod(env, wrappedException, setStackTrace, stackTrace);
+        if (bugvmExceptionCheck(env)) return;
+        Method* initCause = bugvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
         if (!initCause) return;
-        rvmCallObjectInstanceMethod(env, wrappedException, initCause, exception);
-        if (!rvmExceptionCheck(env)) rvmThrow(env, wrappedException);
+        bugvmCallObjectInstanceMethod(env, wrappedException, initCause, exception);
+        if (!bugvmExceptionCheck(env)) bugvmThrow(env, wrappedException);
     }
 }
 
@@ -281,40 +281,40 @@ static Class* createClass(Env* env, ClassInfoHeader* header, Object* classLoader
 
     Class* superclass = NULL;
     if (ci.superclassName) {
-        superclass = rvmFindClassUsingLoader(env, ci.superclassName, classLoader);
+        superclass = bugvmFindClassUsingLoader(env, ci.superclassName, classLoader);
         if (!superclass) return NULL;
     }
 
-    rvmObtainClassLock(env);
+    bugvmObtainClassLock(env);
 
-    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->vitable, header->itables,
+    Class* clazz = bugvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->vitable, header->itables,
             header->classDataSize, header->instanceDataSize, header->instanceDataOffset, header->classRefCount, 
             header->instanceRefCount, ci.attributes, header->initializer);
 
     if (clazz) {
-        if (!rvmRegisterClass(env, clazz)) {
-            rvmReleaseClassLock(env);
+        if (!bugvmRegisterClass(env, clazz)) {
+            bugvmReleaseClassLock(env);
             return NULL;
         }
         header->clazz = clazz;
-        rvmHookClassLoaded(env, clazz, (void*)header);
+        bugvmHookClassLoaded(env, clazz, (void*)header);
     }
 
-    rvmReleaseClassLock(env);
+    bugvmReleaseClassLock(env);
     
     return clazz;
 }
 
 static void classInitialized(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !bugvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return;
-    rvmAtomicStoreInt(&header->flags, header->flags | CI_INITIALIZED);
+    bugvmAtomicStoreInt(&header->flags, header->flags | CI_INITIALIZED);
 }
 
 static Interface* loadInterfaces(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !bugvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return NULL;
 
     ClassInfo ci;
@@ -325,9 +325,9 @@ static Interface* loadInterfaces(Env* env, Class* clazz) {
     Interface* first = NULL;
     for (i = 0; i < ci.interfaceCount; i++) {
         const char* interfaceName = readInterfaceName(&p);
-        Class* interfaceClass = rvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
+        Class* interfaceClass = bugvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
         if (!interfaceClass) goto error;
-        Interface* interf = rvmAllocateInterface(env, interfaceClass);
+        Interface* interf = bugvmAllocateInterface(env, interfaceClass);
         if (!interf) goto error;
         LL_APPEND(first, interf); // Interfaces has to be in the correct order so we need to use the slower LL_APPEND
     }
@@ -335,7 +335,7 @@ static Interface* loadInterfaces(Env* env, Class* clazz) {
 error:
     while (first) {
         Interface* next = first->next;
-        rvmFreeMemoryUncollectable(env, first);
+        bugvmFreeMemoryUncollectable(env, first);
         first = next;
     }
     return NULL;
@@ -343,7 +343,7 @@ error:
 
 static Field* loadFields(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !bugvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return NULL;
 
     ClassInfo ci;
@@ -357,7 +357,7 @@ static Field* loadFields(Env* env, Class* clazz) {
     for (i = 0; i < ci.fieldCount; i++) {
         FieldInfo fi;
         readFieldInfo(&p, &fi);
-        Field* f = rvmAllocateField(env, clazz, fi.name, fi.desc, fi.access, fi.offset, fi.attributes);
+        Field* f = bugvmAllocateField(env, clazz, fi.name, fi.desc, fi.access, fi.offset, fi.attributes);
         if (!f) goto error;
         LL_PREPEND(first, f);
     }
@@ -365,7 +365,7 @@ static Field* loadFields(Env* env, Class* clazz) {
 error:
     while (first) {
         Field* next = first->next;
-        rvmFreeMemoryUncollectable(env, first);
+        bugvmFreeMemoryUncollectable(env, first);
         first = next;
     }
     return NULL;
@@ -384,7 +384,7 @@ static inline jboolean isStrippedMethod(MethodInfo* mi) {
 
 static Method* loadMethods(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !bugvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return NULL;
 
     ClassInfo ci;
@@ -402,11 +402,11 @@ static Method* loadMethods(Env* env, Class* clazz) {
         if (!isStrippedMethod(&mi)) {
             Method* m = NULL;
             if (mi.targetFnPtr) {
-                m = (Method*) rvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
+                m = (Method*) bugvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
             } else if (mi.callbackImpl) {
-                m = (Method*) rvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.callbackImpl, mi.attributes);
+                m = (Method*) bugvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.callbackImpl, mi.attributes);
             } else {
-                m = rvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.attributes);
+                m = bugvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.attributes);
             }
             if (!m) goto error;
             LL_PREPEND(first, m);
@@ -416,7 +416,7 @@ static Method* loadMethods(Env* env, Class* clazz) {
 error:
     while (first) {
         Method* next = first->next;
-        rvmFreeMemoryUncollectable(env, first);
+        bugvmFreeMemoryUncollectable(env, first);
         first = next;
     }
     return NULL;
@@ -477,7 +477,7 @@ static AddressClassLookup* getAddressClassLookups(Env* env) {
         jint count = 0;
         iterateClassInfos(env, countClassesWithConcreteMethodsCallback, _bcBootClassesHash, &count);
         iterateClassInfos(env, countClassesWithConcreteMethodsCallback, _bcClassesHash, &count);
-        AddressClassLookup* lookups = rvmAllocateMemoryAtomicUncollectable(env, sizeof(AddressClassLookup) * count);
+        AddressClassLookup* lookups = bugvmAllocateMemoryAtomicUncollectable(env, sizeof(AddressClassLookup) * count);
         if (!lookups) return NULL;
         AddressClassLookup* _lookups = lookups;
         iterateClassInfos(env, initAddressClassLookupsCallback, _bcBootClassesHash, &_lookups);
@@ -502,7 +502,7 @@ Class* findClassAt(Env* env, void* pc) {
         if (lookupClassInfo(env, header->className, _bcClassesHash) == header) {
             loader = systemClassLoader;
         }
-        clazz = rvmFindClassUsingLoader(env, header->className, loader);
+        clazz = bugvmFindClassUsingLoader(env, header->className, loader);
     }
     return clazz;
 }
@@ -510,7 +510,7 @@ Class* findClassAt(Env* env, void* pc) {
 jboolean exceptionMatch(Env* env, TrycatchContext* _tc) {
     BcTrycatchContext* tc = (BcTrycatchContext*) _tc;
     LandingPad* lps = tc->landingPads[tc->tc.sel - 1];
-    Object* throwable = rvmExceptionOccurred(env);
+    Object* throwable = bugvmExceptionOccurred(env);
     jint i;
     for (i = 0; lps[i].landingPadId > 0; i++) {
         ClassInfoHeader* header = lps[i].exHeader;
@@ -536,13 +536,13 @@ jboolean exceptionMatch(Env* env, TrycatchContext* _tc) {
     return FALSE;
 }
 
-#define ENTER rvmPushGatewayFrame(env)
+#define ENTER bugvmPushGatewayFrame(env)
 #define LEAVEV \
-    rvmPopGatewayFrame(env); \
-    if (rvmExceptionCheck(env)) rvmRaiseException(env, rvmExceptionOccurred(env))
+    bugvmPopGatewayFrame(env); \
+    if (bugvmExceptionCheck(env)) bugvmRaiseException(env, bugvmExceptionOccurred(env))
 #define LEAVE(result) \
-    rvmPopGatewayFrame(env); \
-    if (rvmExceptionCheck(env)) rvmRaiseException(env, rvmExceptionOccurred(env)); \
+    bugvmPopGatewayFrame(env); \
+    if (bugvmExceptionCheck(env)) bugvmRaiseException(env, bugvmExceptionOccurred(env)); \
     return result
 
 static Class* ldcClass(Env* env, ClassInfoHeader* header) {
@@ -552,14 +552,14 @@ static Class* ldcClass(Env* env, ClassInfoHeader* header) {
         if (lookupClassInfo(env, header->className, _bcClassesHash) == header) {
             loader = systemClassLoader;
         }
-        clazz = rvmFindClassUsingLoader(env, header->className, loader);
+        clazz = bugvmFindClassUsingLoader(env, header->className, loader);
         if (!clazz) wrapClassNotFoundException(env, header->className);
     }
     return clazz;
 }
 static void initializeClass(Env* env, ClassInfoHeader* header) {
     Class* clazz = ldcClass(env, header);
-    if (clazz) rvmInitialize(env, clazz);
+    if (clazz) bugvmInitialize(env, clazz);
 }
 void _bcInitializeClass(Env* env, ClassInfoHeader* header) {
     ENTER;
@@ -568,10 +568,10 @@ void _bcInitializeClass(Env* env, ClassInfoHeader* header) {
 }
 
 static void* lookupVirtualMethod(Env* env, Object* thiz, char* name, char* desc) {
-    Method* method = rvmGetMethod(env, thiz->clazz, name, desc);
+    Method* method = bugvmGetMethod(env, thiz->clazz, name, desc);
     if (!method) return NULL;
     if (METHOD_IS_ABSTRACT(method)) {
-        rvmThrowAbstractMethodError(env, ""); // TODO: Message
+        bugvmThrowAbstractMethodError(env, ""); // TODO: Message
         return NULL;
     }
     return method->synchronizedImpl ? method->synchronizedImpl : method->impl;
@@ -584,27 +584,27 @@ void* _bcLookupVirtualMethod(Env* env, Object* thiz, char* name, char* desc) {
 
 void* lookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, char* name, char* desc) {
     initializeClass(env, header);
-    if (rvmExceptionCheck(env)) return NULL;
+    if (bugvmExceptionCheck(env)) return NULL;
     Class* ownerInterface = header->clazz;
-    if (!rvmIsInstanceOf(env, thiz, ownerInterface)) {
+    if (!bugvmIsInstanceOf(env, thiz, ownerInterface)) {
         char message[256];
         snprintf(message, 256, "Class %s does not implement the requested interface %s", 
-            rvmToBinaryClassName(env, thiz->clazz->name), rvmToBinaryClassName(env, ownerInterface->name));
-        rvmThrowIncompatibleClassChangeError(env, message);
+            bugvmToBinaryClassName(env, thiz->clazz->name), bugvmToBinaryClassName(env, ownerInterface->name));
+        bugvmThrowIncompatibleClassChangeError(env, message);
         return NULL;
     }
-    Method* method = rvmGetInstanceMethod(env, thiz->clazz, name, desc);
-    Object* throwable = rvmExceptionClear(env);
+    Method* method = bugvmGetInstanceMethod(env, thiz->clazz, name, desc);
+    Object* throwable = bugvmExceptionClear(env);
     if (!method && throwable->clazz != java_lang_NoSuchMethodError) { 
-        rvmThrow(env, throwable);
+        bugvmThrow(env, throwable);
         return NULL;
     }
     if (!method || METHOD_IS_ABSTRACT(method)) {
-        rvmThrowAbstractMethodError(env, ""); // TODO: Message
+        bugvmThrowAbstractMethodError(env, ""); // TODO: Message
         return NULL;
     }
     if (!METHOD_IS_PUBLIC(method)) {
-        rvmThrowIllegalAccessError(env, ""); // TODO: Message
+        bugvmThrowIllegalAccessError(env, ""); // TODO: Message
         return NULL;
     }
     return method->synchronizedImpl ? method->synchronizedImpl : method->impl;
@@ -636,8 +636,8 @@ void* _bcLookupInterfaceMethodImpl(Env* env, ClassInfoHeader* header, Object* th
     Class* ownerInterface = header->clazz;
     char message[256];
     snprintf(message, 256, "Class %s does not implement the requested interface %s", 
-        rvmToBinaryClassName(env, thiz->clazz->name), rvmToBinaryClassName(env, ownerInterface->name));
-    rvmThrowIncompatibleClassChangeError(env, message);
+        bugvmToBinaryClassName(env, thiz->clazz->name), bugvmToBinaryClassName(env, ownerInterface->name));
+    bugvmThrowIncompatibleClassChangeError(env, message);
     LEAVE(NULL);
 }
 
@@ -652,7 +652,7 @@ void _bcAbstractMethodCalled(Env* env, Object* thiz) {
         if (*s == '/') *s = '.';
         s++;
     }
-    rvmThrowAbstractMethodError(env, msg);
+    bugvmThrowAbstractMethodError(env, msg);
     LEAVEV;
 }
 
@@ -667,63 +667,63 @@ void _bcNonPublicMethodCalled(Env* env, Object* thiz) {
         if (*s == '/') *s = '.';
         s++;
     }
-    rvmThrowIllegalAccessError(env, msg);
+    bugvmThrowIllegalAccessError(env, msg);
     LEAVEV;
 }
 
 void _bcMoveMemory16(void* dest, const void* src, jlong n) {
-    rvmMoveMemory16(dest, src, n);
+    bugvmMoveMemory16(dest, src, n);
 }
 
 void _bcMoveMemory32(void* dest, const void* src, jlong n) {
-    rvmMoveMemory32(dest, src, n);
+    bugvmMoveMemory32(dest, src, n);
 }
 
 void _bcTrycatchLeave(Env* env) {
-    rvmTrycatchLeave(env);
+    bugvmTrycatchLeave(env);
 }
 
 void _bcThrow(Env* env, Object* throwable) {
-    rvmRaiseException(env, throwable);
+    bugvmRaiseException(env, throwable);
 }
 
 void _bcThrowIfExceptionOccurred(Env* env) {
-    Object* throwable = rvmExceptionOccurred(env);
-    if (throwable) rvmRaiseException(env, throwable);
+    Object* throwable = bugvmExceptionOccurred(env);
+    if (throwable) bugvmRaiseException(env, throwable);
 }
 
 Object* _bcExceptionClear(Env* env) {
-    return rvmExceptionClear(env);
+    return bugvmExceptionClear(env);
 }
 
 void _bcThrowNullPointerException(Env* env) {
     ENTER;
-    rvmThrowNullPointerException(env);
+    bugvmThrowNullPointerException(env);
     LEAVEV;
 }
 
 void _bcThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint index) {
     ENTER;
-    rvmThrowArrayIndexOutOfBoundsException(env, length, index);
+    bugvmThrowArrayIndexOutOfBoundsException(env, length, index);
     LEAVEV;
 }
 
 void _bcThrowArithmeticException(Env* env) {
     ENTER;
-    rvmThrowArithmeticException(env);
+    bugvmThrowArithmeticException(env);
     LEAVEV;
 }
 
 void _bcThrowUnsatisfiedLinkError(Env* env, char* msg) {
     ENTER;
-    rvmThrowUnsatisfiedLinkError(env, msg);
+    bugvmThrowUnsatisfiedLinkError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowUnsatisfiedLinkErrorBridgeNotBound(Env* env, const char* className,
                                                 const char* methodName, const char* methodDesc) {
     ENTER;
-    rvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
+    bugvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
                  "@Bridge method %s.%s%s not bound",
                  className, methodName, methodDesc);
     LEAVEV;
@@ -732,7 +732,7 @@ void _bcThrowUnsatisfiedLinkErrorBridgeNotBound(Env* env, const char* className,
 void _bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound(Env* env, const char* className,
                                                 const char* methodName, const char* methodDesc) {
     ENTER;
-    rvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
+    bugvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
                  "Optional @Bridge method %s.%s%s not bound",
                  className, methodName, methodDesc);
     LEAVEV;
@@ -740,128 +740,128 @@ void _bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound(Env* env, const char* cl
 
 void _bcThrowNoClassDefFoundError(Env* env, char* msg) {
     ENTER;
-    rvmThrowNoClassDefFoundError(env, msg);
+    bugvmThrowNoClassDefFoundError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowNoSuchFieldError(Env* env, char* msg) {
     ENTER;
-    rvmThrowNoSuchFieldError(env, msg);
+    bugvmThrowNoSuchFieldError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowNoSuchMethodError(Env* env, char* msg) {
     ENTER;
-    rvmThrowNoSuchMethodError(env, msg);
+    bugvmThrowNoSuchMethodError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowIllegalAccessError(Env* env, char* msg) {
     ENTER;
-    rvmThrowIllegalAccessError(env, msg);
+    bugvmThrowIllegalAccessError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowInstantiationError(Env* env, char* msg) {
     ENTER;
-    rvmThrowInstantiationError(env, msg);
+    bugvmThrowInstantiationError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowAbstractMethodError(Env* env, char* msg) {
     ENTER;
-    rvmThrowAbstractMethodError(env, msg);
+    bugvmThrowAbstractMethodError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowIncompatibleClassChangeError(Env* env, char* msg) {
     ENTER;
-    rvmThrowIncompatibleClassChangeError(env, msg);
+    bugvmThrowIncompatibleClassChangeError(env, msg);
     LEAVEV;
 }
 
 void _bcThrowClassCastException(Env* env, ClassInfoHeader* header, Object* o) {
     ENTER;
     Class* clazz = ldcClass(env, header);
-    rvmThrowClassCastException(env, clazz, o->clazz);
+    bugvmThrowClassCastException(env, clazz, o->clazz);
     LEAVEV;
 }
 
 void _bcThrowClassCastExceptionArray(Env* env, Class* arrayClass, Object* o) {
     ENTER;
-    rvmThrowClassCastException(env, arrayClass, o->clazz);
+    bugvmThrowClassCastException(env, arrayClass, o->clazz);
     LEAVEV;
 }
 
 Object* _bcAllocate(Env* env, ClassInfoHeader* header) {
     ENTER;
-    Object* obj = rvmAllocateObject(env, header->clazz);
+    Object* obj = bugvmAllocateObject(env, header->clazz);
     LEAVE(obj);
 }
 
 void _bcRegisterFinalizer(Env* env, Object* obj) {
     ENTER;
-    rvmRegisterFinalizer(env, obj);
+    bugvmRegisterFinalizer(env, obj);
     LEAVEV;
 }
 
 BooleanArray* _bcNewBooleanArray(Env* env, jint length) {
     ENTER;
-    BooleanArray* array = rvmNewBooleanArray(env, length);
+    BooleanArray* array = bugvmNewBooleanArray(env, length);
     LEAVE(array);
 }
 
 ByteArray* _bcNewByteArray(Env* env, jint length) {
     ENTER;
-    ByteArray* array = rvmNewByteArray(env, length);
+    ByteArray* array = bugvmNewByteArray(env, length);
     LEAVE(array);
 }
 
 CharArray* _bcNewCharArray(Env* env, jint length) {
     ENTER;
-    CharArray* array = rvmNewCharArray(env, length);
+    CharArray* array = bugvmNewCharArray(env, length);
     LEAVE(array);
 }
 
 ShortArray* _bcNewShortArray(Env* env, jint length) {
     ENTER;
-    ShortArray* array = rvmNewShortArray(env, length);
+    ShortArray* array = bugvmNewShortArray(env, length);
     LEAVE(array);
 }
 
 IntArray* _bcNewIntArray(Env* env, jint length) {
     ENTER;
-    IntArray* array = rvmNewIntArray(env, length);
+    IntArray* array = bugvmNewIntArray(env, length);
     LEAVE(array);
 }
 
 LongArray* _bcNewLongArray(Env* env, jint length) {
     ENTER;
-    LongArray* array = rvmNewLongArray(env, length);
+    LongArray* array = bugvmNewLongArray(env, length);
     LEAVE(array);
 }
 
 FloatArray* _bcNewFloatArray(Env* env, jint length) {
     ENTER;
-    FloatArray* array = rvmNewFloatArray(env, length);
+    FloatArray* array = bugvmNewFloatArray(env, length);
     LEAVE(array);
 }
 
 DoubleArray* _bcNewDoubleArray(Env* env, jint length) {
     ENTER;
-    DoubleArray* array = rvmNewDoubleArray(env, length);
+    DoubleArray* array = bugvmNewDoubleArray(env, length);
     LEAVE(array);
 }
 
 ObjectArray* _bcNewObjectArray(Env* env, jint length, Class* arrayClass) {
     ENTER;
-    ObjectArray* array = rvmNewObjectArray(env, length, NULL, arrayClass, NULL);
+    ObjectArray* array = bugvmNewObjectArray(env, length, NULL, arrayClass, NULL);
     LEAVE(array);
 }
 
 Array* _bcNewMultiArray(Env* env, jint dims, jint* lengths, Class* arrayClass) {
     ENTER;
-    Array* array = rvmNewMultiArray(env, dims, lengths, arrayClass);
+    Array* array = bugvmNewMultiArray(env, dims, lengths, arrayClass);
     LEAVE(array);
 }
 
@@ -872,11 +872,11 @@ void _bcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* 
     }
     ENTER;
     Class* componentType = array->object.clazz->componentType;
-    jboolean assignable = rvmIsAssignableFrom(env, value->clazz, componentType);
-    if (!rvmExceptionCheck(env) && !assignable) {
-        rvmThrowArrayStoreException(env, value->clazz, array->object.clazz);
+    jboolean assignable = bugvmIsAssignableFrom(env, value->clazz, componentType);
+    if (!bugvmExceptionCheck(env) && !assignable) {
+        bugvmThrowArrayStoreException(env, value->clazz, array->object.clazz);
     }
-    if (!rvmExceptionCheck(env)) array->values[index] = value;
+    if (!bugvmExceptionCheck(env)) array->values[index] = value;
     LEAVEV;
 }
 
@@ -885,10 +885,10 @@ Object* _bcLdcString(Env* env, Object** ptr, char* s, jint length) {
     Object* o = *ptr;
     if (o) return o;
     ENTER;
-    o = rvmNewInternedStringUTF(env, s, length);
-    if (!rvmExceptionCheck(env)) {
+    o = bugvmNewInternedStringUTF(env, s, length);
+    if (!bugvmExceptionCheck(env)) {
         *ptr = o;
-        rvmRegisterDisappearingLink(env, (void**) ptr, o);
+        bugvmRegisterDisappearingLink(env, (void**) ptr, o);
     }
     LEAVE(o);
 }
@@ -897,9 +897,9 @@ Object* _bcLdcArrayBootClass(Env* env, Class** arrayClassPtr, char* name) {
     Class* arrayClass = *arrayClassPtr;
     if (arrayClass) return (Object*) arrayClass;
     ENTER;    
-    arrayClass = rvmFindClassUsingLoader(env, name, NULL);
+    arrayClass = bugvmFindClassUsingLoader(env, name, NULL);
     wrapClassNotFoundException(env, name);
-    if (!rvmExceptionCheck(env)) {
+    if (!bugvmExceptionCheck(env)) {
         *arrayClassPtr = arrayClass;
     }
     LEAVE((Object*) arrayClass);
@@ -909,9 +909,9 @@ Object* _bcLdcArrayClass(Env* env, Class** arrayClassPtr, char* name) {
     Class* arrayClass = *arrayClassPtr;
     if (arrayClass) return (Object*) arrayClass;
     ENTER;
-    arrayClass = rvmFindClassUsingLoader(env, name, systemClassLoader);
+    arrayClass = bugvmFindClassUsingLoader(env, name, systemClassLoader);
     wrapClassNotFoundException(env, name);
-    if (!rvmExceptionCheck(env)) {
+    if (!bugvmExceptionCheck(env)) {
         *arrayClassPtr = arrayClass;
     }
     LEAVE((Object*) arrayClass);
@@ -928,13 +928,13 @@ Object* _bcLdcClass(Env* env, ClassInfoHeader* header) {
 
 void _bcMonitorEnter(Env* env, Object* obj) {
     ENTER;
-    rvmLockObject(env, obj);
+    bugvmLockObject(env, obj);
     LEAVEV;
 }
 
 void _bcMonitorExit(Env* env, Object* obj) {
     ENTER;
-    rvmUnlockObject(env, obj);
+    bugvmUnlockObject(env, obj);
     LEAVEV;
 }
 
@@ -943,9 +943,9 @@ Object* _bcCheckcast(Env* env, ClassInfoHeader* header, Object* o) {
     ENTER;
     Class* clazz = ldcClass(env, header);
     if (clazz) {
-        jboolean b = rvmIsAssignableFrom(env, o->clazz, clazz);
-        if (!rvmExceptionCheck(env) && !b) {
-            rvmThrowClassCastException(env, clazz, o->clazz);
+        jboolean b = bugvmIsAssignableFrom(env, o->clazz, clazz);
+        if (!bugvmExceptionCheck(env) && !b) {
+            bugvmThrowClassCastException(env, clazz, o->clazz);
         }
     }
     LEAVE(o);
@@ -954,9 +954,9 @@ Object* _bcCheckcast(Env* env, ClassInfoHeader* header, Object* o) {
 Object* _bcCheckcastArray(Env* env, Class* arrayClass, Object* o) {
     if (!o) return o;
     ENTER;
-    jboolean b = rvmIsAssignableFrom(env, o->clazz, arrayClass);
-    if (!rvmExceptionCheck(env) && !b) {
-        rvmThrowClassCastException(env, arrayClass, o->clazz);
+    jboolean b = bugvmIsAssignableFrom(env, o->clazz, arrayClass);
+    if (!bugvmExceptionCheck(env) && !b) {
+        bugvmThrowClassCastException(env, arrayClass, o->clazz);
     }
     LEAVE(o);
 }
@@ -967,7 +967,7 @@ jint _bcInstanceof(Env* env, ClassInfoHeader* header, Object* o) {
     Class* clazz = ldcClass(env, header);
     jboolean b = FALSE;
     if (clazz) {
-        b = rvmIsInstanceOf(env, o, clazz);
+        b = bugvmIsInstanceOf(env, o, clazz);
     }
     LEAVE((jint) b);
 }
@@ -975,55 +975,55 @@ jint _bcInstanceof(Env* env, ClassInfoHeader* header, Object* o) {
 jint _bcInstanceofArray(Env* env, Class* arrayClass, Object* o) {
     if (!o) return (jint) FALSE;
     ENTER;
-    jboolean b = rvmIsInstanceOf(env, o, arrayClass);
+    jboolean b = bugvmIsInstanceOf(env, o, arrayClass);
     LEAVE((jint) b);
 }
 
 void _bcPushNativeFrame(Env* env, GatewayFrame* gwFrame, void* frameAddress) {
-    rvmPushGatewayFrame0(env, gwFrame, frameAddress, NULL);
+    bugvmPushGatewayFrame0(env, gwFrame, frameAddress, NULL);
 }
 
 void _bcPopNativeFrame(Env* env) {
-    rvmPopGatewayFrame(env);
+    bugvmPopGatewayFrame(env);
 }
 
 void _bcPushCallbackFrame(Env* env, GatewayFrame* gwFrame, void* frameAddress) {
-    rvmPushGatewayFrame0(env, gwFrame, frameAddress, NULL);
+    bugvmPushGatewayFrame0(env, gwFrame, frameAddress, NULL);
 }
 
 void _bcPopCallbackFrame(Env* env) {
-    rvmPopGatewayFrame(env);
+    bugvmPopGatewayFrame(env);
 }
 
 void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
     if (*ptr != NULL) return *ptr;
     TRACEF("_bcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s", 
         clazz->name, name, desc, shortMangledName, longMangledName);
-    NativeMethod* method = (NativeMethod*) rvmGetMethod(env, clazz, name, desc);
+    NativeMethod* method = (NativeMethod*) bugvmGetMethod(env, clazz, name, desc);
     void* impl = NULL;
     if (method) {
-        impl = rvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, clazz->classLoader, ptr);
+        impl = bugvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, clazz->classLoader, ptr);
     }
     return impl;
 }
 
 Env* _bcAttachThreadFromCallback(void) {
-    Env* env = rvmGetEnv();
+    Env* env = bugvmGetEnv();
     if (!env) {
         // This thread has never been attached or it has been
         // attached, then detached in the TLS destructor. In the
         // latter case, we are getting called back by native code
         // e.g. an auto-release pool, that is triggered after
         // the TLS destructor.
-        if (rvmAttachCurrentThreadAsDaemon(vm, &env, NULL, NULL) != JNI_OK) {
-            rvmAbort("Failed to attach thread in callback");
+        if (bugvmAttachCurrentThreadAsDaemon(vm, &env, NULL, NULL) != JNI_OK) {
+            bugvmAbort("Failed to attach thread in callback");
         }
     }
     return env;
 }
 
 void _bcDetachThreadFromCallback(Env* env) {
-    if(rvmHasThreadBeenDetached()) {
+    if(bugvmHasThreadBeenDetached()) {
         // this can only ever be called after
         // the TLS destructor for this thread
         // has been called. It happens when
@@ -1031,25 +1031,25 @@ void _bcDetachThreadFromCallback(Env* env) {
         // into our Java code. In that case
         // bcAttachThreadFromCallback must
         // reattach the thread first.
-        rvmDetachCurrentThread(vm, TRUE, TRUE);
+        bugvmDetachCurrentThread(vm, TRUE, TRUE);
     }
 }
 
 void* _bcCopyStruct(Env* env, void* src, jint size) {
     ENTER;
-    void* result = rvmCopyMemory(env, src, size);
+    void* result = bugvmCopyMemory(env, src, size);
     LEAVE(result);
 }
 
 void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     Env* env = (Env*) debugEnv;
     // Temporarily clear any exception that has been thrown. Could be the case if we are called from a catch block.
-    Object* throwable = rvmExceptionClear(env);
+    Object* throwable = bugvmExceptionClear(env);
     // We cannot use ENTER/LEAVEV as it will raise any exception thrown in here. We just want the code to 
     // proceed normally after we return.
-    rvmPushGatewayFrame(env);
-    rvmHookInstrumented(debugEnv, lineNumber, lineNumberOffset, bptable, pc);
-    rvmPopGatewayFrame(env);
+    bugvmPushGatewayFrame(env);
+    bugvmHookInstrumented(debugEnv, lineNumber, lineNumberOffset, bptable, pc);
+    bugvmPopGatewayFrame(env);
     // Restore the exception if one had been thrown when this function was called.
     env->throwable = throwable;
 }
@@ -1069,27 +1069,27 @@ jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
     if (vmArgs) {
         for (int i = 0; i < vmArgs->nOptions; i++) {
             JavaVMOption* opt = &vmArgs->options[i];
-            if (startsWith(opt->optionString, "-rvm:")) {
+            if (startsWith(opt->optionString, "-bugvm:")) {
                 char* arg = &opt->optionString[5];
-                rvmParseOption(arg, &options);
+                bugvmParseOption(arg, &options);
             } else if (startsWith(opt->optionString, "-X")) {
                 char* arg = &opt->optionString[2];
-                rvmParseOption(arg, &options);
+                bugvmParseOption(arg, &options);
             } else if (startsWith(opt->optionString, "-D")) {
                 char* arg = &opt->optionString[1];
-                rvmParseOption(arg, &options);
+                bugvmParseOption(arg, &options);
             } else if (startsWith(opt->optionString, "-verbose")) {
-                rvmParseOption("log=trace", &options);
+                bugvmParseOption("log=trace", &options);
             }
         }
     }
 
-    if (!rvmInitOptions(0, NULL, &options, FALSE)) {
+    if (!bugvmInitOptions(0, NULL, &options, FALSE)) {
         return JNI_ERR;
     }
 
     // Start up bugvm (JNI)
-    Env* env = rvmStartup(&options);
+    Env* env = bugvmStartup(&options);
     if (!env) {
         return JNI_ERR;
     }
