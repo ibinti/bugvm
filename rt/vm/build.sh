@@ -75,7 +75,7 @@ if [ "x$TARGETS" = 'x' ]; then
   case $OS in
   Darwin)
     if [ $MACOSX_SDK_VERSION = 10.7 ] ; then
-      TARGETS="ios-thumbv7 ios-x86"
+      TARGETS="ios-thumbv7 ios-x86 macosx-x86_64"
     else
       TARGETS="ios-thumbv7 ios-arm64 ios-x86_64 ios-x86 macosx-x86_64"
     fi
