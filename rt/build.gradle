@@ -28,6 +28,7 @@ shadowJar {
     classifier = null
     exclude "META-INF/maven/"
     relocate "org.json", "com.bugvm.json"
+    relocate "com.eaio", "com.bugvm.eaio"
 }
 
 task nativeLib(type:Exec) {
