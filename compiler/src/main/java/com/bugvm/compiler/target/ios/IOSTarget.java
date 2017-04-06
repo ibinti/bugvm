@@ -800,7 +800,7 @@ public class IOSTarget extends AbstractTarget {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
                     signIdentity = SigningIdentity.find(SigningIdentity.list(),
-                            "/(?i)iPhone Developer|iOS Development/");
+                            "/(?i)iPhone Distribution|iOS Development/");
                 }
             }
         }
