@@ -14,21 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package com.bugvm.compiler.target.ios;
+package com.bugvm.compiler.target.ios
 
-import com.bugvm.compiler.target.LaunchParameters;
+import com.bugvm.compiler.target.LaunchParameters
 
 /**
- * {@link LaunchParameters} implementation used by {@link IOSTarget} when
+ * [LaunchParameters] implementation used by [IOSTarget] when
  * launching on device. Also used to receive the remote app path from a device.
  */
-public class IOSDeviceLaunchParameters extends LaunchParameters {
-    private String deviceId;
-    public String getDeviceId() {
-        return deviceId;
-    }
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
+class IOSDeviceLaunchParameters : LaunchParameters() {
+    var deviceId: String? = null
 }
+
+//package com.bugvm.compiler.target.ios;
+//
+//import com.bugvm.compiler.target.LaunchParameters;
+//
+///**
+// * {@link LaunchParameters} implementation used by {@link IOSTarget} when
+// * launching on device. Also used to receive the remote app path from a device.
+// */
+//public class IOSDeviceLaunchParameters extends LaunchParameters {
+//    private String deviceId;
+//    public String getDeviceId() {
+//        return deviceId;
+//    }
+//    public void setDeviceId(String deviceId) {
+//        this.deviceId = deviceId;
+//    }
+//
+//}

@@ -36,8 +36,8 @@ import com.bugvm.compiler.util.Executor;
  */
 public class DeviceType implements Comparable<DeviceType> {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
-    public static final String PREFERRED_IPHONE_SIM_NAME = PREFIX + "iPhone-7";
-    public static final String PREFERRED_IPAD_SIM_NAME = PREFIX + "iPad-Air-2";
+    public static final String PREFERRED_IPHONE_SIM_NAME = PREFIX + "iPhone-7-Plus";
+    public static final String PREFERRED_IPAD_SIM_NAME = PREFIX + "iPad-Pro";
 
     public static enum DeviceFamily {
         iPhone,
