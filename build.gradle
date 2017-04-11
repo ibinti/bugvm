@@ -66,7 +66,7 @@ allprojects {
 
 apply plugin: "io.codearte.nexus-staging"
 
-defaultTasks "install", "clean"
+defaultTasks "install"
 
 task buildJar {
 
