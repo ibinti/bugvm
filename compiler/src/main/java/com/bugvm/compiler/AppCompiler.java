@@ -46,8 +46,6 @@ import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-//import org.json.simple.JSONObject;
-//import org.json.simple.JSONValue;
 import com.bugvm.compiler.clazz.Clazz;
 import com.bugvm.compiler.clazz.Clazzes;
 import com.bugvm.compiler.clazz.Path;
