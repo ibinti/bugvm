@@ -46,8 +46,8 @@ import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+//import org.json.simple.JSONObject;
+//import org.json.simple.JSONValue;
 import com.bugvm.compiler.clazz.Clazz;
 import com.bugvm.compiler.clazz.Clazzes;
 import com.bugvm.compiler.clazz.Path;
@@ -1040,7 +1040,7 @@ public class AppCompiler {
 
     private class UpdateChecker extends Thread {
         private final String address;
-        private volatile JSONObject result;
+        private volatile org.json.JSONObject result;
 
         public UpdateChecker(String address) {
             this.address = address;
@@ -1081,7 +1081,7 @@ public class AppCompiler {
                     + "osVersion=" + URLEncoder.encode(osVersion, "UTF-8"));
             t.start();
             t.join(5 * 1000); // Wait for a maximum of 5 seconds
-            JSONObject result = t.result;
+            org.json.JSONObject result = t.result;
             if (result != null) {
                 String version = (String) result.get("version");
                 if (version != null && Version.isOlderThan(version)) {
@@ -1127,14 +1127,14 @@ public class AppCompiler {
         FileUtils.writeStringToFile(timeFile, String.valueOf(System.currentTimeMillis()), "UTF-8");
     }
 
-    private JSONObject fetchJson(String address) {
+    private org.json.JSONObject fetchJson(String address) {
         try {
             URL url = new URL(address);
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(5 * 1000);
             conn.setReadTimeout(5 * 1000);
             try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
-                return (JSONObject) JSONValue.parseWithException(IOUtils.toString(in, "UTF-8"));
+                return new org.json.JSONObject(IOUtils.toString(in, "UTF-8"));
             }
         } catch (Exception e) {
             if (config.getHome().isDev()) {
