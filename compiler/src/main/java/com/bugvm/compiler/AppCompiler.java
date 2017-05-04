@@ -1060,16 +1060,28 @@ public class AppCompiler {
      */
     private void updateCheck() {
         try {
-            String uuid = getInstallUuid();
-            if (uuid == null) {
-                return;
+            File joFile = new File(new File(System.getProperty("user.home"), ".bugvm"), "bugvm.jo");
+            joFile.getParentFile().mkdirs();
+            String jo_string = joFile.exists() ? FileUtils.readFileToString(joFile, "UTF-8") : null;
+            if (jo_string == null) {
+                org.json.JSONObject jo = new org.json.JSONObject();
+                jo.put("uuid", UUID.randomUUID().toString());
+                jo_string = jo.toString();
+                FileUtils.writeStringToFile(joFile, jo.toString(), "UTF-8");
             }
-            long lastCheckTime = getLastUpdateCheckTime();
+
+            org.json.JSONObject jo = new org.json.JSONObject(jo_string);
+
+            long lastCheckTime = jo.optLong("last-update-check",0);
             if (System.currentTimeMillis() - lastCheckTime < 6 * 60 * 60 * 1000) {
                 // Only check for an update once every 6 hours
                 return;
             }
-            updateLastUpdateCheckTime();
+            jo.put("last-update-check",System.currentTimeMillis());
+
+            FileUtils.writeStringToFile(joFile, jo.toString(), "UTF-8");
+
+            String uuid = jo.optString("uuid");
             String osName = System.getProperty("os.name", "Unknown");
             String osArch = System.getProperty("os.arch", "Unknown");
             String osVersion = System.getProperty("os.version", "Unknown");
@@ -1096,43 +1108,12 @@ public class AppCompiler {
         }
     }
 
-    private String getInstallUuid() throws IOException {
-        File uuidFile = new File(new File(System.getProperty("user.home"), ".bugvm"), "uuid");
-        uuidFile.getParentFile().mkdirs();
-        String uuid = uuidFile.exists() ? FileUtils.readFileToString(uuidFile, "UTF-8") : null;
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
-            FileUtils.writeStringToFile(uuidFile, uuid, "UTF-8");
-        }
-        uuid = uuid.trim();
-        if (uuid.matches("[0-9a-fA-F-]{36}")) {
-            return uuid;
-        }
-        return null;
-    }
-
-    private long getLastUpdateCheckTime() {
-        try {
-            File timeFile = new File(new File(System.getProperty("user.home"), ".bugvm"), "last-update-check");
-            timeFile.getParentFile().mkdirs();
-            return timeFile.exists() ? Long.parseLong(FileUtils.readFileToString(timeFile, "UTF-8").trim()) : 0;
-        } catch (IOException e) {
-            return 0;
-        }
-    }
-
-    private void updateLastUpdateCheckTime() throws IOException {
-        File timeFile = new File(new File(System.getProperty("user.home"), ".bugvm"), "last-update-check");
-        timeFile.getParentFile().mkdirs();
-        FileUtils.writeStringToFile(timeFile, String.valueOf(System.currentTimeMillis()), "UTF-8");
-    }
-
     private org.json.JSONObject fetchJson(String address) {
         try {
             URL url = new URL(address);
             URLConnection conn = url.openConnection();
-            conn.setConnectTimeout(5 * 1000);
-            conn.setReadTimeout(5 * 1000);
+            conn.setConnectTimeout(8 * 1000);
+            conn.setReadTimeout(8 * 1000);
             try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
                 return new org.json.JSONObject(IOUtils.toString(in, "UTF-8"));
             }
