@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 RoboVM AB.
+ * Copyright (C) 2014 RoboVM AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bugvm.gradle.tasks;
+package com.bugvm.gradle.tasks
 
+import com.bugvm.compiler.target.ios.DeviceType.DeviceFamily
 
 /**
- *
+
+ * @author Junji Takakura
  */
-public class InstallTask extends AbstractBugVMBuildTask {
-    @Override
-    protected boolean shouldArchive() {
-        return false;
+class IPadSimulatorTask : AbstractIOSSimulatorTask() {
+
+    override fun invoke() {
+        launch(getDeviceType(DeviceFamily.iPad))
     }
 }
