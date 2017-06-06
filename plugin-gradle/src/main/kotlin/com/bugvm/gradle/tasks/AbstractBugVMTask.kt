@@ -15,165 +15,126 @@
  */
 package com.bugvm.gradle.tasks
 
-import com.bugvm.compiler.AppCompiler
-import com.bugvm.compiler.config.Arch
-import com.bugvm.compiler.config.Config
-import com.bugvm.compiler.config.OS
-import com.bugvm.compiler.log.Logger
-import com.bugvm.compiler.target.ios.ProvisioningProfile
-import com.bugvm.compiler.target.ios.SigningIdentity
-import com.bugvm.gradle.BugVMPlugin
-import com.bugvm.gradle.BugVMPluginExtension
-import org.apache.commons.compress.archivers.ArchiveEntry
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
-import org.apache.maven.repository.internal.MavenRepositorySystemSession
-import org.apache.maven.repository.internal.MavenServiceLocator
-import org.apache.maven.wagon.Wagon
-import org.apache.maven.wagon.providers.http.HttpWagon
-import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
-import org.gradle.api.Project
-import org.gradle.api.tasks.TaskAction
-import org.sonatype.aether.RepositorySystem
-import org.sonatype.aether.RepositorySystemSession
-import org.sonatype.aether.artifact.Artifact
-import org.sonatype.aether.connector.wagon.WagonProvider
-import org.sonatype.aether.connector.wagon.WagonRepositoryConnectorFactory
-import org.sonatype.aether.repository.LocalRepository
-import org.sonatype.aether.repository.RemoteRepository
-import org.sonatype.aether.resolution.ArtifactRequest
-import org.sonatype.aether.resolution.ArtifactResolutionException
-import org.sonatype.aether.resolution.ArtifactResult
-import org.sonatype.aether.spi.connector.RepositoryConnectorFactory
-import org.sonatype.aether.util.artifact.DefaultArtifact
-import java.io.*
-import java.util.*
-import java.util.zip.GZIPInputStream
-
 /**
-
  * @author Junji Takakura
  */
-abstract class AbstractBugVMTask : DefaultTask() {
+abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
 
-    protected val bugvmProject: Project
-    protected val extension: BugVMPluginExtension
-    protected val repositorySystem: RepositorySystem
-    protected val repositorySystemSession: RepositorySystemSession
-    protected val remoteRepositories: List<RemoteRepository>
-    protected var bugVMLogger: Logger? = null
+    protected val bugvmProject: org.gradle.api.Project
+    protected val extension: com.bugvm.gradle.BugVMPluginExtension
+    protected val repositorySystem: org.sonatype.aether.RepositorySystem
+    protected val repositorySystemSession: org.sonatype.aether.RepositorySystemSession
+    protected val remoteRepositories: List<org.sonatype.aether.repository.RemoteRepository>
+    protected var bugVMLogger: com.bugvm.compiler.log.Logger? = null
 
     init {
         bugvmProject = getProject()
-        extension = bugvmProject.extensions.getByName(BugVMPluginExtension.NAME) as BugVMPluginExtension
+        extension = bugvmProject.extensions.getByName(com.bugvm.gradle.BugVMPluginExtension.NAME) as com.bugvm.gradle.BugVMPluginExtension
         repositorySystem = createRepositorySystem()
         repositorySystemSession = createRepositorySystemSession()
         remoteRepositories = createRemoteRepositories()
     }
 
-    fun build(os: OS, arch: Arch, targetType: String): AppCompiler {
+    fun build(os: com.bugvm.compiler.config.OS, arch: com.bugvm.compiler.config.Arch, targetType: String): com.bugvm.compiler.AppCompiler {
         logger.info("Building BugVM app for: $os ($arch)")
 
-        val builder: Config.Builder
+        val builder: com.bugvm.compiler.config.Config.Builder
         try {
-            builder = Config.Builder()
-        } catch (e: IOException) {
-            throw GradleException(e.message, e)
+            builder = com.bugvm.compiler.config.Config.Builder()
+        } catch (e: java.io.IOException) {
+            throw org.gradle.api.GradleException(e.message, e)
         }
 
         configure(builder).os(os).arch(arch).targetType(targetType)
 
         // execute the BugVM build
-        val config: Config
+        val config: com.bugvm.compiler.config.Config
 
         try {
             logger.info("Compiling BugVM app, this could take a while, especially the first time round")
             config = builder.build()
-            val compiler = AppCompiler(config)
+            val compiler = com.bugvm.compiler.AppCompiler(config)
             compiler.build()
             logger.info("Compile BugVM app completed.")
             return compiler
-        } catch (e: IOException) {
-            throw GradleException("Error building BugVM executable for app", e)
+        } catch (e: java.io.IOException) {
+            throw org.gradle.api.GradleException("Error building BugVM executable for app", e)
         }
 
     }
 
-    protected fun configure(builder: Config.Builder): Config.Builder {
+    protected fun configure(builder: com.bugvm.compiler.config.Config.Builder): com.bugvm.compiler.config.Config.Builder {
         builder.logger(GetBugVMLogger())
 
         if (extension.propertiesFile != null) {
-            val propertiesFile = File(extension.propertiesFile)
+            val propertiesFile = java.io.File(extension.propertiesFile)
 
             if (!propertiesFile.exists()) {
-                throw GradleException("Invalid 'propertiesFile' specified for BugVM compile: " + propertiesFile)
+                throw org.gradle.api.GradleException("Invalid 'propertiesFile' specified for BugVM compile: " + propertiesFile)
             }
             try {
                 logger.debug(
                         "Including properties file in BugVM compiler config: " + propertiesFile.absolutePath)
                 builder.addProperties(propertiesFile)
-            } catch (e: IOException) {
-                throw GradleException("Failed to add properties file to BugVM config: " + propertiesFile)
+            } catch (e: java.io.IOException) {
+                throw org.gradle.api.GradleException("Failed to add properties file to BugVM config: " + propertiesFile)
             }
 
         } else {
             try {
                 builder.readProjectProperties(bugvmProject.projectDir, false)
-            } catch (e: IOException) {
-                throw GradleException(
+            } catch (e: java.io.IOException) {
+                throw org.gradle.api.GradleException(
                         "Failed to read BugVM bugvmProject properties file(s) in " + bugvmProject.projectDir.absolutePath, e)
             }
 
         }
 
         if (extension.configFile != null) {
-            val configFile = File(extension.configFile)
+            val configFile = java.io.File(extension.configFile)
 
             if (!configFile.exists()) {
-                throw GradleException("Invalid 'configFile' specified for BugVM compile: " + configFile)
+                throw org.gradle.api.GradleException("Invalid 'configFile' specified for BugVM compile: " + configFile)
             }
             try {
                 logger.debug("Loading config file for BugVM compiler: " + configFile.absolutePath)
                 builder.read(configFile)
             } catch (e: Exception) {
-                throw GradleException("Failed to read BugVM config file: " + configFile)
+                throw org.gradle.api.GradleException("Failed to read BugVM config file: " + configFile)
             }
 
         } else {
             try {
                 builder.readProjectConfig(bugvmProject.projectDir, false)
             } catch (e: Exception) {
-                throw GradleException(
+                throw org.gradle.api.GradleException(
                         "Failed to read bugvmProject BugVM config file in " + bugvmProject.projectDir.absolutePath, e)
             }
 
         }
 
-        var installDir: File? = null
+        var installDir: java.io.File? = null
         if (extension.installDir != null) {
-            installDir = File(extension.installDir)
+            installDir = java.io.File(extension.installDir)
         } else {
-            installDir = File(bugvmProject.buildDir, "bugvm")
+            installDir = java.io.File(bugvmProject.buildDir, "bugvm")
         }
-        var cacheDir: File? = null
+        var cacheDir: java.io.File? = null
         if (extension.cacheDir != null) {
-            cacheDir = File(extension.cacheDir!!)
+            cacheDir = java.io.File(extension.cacheDir!!)
         } else {
-            cacheDir = Config.getDefaultCacheDir()
+            cacheDir = com.bugvm.compiler.config.Config.getDefaultCacheDir()
         }
-        val temporaryDirectory = File(bugvmProject.buildDir, "bugvm.tmp")
+        val temporaryDirectory = java.io.File(bugvmProject.buildDir, "bugvm.tmp")
         try {
-            FileUtils.deleteDirectory(temporaryDirectory)
-        } catch (e: IOException) {
-            throw GradleException("Failed to clean output dir " + temporaryDirectory, e)
+            org.apache.commons.io.FileUtils.deleteDirectory(temporaryDirectory)
+        } catch (e: java.io.IOException) {
+            throw org.gradle.api.GradleException("Failed to clean output dir " + temporaryDirectory, e)
         }
 
         temporaryDirectory.mkdirs()
 
-        builder.home(Config.Home(unpack()))
+        builder.home(com.bugvm.compiler.config.Config.Home(unpack()))
                 .tmpDir(temporaryDirectory)
                 .skipInstall(true)
                 .installDir(installDir)
@@ -197,14 +158,14 @@ abstract class AbstractBugVMTask : DefaultTask() {
                 val iosSignIdentity = extension.iosSignIdentity
 
                 logger.debug("Using explicit iOS Signing identity: " + iosSignIdentity)
-                builder.iosSignIdentity(SigningIdentity.find(SigningIdentity.list(), iosSignIdentity))
+                builder.iosSignIdentity(com.bugvm.compiler.target.ios.SigningIdentity.find(com.bugvm.compiler.target.ios.SigningIdentity.list(), iosSignIdentity))
             }
 
             if (extension.iosProvisioningProfile != null) {
                 val iosProvisioningProfile = extension.iosProvisioningProfile
 
                 logger.debug("Using explicit iOS provisioning profile: " + iosProvisioningProfile)
-                builder.iosProvisioningProfile(ProvisioningProfile.find(ProvisioningProfile.list(),
+                builder.iosProvisioningProfile(com.bugvm.compiler.target.ios.ProvisioningProfile.find(com.bugvm.compiler.target.ios.ProvisioningProfile.list(),
                         iosProvisioningProfile))
             }
         }
@@ -213,10 +174,10 @@ abstract class AbstractBugVMTask : DefaultTask() {
 
         // configure the runtime classpath
         val classpathEntries = bugvmProject.configurations.getByName("runtime").files
-        classpathEntries.add(File(bugvmProject.buildDir, "classes/main"))
+        classpathEntries.add(java.io.File(bugvmProject.buildDir, "classes/main"))
 
         if (bugvmProject.hasProperty("output.classesDir")) {
-            classpathEntries.add(bugvmProject.property("output.classesDir") as File)
+            classpathEntries.add(bugvmProject.property("output.classesDir") as java.io.File)
         }
 
         for (classpathEntry in classpathEntries) {
@@ -234,15 +195,15 @@ abstract class AbstractBugVMTask : DefaultTask() {
         return builder
     }
 
-    @TaskAction
+    @org.gradle.api.tasks.TaskAction
     abstract operator fun invoke()
 
-    @Throws(GradleException::class)
-    protected fun unpack(): File {
-        val artifact = resolveArtifact("com.bugvm:bugvm-dist:tgz:" + BugVMPlugin.bugVMVersion)
+    @Throws(org.gradle.api.GradleException::class)
+    protected fun unpack(): java.io.File {
+        val artifact = resolveArtifact("com.bugvm:bugvm-dist:tgz:" + com.bugvm.gradle.BugVMPlugin.bugVMVersion)
         val distTarFile = artifact.file
-        val unpackedDirectory = File(distTarFile.parent, "unpacked")
-        val unpackedDistDirectory = File(unpackedDirectory, "bugvm-" + BugVMPlugin.bugVMVersion)
+        val unpackedDirectory = java.io.File(distTarFile.parent, "unpacked")
+        val unpackedDistDirectory = java.io.File(unpackedDirectory, "bugvm-" + com.bugvm.gradle.BugVMPlugin.bugVMVersion)
 
         if (unpackedDirectory.exists() && artifact.isSnapshot) {
             ant.invokeMethod("delete", object : HashMap<String, Any>() {
@@ -258,17 +219,17 @@ abstract class AbstractBugVMTask : DefaultTask() {
             logger.info("Extracting '$distTarFile' to: $unpackedDirectory")
 
             if (!unpackedDirectory.mkdirs()) {
-                throw GradleException("Unable to create base directory to unpack into: " + unpackedDirectory)
+                throw org.gradle.api.GradleException("Unable to create base directory to unpack into: " + unpackedDirectory)
             }
 
             try {
                 extractTarGz(distTarFile, unpackedDirectory)
-            } catch (e: IOException) {
-                throw GradleException("Couldn't extract distribution tgz", e)
+            } catch (e: java.io.IOException) {
+                throw org.gradle.api.GradleException("Couldn't extract distribution tgz", e)
             }
 
             if (!unpackedDistDirectory.exists()) {
-                throw GradleException("Unable to unpack archive")
+                throw org.gradle.api.GradleException("Unable to unpack archive")
             }
 
             logger.debug("Archive '$distTarFile' unpacked to: $unpackedDirectory")
@@ -276,7 +237,7 @@ abstract class AbstractBugVMTask : DefaultTask() {
 
         ant.invokeMethod("chmod", object : HashMap<String, Any>() {
             init {
-                put("dir", File(unpackedDistDirectory, "bin").absoluteFile)
+                put("dir", java.io.File(unpackedDistDirectory, "bin").absoluteFile)
                 put("perm", "+x")
                 put("includes", "*")
             }
@@ -285,21 +246,21 @@ abstract class AbstractBugVMTask : DefaultTask() {
         return unpackedDistDirectory
     }
 
-    @Throws(GradleException::class)
-    protected fun resolveArtifact(artifactLocator: String): Artifact {
-        val request = ArtifactRequest()
-        val artifact = DefaultArtifact(artifactLocator)
+    @Throws(org.gradle.api.GradleException::class)
+    protected fun resolveArtifact(artifactLocator: String): org.sonatype.aether.artifact.Artifact {
+        val request = org.sonatype.aether.resolution.ArtifactRequest()
+        val artifact = org.sonatype.aether.util.artifact.DefaultArtifact(artifactLocator)
         request.artifact = artifact
         request.repositories = remoteRepositories
 
         logger.debug("Resolving artifact $artifact from $remoteRepositories")
 
-        val result: ArtifactResult
+        val result: org.sonatype.aether.resolution.ArtifactResult
 
         try {
             result = repositorySystem.resolveArtifact(repositorySystemSession, request)
-        } catch (e: ArtifactResolutionException) {
-            throw GradleException(e.message, e)
+        } catch (e: org.sonatype.aether.resolution.ArtifactResolutionException) {
+            throw org.gradle.api.GradleException(e.message, e)
         }
 
         logger.debug(
@@ -309,9 +270,9 @@ abstract class AbstractBugVMTask : DefaultTask() {
         return result.artifact
     }
 
-    protected fun GetBugVMLogger(): Logger {
+    protected fun GetBugVMLogger(): com.bugvm.compiler.log.Logger {
         if (bugVMLogger == null) {
-            bugVMLogger = object : Logger {
+            bugVMLogger = object : com.bugvm.compiler.log.Logger {
                 override fun debug(s: String, vararg objects: Any) {
                     logger.debug(String.format(s, *objects))
                 }
@@ -333,53 +294,53 @@ abstract class AbstractBugVMTask : DefaultTask() {
         return bugVMLogger!!
     }
 
-    private fun createRepositorySystem(): RepositorySystem {
-        val locator = MavenServiceLocator()
-        locator.addService(RepositoryConnectorFactory::class.java, WagonRepositoryConnectorFactory::class.java)
-        locator.setService(WagonProvider::class.java, ManualWagonProvider::class.java)
+    private fun createRepositorySystem(): org.sonatype.aether.RepositorySystem {
+        val locator = org.apache.maven.repository.internal.MavenServiceLocator()
+        locator.addService(org.sonatype.aether.spi.connector.RepositoryConnectorFactory::class.java, org.sonatype.aether.connector.wagon.WagonRepositoryConnectorFactory::class.java)
+        locator.setService(org.sonatype.aether.connector.wagon.WagonProvider::class.java, ManualWagonProvider::class.java)
 
-        return locator.getService(RepositorySystem::class.java)
+        return locator.getService(org.sonatype.aether.RepositorySystem::class.java)
     }
 
-    private fun createRepositorySystemSession(): RepositorySystemSession {
-        val localRepository = LocalRepository(System.getProperty("user.home") + "/.m2/repository")
-        val session = MavenRepositorySystemSession()
+    private fun createRepositorySystemSession(): org.sonatype.aether.RepositorySystemSession {
+        val localRepository = org.sonatype.aether.repository.LocalRepository(System.getProperty("user.home") + "/.m2/repository")
+        val session = org.apache.maven.repository.internal.MavenRepositorySystemSession()
         session.localRepositoryManager = repositorySystem.newLocalRepositoryManager(localRepository)
 
         return session
     }
 
-    private fun createRemoteRepositories(): List<RemoteRepository> {
-        val repositories = ArrayList<RemoteRepository>()
-        repositories.add(RemoteRepository("maven-central", "default", "http://repo1.maven.org/maven2/"))
-        repositories.add(RemoteRepository("oss.sonatype.org-snapshots", "default",
+    private fun createRemoteRepositories(): List<org.sonatype.aether.repository.RemoteRepository> {
+        val repositories = ArrayList<org.sonatype.aether.repository.RemoteRepository>()
+        repositories.add(org.sonatype.aether.repository.RemoteRepository("maven-central", "default", "http://repo1.maven.org/maven2/"))
+        repositories.add(org.sonatype.aether.repository.RemoteRepository("oss.sonatype.org-snapshots", "default",
                 "https://oss.sonatype.org/content/repositories/snapshots/"))
 
         return repositories
     }
 
-    @Throws(IOException::class)
-    private fun extractTarGz(archive: File, destDir: File) {
-        var `in`: TarArchiveInputStream? = null
+    @Throws(java.io.IOException::class)
+    private fun extractTarGz(archive: java.io.File, destDir: java.io.File) {
+        var `in`: org.apache.commons.compress.archivers.tar.TarArchiveInputStream? = null
         try {
-            `in` = TarArchiveInputStream(GZIPInputStream(FileInputStream(archive)))
-            var entry: ArchiveEntry = `in`.nextEntry
+            `in` = org.apache.commons.compress.archivers.tar.TarArchiveInputStream(java.util.zip.GZIPInputStream(java.io.FileInputStream(archive)))
+            var entry: org.apache.commons.compress.archivers.ArchiveEntry = `in`.nextEntry
             while (entry != null) {
-                val f = File(destDir, entry!!.name)
+                val f = java.io.File(destDir, entry!!.name)
                 if (entry.isDirectory) {
                     f.mkdirs()
                 } else {
                     f.parentFile.mkdirs()
-                    var out: OutputStream? = null
+                    var out: java.io.OutputStream? = null
                     try {
-                        out = FileOutputStream(f)
-                        IOUtils.copy(`in`, out)
+                        out = java.io.FileOutputStream(f)
+                        org.apache.commons.io.IOUtils.copy(`in`, out)
                     } finally {
-                        IOUtils.closeQuietly(out)
+                        org.apache.commons.io.IOUtils.closeQuietly(out)
                     }
                 }
                 f.setLastModified(entry.lastModifiedDate.time)
-                if (entry is TarArchiveEntry) {
+                if (entry is org.apache.commons.compress.archivers.tar.TarArchiveEntry) {
                     val mode = entry.mode
                     if (mode and 64 > 0) {
                         // Preserve execute permissions
@@ -389,22 +350,22 @@ abstract class AbstractBugVMTask : DefaultTask() {
                 entry = `in`.nextEntry
             }
         } finally {
-            IOUtils.closeQuietly(`in`)
+            org.apache.commons.io.IOUtils.closeQuietly(`in`)
         }
     }
 
-    class ManualWagonProvider : WagonProvider {
+    class ManualWagonProvider : org.sonatype.aether.connector.wagon.WagonProvider {
 
         @Throws(Exception::class)
-        override fun lookup(roleHint: String): Wagon? {
+        override fun lookup(roleHint: String): org.apache.maven.wagon.Wagon? {
             if ("http" == roleHint || "https" == roleHint) {
-                return HttpWagon()
+                return org.apache.maven.wagon.providers.http.HttpWagon()
             }
 
             return null
         }
 
-        override fun release(wagon: Wagon) {
+        override fun release(wagon: org.apache.maven.wagon.Wagon) {
             // noop
         }
     }

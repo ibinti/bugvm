@@ -15,10 +15,6 @@
  */
 package com.bugvm.gradle.tasks
 
-
-/**
-
- */
 class CreateTask : AbstractBugVMBuildTask() {
     override fun shouldArchive(): Boolean {
         return true

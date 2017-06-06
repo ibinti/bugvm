@@ -15,13 +15,10 @@
  */
 package com.bugvm.gradle
 
-import org.gradle.api.Project
-
 /**
-
  * @author Junji Takakura
  */
-class BugVMPluginExtension(val project: Project) {
+class BugVMPluginExtension(val project: org.gradle.api.Project) {
     var propertiesFile: String? = null
     var configFile: String? = null
     var iosSignIdentity: String? = null

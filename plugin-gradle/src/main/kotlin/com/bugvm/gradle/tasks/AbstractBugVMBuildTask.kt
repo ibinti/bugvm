@@ -15,35 +15,24 @@
  */
 package com.bugvm.gradle.tasks
 
-import java.io.IOException
-import java.util.ArrayList
-
-import org.gradle.api.GradleException
-import com.bugvm.compiler.AppCompiler
-import com.bugvm.compiler.config.Arch
-import com.bugvm.compiler.config.Config
-
-/**
-
- */
 abstract class AbstractBugVMBuildTask : AbstractBugVMTask() {
 
     protected abstract fun shouldArchive(): Boolean
 
     override fun invoke() {
         try {
-            val builder = configure(Config.Builder())
+            val builder = configure(com.bugvm.compiler.config.Config.Builder())
                     .skipInstall(false)
 
             if (extension.archs != null) {
-                val archs = ArrayList<Arch>()
+                val archs = java.util.ArrayList<com.bugvm.compiler.config.Arch>()
                 for (s in extension.archs!!.trim { it <= ' ' }.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
-                    archs.add(Arch.valueOf(s))
+                    archs.add(com.bugvm.compiler.config.Arch.valueOf(s))
                 }
                 builder.archs(archs)
             }
 
-            val compiler = AppCompiler(builder.build())
+            val compiler = com.bugvm.compiler.AppCompiler(builder.build())
             compiler.build()
             if (shouldArchive()) {
                 compiler.archive()

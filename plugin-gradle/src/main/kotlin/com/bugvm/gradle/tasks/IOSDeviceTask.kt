@@ -15,28 +15,18 @@
  */
 package com.bugvm.gradle.tasks
 
-import org.gradle.api.GradleException
-import com.bugvm.compiler.AppCompiler
-import com.bugvm.compiler.config.Arch
-import com.bugvm.compiler.config.Config
-import com.bugvm.compiler.config.OS
-import com.bugvm.compiler.target.LaunchParameters
-import com.bugvm.compiler.target.ios.IOSTarget
-
 /**
-
  * @author Junji Takakura
  */
 class IOSDeviceTask : AbstractBugVMTask() {
-
     override fun invoke() {
         try {
-            var arch = Arch.thumbv7
-            if (extension.arch != null && extension.arch == Arch.arm64.toString()) {
-                arch = Arch.arm64
+            var arch = com.bugvm.compiler.config.Arch.thumbv7
+            if (extension.arch != null && extension.arch == com.bugvm.compiler.config.Arch.arm64.toString()) {
+                arch = com.bugvm.compiler.config.Arch.arm64
             }
 
-            val compiler = build(OS.ios, arch, IOSTarget.TYPE)
+            val compiler = build(com.bugvm.compiler.config.OS.ios, arch, com.bugvm.compiler.target.ios.IOSTarget.TYPE)
             if (extension.isSkipLaunch) {
                 return
             }
@@ -44,7 +34,7 @@ class IOSDeviceTask : AbstractBugVMTask() {
             val launchParameters = config.target.createLaunchParameters()
             compiler.launch(launchParameters)
         } catch (t: Throwable) {
-            throw GradleException("Failed to launch IOS Device", t)
+            throw org.gradle.api.GradleException("Failed to launch IOS Device", t)
         }
 
     }

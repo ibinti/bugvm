@@ -15,34 +15,23 @@
  */
 package com.bugvm.gradle.tasks
 
-import org.gradle.api.GradleException
-import com.bugvm.compiler.AppCompiler
-import com.bugvm.compiler.config.Arch
-import com.bugvm.compiler.config.Config
-import com.bugvm.compiler.config.OS
-import com.bugvm.compiler.target.ConsoleTarget
-import com.bugvm.compiler.target.LaunchParameters
-
-/**
-
- */
 class ConsoleTask : AbstractBugVMTask() {
 
     override fun invoke() {
         try {
-            var arch = Arch.getDefaultArch()
+            var arch = com.bugvm.compiler.config.Arch.getDefaultArch()
             if (extension.arch != null) {
-                arch = Arch.valueOf(extension.arch!!)
+                arch = com.bugvm.compiler.config.Arch.valueOf(extension.arch!!)
             }
 
-            val compiler = build(OS.getDefaultOS(), arch, ConsoleTarget.TYPE)
+            val compiler = build(com.bugvm.compiler.config.OS.getDefaultOS(), arch, com.bugvm.compiler.target.ConsoleTarget.TYPE)
             val config = compiler.config
             val launchParameters = config.target.createLaunchParameters()
             compiler.launch(launchParameters)
 
 
         } catch (t: Throwable) {
-            throw GradleException("Failed to launch console application", t)
+            throw org.gradle.api.GradleException("Failed to launch console application", t)
         }
 
     }

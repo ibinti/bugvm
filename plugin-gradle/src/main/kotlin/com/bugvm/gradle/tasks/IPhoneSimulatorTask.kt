@@ -15,15 +15,11 @@
  */
 package com.bugvm.gradle.tasks
 
-import com.bugvm.compiler.target.ios.DeviceType.DeviceFamily
-
 /**
-
  * @author Junji Takakura
  */
-class IPadSimulatorTask : AbstractIOSSimulatorTask() {
-
+class IPhoneSimulatorTask : AbstractIOSSimulatorTask() {
     override fun invoke() {
-        launch(getDeviceType(DeviceFamily.iPad))
+        launch(getDeviceType(com.bugvm.compiler.target.ios.DeviceType.DeviceFamily.iPhone))
     }
 }

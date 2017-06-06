@@ -15,35 +15,25 @@
  */
 package com.bugvm.gradle.tasks
 
-import java.io.File
-
-import org.gradle.api.GradleException
-import com.bugvm.compiler.config.Arch
-import com.bugvm.compiler.config.OS
-import com.bugvm.compiler.target.ios.DeviceType
-import com.bugvm.compiler.target.ios.IOSSimulatorLaunchParameters
-import com.bugvm.compiler.target.ios.IOSTarget
-
 /**
-
  * @author Junji Takakura
  */
 abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
 
-    protected fun launch(type: DeviceType) {
+    protected fun launch(type: com.bugvm.compiler.target.ios.DeviceType) {
         try {
-            val compiler = build(OS.ios, arch, IOSTarget.TYPE)
+            val compiler = build(com.bugvm.compiler.config.OS.ios, arch, com.bugvm.compiler.target.ios.IOSTarget.TYPE)
 
             if (extension.isSkipLaunch) {
                 return
             }
 
             val config = compiler.config
-            val launchParameters = config.target.createLaunchParameters() as IOSSimulatorLaunchParameters
+            val launchParameters = config.target.createLaunchParameters() as com.bugvm.compiler.target.ios.IOSSimulatorLaunchParameters
             launchParameters.deviceType = type
 
             if (extension.stdoutFifo != null) {
-                val stdoutFifo = File(extension.stdoutFifo)
+                val stdoutFifo = java.io.File(extension.stdoutFifo)
                 val isWritable: Boolean
 
                 if (stdoutFifo.exists()) {
@@ -54,14 +44,14 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
                 }
 
                 if (!isWritable) {
-                    throw GradleException("Unwritable 'stdoutFifo' specified for BugVM compile: " + stdoutFifo)
+                    throw org.gradle.api.GradleException("Unwritable 'stdoutFifo' specified for BugVM compile: " + stdoutFifo)
                 }
 
                 launchParameters.stdoutFifo = stdoutFifo
             }
 
             if (extension.stderrFifo != null) {
-                val stderrFifo = File(extension.stderrFifo)
+                val stderrFifo = java.io.File(extension.stderrFifo)
                 val isWritable: Boolean
 
                 if (stderrFifo.exists()) {
@@ -72,7 +62,7 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
                 }
 
                 if (!isWritable) {
-                    throw GradleException("Unwritable 'stderrFifo' specified for BugVM compile: " + stderrFifo)
+                    throw org.gradle.api.GradleException("Unwritable 'stderrFifo' specified for BugVM compile: " + stderrFifo)
                 }
 
                 launchParameters.stderrFifo = stderrFifo
@@ -80,23 +70,23 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
 
             compiler.launch(launchParameters)
         } catch (t: Throwable) {
-            throw GradleException("Failed to launch IOS Simulator", t)
+            throw org.gradle.api.GradleException("Failed to launch IOS Simulator", t)
         }
 
     }
 
-    protected val arch: Arch
+    protected val arch: com.bugvm.compiler.config.Arch
         get() {
-            var arch = Arch.x86_64
-            if (extension.arch != null && extension.arch == Arch.x86.toString()) {
-                arch = Arch.x86
+            var arch = com.bugvm.compiler.config.Arch.x86_64
+            if (extension.arch != null && extension.arch == com.bugvm.compiler.config.Arch.x86.toString()) {
+                arch = com.bugvm.compiler.config.Arch.x86
             }
             return arch
         }
 
-    protected fun getDeviceType(family: DeviceType.DeviceFamily): DeviceType {
+    protected fun getDeviceType(family: com.bugvm.compiler.target.ios.DeviceType.DeviceFamily): com.bugvm.compiler.target.ios.DeviceType {
         val deviceName = bugvmProject.properties["bugvm.device.name"] as String
         val sdkVersion = bugvmProject.properties["bugvm.sdk.version"] as String
-        return DeviceType.getBestDeviceType(arch, family, deviceName, sdkVersion)
+        return com.bugvm.compiler.target.ios.DeviceType.getBestDeviceType(arch, family, deviceName, sdkVersion)
     }
 }
