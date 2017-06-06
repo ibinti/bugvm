@@ -1,7 +1,7 @@
 buildscript {
     ext {
         bugVMVersion = "1.2.4-SNAPSHOT"
-        kotlin_version = "1.1.1"
+        kotlin_version = "1.1.2"
     }
     repositories {
         jcenter()
