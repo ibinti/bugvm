@@ -13,10 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bugvm.gradle.tasks
+package com.bugvm.gradle.tasks;
 
-class InstallTask : AbstractBugVMBuildTask() {
-    override fun shouldArchive(): Boolean {
-        return false
+
+/**
+ * 
+ */
+public class CreateTask extends AbstractBugVMBuildTask {
+    @Override
+    protected boolean shouldArchive() {
+        return true;
     }
 }

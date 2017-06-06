@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bugvm.gradle.tasks
+package com.bugvm.gradle.tasks;
+
+import com.bugvm.compiler.target.ios.DeviceType.DeviceFamily;
 
 /**
+ *
  * @author Junji Takakura
  */
-class IPadSimulatorTask : AbstractIOSSimulatorTask() {
-    override fun invoke() {
-        launch(getDeviceType(com.bugvm.compiler.target.ios.DeviceType.DeviceFamily.iPad))
+public class IPhoneSimulatorTask extends AbstractIOSSimulatorTask {
+
+    @Override
+    public void invoke() {
+        launch(getDeviceType(DeviceFamily.iPhone));
     }
 }

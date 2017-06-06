@@ -14,33 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package com.bugvm.compiler.target.ios
 
-import com.bugvm.compiler.target.LaunchParameters
+package com.bugvm.compiler.target.ios;
+
+import com.bugvm.compiler.target.LaunchParameters;
 
 /**
- * [LaunchParameters] implementation used by [IOSTarget] when
+ * {@link LaunchParameters} implementation used by {@link IOSTarget} when
  * launching on device. Also used to receive the remote app path from a device.
  */
-class Kotlin_IOSDeviceLaunchParameters : LaunchParameters() {
-    var deviceId: String? = null
-}
+public class IOSDeviceLaunchParameters extends LaunchParameters {
+    private String deviceId;
+    public String getDeviceId() {
+        return deviceId;
+    }
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
-//package com.bugvm.compiler.target.ios;
-//
-//import com.bugvm.compiler.target.LaunchParameters;
-//
-///**
-// * {@link LaunchParameters} implementation used by {@link IOSTarget} when
-// * launching on device. Also used to receive the remote app path from a device.
-// */
-//public class IOSDeviceLaunchParameters extends LaunchParameters {
-//    private String deviceId;
-//    public String getDeviceId() {
-//        return deviceId;
-//    }
-//    public void setDeviceId(String deviceId) {
-//        this.deviceId = deviceId;
-//    }
-//
-//}
+}

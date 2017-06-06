@@ -22,7 +22,7 @@ import com.bugvm.compiler.target.LaunchParameters
  * [LaunchParameters] implementation used by [IOSTarget] when
  * launching on the simulator.
  */
-class IOSSimulatorLaunchParameters : LaunchParameters() {
+class Kotlin_IOSSimulatorLaunchParameters : LaunchParameters() {
     var deviceType: DeviceType? = null
 }
 
