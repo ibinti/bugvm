@@ -95,8 +95,8 @@ abstract public class AbstractIOSSimulatorTask extends AbstractBugVMTask {
     }
 
     protected DeviceType getDeviceType(DeviceType.DeviceFamily family) {
-        String deviceName = (String) project.getProperties().get("bugvm.device.name");
-        String sdkVersion = (String) project.getProperties().get("bugvm.sdk.version");
+        String deviceName = (String) m_project.getProperties().get("bugvm.device.name");
+        String sdkVersion = (String) m_project.getProperties().get("bugvm.sdk.version");
         return DeviceType.getBestDeviceType(getArch(), family, deviceName, sdkVersion);
     }
 }
