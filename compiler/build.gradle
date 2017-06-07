@@ -2,7 +2,6 @@ archivesBaseName = "bugvm-compiler"
 description = """BugVM Compiler"""
 
 dependencies {
-    //compile fileTree(include: ["*.jar"], dir: "lib")
     compile project(":llvm")
     compile project(":rt")
     compile project(":soot")
