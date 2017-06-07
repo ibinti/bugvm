@@ -24,9 +24,9 @@ abstract class AbstractBugVMBuildTask : AbstractBugVMTask() {
             val builder = configure(com.bugvm.compiler.config.Config.Builder())
                     .skipInstall(false)
 
-            if (extension.archs != null) {
+            if (extension!!.archs != null) {
                 val archs = java.util.ArrayList<com.bugvm.compiler.config.Arch>()
-                for (s in extension.archs!!.trim { it <= ' ' }.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
+                for (s in extension!!.archs!!.trim { it <= ' ' }.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
                     archs.add(com.bugvm.compiler.config.Arch.valueOf(s))
                 }
                 builder.archs(archs)

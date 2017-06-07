@@ -21,7 +21,7 @@ package com.bugvm.gradle.tasks
 abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
 
     @JvmField var m_project: org.gradle.api.Project? = null
-    @JvmField val extension: com.bugvm.gradle.BugVMPluginExtension
+    @JvmField var extension: com.bugvm.gradle.BugVMPluginExtension? = null
     val repositorySystem: org.sonatype.aether.RepositorySystem
     val repositorySystemSession: org.sonatype.aether.RepositorySystemSession
     val remoteRepositories: List<org.sonatype.aether.repository.RemoteRepository>
@@ -66,8 +66,8 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
     protected fun configure(builder: com.bugvm.compiler.config.Config.Builder): com.bugvm.compiler.config.Config.Builder {
         builder.logger(getBugVMLogger())
 
-        if (extension.propertiesFile != null) {
-            val propertiesFile = java.io.File(extension.propertiesFile)
+        if (extension!!.propertiesFile != null) {
+            val propertiesFile = java.io.File(extension!!.propertiesFile)
 
             if (!propertiesFile.exists()) {
                 throw org.gradle.api.GradleException("Invalid 'propertiesFile' specified for BugVM compile: " + propertiesFile)
@@ -90,8 +90,8 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
 
         }
 
-        if (extension.configFile != null) {
-            val configFile = java.io.File(extension.configFile)
+        if (extension!!.configFile != null) {
+            val configFile = java.io.File(extension!!.configFile)
 
             if (!configFile.exists()) {
                 throw org.gradle.api.GradleException("Invalid 'configFile' specified for BugVM compile: " + configFile)
@@ -114,14 +114,14 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
         }
 
         var installDir: java.io.File? = null
-        if (extension.installDir != null) {
-            installDir = java.io.File(extension.installDir)
+        if (extension!!.installDir != null) {
+            installDir = java.io.File(extension!!.installDir)
         } else {
             installDir = java.io.File(project.buildDir, "bugvm")
         }
         var cacheDir: java.io.File? = null
-        if (extension.cacheDir != null) {
-            cacheDir = java.io.File(extension.cacheDir!!)
+        if (extension!!.cacheDir != null) {
+            cacheDir = java.io.File(extension!!.cacheDir!!)
         } else {
             cacheDir = com.bugvm.compiler.config.Config.getDefaultCacheDir()
         }
@@ -144,25 +144,25 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
             builder.mainClass(project.property("mainClassName") as String)
         }
 
-        if (extension.isDebug) {
+        if (extension!!.isDebug) {
             builder.debug(true)
-            if (extension.debugPort != -1) {
-                builder.addPluginArgument("debug:jdwpport=" + extension.debugPort)
+            if (extension!!.debugPort != -1) {
+                builder.addPluginArgument("debug:jdwpport=" + extension!!.debugPort)
             }
         }
 
-        if (extension.isIosSkipSigning) {
+        if (extension!!.isIosSkipSigning) {
             builder.iosSkipSigning(true)
         } else {
-            if (extension.iosSignIdentity != null) {
-                val iosSignIdentity = extension.iosSignIdentity
+            if (extension!!.iosSignIdentity != null) {
+                val iosSignIdentity = extension!!.iosSignIdentity
 
                 logger.debug("Using explicit iOS Signing identity: " + iosSignIdentity)
                 builder.iosSignIdentity(com.bugvm.compiler.target.ios.SigningIdentity.find(com.bugvm.compiler.target.ios.SigningIdentity.list(), iosSignIdentity))
             }
 
-            if (extension.iosProvisioningProfile != null) {
-                val iosProvisioningProfile = extension.iosProvisioningProfile
+            if (extension!!.iosProvisioningProfile != null) {
+                val iosProvisioningProfile = extension!!.iosProvisioningProfile
 
                 logger.debug("Using explicit iOS provisioning profile: " + iosProvisioningProfile)
                 builder.iosProvisioningProfile(com.bugvm.compiler.target.ios.ProvisioningProfile.find(com.bugvm.compiler.target.ios.ProvisioningProfile.list(),

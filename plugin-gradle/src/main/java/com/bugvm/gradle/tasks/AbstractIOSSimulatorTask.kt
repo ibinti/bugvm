@@ -24,7 +24,7 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
         try {
             val compiler = build(com.bugvm.compiler.config.OS.ios, arch, com.bugvm.compiler.target.ios.IOSTarget.TYPE)
 
-            if (extension.isSkipLaunch) {
+            if (extension!!.isSkipLaunch) {
                 return
             }
 
@@ -32,8 +32,8 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
             val launchParameters = config.target.createLaunchParameters() as com.bugvm.compiler.target.ios.IOSSimulatorLaunchParameters
             launchParameters.deviceType = type
 
-            if (extension.stdoutFifo != null) {
-                val stdoutFifo = java.io.File(extension.stdoutFifo)
+            if (extension!!.stdoutFifo != null) {
+                val stdoutFifo = java.io.File(extension!!.stdoutFifo)
                 val isWritable: Boolean
 
                 if (stdoutFifo.exists()) {
@@ -50,8 +50,8 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
                 launchParameters.stdoutFifo = stdoutFifo
             }
 
-            if (extension.stderrFifo != null) {
-                val stderrFifo = java.io.File(extension.stderrFifo)
+            if (extension!!.stderrFifo != null) {
+                val stderrFifo = java.io.File(extension!!.stderrFifo)
                 val isWritable: Boolean
 
                 if (stderrFifo.exists()) {
@@ -78,7 +78,7 @@ abstract class AbstractIOSSimulatorTask : AbstractBugVMTask() {
     protected val arch: com.bugvm.compiler.config.Arch
         get() {
             var arch = com.bugvm.compiler.config.Arch.x86_64
-            if (extension.arch != null && extension.arch == com.bugvm.compiler.config.Arch.x86.toString()) {
+            if (extension!!.arch != null && extension!!.arch == com.bugvm.compiler.config.Arch.x86.toString()) {
                 arch = com.bugvm.compiler.config.Arch.x86
             }
             return arch
