@@ -18,15 +18,9 @@ Native App Platforms:
 
 ### HelloWorld Examples
 
-[Kotlin HelloWorld](https://github.com/bugvm/bugvm-kotlin)
-
-[Java HelloWorld](https://github.com/bugvm/bugvm-helloworld)
+[Console HelloWorld](https://github.com/bugvm/bugvm-helloworld)
 
 
-### iOS Samples
+### iOS Exaamples
 
-[iOS Kotlin Sample App](https://github.com/bugvm/bugvm-kotlin-ios)
-
-[iOS Click Button App](https://github.com/bugvm/bugvm-ios)
-
-[iOS WebView App](https://github.com/bugvm/bugvm-webview)
+[iOS App](https://github.com/bugvm/bugvm-ios)
