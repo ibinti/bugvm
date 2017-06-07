@@ -8,7 +8,7 @@ BugVM makes it possible to build native apps in Kotlin and Java. BugVM is a fork
 * JVM
 * LLVM
 
-### Framework Biding
+### Framework Binding
 * iOS
 
 ### Native Platform
