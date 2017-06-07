@@ -1038,7 +1038,7 @@ public class AppCompiler {
 
     private class UpdateChecker extends Thread {
         private final String address;
-        private volatile org.json.JSONObject result;
+        private volatile com.bugvm.json.JSONObject result;
 
         public UpdateChecker(String address) {
             this.address = address;
@@ -1062,13 +1062,13 @@ public class AppCompiler {
             joFile.getParentFile().mkdirs();
             String jo_string = joFile.exists() ? FileUtils.readFileToString(joFile, "UTF-8") : null;
             if (jo_string == null) {
-                org.json.JSONObject jo = new org.json.JSONObject();
+                com.bugvm.json.JSONObject jo = new com.bugvm.json.JSONObject();
                 jo.put("uuid", UUID.randomUUID().toString());
                 jo_string = jo.toString();
                 FileUtils.writeStringToFile(joFile, jo.toString(), "UTF-8");
             }
 
-            org.json.JSONObject jo = new org.json.JSONObject(jo_string);
+            com.bugvm.json.JSONObject jo = new com.bugvm.json.JSONObject(jo_string);
 
             long lastCheckTime = jo.optLong("last-update-check",0);
             if (System.currentTimeMillis() - lastCheckTime < 6 * 60 * 60 * 1000) {
@@ -1091,7 +1091,7 @@ public class AppCompiler {
                     + "osVersion=" + URLEncoder.encode(osVersion, "UTF-8"));
             t.start();
             t.join(5 * 1000); // Wait for a maximum of 5 seconds
-            org.json.JSONObject result = t.result;
+            com.bugvm.json.JSONObject result = t.result;
             if (result != null) {
                 String version = (String) result.get("version");
                 if (version != null && Version.isOlderThan(version)) {
@@ -1106,14 +1106,14 @@ public class AppCompiler {
         }
     }
 
-    private org.json.JSONObject fetchJson(String address) {
+    private com.bugvm.json.JSONObject fetchJson(String address) {
         try {
             URL url = new URL(address);
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(8 * 1000);
             conn.setReadTimeout(8 * 1000);
             try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
-                return new org.json.JSONObject(IOUtils.toString(in, "UTF-8"));
+                return new com.bugvm.json.JSONObject(IOUtils.toString(in, "UTF-8"));
             }
         } catch (Exception e) {
             if (config.getHome().isDev()) {
