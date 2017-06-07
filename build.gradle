@@ -69,9 +69,9 @@ apply plugin: "io.codearte.nexus-staging"
 defaultTasks "install"
 
 task buildJar {
-
     dependsOn install, build, clean
-
+    install.mustRunAfter build
+    build.mustRunAfter clean
 }
 
 task buildRT {
