@@ -1,10 +1,17 @@
+# Mac
 .DS_Store
+
+#Gradle
 .gradle
-.idea
 build
+
+# IntelliJ
+.idea
 *.iml
 *.hprof
 local.properties
+
+# Shared Libraries
 *.a
 *.so
 *.dylib
