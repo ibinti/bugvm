@@ -2,7 +2,7 @@ archivesBaseName = "bugvm-apple"
 description = """BugVM Apple Bindings"""
 
 dependencies {
-    compile project(":rt")
+    compile project(":Core:rt")
 }
 
 modifyPom {

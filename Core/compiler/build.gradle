@@ -2,9 +2,9 @@ archivesBaseName = "bugvm-compiler"
 description = """BugVM Compiler"""
 
 dependencies {
-    compile project(":llvm")
-    compile project(":rt")
-    compile project(":soot")
+    compile project(":Core:llvm")
+    compile project(":Core:rt")
+    compile project(":Core:soot")
 
     compile "com.googlecode.plist:dd-plist:1.16"
     compile "commons-io:commons-io:2.4"

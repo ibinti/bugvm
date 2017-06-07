@@ -76,13 +76,13 @@ task buildJar {
 
 task buildRT {
 
-    dependsOn ":rt:nativeLib"
+    dependsOn ":Core:rt:nativeLib"
 
 }
 
 task buildLLVM {
 
-    dependsOn ":llvm:nativeLib"
+    dependsOn ":Core:llvm:nativeLib"
 
 }
 
@@ -99,13 +99,38 @@ task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 
+dependencies {
+    compile project(":Core")
+    compile project(":Binding")
+}
+
+modifyPom {
+    project {
+        name project.archivesBaseName
+        description project.description
+        licenses {
+            license {
+                name "GNU General Public License, version 2"
+                url "https://www.gnu.org/licenses/gpl-2.0.html"
+                distribution "repo"
+            }
+        }
+    }
+}
+
+task listJars {
+    doLast {
+        configurations.runtime.each { File file -> println file.name }
+    }
+}
+
 archivesBaseName = "bugvm-dist"
 description = "BugVM Dist Package (tgz)"
 
 dependencies {
-    compile project(":compiler")
-    compile project(":apple")
-    compile project(":rt")
+    compile project(":Core:compiler")
+    compile project(":Binding:iOS")
+    compile project(":Core:rt")
 }
 
 task tgzTask(type: Tar) {
@@ -114,42 +139,42 @@ task tgzTask(type: Tar) {
     compression = Compression.GZIP
 
     into ("bugvm-${version}/bin") {
-        from ("bin")
+        from ("Core/bin")
     }
 
     into("bugvm-${version}/lib") {
-        from  "compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
-        from("rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
-        from("apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
+        from  "Core/compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
+        from("Core/rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
+        from("Binding/iOS/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
     }
 
     into ("bugvm-${version}/lib/vm") {
-        from ("rt/vm/binaries")
+        from ("Core/rt/vm/binaries")
     }
 
     into ("bugvm-${version}/modules/licenses/apple") {
-        from ("apple/NOTICE.txt")
-        from ("apple/LICENSE.txt")
+        from ("Binding/iOS/NOTICE.txt")
+        from ("Binding/iOS/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/llvm") {
-        from ("llvm/NOTICE.txt")
-        from ("llvm/LICENSE.txt")
+        from ("Core/llvm/NOTICE.txt")
+        from ("Core/llvm/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/rt") {
-        from ("rt/NOTICE.txt")
-        from ("rt/LICENSE.txt")
+        from ("Core/rt/NOTICE.txt")
+        from ("Core/rt/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/compiler") {
-        from ("compiler/NOTICE.txt")
-        from ("compiler/LICENSE.txt")
+        from ("Core/compiler/NOTICE.txt")
+        from ("Core/compiler/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/vm") {
-        from ("vm/NOTICE.txt")
-        from ("vm/LICENSE.txt")
+        from ("Core/vm/NOTICE.txt")
+        from ("Core/vm/LICENSE.txt")
     }
 
     outputs.upToDateWhen { false }
@@ -170,11 +195,5 @@ modifyPom {
                 distribution "repo"
             }
         }
-    }
-}
-
-task listJars {
-    doLast {
-        configurations.runtime.each { File file -> println file.name }
     }
 }
