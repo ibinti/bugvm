@@ -22,14 +22,14 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
 
     @JvmField var m_project: org.gradle.api.Project? = null
     @JvmField var extension: com.bugvm.gradle.BugVMPluginExtension? = null
-    val repositorySystem: org.sonatype.aether.RepositorySystem
-    val repositorySystemSession: org.sonatype.aether.RepositorySystemSession
-    val remoteRepositories: List<org.sonatype.aether.repository.RemoteRepository>
+    var repositorySystem: org.sonatype.aether.RepositorySystem? = null
+    var repositorySystemSession: org.sonatype.aether.RepositorySystemSession? = null
+    var remoteRepositories: List<org.sonatype.aether.repository.RemoteRepository>? = null
     var bugvmLogger: com.bugvm.compiler.log.Logger? = null
 
     init {
         m_project = project
-        extension = project.extensions.getByName(com.bugvm.gradle.BugVMPluginExtension.NAME) as com.bugvm.gradle.BugVMPluginExtension
+        extension = m_project!!.extensions.getByName(com.bugvm.gradle.BugVMPluginExtension.NAME) as com.bugvm.gradle.BugVMPluginExtension
         repositorySystem = createRepositorySystem()
         repositorySystemSession = createRepositorySystemSession()
         remoteRepositories = createRemoteRepositories()
@@ -258,7 +258,7 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
         val result: org.sonatype.aether.resolution.ArtifactResult
 
         try {
-            result = repositorySystem.resolveArtifact(repositorySystemSession, request)
+            result = repositorySystem!!.resolveArtifact(repositorySystemSession, request)
         } catch (e: org.sonatype.aether.resolution.ArtifactResolutionException) {
             throw org.gradle.api.GradleException(e.message, e)
         }
@@ -305,7 +305,7 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
     private fun createRepositorySystemSession(): org.sonatype.aether.RepositorySystemSession {
         val localRepository = org.sonatype.aether.repository.LocalRepository(System.getProperty("user.home") + "/.m2/repository")
         val session = org.apache.maven.repository.internal.MavenRepositorySystemSession()
-        session.localRepositoryManager = repositorySystem.newLocalRepositoryManager(localRepository)
+        session.localRepositoryManager = repositorySystem!!.newLocalRepositoryManager(localRepository)
 
         return session
     }
@@ -319,15 +319,15 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
         return repositories
     }
 
+    var entry: org.apache.commons.compress.archivers.ArchiveEntry ? = null
     @Throws(java.io.IOException::class)
     private fun extractTarGz(archive: java.io.File, destDir: java.io.File) {
-        var `in`: org.apache.commons.compress.archivers.tar.TarArchiveInputStream? = null
+        var `in` = org.apache.commons.compress.archivers.tar.TarArchiveInputStream(java.util.zip.GZIPInputStream(java.io.FileInputStream(archive)))
+
         try {
-            `in` = org.apache.commons.compress.archivers.tar.TarArchiveInputStream(java.util.zip.GZIPInputStream(java.io.FileInputStream(archive)))
-            var entry: org.apache.commons.compress.archivers.ArchiveEntry = `in`.nextEntry
-            while (entry != null) {
+            while ({entry = `in`.nextEntry; entry} != null) {
                 val f = java.io.File(destDir, entry!!.name)
-                if (entry.isDirectory) {
+                if (entry!!.isDirectory) {
                     f.mkdirs()
                 } else {
                     f.parentFile.mkdirs()
@@ -339,15 +339,15 @@ abstract class AbstractBugVMTask : org.gradle.api.DefaultTask() {
                         org.apache.commons.io.IOUtils.closeQuietly(out)
                     }
                 }
-                f.setLastModified(entry.lastModifiedDate.time)
+                f.setLastModified(entry!!.lastModifiedDate.time)
                 if (entry is org.apache.commons.compress.archivers.tar.TarArchiveEntry) {
-                    val mode = entry.mode
+                    val mode = (entry as org.apache.commons.compress.archivers.tar.TarArchiveEntry)!!.mode
                     if (mode and 64 > 0) {
                         // Preserve execute permissions
                         f.setExecutable(true, mode and 1 == 0)
                     }
                 }
-                entry = `in`.nextEntry
+
             }
         } finally {
             org.apache.commons.io.IOUtils.closeQuietly(`in`)
