@@ -99,25 +99,6 @@ task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-dependencies {
-    compile project(":Core")
-    compile project(":Binding")
-}
-
-modifyPom {
-    project {
-        name project.archivesBaseName
-        description project.description
-        licenses {
-            license {
-                name "GNU General Public License, version 2"
-                url "https://www.gnu.org/licenses/gpl-2.0.html"
-                distribution "repo"
-            }
-        }
-    }
-}
-
 task listJars {
     doLast {
         configurations.runtime.each { File file -> println file.name }
