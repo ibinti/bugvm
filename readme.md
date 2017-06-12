@@ -3,7 +3,7 @@
 BugVM compiles JVM bytecode to native machine code and then links the compiled native code with other native libraries or frameworks.
 BugVM makes it possible to build native apps in Kotlin and Java. BugVM is a fork of RoboVM.
 
-### BugVM consits of:
+### BugVM consists of:
 
 * JVM
 * LLVM
