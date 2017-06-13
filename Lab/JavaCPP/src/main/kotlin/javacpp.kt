@@ -6,7 +6,7 @@ class javacpp {
             for( a in args) {
                 println(a)
             }
-            //org.bytedeco.javacpp.tools.Builder.main(args)
+            org.bytedeco.javacpp.tools.Builder.main(args)
         }
     }
 

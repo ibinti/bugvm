@@ -41,7 +41,7 @@ task wrapper(type: Wrapper) {
 task krun(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "javacpp"
-    args = ["NativeLibrary", "ThisLast"]
+    args = ["NativeLibrary", "-d", project.file("native") ]
 }
 
 clean {
