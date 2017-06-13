@@ -1,6 +1,6 @@
 .gradle
 .idea
-.class
+*.class
 build
 bin
 local.properties
