@@ -38,7 +38,8 @@ task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-task krun(type: JavaExec) {
+defaultTasks "javacpp"
+task javacpp(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "javacpp"
     args = ["NativeLibrary", "-d", project.file("native") ]
