@@ -38,13 +38,10 @@ task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-task javacpp {
-
-}
-task nrun(type: JavaExec) {
+task krun(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = "NativeLibrary"
-    dependsOn javacpp
+    main = "javacpp"
+    args = ["NativeLibrary", "ThisLast"]
 }
 
 clean {
