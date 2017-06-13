@@ -38,6 +38,19 @@ task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude "META-INF/*.RSA", "META-INF/*.SF","META-INF/*.DSA","META-INF/maven/**"
+    manifest {
+        attributes "Main-Class": "javacpp"
+        attributes "Implementation-Version" : project.version
+    }
+}
+
+build {
+    mainClassName = "javacpp"
+}
+
 defaultTasks "javacpp"
 task javacpp(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath

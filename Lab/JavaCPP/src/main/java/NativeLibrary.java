@@ -22,4 +22,12 @@ public class NativeLibrary {
         l.set_property("Hello javacpp!\nAwesome");
         System.out.println(l.property());
     }
+    public static void test() {
+        // Pointer objects allocated in Java get deallocated once they become unreachable,
+        // but C++ destructors can still be called in a timely fashion with Pointer.deallocate()
+        NativeClass l = new NativeClass();
+        l.property("Hello javacpp!\nTest");
+        System.out.println(l.get_property());
+    }
+
 }

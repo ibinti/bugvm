@@ -9,6 +9,7 @@ class javacpp {
                 }
             }
             NativeLibrary.main(arrayOf(""))
+            NativeLibrary.test()
         }
     }
 
