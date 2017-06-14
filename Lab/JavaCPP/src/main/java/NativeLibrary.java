@@ -1,4 +1,4 @@
-@org.bytedeco.javacpp.annotation.Platform(include="NativeLibrary.hpp")
+@org.bytedeco.javacpp.annotation.Platform(include="NativeLibrary.h")
 @org.bytedeco.javacpp.annotation.Namespace("NativeLibrary")
 public class NativeLibrary {
     public static class NativeClass extends org.bytedeco.javacpp.Pointer {
