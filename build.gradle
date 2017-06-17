@@ -4,7 +4,6 @@ buildscript {
         kotlin_version = "1.1.2"
     }
     repositories {
-        //jcenter()
         mavenCentral()
     }
 
@@ -76,34 +75,17 @@ task buildJar {
 }
 
 task buildRT {
-
     dependsOn ":Core:rt:nativeLib"
-
 }
 
 task buildLLVM {
-
     dependsOn ":Core:llvm:nativeLib"
-
 }
 
 task All  {
-
     dependsOn buildJar, buildRT, buildLLVM
     buildJar.mustRunAfter buildLLVM
     buildLLVM.mustRunAfter buildRT
-
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "3.5"
-    distributionType = Wrapper.DistributionType.ALL
-}
-
-task listJars {
-    doLast {
-        configurations.runtime.each { File file -> println file.name }
-    }
 }
 
 archivesBaseName = "bugvm-dist"
@@ -177,5 +159,16 @@ modifyPom {
                 distribution "repo"
             }
         }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "3.5"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+task listJars {
+    doLast {
+        configurations.runtime.each { File file -> println file.name }
     }
 }
