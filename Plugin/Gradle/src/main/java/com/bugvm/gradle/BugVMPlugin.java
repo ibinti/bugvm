@@ -15,28 +15,12 @@
  */
 package com.bugvm.gradle;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-
-import com.bugvm.gradle.tasks.CreateTask;
-import com.bugvm.gradle.tasks.ConsoleTask;
-import com.bugvm.gradle.tasks.IOSDeviceTask;
-import com.bugvm.gradle.tasks.IPadSimulatorTask;
-import com.bugvm.gradle.tasks.IPhoneSimulatorTask;
-import com.bugvm.gradle.tasks.InstallTask;
-
 /**
  * Gradle plugin that extends the Java plugin for RoboVM development.
  *
  * @author Junji Takakura
  */
-public class BugVMPlugin implements Plugin<Project> {
+public class BugVMPlugin implements org.gradle.api.Plugin<org.gradle.api.Project> {
 
     public static String getBugVMVersion() {
 
@@ -45,26 +29,26 @@ public class BugVMPlugin implements Plugin<Project> {
         String classPath = clazz.getResource(className).toString();
         String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +
                 "/META-INF/MANIFEST.MF";
-        Manifest manifest = null;
+        java.util.jar.Manifest manifest = null;
         try {
-            manifest = new Manifest(new URL(manifestPath).openStream());
-        } catch (IOException e) {
+            manifest = new java.util.jar.Manifest(new java.net.URL(manifestPath).openStream());
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-        Attributes attr = manifest.getMainAttributes();
+        java.util.jar.Attributes attr = manifest.getMainAttributes();
 
         return  attr.getValue("Implementation-Version");
 
     }
 
     @Override
-    public void apply(Project project) {
+    public void apply(org.gradle.api.Project project) {
         project.getExtensions().create(BugVMPluginExtension.NAME, BugVMPluginExtension.class, project);
-        project.task(Collections.singletonMap("type", IPhoneSimulatorTask.class), "launchIPhoneSimulator");
-        project.task(Collections.singletonMap("type", IPadSimulatorTask.class), "launchIPadSimulator");
-        project.task(Collections.singletonMap("type", IOSDeviceTask.class), "launchIOSDevice");
-        project.task(Collections.singletonMap("type", ConsoleTask.class), "launchConsole");
-        project.task(Collections.singletonMap("type", CreateTask.class), "createIPA");
-        project.task(Collections.singletonMap("type", InstallTask.class), "bugvmInstall");
+        project.task(java.util.Collections.singletonMap("type", com.bugvm.gradle.tasks.IPhoneSimulatorTask.class), "launchIPhoneSimulator");
+        project.task(java.util.Collections.singletonMap("type", com.bugvm.gradle.tasks.IPadSimulatorTask.class), "launchIPadSimulator");
+        project.task(java.util.Collections.singletonMap("type", com.bugvm.gradle.tasks.IOSDeviceTask.class), "launchIOSDevice");
+        project.task(java.util.Collections.singletonMap("type", com.bugvm.gradle.tasks.ConsoleTask.class), "launchConsole");
+        project.task(java.util.Collections.singletonMap("type", com.bugvm.gradle.tasks.CreateTask.class), "createIPA");
+        project.task(java.util.Collections.singletonMap("type", com.bugvm.gradle.tasks.InstallTask.class), "bugvmInstall");
     }
 }

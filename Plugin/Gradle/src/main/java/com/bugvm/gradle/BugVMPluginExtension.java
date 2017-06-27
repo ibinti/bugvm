@@ -15,8 +15,6 @@
  */
 package com.bugvm.gradle;
 
-import org.gradle.api.Project;
-
 /**
  *
  * @author Junji Takakura
@@ -24,7 +22,7 @@ import org.gradle.api.Project;
 public class BugVMPluginExtension {
 
     public static final String NAME = "bugvm";
-    private final Project project;
+    private final org.gradle.api.Project project;
     private String propertiesFile;
     private String configFile;
     private String iosSignIdentity;
@@ -42,11 +40,11 @@ public class BugVMPluginExtension {
     private String installDir;    
     private String cacheDir;
 
-    public BugVMPluginExtension(Project project) {
+    public BugVMPluginExtension(org.gradle.api.Project project) {
         this.project = project;
     }
 
-    public Project getProject() {
+    public org.gradle.api.Project getProject() {
         return project;
     }
 
