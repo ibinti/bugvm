@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.bugvm:bugvm-gradle:1.2.3"
+        classpath("com.bugvm:bugvm-gradle:1.2.3")
     }
 }
 
