@@ -1,6 +1,6 @@
 # BugVM Plugin for the Gradle
 
-It allows to use BugVM with gradle build system.
+allows to use BugVM with gradle build system.
 
 ```
 buildscript {
