@@ -1,1 +1,1 @@
-include "Core:soot", "Core:rt", "Core:llvm", "Core:compiler", "Binding:iOS", "Plugin:Gradle"
+include "Core:soot", "Core:rt", "Core:llvm", "Core:compiler", "Binding:iOS", "Binding:macOS", "Plugin:Gradle"

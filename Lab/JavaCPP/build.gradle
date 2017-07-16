@@ -27,8 +27,10 @@ repositories {
 }
 
 dependencies {
+    compile fileTree(include: "*.jar", dir: "lib")
     compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
     compile("org.bytedeco:javacpp:${javacpp_version}")
+//    compile("org.bytedeco.javacpp-presets:accelerateblas:1.0.0-${javacpp_version}")
 }
 
 task wrapper(type: Wrapper) {
@@ -46,7 +48,7 @@ jar {
 }
 
 build {
-    mainClassName = "javacpp"
+    mainClassName = "ExampleDGEMMrowmajor"
 }
 
 defaultTasks "javacpp"
