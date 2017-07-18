@@ -1,0 +1,53 @@
+buildscript {
+    ext {
+        javacpp_version = "1.3.3-SNAPSHOT"
+        kotlin_version = "1.1.2"
+    }
+    repositories {
+        mavenLocal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+    }
+}
+
+apply plugin: "kotlin"
+apply plugin: "application"
+
+repositories {
+    mavenLocal()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
+    compile "org.bytedeco:javacpp:${javacpp_version}"
+}
+
+build {
+    mainClassName = "javacpp"
+}
+
+defaultTasks "javacpp"
+task javacpp(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "javacpp"
+    args = ["NativeLibrary", "-d", project.file("native") ]
+}
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes "Main-Class": "javacpp"
+        attributes "Implementation-Version" : project.version
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "3.5"
+    distributionType = Wrapper.DistributionType.ALL
+}
