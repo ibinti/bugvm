@@ -1,7 +1,6 @@
 # Experiments on JavaCPP
 
 ```
-cd JavaCPP
 ./gradlew run
 ```
 
