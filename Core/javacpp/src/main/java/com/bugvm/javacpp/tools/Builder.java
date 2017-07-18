@@ -343,7 +343,7 @@ public class Builder {
                 } else if (x.startsWith(" ")) {
                     command.add(p + s); command.add(x.trim());
                 } else {
-                    command.add(p + s + x);
+                    command.add(p); command.add(s); command.add(x);
                 }
             }
         }
