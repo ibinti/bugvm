@@ -1,4 +1,4 @@
-import org.bytedeco.javacpp.accelerateblas;
+import org.bytedeco.javacpp.accelerate;
 
 public class ExampleDGEMMrowmajor {
     /* Auxiliary routine: printing a matrix */
@@ -55,7 +55,7 @@ public class ExampleDGEMMrowmajor {
 
         /* Executable statements */
         System.out.println("cblas_dgemm Results: A * B = C");
-        accelerateblas.cblas_dgemm(accelerateblas.CblasRowMajor, accelerateblas.CblasNoTrans, accelerateblas.CblasNoTrans, M, N, M, 1, A, M, B, M, 1, C, M);
+        accelerate.cblas_dgemm(accelerate.CblasRowMajor, accelerate.CblasNoTrans, accelerate.CblasNoTrans, M, N, M, 1, A, M, B, M, 1, C, M);
 
         /* Print Result Matrix */
         print_matrix_rowmajor("Matrix C", M, N, C, M);
