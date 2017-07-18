@@ -1,12 +1,8 @@
-# Laboratory
+# Experiments on JavaCPP Presets
 
 Experiments on JavaCPP Presets
 
 ```
 cd javacpp-presets
-```
-
-Experiments on JavaCPP
-```
-cd JavaCPP
+mvn clean install
 ```
