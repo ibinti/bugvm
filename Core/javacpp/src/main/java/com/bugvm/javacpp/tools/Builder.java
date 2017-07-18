@@ -339,9 +339,9 @@ public class Builder {
                 if (p.endsWith(" ") && x.startsWith(" ")) {
                     command.add(p.trim()); command.add(s); command.add(x.trim());
                 } else if (p.endsWith(" ")) {
-                    command.add(p.trim()); command.add(s + x);
+                    command.add(p.trim()); command.add(s); command.add(x);
                 } else if (x.startsWith(" ")) {
-                    command.add(p + s); command.add(x.trim());
+                    command.add(p); command.add(s); command.add(x.trim());
                 } else {
                     command.add(p); command.add(s); command.add(x);
                 }
