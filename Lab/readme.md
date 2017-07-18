@@ -1,5 +1,13 @@
 # Laboratory
 
+Experiments on JavaCPP Presets
+
+```
+cd javacpp-presets
+mvn clean install
+```
+
+
 Experiments on JavaCPP
 
 ```
