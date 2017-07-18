@@ -1,9 +1,8 @@
-archivesBaseName = "bugvm-ios"
-description = """BugVM iOS Bindings"""
+archivesBaseName = "bugvm-apple"
+description = """BugVM Apple Bindings"""
 
 dependencies {
     compile project(":Core:rt")
-    compile project(":Core:javacpp")
 }
 
 modifyPom {
