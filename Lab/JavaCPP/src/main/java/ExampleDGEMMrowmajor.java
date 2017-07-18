@@ -1,4 +1,4 @@
-import org.bytedeco.javacpp.accelerate;
+import com.bugvm.javacpp.accelerate;
 
 public class ExampleDGEMMrowmajor {
     /* Auxiliary routine: printing a matrix */

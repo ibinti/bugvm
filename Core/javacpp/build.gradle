@@ -1,22 +1,86 @@
-archivesBaseName = "bugvm-javacpp"
+archivesBaseName = "javacpp"
 description = """The bridge between BugVM and native libraries"""
 
-dependencies {
-    compile "org.apache.maven:maven-plugin-api:3.3.3"
-    compile "org.apache.maven.plugin-tools:maven-plugin-annotations:3.4"
-    compile "org.apache.maven:maven-core:3.0"
-    compile "org.slf4j:slf4j-simple:1.7.25"
-    compile "org.slf4j:slf4j-api:1.7.25"
-    testCompile "junit:junit:4.12"
+configurations {
+    mavenEmbedder
 }
 
-jar {
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    exclude "META-INF/*.RSA", "META-INF/*.SF","META-INF/*.DSA","META-INF/maven/**"
-    manifest {
-        attributes "Implementation-Version" : project.version
+dependencies {
+    compile "org.apache.maven:maven-core:3.3.3"
+    compile "org.apache.maven:maven-plugin-api:3.3.3"
+    compile "org.apache.maven.plugin-tools:maven-plugin-annotations:3.4"
+    compile "org.slf4j:slf4j-api:1.7.25"
+    testCompile "junit:junit:4.12"
+
+    mavenEmbedder "org.apache.maven:maven-embedder:3.3.3"
+    mavenEmbedder "org.slf4j:slf4j-simple:1.7.25"
+    mavenEmbedder "org.eclipse.aether:aether-connector-basic:1.0.2.v20150114"
+    mavenEmbedder "org.eclipse.aether:aether-transport-wagon:1.0.2.v20150114"
+    mavenEmbedder "org.apache.maven.wagon:wagon-http:2.9:shaded"
+    mavenEmbedder "org.apache.maven.wagon:wagon-provider-api:2.9"
+}
+
+install.repositories.mavenInstaller.pom.with {
+    groupId = project.group
+    artifactId = project.name
+    version = project.version
+    packaging = "maven-plugin"
+}
+
+task generatePluginDescriptor(type: JavaExec, dependsOn: compileJava) {
+    def pomFile = file("$buildDir/pom.xml")
+    def pluginDescriptorFile = new File(project.compileJava.destinationDir, "META-INF/maven/plugin.xml")
+    def directory = buildDir.canonicalPath
+    def outputDirectory = compileJava.destinationDir.canonicalPath
+
+    // FIXME: this does not seem to be working
+    inputs.files project.compileJava.outputs.files
+    outputs.file pluginDescriptorFile
+
+    classpath = configurations.mavenEmbedder
+    main = "org.apache.maven.cli.MavenCli"
+    systemProperties["maven.multiModuleProjectDirectory"] = projectDir
+    args = [
+            "--errors",
+            "--batch-mode",
+            "--file", "${buildDir}/pom.xml",
+            "org.apache.maven.plugins:maven-plugin-plugin:3.4:descriptor"
+    ]
+
+    doFirst {
+        // we have to do it in this cryptic way, instead of
+        // ```
+        // project {
+        //     build {
+        //        directory = directory
+        //        outputDirectory = outputDirectory
+        //     }
+        // }
+        // because MavenModel already defines build and so it will
+        // result in No such property: _SCRIPT_CLASS_NAME_ for class: org.apache.maven.model.Model
+        install.repositories
+                .mavenInstaller
+                .pom
+                .withXml {
+            asNode().appendNode("build")
+                    .with {
+                appendNode("directory", directory)
+                appendNode("outputDirectory", outputDirectory)
+            }
+        }
+        .writeTo(pomFile)
+
+        assert pomFile.file, "${pomFile.canonicalPath}: was not generated"
+        logger.info("POM is generated in ${pomFile.canonicalPath}")
+    }
+
+    doLast {
+        assert pluginDescriptorFile.file, "${pluginDescriptorFile.canonicalPath}: was not generated"
+        logger.info("Plugin descriptor is generated in ${pluginDescriptorFile.canonicalPath}")
     }
 }
+
+project.jar.dependsOn(generatePluginDescriptor)
 
 modifyPom {
     project {
