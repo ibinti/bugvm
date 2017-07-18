@@ -14,7 +14,6 @@ jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude "META-INF/*.RSA", "META-INF/*.SF","META-INF/*.DSA","META-INF/maven/**"
     manifest {
-        attributes "Main-Class": "com.bugvm.compiler.AppCompiler"
         attributes "Implementation-Version" : project.version
     }
 }
@@ -27,16 +26,6 @@ modifyPom {
             license {
                 name "Apache License, Version 2.0"
                 url "http://www.apache.org/licenses/LICENSE-2.0"
-                distribution "repo"
-            }
-            license {
-                name "GNU General Public License (GPL) version 2, or any later version"
-                url "http://www.gnu.org/licenses/"
-                distribution "repo"
-            }
-            license {
-                name "GPLv2 with Classpath exception"
-                url "http://www.gnu.org/software/classpath/license.html"
                 distribution "repo"
             }
         }
