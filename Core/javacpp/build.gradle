@@ -33,7 +33,6 @@ task generatePluginDescriptor(type: JavaExec, dependsOn: compileJava) {
     def directory = buildDir.canonicalPath
     def outputDirectory = compileJava.destinationDir.canonicalPath
 
-    // FIXME: this does not seem to be working
     inputs.files project.compileJava.outputs.files
     outputs.file pluginDescriptorFile
 
@@ -69,18 +68,10 @@ task generatePluginDescriptor(type: JavaExec, dependsOn: compileJava) {
             }
         }
         .writeTo(pomFile)
-
-        assert pomFile.file, "${pomFile.canonicalPath}: was not generated"
-        logger.info("POM is generated in ${pomFile.canonicalPath}")
-    }
-
-    doLast {
-        assert pluginDescriptorFile.file, "${pluginDescriptorFile.canonicalPath}: was not generated"
-        logger.info("Plugin descriptor is generated in ${pluginDescriptorFile.canonicalPath}")
     }
 }
 
-project.jar.dependsOn(generatePluginDescriptor)
+jar.dependsOn(generatePluginDescriptor)
 
 modifyPom {
     project {
