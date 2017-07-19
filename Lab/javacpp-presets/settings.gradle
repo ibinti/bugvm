@@ -1,0 +1,4 @@
+rootProject.name = 'javacpp-presets'
+include ':bugvm-macos'
+
+project(':bugvm-macos').projectDir = "$rootDir/accelerate" as File

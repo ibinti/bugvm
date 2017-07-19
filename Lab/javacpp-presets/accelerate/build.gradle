@@ -1,0 +1,5 @@
+
+description = 'JavaCPP Presets for macOS'
+dependencies {
+    compile group: 'com.bugvm', name: 'javacpp', version:'1.2.4-SNAPSHOT'
+}

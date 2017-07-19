@@ -35,6 +35,7 @@
     <javacpp.compiler.skip>false</javacpp.compiler.skip> <!-- To skip native compilation phase: -Djavacpp.compiler.skip=true -->
     <javacpp.moduleId>${project.artifactId}</javacpp.moduleId>
     <javacpp.platform.macosx-x86_64>macosx-x86_64</javacpp.platform.macosx-x86_64>
+    <javacpp.deleteJniFiles>false</javacpp.deleteJniFiles>
   </properties>
 
   <dependencyManagement>

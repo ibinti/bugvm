@@ -1,21 +1,27 @@
-archivesBaseName = "bugvm-macos"
-description = """BugVM macOS Bindings"""
+allprojects  {
+  apply plugin: 'maven'
 
-dependencies {
-    compile project(":Core:rt")
-    compile project(":Core:javacpp")
+  group = 'com.bugvm'
+version = '1.2.4-SNAPSHOT'
 }
 
-modifyPom {
-    project {
-        name project.archivesBaseName
-        description project.description
-        licenses {
-            license {
-                name "The Apache Software License, Version 2.0"
-                url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution "repo"
-            }
-        }
-    }
+subprojects {
+  apply plugin: 'java'
+  sourceCompatibility = 1.5
+  targetCompatibility = 1.5
+  tasks.withType(JavaCompile) {
+  	options.encoding = 'UTF-8'
+  }
+
+  
+  repositories {
+    mavenLocal()
+    
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+  }
+
+  
+  
+  
 }
