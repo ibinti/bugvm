@@ -13,8 +13,8 @@ BugVM makes it possible to build native executable binary in Kotlin and Java.
 ### Native Platform
 
 * iOS
-* macOS Console
-* Ubuntu Console
+* macOS
+* Ubuntu
 
 
 ### HelloWorld Example
