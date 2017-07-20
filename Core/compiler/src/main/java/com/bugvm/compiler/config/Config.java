@@ -78,7 +78,6 @@ import com.bugvm.compiler.target.ios.IOSTarget;
 import com.bugvm.compiler.target.ios.ProvisioningProfile;
 import com.bugvm.compiler.util.DigestUtil;
 import com.bugvm.compiler.util.InfoPList;
-import com.bugvm.compiler.util.io.RamDiskTools;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -874,11 +873,6 @@ public class Config {
             treeShakerMode = TreeShakerMode.none;
         }
         dependencyGraph = new DependencyGraph(getTreeShakerMode());
-
-        RamDiskTools ramDiskTools = new RamDiskTools();
-        ramDiskTools.setupRamDisk(this, this.cacheDir, this.tmpDir);
-        this.cacheDir = ramDiskTools.getCacheDir();
-        this.tmpDir = ramDiskTools.getTmpDir();
 
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, sliceArch.toString());
