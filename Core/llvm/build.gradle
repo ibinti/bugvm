@@ -5,6 +5,12 @@ task nativeLib(type:Exec) {
 
     commandLine "bash", "-c", ". build.sh --clean"
 
+    doLast {
+        copy {
+            from("src/main/resources/com/bugvm/llvm/binding")
+            into "bin"
+        }
+    }
 }
 
 modifyPom {

@@ -34,6 +34,12 @@ shadowJar {
 task nativeLib(type:Exec) {
     workingDir "vm"
     commandLine "bash", "-c", ". build.sh --clean"
+    doLast {
+        copy {
+            from("vm/binaries")
+            into "bin"
+        }
+    }
 }
 
 modifyPom {
