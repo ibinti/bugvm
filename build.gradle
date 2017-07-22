@@ -20,9 +20,6 @@ allprojects {
     version = bugvm_version
 
     apply plugin: "kotlin"
-    apply plugin: "maven"
-    apply plugin: "signing"
-    apply plugin: "com.bmuschko.nexus"
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
@@ -41,51 +38,33 @@ allprojects {
         compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
     }
 
-    modifyPom {
-        project {
-            url "https://bugvm.com"
-
-            scm {
-                url "https://github.com/bugvm/bugvm"
-                connection "scm:git:git://github.com/bugvm/bugvm.git"
-                developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
-            }
-
-            developers {
-                developer {
-                    id "bugvm"
-                    name "We are the BugVM"
-                    email "bug@bugvm.com"
-                    organization "BugVM"
-                    organizationUrl "https://bugvm.com"
-                }
-            }
-        }
-    }
 }
 
+apply plugin: "maven"
+apply plugin: "signing"
+apply plugin: "com.bmuschko.nexus"
 apply plugin: "io.codearte.nexus-staging"
 
 defaultTasks "install"
 
-task buildJar {
+task jars {
     dependsOn install, build, clean
     install.mustRunAfter build
     build.mustRunAfter clean
 }
 
-task buildRT {
+task rt {
     dependsOn ":Core:rt:nativeLib"
 }
 
-task buildLLVM {
+task llvm {
     dependsOn ":Core:llvm:nativeLib"
 }
 
-task All  {
-    dependsOn buildJar, buildRT, buildLLVM
-    buildJar.mustRunAfter buildLLVM
-    buildLLVM.mustRunAfter buildRT
+task all  {
+    dependsOn jars, rt, llvm
+    jars.mustRunAfter llvm
+    llvm.mustRunAfter rt
 }
 
 archivesBaseName = "bugvm-dist"
@@ -93,7 +72,7 @@ description = "BugVM Dist Package (tgz)"
 
 dependencies {
     compile project(":Core:compiler")
-    compile project(":Binding:iOS")
+    compile project(":Binding:apple")
     compile project(":Core:rt")
 }
 
@@ -109,7 +88,7 @@ task tgzTask(type: Tar) {
     into("bugvm-${version}/lib") {
         from  "Core/compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
         from("Core/rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
-        from("Binding/iOS/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
+        from("Binding/apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
     }
 
     into ("bugvm-${version}/lib/vm") {
@@ -117,8 +96,8 @@ task tgzTask(type: Tar) {
     }
 
     into ("bugvm-${version}/modules/licenses/apple") {
-        from ("Binding/iOS/NOTICE.txt")
-        from ("Binding/iOS/LICENSE.txt")
+        from ("Binding/apple/NOTICE.txt")
+        from ("Binding/apple/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/llvm") {
@@ -159,11 +138,28 @@ modifyPom {
                 distribution "repo"
             }
         }
+        url "https://bugvm.com"
+
+        scm {
+            url "https://github.com/bugvm/bugvm"
+            connection "scm:git:git://github.com/bugvm/bugvm.git"
+            developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
+        }
+
+        developers {
+            developer {
+                id "bugvm"
+                name "We are the BugVM"
+                email "bug@bugvm.com"
+                organization "BugVM"
+                organizationUrl "https://bugvm.com"
+            }
+        }
     }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "4.0"
+    gradleVersion = "4.0.1"
     distributionType = Wrapper.DistributionType.ALL
 }
 

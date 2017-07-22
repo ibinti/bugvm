@@ -1,6 +1,7 @@
 archivesBaseName = "bugvm-gradle"
 description = """BugVM Gradle Plugin"""
 
+apply plugin: "maven"
 apply plugin: "groovy"
 
 dependencies {

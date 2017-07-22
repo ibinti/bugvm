@@ -7,6 +7,9 @@ buildscript {
     }
 }
 
+apply plugin: "maven"
+apply plugin: "signing"
+apply plugin: "com.bmuschko.nexus"
 apply plugin: "com.github.johnrengelman.shadow"
 
 archivesBaseName = "bugvm-rt"
@@ -51,6 +54,23 @@ modifyPom {
                 name "The Apache Software License, Version 2.0"
                 url "http://www.apache.org/licenses/LICENSE-2.0.txt"
                 distribution "repo"
+            }
+        }
+        url "https://bugvm.com"
+
+        scm {
+            url "https://github.com/bugvm/bugvm"
+            connection "scm:git:git://github.com/bugvm/bugvm.git"
+            developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
+        }
+
+        developers {
+            developer {
+                id "bugvm"
+                name "We are the BugVM"
+                email "bug@bugvm.com"
+                organization "BugVM"
+                organizationUrl "https://bugvm.com"
             }
         }
     }

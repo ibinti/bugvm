@@ -1,3 +1,7 @@
+apply plugin: "maven"
+apply plugin: "signing"
+apply plugin: "com.bmuschko.nexus"
+
 archivesBaseName = "bugvm-compiler"
 description = """BugVM Compiler"""
 
@@ -39,6 +43,23 @@ modifyPom {
                 name "GNU General Public License, version 2"
                 url "https://www.gnu.org/licenses/gpl-2.0.html"
                 distribution "repo"
+            }
+        }
+        url "https://bugvm.com"
+
+        scm {
+            url "https://github.com/bugvm/bugvm"
+            connection "scm:git:git://github.com/bugvm/bugvm.git"
+            developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
+        }
+
+        developers {
+            developer {
+                id "bugvm"
+                name "We are the BugVM"
+                email "bug@bugvm.com"
+                organization "BugVM"
+                organizationUrl "https://bugvm.com"
             }
         }
     }
