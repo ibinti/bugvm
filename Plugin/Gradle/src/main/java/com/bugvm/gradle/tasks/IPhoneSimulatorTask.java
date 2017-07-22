@@ -15,8 +15,6 @@
  */
 package com.bugvm.gradle.tasks;
 
-import com.bugvm.compiler.target.ios.DeviceType.DeviceFamily;
-
 /**
  *
  * @author Junji Takakura
@@ -25,6 +23,6 @@ public class IPhoneSimulatorTask extends AbstractIOSSimulatorTask {
 
     @Override
     public void invoke() {
-        launch(getDeviceType(DeviceFamily.iPhone));
+        launch(getDeviceType(com.bugvm.compiler.target.ios.DeviceType.DeviceFamily.iPhone));
     }
 }

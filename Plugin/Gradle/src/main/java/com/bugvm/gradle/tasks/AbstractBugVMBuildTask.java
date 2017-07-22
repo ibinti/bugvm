@@ -15,15 +15,6 @@
  */
 package com.bugvm.gradle.tasks;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.gradle.api.GradleException;
-import com.bugvm.compiler.AppCompiler;
-import com.bugvm.compiler.config.Arch;
-import com.bugvm.compiler.config.Config;
-
 /**
  * 
  */
@@ -34,29 +25,29 @@ public abstract class AbstractBugVMBuildTask extends AbstractBugVMTask {
     @Override
     public void invoke() {
         try {
-            Config.Builder builder = configure(new Config.Builder())
+            com.bugvm.compiler.config.Config.Builder builder = configure(new com.bugvm.compiler.config.Config.Builder())
                     .skipInstall(false);
 
             if (extension.getArchs() != null) {
-                List<Arch> archs = new ArrayList<>();
+                java.util.List<com.bugvm.compiler.config.Arch> archs = new java.util.ArrayList<>();
                 for (String s : extension.getArchs().trim().split(":")) {
-                    archs.add(Arch.valueOf(s));
+                    archs.add(com.bugvm.compiler.config.Arch.valueOf(s));
                 }
                 builder.archs(archs);
             }
 
-            AppCompiler compiler = new AppCompiler(builder.build());
+            com.bugvm.compiler.AppCompiler compiler = new com.bugvm.compiler.AppCompiler(builder.build());
             compiler.build();
             if (shouldArchive()) {
                 compiler.archive();
             } else {
                 compiler.install();
             }
-        } catch (IOException e) {
+        } catch (java.io.IOException e) {
             if (shouldArchive()) {
-                throw new GradleException("Failed to create archive", e);
+                throw new org.gradle.api.GradleException("Failed to create archive", e);
             } else {
-                throw new GradleException("Failed to install", e);
+                throw new org.gradle.api.GradleException("Failed to install", e);
             }
         }
     }

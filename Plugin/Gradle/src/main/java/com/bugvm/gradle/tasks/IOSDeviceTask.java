@@ -15,14 +15,6 @@
  */
 package com.bugvm.gradle.tasks;
 
-import org.gradle.api.GradleException;
-import com.bugvm.compiler.AppCompiler;
-import com.bugvm.compiler.config.Arch;
-import com.bugvm.compiler.config.Config;
-import com.bugvm.compiler.config.OS;
-import com.bugvm.compiler.target.LaunchParameters;
-import com.bugvm.compiler.target.ios.IOSTarget;
-
 /**
  *
  * @author Junji Takakura
@@ -32,20 +24,20 @@ public class IOSDeviceTask extends AbstractBugVMTask {
     @Override
     public void invoke() {
         try {
-            Arch arch = Arch.thumbv7;
-            if (extension.getArch() != null && extension.getArch().equals(Arch.arm64.toString())) {
-                arch = Arch.arm64;
+            com.bugvm.compiler.config.Arch arch = com.bugvm.compiler.config.Arch.thumbv7;
+            if (extension.getArch() != null && extension.getArch().equals(com.bugvm.compiler.config.Arch.arm64.toString())) {
+                arch = com.bugvm.compiler.config.Arch.arm64;
             }
 
-            AppCompiler compiler = build(OS.ios, arch, IOSTarget.TYPE);
+            com.bugvm.compiler.AppCompiler compiler = build(com.bugvm.compiler.config.OS.ios, arch, com.bugvm.compiler.target.ios.IOSTarget.TYPE);
             if (extension.isSkipLaunch()) {
                 return;
             }
-            Config config = compiler.getConfig();
-            LaunchParameters launchParameters = config.getTarget().createLaunchParameters();
+            com.bugvm.compiler.config.Config config = compiler.getConfig();
+            com.bugvm.compiler.target.LaunchParameters launchParameters = config.getTarget().createLaunchParameters();
             compiler.launch(launchParameters);
         } catch (Throwable t) {
-            throw new GradleException("Failed to launch IOS Device", t);
+            throw new org.gradle.api.GradleException("Failed to launch IOS Device", t);
         }
     }
 }
