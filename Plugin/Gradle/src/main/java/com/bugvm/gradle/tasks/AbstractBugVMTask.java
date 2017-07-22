@@ -34,6 +34,8 @@ import org.apache.commons.io.IOUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
+import org.gradle.api.tasks.SourceSet;
+import org.gradle.api.tasks.SourceSetOutput;
 import org.gradle.api.tasks.TaskAction;
 import org.apache.maven.repository.internal.MavenRepositorySystemSession;
 import org.apache.maven.repository.internal.MavenServiceLocator;
@@ -67,7 +69,7 @@ import com.bugvm.gradle.BugVMPluginExtension;
  */
 abstract public class AbstractBugVMTask extends DefaultTask {
 
-    protected final Project project;
+    protected final org.gradle.api.Project project;
     protected final BugVMPluginExtension extension;
     protected final RepositorySystem repositorySystem;
     protected final RepositorySystemSession repositorySystemSession;
@@ -75,6 +77,7 @@ abstract public class AbstractBugVMTask extends DefaultTask {
     protected Logger bugVMLogger;
 
     public AbstractBugVMTask() {
+
         project = getProject();
         extension = (BugVMPluginExtension) project.getExtensions().getByName(BugVMPluginExtension.NAME);
         repositorySystem = createRepositorySystem();
@@ -217,7 +220,29 @@ abstract public class AbstractBugVMTask extends DefaultTask {
 
         // configure the runtime classpath
         Set<File> classpathEntries = project.getConfigurations().getByName("runtime").getFiles();
-        classpathEntries.add(new File(project.getBuildDir(), "classes/main"));
+
+/* Gradle 4.0 breaking change
+build/classes/${sourceSet.name}
+to
+build/classes/${sourceDirectorySet.name}/${sourceSet.name}
+
+The collection of all of the output directories : SourceSetOutput#getClassesDirs()
+ */
+        final org.gradle.api.plugins.JavaPluginConvention javaPluginConvention = project.getConvention().getPlugin(org.gradle.api.plugins.JavaPluginConvention.class);
+        final org.gradle.api.tasks.SourceSet main = javaPluginConvention.getSourceSets().getByName(org.gradle.api.tasks.SourceSet.MAIN_SOURCE_SET_NAME);
+        try {
+            classpathEntries.addAll(main.getOutput().getClassesDirs().getFiles());
+        }  catch (java.lang.NoSuchMethodError e) {
+            // Gradle 3.*: exception
+        }
+        try {
+            classpathEntries.add(main.getOutput().getClassesDir());
+        }  catch (java.lang.NoSuchMethodError e) {
+            //Gradle 4.0 : deprecated
+            //Gradle 5.0 : exception
+        }
+
+//        classpathEntries.add(new File(project.getBuildDir(), "classes/main"));
 
         if (project.hasProperty("output.classesDir")) {
             classpathEntries.add((File) project.property("output.classesDir"));
