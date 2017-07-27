@@ -13,13 +13,19 @@ elseif(OS STREQUAL "windows")
   set(WINDOWS YES)
 endif()
 
+if (LINUX)
+  set(JAVA_HOME "/usr/lib/jvm/java-8-openjdk-amd64")
+  set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/libawt.so")
+  set(JAVA_JVM_LIBRARY "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/libjvm.so")
+endif()
+
 if (WINDOWS)
-  set(CMAKE_CROSSCOMPILING TRUE) 
+  set(CMAKE_CROSSCOMPILING TRUE)
   set(CMAKE_SYSTEM_NAME Windows)
 
   #should be passed from build.sh, just here to prevent warning
   set(CMAKE_RC_COMPILER "/usr/local/bin/x86_64-w64-mingw32-windres")
-  
+
   #these are not actually used by com_bugvm but find_package does not always resolve them, use JAVA_HOME env var to prevent paths?
   set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/libawt.so")
   set(JAVA_JVM_LIBRARY "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/libjvm.so")
