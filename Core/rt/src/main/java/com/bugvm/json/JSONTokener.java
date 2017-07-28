@@ -1,4 +1,4 @@
-package org.json;
+package com.bugvm.json;
 
 import java.io.BufferedReader;
 import java.io.IOException;

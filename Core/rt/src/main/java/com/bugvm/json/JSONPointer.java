@@ -1,4 +1,4 @@
-package org.json;
+package com.bugvm.json;
 
 import static java.lang.String.format;
 
