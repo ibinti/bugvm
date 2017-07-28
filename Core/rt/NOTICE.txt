@@ -9,6 +9,12 @@ Copyright (C) 2012-2014 RoboVM AB
 For license information see the LICENSE.txt file which accompanies this
 NOTICE.txt file.
 
+The BugVM Runtime Library includes the markdown library which is
+Copyright (c) 2005 Pete Bevin
+Copyright (c) 2005 - 2007 John Mutchek, Marty Lamb / Martian Software, Inc.
+Copyright (c) 2008 - 2013 Alex Coles
+and released under a Revised BSD License. https://github.com/myabc/markdownj
+
 The BugVM Runtime Library includes the Java WebSockets library which is
 Copyright (c) 2010-2017 Nathan Rajlich and released under the MIT License.
 https://github.com/TooTallNate/Java-WebSocket
@@ -42,8 +48,7 @@ released under the W3C License. http://www.w3.org
 
 The BugVM Runtime Library includes the Bouncy Castle Crypto APIs which is
 copyright 2000-2013, The Legion of the Bouncy Castle Inc. and released under 
-the MIT license.
-http://www.bouncycastle.org
+the MIT license. http://www.bouncycastle.org
 
 The BugVM Runtime Library includes the SQLite JDBC driver which is copyright
 Christian Werner <chw@ch-werner.de> and others and released under a BSD like
@@ -67,5 +72,4 @@ project which is copyright 1999-2014 The Apache Software Foundation and
 released under the Apache License 2.0. http://hc.apache.org
 
 The BugVM Runtime Library includes the OkHttp library which is copyright 2014
-Square, Inc. and released under the Apache License 2.0.
-http://square.github.io/okhttp/
+Square, Inc. and released under the Apache License 2.0. http://square.github.io/okhttp/
