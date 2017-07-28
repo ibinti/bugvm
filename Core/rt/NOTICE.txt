@@ -19,6 +19,10 @@ The BugVM Runtime Library includes the Java WebSockets library which is
 Copyright (c) 2010-2017 Nathan Rajlich and released under the MIT License.
 https://github.com/TooTallNate/Java-WebSocket
 
+The BugVM Runtime Library includes the JSON-java library which is
+Copyright (c) 2002 JSON.org and released under JSON.org License.
+https://github.com/stleary/JSON-java
+
 The BugVM Runtime Library includes software developed as part of the dalvik
 module of The Android Open Source Project which is copyright 2005-2012, The
 Android Open Source Project and released under the Apache License 2.0.
