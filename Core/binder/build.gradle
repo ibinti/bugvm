@@ -2,7 +2,7 @@ apply plugin: "maven"
 apply plugin: "signing"
 apply plugin: "com.bmuschko.nexus"
 
-archivesBaseName = "javacpp"
+archivesBaseName = "binder"
 description = """The bridge between BugVM and native libraries"""
 
 configurations {
