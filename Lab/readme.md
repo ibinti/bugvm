@@ -15,3 +15,8 @@ Experiments on kotlin-native
 ```
 cd kotlin-native
 ```
+
+Experiments on kotlin-dsl-samples
+```
+cd kotlin-dsl-samples
+```
