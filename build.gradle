@@ -159,7 +159,7 @@ modifyPom {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "4.0.1"
+    gradleVersion = "4.0.2"
     distributionType = Wrapper.DistributionType.ALL
 }
 

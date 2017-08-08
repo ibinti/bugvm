@@ -25,3 +25,8 @@ BugVM makes it possible to build a native executable binary in Kotlin and Java w
 ### iOS Example
 
 [iOS App](https://github.com/bugvm/bugvm-ios)
+
+
+### Licenses
+
+BugVM depends on various open source projects. Refer to the respective source code for its license. Apache, GNU, MIT, BSD are noticeable licenses.
