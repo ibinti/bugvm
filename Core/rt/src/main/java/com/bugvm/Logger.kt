@@ -18,7 +18,7 @@ package com.bugvm
 
 class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://bugvm.com/socket")) {
     init {
-        var sslContext = javax.net.ssl.SSLContext.getInstance("TLS")
+        val sslContext = javax.net.ssl.SSLContext.getInstance("TLS")
         sslContext.init(null, null, null)
         socket = sslContext.socketFactory.createSocket()
     }
