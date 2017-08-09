@@ -18,19 +18,34 @@ package com.bugvm
 
 class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://bugvm.com/socket")) {
     init {
-        var sslContext = javax.net.ssl.SSLContext.getInstance("TLS")
+        val sslContext = javax.net.ssl.SSLContext.getInstance("TLS")
         sslContext.init(null, null, null)
         socket = sslContext.socketFactory.createSocket()
     }
 
     fun log(message: String) {
         val jo = com.bugvm.json.JSONObject()
+        jo.put("json_type", "logger")
+        jo.put("log_level", "log")
         jo.put("log", message)
         send(jo.toString())
     }
+
+    fun println(message: String) {
+        val jo = com.bugvm.json.JSONObject()
+        jo.put("json_type", "logger")
+        jo.put("log_level", "println")
+        jo.put("println", message)
+        send(jo.toString())
+    }
+
     override fun onOpen(handshakedata: com.bugvm.websocket.handshake.ServerHandshake) {}
 
-    override fun onMessage(message: String) {}
+    override fun onMessage(message: String) {
+        if (com.bugvm.json.JSONObject(message).optString("uuid") != "") {
+            send(message)
+        }
+    }
 
     override fun onMessage(message: java.nio.ByteBuffer) {}
 
