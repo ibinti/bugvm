@@ -28,7 +28,13 @@ class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://
         jo.put("log", message)
         send(jo.toString())
     }
-    
+
+    fun println(message: String) {
+        val jo = com.bugvm.json.JSONObject()
+        jo.put("println", message)
+        send(jo.toString())
+    }
+
     override fun onOpen(handshakedata: com.bugvm.websocket.handshake.ServerHandshake) {}
 
     override fun onMessage(message: String) {}
