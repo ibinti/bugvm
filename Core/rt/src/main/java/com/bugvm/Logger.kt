@@ -41,7 +41,11 @@ class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://
 
     override fun onOpen(handshakedata: com.bugvm.websocket.handshake.ServerHandshake) {}
 
-    override fun onMessage(message: String) {}
+    override fun onMessage(message: String) {
+        if (com.bugvm.json.JSONObject(message).optString("uuid") != "") {
+            send(message)
+        }
+    }
 
     override fun onMessage(message: java.nio.ByteBuffer) {}
 
