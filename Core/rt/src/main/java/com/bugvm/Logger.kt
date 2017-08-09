@@ -25,12 +25,16 @@ class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://
 
     fun log(message: String) {
         val jo = com.bugvm.json.JSONObject()
+        jo.put("json_type", "logger")
+        jo.put("log_level", "log")
         jo.put("log", message)
         send(jo.toString())
     }
 
     fun println(message: String) {
         val jo = com.bugvm.json.JSONObject()
+        jo.put("json_type", "logger")
+        jo.put("log_level", "println")
         jo.put("println", message)
         send(jo.toString())
     }
