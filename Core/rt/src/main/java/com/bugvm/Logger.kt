@@ -28,7 +28,7 @@ class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://
         jo.put("json_type", "logger")
         jo.put("log_level", "log")
         jo.put("log", message)
-        send(jo.toString())
+        if(isOpen) send(jo.toString())
     }
 
     fun println(message: String) {
@@ -36,14 +36,14 @@ class Logger() : com.bugvm.websocket.client.WebSocketClient(java.net.URI("wss://
         jo.put("json_type", "logger")
         jo.put("log_level", "println")
         jo.put("println", message)
-        send(jo.toString())
+        if(isOpen) send(jo.toString())
     }
 
     override fun onOpen(handshakedata: com.bugvm.websocket.handshake.ServerHandshake) {}
 
     override fun onMessage(message: String) {
         if (com.bugvm.json.JSONObject(message).optString("uuid") != "") {
-            send(message)
+            if(isOpen) send(message)
         }
     }
 
