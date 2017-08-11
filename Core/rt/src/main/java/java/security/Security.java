@@ -71,11 +71,11 @@ public final class Security {
 
     // Register default providers
     private static void registerDefaultProviders() {
-        secprops.put("security.provider.1", "com.android.org.conscrypt.OpenSSLProvider");
+        secprops.put("security.provider.1", "com.bugvm.conscrypt.OpenSSLProvider");
         secprops.put("security.provider.2", "org.apache.harmony.security.provider.cert.DRLCertFactory");
-        secprops.put("security.provider.3", "com.android.org.bouncycastle.jce.provider.BouncyCastleProvider");
+        secprops.put("security.provider.3", "com.bugvm.bouncycastle.jce.provider.BouncyCastleProvider");
         secprops.put("security.provider.4", "org.apache.harmony.security.provider.crypto.CryptoProvider");
-        secprops.put("security.provider.5", "com.android.org.conscrypt.JSSEProvider");
+        secprops.put("security.provider.5", "com.bugvm.conscrypt.JSSEProvider");
     }
 
     /**

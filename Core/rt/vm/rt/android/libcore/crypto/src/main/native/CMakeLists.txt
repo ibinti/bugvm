@@ -1,6 +1,6 @@
 project(android-libcore-crypto)
 
-add_definitions(-DJNI_JARJAR_PREFIX=com/android/)
+add_definitions(-DJNI_JARJAR_PREFIX=com/bugvm/)
 
 include_directories(
   ../../../../../external/openssl/include
@@ -8,7 +8,7 @@ include_directories(
 )
 
 set(SRC
-  org_conscrypt_NativeCrypto.cpp
+  conscrypt_NativeCrypto.cpp
 )
 
 add_library(android-libcore-crypto OBJECT ${SRC})
