@@ -7,7 +7,7 @@ description = """BugVM macOS Bindings"""
 
 dependencies {
     compile project(":Core:rt")
-    compile project(":Core:binder")
+    //compile project(":Core:binder")
 }
 
 modifyPom {

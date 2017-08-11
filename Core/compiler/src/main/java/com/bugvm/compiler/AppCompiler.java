@@ -191,7 +191,7 @@ public class AppCompiler {
         "com/bugvm/rt/bro/Struct"
     };
 
-    private static final String TRUSTED_CERTIFICATE_STORE_CLASS = "com/android/org/conscrypt/TrustedCertificateStore";
+    private static final String TRUSTED_CERTIFICATE_STORE_CLASS = "com/bugvm/conscrypt/TrustedCertificateStore";
 
     /**
      * An {@link Executor} which runs tasks immediately without creating a

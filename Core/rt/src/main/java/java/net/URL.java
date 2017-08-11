@@ -426,14 +426,14 @@ public final class URL implements Serializable {
             streamHandler = new FtpHandler();
         } else if (protocol.equals("http")) {
             try {
-                String name = "com.android.okhttp.HttpHandler";
+                String name = "com.bugvm.okhttp.HttpHandler";
                 streamHandler = (URLStreamHandler) Class.forName(name).newInstance();
             } catch (Exception e) {
                 throw new AssertionError(e);
             }
         } else if (protocol.equals("https")) {
             try {
-                String name = "com.android.okhttp.HttpsHandler";
+                String name = "com.bugvm.okhttp.HttpsHandler";
                 streamHandler = (URLStreamHandler) Class.forName(name).newInstance();
             } catch (Exception e) {
                 throw new AssertionError(e);
