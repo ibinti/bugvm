@@ -127,7 +127,7 @@ elseif(IOS)
 endif()
 
 # Linker flags
-set(LD_FLAGS "${LD_FLAGS} -fPIC -stdlib=libc++")
+set(LD_FLAGS "${LD_FLAGS} -fPIC")
 if(CARCH)
   set(LD_FLAGS "${LD_FLAGS} -arch ${CARCH}")
 elseif(64_BIT)
