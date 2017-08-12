@@ -53,7 +53,7 @@ if [ $(uname) = 'Darwin' ]; then
   if xcrun --sdk iphoneos --show-sdk-version &> /dev/null; then
     IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
   else
-    IOS_SDK_VERSION=6.1
+    IOS_SDK_VERSION=7.0
   fi
   if xcrun -f clang &> /dev/null; then
     CC=$(xcrun -f clang)
