@@ -197,7 +197,7 @@ inline std::string jniGetStackTrace(JNIEnv* env, jthrowable exception = NULL) {
 #ifndef TEMP_FAILURE_RETRY
 /* Used to retry syscalls that can return EINTR. */
 #define TEMP_FAILURE_RETRY(exp) ({         \
-    typeof (exp) _rc;                      \
+    __typeof__ (exp) _rc;                      \
     do {                                   \
         _rc = (exp);                       \
     } while (_rc == -1 && errno == EINTR); \

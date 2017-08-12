@@ -246,15 +246,7 @@ public class IOSTarget extends AbstractTarget {
             }
         }
 
-        if (majorVersionNumber >= 7) {
-            // On iOS 7 and higher the linker will default to link against
-            // libc++ which is needed for C++11 support. We need the older
-            // libstdc++ as our native libs are compiled against it and need to
-            // work on iOS 6. If an app needs C++11 support the user will need
-            // to link against /usr/lib/libc++.dylib explicitly.
-            ccArgs.add("-stdlib=libstdc++");
-        }
-
+        ccArgs.add("-stdlib=libc++");
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
         

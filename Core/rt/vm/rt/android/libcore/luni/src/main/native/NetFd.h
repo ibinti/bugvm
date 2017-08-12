@@ -56,7 +56,7 @@ private:
  * Socket.close.
  */
 #define NET_FAILURE_RETRY(fd, exp) ({               \
-    typeof (exp) _rc;                               \
+    __typeof__ (exp) _rc;                               \
     do {                                            \
         _rc = (exp);                                \
         if (_rc == -1) {                            \
