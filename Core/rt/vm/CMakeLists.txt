@@ -104,7 +104,7 @@ endif()
 
 # Set up global C and C++ compiler flags
 set(C_FLAGS "${C_FLAGS} -std=gnu99 -fPIC")
-set(CXX_FLAGS "${CXX_FLAGS} -std=c++11 -stdlib=libc++ -fPIC")
+set(CXX_FLAGS "${CXX_FLAGS} -std=c++11 -fPIC")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fdata-sections -ffunction-sections -fPIC")
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
@@ -127,7 +127,7 @@ elseif(IOS)
 endif()
 
 # Linker flags
-set(LD_FLAGS "${LD_FLAGS} -fPIC")
+set(LD_FLAGS "${LD_FLAGS} -fPIC -stdlib=libc++")
 if(CARCH)
   set(LD_FLAGS "${LD_FLAGS} -arch ${CARCH}")
 elseif(64_BIT)
