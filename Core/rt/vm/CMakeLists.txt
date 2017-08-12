@@ -1,7 +1,7 @@
 # The minimum Mac OS X version needed by apps built by BugVM
 set(MACOSX_MIN_VERSION 10.7)
 # The minimum iOS version needed by apps built by BugVM
-set(IOS_MIN_VERSION 6.0)
+set(IOS_MIN_VERSION 7.0)
 
 cmake_minimum_required(VERSION 2.8.8)
 project(build)
@@ -104,7 +104,7 @@ endif()
 
 # Set up global C and C++ compiler flags
 set(C_FLAGS "${C_FLAGS} -std=gnu99 -fPIC")
-set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11 -fPIC")
+set(CXX_FLAGS "${CXX_FLAGS} -std=c++11 -stdlib=libc++ -fPIC")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fdata-sections -ffunction-sections -fPIC")
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")

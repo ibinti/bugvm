@@ -332,7 +332,7 @@ typedef UniquePtr<STACK_OF(GENERAL_NAME), sk_GENERAL_NAME_Delete> Unique_sk_GENE
  * without triggering a warning by not using the result of release().
  */
 #define OWNERSHIP_TRANSFERRED(obj) \
-    typeof (obj.release()) _dummy __attribute__((unused)) = obj.release()
+    __typeof__ (obj.release()) _dummy __attribute__((unused)) = obj.release()
 
 /**
  * Frees the SSL error state.
