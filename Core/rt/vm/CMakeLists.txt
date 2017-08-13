@@ -147,7 +147,7 @@ if(IOS)
   set(LD_FLAGS "${LD_FLAGS} -stdlib=libc++ -miphoneos-version-min=${IOS_MIN_VERSION}")
 endif()
 if(LINUX)
-  set(LD_FLAGS "${LD_FLAGS} -nodefaultlibs -lc++ -lc++abi")
+  set(LD_FLAGS "${LD_FLAGS} -nodefaultlibs -lc++")
 endif()
 
 set(CMAKE_C_FLAGS_RELEASE "-Os -DNDEBUG")
