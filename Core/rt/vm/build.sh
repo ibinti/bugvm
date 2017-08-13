@@ -66,8 +66,8 @@ if [ $(uname) = 'Darwin' ]; then
     CXX=$(which clang++)
   fi
 else
-  CC=$(which gcc)
-  CXX=$(which g++)
+  CC=$(which clang)
+  CXX=$(which clang++)
 fi
 
 if [ "x$TARGETS" = 'x' ]; then

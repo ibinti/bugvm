@@ -80,8 +80,8 @@ Darwin)
   fi
   ;;
 Linux)
-  CC=$(which gcc)
-  CXX=$(which g++)
+  CC=$(which clang)
+  CXX=$(which clang++)
   ;;
 Windows)
   CC=$(which x86_64-w64-mingw32-gcc)
