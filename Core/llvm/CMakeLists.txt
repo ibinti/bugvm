@@ -101,11 +101,7 @@ ExternalProject_Add(extllvm
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS}")
-if(MACOSX)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -fno-rtti -stdlib=libc++ -std=c++11")
-elseif(LINUX)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -fno-rtti -std=c++11")
-endif()
 set(CMAKE_INSTALL_DO_STRIP YES)
 
 add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
@@ -177,7 +173,9 @@ if(LINUX)
 elseif(MACOSX)
   set_target_properties(bugvm-llvm PROPERTIES LINK_FLAGS "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,${CMAKE_SOURCE_DIR}/src/main/native/exports_macosx.sym")
 endif()
+
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/src/main/resources/com/bugvm/llvm/binding/${OS}/${ARCH})
+
 if(WINDOWS)
   install(TARGETS bugvm-llvm RUNTIME DESTINATION ${INSTALL_DIR})
 else()
