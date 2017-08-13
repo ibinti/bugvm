@@ -7,7 +7,7 @@ description = """BugVM LLVM Bindings"""
 
 task nativeLib(type:Exec) {
 
-    commandLine "bash", "-c", ". build.sh --clean"
+    commandLine "bash", "-c", ". build.sh"
 
     doLast {
         copy {
