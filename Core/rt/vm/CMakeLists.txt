@@ -124,8 +124,6 @@ if(MACOSX)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -mmacosx-version-min=${MACOSX_MIN_VERSION}")
 elseif(IOS)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -miphoneos-version-min=${IOS_MIN_VERSION}")
-elseif(LINUX)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -nostdinc++")
 endif()
 
 # Linker flags
