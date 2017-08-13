@@ -51,7 +51,7 @@ elseif (ARCH STREQUAL "x86_64")
   set(X86_64 YES)
 endif()
 
-set(C_CXX_FLAGS "${C_CXX_FLAGS} -std=c++11 -fvisibility=hidden -fdata-sections -ffunction-sections")
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-sections")
 if(MACOSX AND X86_64)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=${MACOSX_MIN_VERSION}")
   set(LD_FLAGS "${LD_FLAGS} -stdlib=libc++ -arch x86_64 -mmacosx-version-min=${MACOSX_MIN_VERSION}")
@@ -101,7 +101,7 @@ ExternalProject_Add(extllvm
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -fno-rtti")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -std=c++11 -fno-rtti")
 set(CMAKE_INSTALL_DO_STRIP YES)
 
 add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
