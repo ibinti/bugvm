@@ -1,8 +1,18 @@
+apply plugin: "maven"
+apply plugin: "signing"
+apply plugin: "com.bmuschko.nexus"
+
 archivesBaseName = "bugvm-apple"
 description = """BugVM Apple Bindings"""
 
 dependencies {
     compile project(":Core:rt")
+}
+
+jar {
+    manifest {
+        attributes "Implementation-Version" : project.version
+    }
 }
 
 modifyPom {

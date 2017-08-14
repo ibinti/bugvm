@@ -1,3 +1,7 @@
+apply plugin: "maven"
+apply plugin: "signing"
+apply plugin: "com.bmuschko.nexus"
+
 archivesBaseName = "bugvm-compiler"
 description = """BugVM Compiler"""
 
