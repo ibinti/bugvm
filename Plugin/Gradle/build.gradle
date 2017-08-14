@@ -2,9 +2,6 @@ archivesBaseName = "bugvm-gradle"
 description = """BugVM Gradle Plugin"""
 
 apply plugin: "groovy"
-apply plugin: "maven"
-apply plugin: "signing"
-apply plugin: "com.bmuschko.nexus"
 
 dependencies {
     compile project(":Core:compiler")

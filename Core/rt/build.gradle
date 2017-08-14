@@ -1,17 +1,3 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
-    }
-}
-
-apply plugin: "maven"
-apply plugin: "signing"
-apply plugin: "com.bmuschko.nexus"
-apply plugin: "com.github.johnrengelman.shadow"
-
 archivesBaseName = "bugvm-rt"
 description = """BugVM Runtime Library"""
 
@@ -23,14 +9,6 @@ jar {
     manifest {
         attributes "Implementation-Version" : project.version
     }
-    enabled = false
-    dependsOn shadowJar
-}
-
-shadowJar {
-    classifier = null
-    exclude "META-INF/maven/"
-    relocate "com.eaio", "com.bugvm.eaio"
 }
 
 task nativeLib(type:Exec) {
