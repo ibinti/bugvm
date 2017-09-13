@@ -1,0 +1,14 @@
+<config>
+    <os>ios</os>
+    <arch>arm64</arch>
+    <arch>thumbv7</arch>
+    <arch>x86</arch>
+    <arch>x86_64</arch>
+    <target>framework</target>
+    <imageName>${framework.name}</imageName>
+    <infoPList>Info.plist.xml</infoPList>
+    <treeShaker>aggressive</treeShaker>
+    <forceLinkClasses>
+        <pattern>com.bugvm.samples.myjavaframework.**</pattern>
+    </forceLinkClasses>
+</config>

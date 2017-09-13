@@ -17,6 +17,12 @@ task nativeLib(type:Exec) {
     }
 }
 
+jar {
+    manifest {
+        attributes "Implementation-Version" : project.version
+    }
+}
+
 modifyPom {
     project {
         name project.archivesBaseName

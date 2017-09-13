@@ -6,41 +6,45 @@ archivesBaseName = "bugvm-soot"
 description = """BugVM Soot"""
 
 sourceSets {
-     main {
-          java {
-               srcDirs = ["src", "generated/options"]
-               exclude "**/AntTask.java"
-          }
-     }
+    main {
+        java {
+            srcDirs = ["src", "generated/options"]
+            exclude "**/AntTask.java"
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes "Implementation-Version" : project.version
+    }
 }
 
 modifyPom {
-     project {
-          name project.archivesBaseName
-          description project.description
-          licenses {
-               license {
-                    name "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
-                    url "https://www.gnu.org/licenses/lgpl-2.1.html"
-                    distribution "repo"
-               }
-          }
-          url "https://bugvm.com"
-
-          scm {
-               url "https://github.com/bugvm/bugvm"
-               connection "scm:git:git://github.com/bugvm/bugvm.git"
-               developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
-          }
-
-          developers {
-               developer {
-                    id "bugvm"
-                    name "We are the BugVM"
-                    email "bug@bugvm.com"
-                    organization "BugVM"
-                    organizationUrl "https://bugvm.com"
-               }
-          }
-     }
+    project {
+        name project.archivesBaseName
+        description project.description
+        licenses {
+            license {
+                name "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
+                url "https://www.gnu.org/licenses/lgpl-2.1.html"
+                distribution "repo"
+            }
+        }
+        url "https://bugvm.com"
+        scm {
+            url "https://github.com/bugvm/bugvm"
+            connection "scm:git:git://github.com/bugvm/bugvm.git"
+            developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
+        }
+        developers {
+            developer {
+                id "bugvm"
+                name "We are the BugVM"
+                email "bug@bugvm.com"
+                organization "BugVM"
+                organizationUrl "https://bugvm.com"
+            }
+        }
+    }
 }

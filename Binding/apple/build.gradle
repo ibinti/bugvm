@@ -9,6 +9,12 @@ dependencies {
     compile project(":Core:rt")
 }
 
+jar {
+    manifest {
+        attributes "Implementation-Version" : project.version
+    }
+}
+
 modifyPom {
     project {
         name project.archivesBaseName
