@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugvm_version = "1.2.6"
+        bugvm_version = "1.2.6-SNAPSHOT"
         kotlin_version = "1.1.4"
     }
     repositories {
@@ -161,7 +161,7 @@ modifyPom {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "4.1"
+    gradleVersion = "4.2"
     distributionType = Wrapper.DistributionType.ALL
 }
 
