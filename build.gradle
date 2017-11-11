@@ -1,7 +1,7 @@
 buildscript {
     ext {
         bugvm_version = "1.2.7-SNAPSHOT"
-        kotlin_version = "1.1.4"
+        kotlin_version = "1.1.51"
     }
     repositories {
         mavenCentral()
@@ -37,7 +37,7 @@ allprojects {
     }
 
     dependencies {
-        compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7"
     }
 
 }
