@@ -37,7 +37,7 @@ allprojects {
     }
 
     dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     }
 
 }
