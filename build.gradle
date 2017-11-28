@@ -1,7 +1,7 @@
 buildscript {
     ext {
         bugvm_version = "1.2.7-SNAPSHOT"
-        kotlin_version = "1.1.51"
+        kotlin_version = "1.2.0"
     }
     repositories {
         mavenCentral()
@@ -24,7 +24,19 @@ allprojects {
     apply plugin: "kotlin"
 
     sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    targetCompatibility = 1.8
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
 
     javadoc {
         exclude "**"
@@ -161,7 +173,7 @@ modifyPom {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "4.2"
+    gradleVersion = "4.3.1"
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -170,3 +182,4 @@ task listJars {
         configurations.runtime.each { File file -> println file.name }
     }
 }
+
