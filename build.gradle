@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugvm_version = "1.2.7-SNAPSHOT"
+        bugvm_version = "1.2.7"
         kotlin_version = "1.2.30"
     }
     repositories {
