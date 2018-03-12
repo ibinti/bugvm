@@ -292,4 +292,8 @@ import com.bugvm.apple.dispatch.*;
     @Method(selector = "initWithArray:")
     protected native @Pointer long init(NSArray<?> array);
     /*</methods>*/
+    @Override
+    public Spliterator<T> spliterator() {
+        return List.super.spliterator();
+    }
 }
