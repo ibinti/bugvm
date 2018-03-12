@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        bugvm_version = "1.2.7"
+        bugvm_version = "1.2.8-SNAPSHOT"
         kotlin_version = "1.2.30"
     }
     repositories {
@@ -23,7 +23,7 @@ allprojects {
 
     apply plugin: "kotlin"
 
-    sourceCompatibility = 1.7
+    sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     compileKotlin {
@@ -182,4 +182,3 @@ task listJars {
         configurations.runtime.each { File file -> println file.name }
     }
 }
-
