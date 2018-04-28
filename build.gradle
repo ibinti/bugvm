@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        bugvm_version = "1.2.8-SNAPSHOT"
-        kotlin_version = "1.2.30"
+        bugvm_version = "1.2.9"
+        kotlin_version = "1.2.40"
     }
     repositories {
         mavenCentral()
@@ -49,7 +49,7 @@ allprojects {
     }
 
     dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     }
 
 }
@@ -173,7 +173,7 @@ modifyPom {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "4.6"
+    gradleVersion = "4.7"
     distributionType = Wrapper.DistributionType.ALL
 }
 
