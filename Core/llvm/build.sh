@@ -82,7 +82,7 @@ Darwin)
 Linux)
   CC=$(which gcc)
   CXX=$(which g++)
-  bash -c "cd patch-2.7.3;./configure;make install;cd .."
+  bash -c "cd patch-2.7.3; ./configure; make install; cd .."
   ;;
 Windows)
   CC=$(which x86_64-w64-mingw32-gcc)
