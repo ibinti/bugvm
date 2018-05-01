@@ -1,0 +1,139 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Don't recognize hunks before a filename has been specified/seen
+
+. $srcdir/test-lib.sh
+
+require_cat
+require_sed
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > n.diff <<EOF
+0a1
+> one
+EOF
+
+check 'patch < n.diff || echo "Status: $?"' <<EOF
+$PATCH: **** Only garbage was found in the patch input.
+Status: 2
+EOF
+
+check 'patch -f -n < n.diff || echo "Status: $?"' <<EOF
+can't find file to patch at input line 1
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+Status: 1
+EOF
+
+touch f
+check 'patch f < n.diff' <<EOF
+patching file f
+EOF
+
+# ==============================================================
+
+if ! have_ed ; then
+    echo "The ed utility is not available; skipping ed related tests"
+else
+    cat > e.diff <<EOF
+0a
+one
+.
+EOF
+
+    check 'patch < e.diff || echo "Status: $?"' <<EOF
+$PATCH: **** Only garbage was found in the patch input.
+Status: 2
+EOF
+
+    check 'patch -f -e < e.diff || echo "Status: $?"' <<EOF
+can't find file to patch at input line 1
+No file to patch.  Skipping patch.
+Status: 1
+EOF
+
+    rm -f f
+    touch f
+    ncheck 'patch f < e.diff'
+
+    check 'cat f' <<EOF
+one
+EOF
+fi
+
+# ==============================================================
+
+cat > h+c.diff <<EOF
+*** /dev/null
+--- f
+***************
+*** 0 ****
+--- 1 ----
++ one
+EOF
+
+rm -f f
+check 'patch < h+c.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f' <<EOF
+one
+EOF
+
+sed -e '1,2d' h+c.diff > c.diff
+
+check 'patch < c.diff || echo "Status: $?"' <<EOF
+$PATCH: **** Only garbage was found in the patch input.
+Status: 2
+EOF
+
+rm -f f
+check 'patch f < c.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f' <<EOF
+one
+EOF
+
+# ==============================================================
+
+cat > h+u.diff <<EOF
+--- /dev/null
++++ f
+@@ -0,0 +1 @@
++one
+EOF
+
+rm -f f
+check 'patch < h+u.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f' <<EOF
+one
+EOF
+
+sed -e '1,2d' h+u.diff > u.diff
+
+check 'patch < u.diff || echo "Status: $?"' <<EOF
+$PATCH: **** Only garbage was found in the patch input.
+Status: 2
+EOF
+
+rm -f f
+check 'patch f < u.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f' <<EOF
+one
+EOF

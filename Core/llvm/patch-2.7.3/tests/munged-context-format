@@ -1,0 +1,38 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Be tolerant about munged whitespace in context format
+
+. $srcdir/test-lib.sh
+
+require_cat
+require_sed
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > ab.diff <<EOF
+*** a	2009-03-27 23:32:33.000000000 +0100
+--- b	2009-03-27 23:32:40.000000000 +0100
+***************
+*** 1 ****
+--- 1,2 ----
+  one
++ two
+EOF
+
+echo one > a
+check 'patch < ab.diff' <<EOF
+patching file a
+EOF
+
+sed -e 's/^  / /' ab.diff > c.diff
+
+echo one > a
+check 'patch < c.diff' <<EOF
+patching file a
+EOF

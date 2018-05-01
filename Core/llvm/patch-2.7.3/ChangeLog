@@ -1,0 +1,875 @@
+2015-01-22  Andreas Gruenbacher  <agruen@gnu.org>
+
+	Fix the fix for CVE-2015-1196
+	* src/util.c (filename_is_safe): New function split off from name_is_valid().
+	(symlink_target_is_valid): Explain why we cannot have absolute symlinks or
+	symlinks with ".." components for now.
+	(move_file): Move absolute filename check here and explain.
+	* tests/symlinks: Put test case with ".." symlink in comments for now.
+	* NEWS: Add CVE number.
+
+2015-01-21  Andreas Gruenbacher  <agruen@gnu.org>
+
+	For renames and copies, make sure that both file names are valid
+	* src/patch.c (main): Allow there_is_another_patch() to set the
+	skip_rest_of_patch flag.
+	* src/pch.c (intuit_diff_type): For renames and copies, also check the "other"
+	file name.
+	(pch_copy, pch_rename): Now that both names are checked in intuit_diff_type(),
+	we know they are defined here.
+
+2015-01-20  Andreas Gruenbacher  <agruen@gnu.org>
+
+	Fail when out of memory in set_hunkmax()
+	src/pch.c (another_hunk): Call set_hunkmax() from here to make sure it is
+	called even when falling back from plan A to plan B.
+	(open_patch_file): No need to call set_hunkmax() anymore.
+	src/pch.c (set_hunkmax): Fail when out of memory. Make static.
+	src/pch.h: Remove set_hunkmax() prototype.
+
+	Don't try applying hunks at offsets that can't work
+	* src/patch.c (locate_hunk): Start trying to apply the hunk at the minimum
+	offset which puts the hunk in the valid range of lines. This will often still
+	be offset 0.
+
+2015-01-20  Andreas Gruenbacher  <andreas.gruenbacher@gmail.com>
+
+	Move symlink_target_is_valid() and cwd_is_root()
+	* src/util.c: Move symlink_target_is_valid() and cwd_is_root() here from
+	src/pch.c.
+
+2015-01-19  Andreas Gruenbacher  <andreas.gruenbacher@gmail.com>
+
+	Make sure symlinks don't point outside working directory (CVE-2015-119)
+	When creating symlinks from git-style patches, make sure the symlinks don't
+	point above the current working directory.  Otherwise, a subsequent patch could
+	use the symlink to write outside the working directory.
+
+	* src/pch.c (symlink_target_is_valid): New function to check for valid symlink
+	targets.
+	* src/util.c (move_file): Use symlink_target_is_valid() here.
+	* tests/symlinks: Add valid and invalid symlink test cases.
+
+2014-11-30  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Add line number overflow checking
+	* bootstrap.conf: use intprops module.
+	* src/common.h: Define LINENUM_MIN and LINENUM_MAX macros.
+	* src/pch.c (another_hunk): Add line number overflow checking.  Based on Robert
+	C. Seacord's INT32-C document for integer overflow checking and Tobias
+	Stoeckmann's "integer overflows and oob memory access" patch for FreeBSD.
+
+2014-11-30  Andreas Gruenbacher  <agruen@linbit.com>
+
+	More savebuf/savestr error handling
+	* bootstrap.conf: use xmemdup0 module.
+	* src/pch.c (there_is_another_patch): Use xmemdup0 instead of savebuf when we
+	cannot recover from out-of-memory situations.
+	(intuit_diff_type): Likewise, use xstrdup instead of savestr.
+	(another_hunk): Handle the case when savestr returns NULL.
+	* src/util.c (fetchname, parse_name): Use xmemdup0 instead of savebuf when we
+	cannot recover from out-of-memory situations.
+
+	Bugs pointed out by Tobias Stoeckmann <tobias@stoeckmann.org>.
+
+2014-11-30  Tobias Stoeckmann  <tobias@stoeckmann.org>
+
+	savebuf/savestr error handling
+	* src/patch.c (get_some_switches): The function savebuf (and therefore savestr)
+	copies strings using malloc.  If malloc fails, NULL is returned.  This is
+	intentional behavior so that in case of failure during "plan a" patching, "plan
+	b" can step in.  The return value has to be properly checked for NULL.  If the
+	return value must not be NULL, use xstrdup instead.
+
+2014-11-30  Andreas Gruenbacher  <andreas.gruenbacher@gmail.com>
+
+	build: update gnulib submodule to latest
+	* src/merge.c (compute_changes): The TOO_EXPENSIVE heuristic in diffseq has
+	been removed, including compareseq's find_minimal parameter and the context's
+	too_expensive limit.  Adjust.
+
+2014-11-10  Jean Delvare  <jdelvare@suse.de>
+
+	Drop useless test in another_hunk()
+	src/pch.c (another_hunk): This test will always succeed.
+
+2014-10-30  Tobias Stoeckmann  <tobias@stoeckmann.org>
+
+	Buffer overflow on malicious input file
+	There is a hard to reach but possible buffer overflow when using
+	patch with a very large (modified) input file.  I doubt you will ever
+	see this with a 64 bit system, but it's possible with 32 bit:
+
+	$ echo hello > file1
+	$ echo world > file2
+	$ diff -Nau file1 file2 > file.diff
+
+	Nothing fancy so far.  Adjust file1 so it contains at least one line that
+	is 2 GB in size.  Larger is fine too, but stay below 4 GB.
+
+	$ tr '\0' c < /dev/zero | dd bs=1K count=2097152 of=file1
+
+	Now try to patch it.
+
+	$ patch -Np0 -i file.diff
+	Segmentation fault
+
+	The issue is in patch's "plan b" strategy  (If your system would still
+	want to use "plan a", force patch to use "plan b" through debug flag).
+
+	Plan b writes lines into a temporary file, with equally long lines, so
+	it can use a buffer mechanism to access them in a kind of randomly
+	fassion.  In order to do that, it retrieves the longest line.
+
+	In this example, it will encounter the 2 GB line and stores that as the
+	longest one.  Afterwards it will adjust the tibufsize variable to be
+	large enough:
+
+	  for (tibufsize = TIBUFSIZE_MINIMUM;  tibufsize < maxlen;  tibufsize <<= 1)
+	    /* do nothing */ ;
+
+	Due to maxlen's size (2 GB), tibufsize will be SIZE_T_MAX, i.e. 4 GB.
+	A few lines later it allocates space for the tibuf buffers:
+
+	  tibuf[0] = xmalloc (2 * tibufsize);
+	  tibuf[1] = tibuf[0] + tibufsize;
+
+	This will allocate 0 bytes because tibufsize overflowed.  The next
+	time patch writes into the buffer, a segmentation fault will occur...
+	Depends on your system how long it takes until that happens. ;)
+
+	The fix is simple:  Bail out on lines that are too long.  Patch already
+	does that for files that have too many lines.
+
+2014-08-13  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Improve error message when refusing to delete file
+	* src/patch.c: Improve error message.
+	* tests/create-delete: Update the test case.
+
+2013-12-09  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Correct the --help text of option --merge
+	* src/patch.c (option_help): The --merge option does not have a short
+	form; update the help text.
+
+2013-08-19  Steven Rostedt  <rostedt@goodmis.org>
+
+	Preserve function names in reject files
+	* src/patch.c (main): Preserve function names in reject files.
+	* tests/reject-format: Update the test case.
+
+2013-07-30  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Test case for the dry-run fix
+	* tests/create-directory: Add test case here.
+
+	In dry-run mode, create temporary files in a temporary directory
+	* src/util.c (make_tempfile): Do not create temporary files in the final output
+	directory when in dry-run mode: the path may be read-only.  In addition, we do
+	not want to leave intermediary empty output directories around.
+
+2013-06-18  Eric S. Raymond  <esr@thyrsus.com>
+
+	Fix some formatting problems in the manpage
+	* patch.1: Use higher-level markup that translates better into HTML and other
+	formats.  (With changes by Andreas Gruenbacher.)
+
+2013-05-02  Stefano Lattarini  <stefano.lattarini@gmail.com>  (tiny change)
+
+	build: don't use -Werror in AM_INIT_AUTOMAKE
+	Doing so prevents bootstrapping with bleeding-edge autotools,
+	because of harmless deprecation warnings (that are not planned
+	to become hard errors for at least a few years to come).  And
+	unfortunately, options in AM_INIT_AUTOMAKE take precedence over
+	those given on the command line (this is a long-time wart of
+	automake).
+
+	* configure.ac (AM_INIT_AUTOMAKE): Drop '-Werror' option.
+
+2013-03-10  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Fix removing empty directories
+	Reported by Thomas Moschny <thomas.moschny@gmx.de>:
+	src/patch.c (main): Temporary output files are created in the same directory as
+	the output file.  Make sure to remove them before removing empty files and
+	their empty ancestor directories; else the directories won't be empty.
+	tests/remove-directories: Add directory removal test case.
+	tests/Makefile.am (TESTS): Add new test case.
+
+2013-01-03  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Clarify the description of option --forward
+	* patch.man: Clarify the description of option --forward.
+
+2012-10-04  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Initialize data structures early enough
+	* src/patch.c (main): Initialize data structures early enough, before error
+	paths can access them.
+	* tests/bad-usage: Test bad command line usage.
+	* tests/Makefile.am (TESTS): Add bad-usage here.
+
+2012-09-30  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Don't fail test suite if printf '\0' is broken
+	* tests/create-delete: Skip binary diff test if printf '\0' is broken.
+
+2012-09-28  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Version 2.7.1
+
+	build: update gnulib submodule to latest
+
+	Repair 'backup of unmodified file' test
+	tests/create-delete: Repair 'backup of unmodified file' test.
+
+	Use gnulib errno module instead of our own default ENOTSUP fallback
+	* bootstrap.conf (gnulib_modules): Add errno module.
+	* src/common.h: Remove ENOTSUP fallback.
+
+	Trailing whitespace fix
+	* NEWS: Trailing whitespace fix.
+
+2012-09-26  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Improve the previous commit
+	* src/patch.c: Only print the "file is not empty after patch" message when
+	trying to delete the output file.  Say that we were trying to delete the file.
+	* tests/create-delete: Fix the expected messages.  Add test cases for the
+	--remove-empty-files and --posix options.
+	* NEWS: Better describe this change.
+
+2012-09-25  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Only expect files to become empty if the patch says so
+	Test cases based on patches from Dmitry V. Levin <ldv@altlinux.org>.
+	* src/patch.c (main): Only expect files to become empty if the patch says so.
+	* NEWS: Document this change.
+	* tests/create-delete: Add (more) empty vs. non-empty test cases.
+
+2012-09-22  Jim Meyering  <meyering@redhat.com>
+
+	build: avoid gcc warnings from -Wsuggest-attribute=format
+	* configure.ac (WARN_CFLAGS): Disable -Wsuggest-attribute=format,
+	to avoid some warnings that are not worth working around.
+
+2012-09-22  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Update NEWS
+	* NEWS: Update.
+
+	Improve messages when in --dry-run mode
+	* src/patch.c (main): Say that we are checking a file and not that we are
+	patching it in --dry-run mode.  Don't say "saving rejects to file" when we
+	don't create reject files.
+	* tests/reject-format: Add rejects with --dry-run test case.
+	* tests/bad-filenames, tests/fifo, tests/mixed-patch-types: Update.
+
+	Improve handling of LF vs. CRLF line endings
+	* src/patch.c (check_line_endings): New function.
+	(main): When a hunk fails, report when the line endings differ between the
+	input file and the patch.
+	* src/pch.c (there_is_another_patch): When saying that we strip trailing CRs,
+	also say how to turn this off.
+	* tests/crlf-handling: Update changed messages.  Add test case that fails.
+
+	Ignore when preserving extended attributes is not supported or allowed
+	* src/common.h (ENOTSUP): Make sure this error code is defined.
+	* src/util.c (set_file_attributes): Ignore ENOSYS, ENOTSUP, and EPERM errors.
+
+2012-09-20  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Add a missing explanation in the tests/crlf-handling test case
+	* tests/crlf-handling: Add explanation.
+
+2012-09-19  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Add --follow-symlinks option for backwards compatibility
+	* src/common.h (follow_symlinks): New variable.
+	* src/patch.c (longopts): Add new --follow-symlinks option.
+	(get_some_switches): Recognize the new option.
+	* src/util.c (stat_file): Follow symlinks if requested.
+	* patch.man: Document the new option.
+	* tests/symlinks: Add test case.
+
+	Introduce function to lstat all input files
+	* src/util.c (stat_file): New function.
+	(move_file): Use here.
+	* src/util.h (stat_file): Declare here.
+	* src/inp.c (get_input_file): Use here.
+	* src/patch.c (main): Use here.
+	(delete_file_later): Use here.
+	* src/pch.c (there_is_another_patch): Use here.
+	(intuit_diff_type): Use here.
+
+	Use stat where we want to follow symlinks
+	* src/pch.c (prefix_components): Follow symlinks.
+	(cwd_is_root): Follow symlinks.
+
+	Document command-line options in alphabetic order
+	* patch.man: The options are mostly listen in alphabetical order; stick to
+	that.
+
+2012-09-18  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Fix file truncation when switching from git diff to non-git diff
+	* src/patch.c (main): Output queued output files only when switching from a git
+	diff to a non-git diff.  This can modify the input file, so make sure to
+	stat() it again.
+	* tests/concat-git-diff: Add test case growing a file with a git diff and then
+	with a non-git diff; without this fix; the result would be truncated.
+
+	Rename get_input_file() parameter to clarify code
+	* src/inp.c (get_input_file): Rename mode parameter to file_type, it's all we
+	care about here.
+
+	Improve error message when patching a file of different type
+	* src/inp.c (get_input_file): Improve error message when patching a file of
+	different type.
+	* tests/symlinks: Update test case.
+
+	Minor test case updates
+	* tests/dash-o-append: Minor update (still expected to fail).
+	* tests/symlinks: Minor update.
+
+2012-09-17  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Disable xattrs if libattr doesn't implement attr_copy_action()
+	* m4/xattr.m4 (gl_FUNC_XATTR): Only enable USE_XATTR if both attr_copy_file()
+	and attr_copy_action() are defined.
+	* src/util.c (copy_attr_check): No fallback needed if attr_copy_action() is not
+	defined.
+
+	Allow to use potentially dangerous filenames from the root directory
+	* src/pch.c (cwd_is_root): New function to check if we are in the root
+	directory of a filename.
+	(name_is_valid): Allow to use potentially dangerous filenames when the current
+	working directory is the root directory: from there, those names are not
+	any more dangerous than other names.
+	* tests/bad-filenames: New test case.
+
+2012-09-14  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Update leftover license notice in README
+	* README: Change leftover GPLv2 license notice to GPLv3.
+
+	Check if libattr implements attr_copy_action()
+	* m4/xattr.m4 (gl_FUNC_XATTR): Check if attr_copy_action() is defined.
+	* src/util.c: If attr_copy_action() doesn't exist, fall back to the default
+	copy_attr_file() behavior of copying most extended attributes except ACLs.
+
+2012-09-13  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Change the type of *_needs_removal from int to bool
+
+	In a git-style diff, make sure not to unlink the original by accident
+	* src/patch.c (main): Fail if a file is not empty as expected.
+	(output_files): In a git-style diff, make sure not to unlink the original when
+	making a backup of an unmodified file.
+	* tests/create-delete: Fix failed-file-deletion test and add
+	successful-file-deletion test.
+
+	Do not pass file type in mode of open(..., O_CREAT, mode)
+	* src/patch.c (main): Strip file type off of create mode for temporary output
+	files: some systems don't ignore the file type; we want to create a regular
+	file even when patching a symlink.
+
+	Add note on GPLv3 license change in version 2.6
+	* NEWS: Add note.
+
+2012-09-12  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Version 2.7
+	* NEWS: Update.
+
+	maint: update gnulib submodule
+
+2012-08-11  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Support double-quoted filenames in all context diff formats
+	* src/util.c (fetchname): Always recognize double-quoted filenames.
+	* src/util.h (fetchname): Update prototype.
+	* src/pch.c (intuit_diff_type): Update calls to fetchname().
+	* tests/quoted-filenames: Change to a normal unified diff.
+	* NEWS: Update.
+
+2012-08-08  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Remove SHA1 hashes from the file id cache
+	* src/util.c (file_id): Remove sha1 field.
+	(update_sha1, lookup_sha1): Remove functions.
+	* src/util.h (update_sha1, lookup_sha1): Remove declarations.
+
+	Detect concatenated git-style patches by tracking what's in the output queue
+	* src/patch.c (main): Instead of looking at the SHA hashes to detect
+	concatenated git-style patches, detect when a file to write to is already in
+	the output queue.
+	* tests/concat-git-diff: Add create/delete tests.
+
+	In the file id cache, allow to flag files in the output queue
+	* src/util.c (file_id): Add queued_output field.
+	(__insert_file_id): Initialize queued_output.
+	(set_queued_output, has_queued_output): New functions.
+	* src/util.h (set_queued_output, has_queued_output): Declare.
+
+2012-08-08  Dmitry V. Levin  <ldv@altlinux.org>
+
+	Add another git-style diff concatenation regression test
+	* tests/concat-git-diff: Add test case here.
+
+2012-08-08  Andreas Gruenbacher  <agruen@linbit.com>
+
+	maint: ignore more build artifacts
+
+2012-08-07  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Change outst variable name to tmpoutst to be less misleading
+	* src/patch.c (main): Rename outst to tmpoutst.
+
+2012-08-02  Andreas Gruenbacher  <agruen@linbit.com>
+
+	In git-style diffs, create new files immediatetly and only remember files to modify
+	* src/patch.c (output_file): Create new files immediately.  Document why
+	things are implemented that way.
+	* tests/concat-git-diff: Fix glitch in test case.
+
+2012-08-01  Jim Meyering  <meyering@redhat.com>
+
+	Don't close a negative file descriptor
+	* src/inp.c (re_input): Don't close FD if it's negative.
+
+2012-08-01  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Add file create test case which still needs to be fixed
+	* tests/concat-git-diff: Add file create test case.
+
+2012-08-01  Jim Meyering  <meyering@redhat.com>
+
+	build: remove unnecessary if-before-free
+	* src/util.c (update_sha1): Remove unnecessary if-before-free,
+	to avoid "make syntax-check" failure.
+
+	build: mark an internal function as "pure"
+	* src/pch.c (sha1_says_nonexistent): Apply _GL_ATTRIBUTE_PURE,
+	to avoid failure with -Werror=suggest-attribute=pure.
+
+2012-08-01  Andreas Gruenbacher  <agruen@linbit.com>
+
+	maint: update bootstrap and gnulib submodule
+	* bootstrap: Update from gnulib.
+
+	Try to recognize concatenated git diffs and handle them appropriately
+	* src/patch.c (main): Remember the "before" SHA1 hashes of git-style patches;
+	the same patch will always use the same "before" SHA1 for a specific file.
+	Try to recognize concatenated patches based on that.
+	* tests/concat-git-diff: New test case.
+	* tests/Makefile.am (TESTS): Add new test case.
+
+	Allow to process only part of the deferred output file list
+	* src/patch.c (output_files): Add parameter to specify which file to stop at.
+	(main): Pass NULL to output_files() to process the entire list.
+
+2012-07-31  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Allow to remember SHA1 hashes in the file id cache
+	* src/util.c (file_id): New sha1 field.
+	(__insert_file_id): Split off from insert_file_id().  Initialize sha1 field.
+	(__lookup_file_id): Split off from lookup_file_id().
+	(update_sha1): Remember SHA1 hash of a file or update the remembered SHA1 hash.
+	(lookup_sha1): Look up the SHA1 hash of a file.
+	* src/util.h (update_sha1, lookup_sha1): Declare.
+
+	Accessor functions for SHA1 hashes in git-style diffs
+	* src/pch.c (p_sha1): New variable.
+	(get_sha1): New function for saving a sha1 checksum.
+	(sha1_says_nonexistent): Take a NULL terminated string instead of an end
+	pointer.
+	(intuit_diff_type): Remember the SHA1 hashes from index headers in git-style
+	diffs in p_sha1.
+	(pch_sha1): New function for accessing p_sha1.
+	* src/pch.h (pch_sha1): Declare.
+
+	Add missing "diff --git" index lines
+	* tests/copy-rename, tests/criss-cross, tests/file-modes,
+	tests/mixed-patch-types, tests/quoted-filenames: Add missing index lines in the
+	"dif --git" test cases: We will use some of them for consistency checks soon.
+
+2012-04-24  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Fix segfault in output_file_later()
+	Bug reported by Dmitry V. Levin <ldv@altlinux.org>.
+	* src/patch.c (output_file_later): Fix case where the output file is identical
+	with the input file (and to == NULL).
+
+2012-04-17  Andreas Gruenbacher  <agruen@linbit.com>
+
+	maint: update bootstrap and gnulib submodule
+	* bootstrap: Update from gnulib.
+
+	Update NEWS
+	* NEWS: Update.
+
+	Only warn when trying to modify read-only files
+	Failing when trying to patch read-only files causes various users of patch to
+	break.  Instead, warn by default and introduce a command line option for
+	choosing a different behavior.
+	* patch.man: Describe the new behavior and command-line option.
+	* src/patch.c (read_only_behavior): New variable.
+	(main): Implement the new behavior.
+	(longopts): Add the new --read-only option.
+	(option_help): Describe the new behavior.
+	(get_some_switches): Recognize the new --read-only option.
+
+	Fix "delete file which does not exist" test case
+	* tests/create-delete: Remove left-over file f.orig before the test.
+
+	For git-style patch files, do not output files immediately
+	In git-style patch files, all patches refer to the initial state of the input
+	files; files cannot be modified more than once.  Implement these semantics by
+	creating all output files once all patches in the patch file have been
+	processed.
+	* src/patch.c (init_files_to_output, output_files): Add prototypes.
+	(main): Remember which type of patch file we are processing.  Initialize the
+	output files list.  Output files of git-style patches once all patches have
+	been read, or when from git-style to normal patches.
+	(file_to_output): New struct.
+	(files_to_output): List of the files to output.
+	(output_file, output_file_now, output_file_later): Either queue a file for
+	deletion, remember to output a file later (git-style), or output the file
+	immediately (normal).
+	(dispose_file_to_output, init_files_to_output, output_files,
+	 forget_output_files): New functions.
+	(gl_list_clear): Should be provided by gnulib but isn't.
+	(cleanup): Clean up any left-over temporary output files as well.
+	* tests/Makefile-am (XFAIL_TESTS): Remove criss-cross; this test case works now.
+	* tests/mixed-patch-types: Patch files that change from normal to git-style, or
+	from git-style to normal.
+
+	Export the patch type
+	* src/pch.c (p_git_diff): New global variable.
+	(intuit_diff_type): Use p_git_diff instead of a local variable.
+	(pch_git_diff): New function.
+
+	Remove invalid symlink test case
+	* tests/symlinks: Remove test case which deletes and then recreates a symlink:
+	all patches in a git-style input file must refer to the "before" state; the
+	test case is invalid.
+
+	No longer remember backup files
+	Remembering backup files was needed because we would have lost track of deleted
+	files before -- but we don't delete files immediately anymore.
+	* src/util.c (create_backup_copy): No longer remember backup files.
+	(create_backup): Likewise; update comment.
+	(move_file): Update create_backup() call.
+	* src/util.h (create_backup): Update prototype.
+	* src/patch.c (output_file): Update create_backup() call.
+
+	Do not delete files immediately
+	Fixes the bug that more than one numbered backup would be created when a patch
+	file deletes and recreates a file.
+	* bootstrap.conf (gnulib_modules): Add linked-list and xlist modules.
+	* src/util.h (file_id_type): Add DELETE_LATER and OVERWRITTEN types.
+	(create_backup, set_file_attributes): Update prototype.
+	(insert_file_id): Add prototype.
+	* src/util.c (insert_file_id): Export.
+	(set_file_attributes, create_backup_copy): Make the st argument const.
+	(create_backup): Pass in to_st instead of returning it from create_backup().
+	This obsoletes the to_errno argument.
+	(move_file): Determine to_st here and pass it to create_backup().  Remember
+	when a file is overwritten.
+	* src/patch.c (output_file): Add to_st parameter.  Remember files to delete
+	instead of deleting them immediately.  Pass from-st to create_backup().
+	(file_to_delete): New struct.
+	(init_files_to_delete, delete_file_later, delete_files): New functions.
+	(main): Use init_files_to_delete() and delete_files().  Pass to_st to
+	output_file() where we already have it.
+	* src/pch.c (intuit_diff_type): Assume that files which are marked for deletion
+	don't exist.
+
+	Create and delete output files in a single function
+	* src/patch.c (output_file): New function for creating or deleting an output
+	file and backing the old file up as needed.
+	(main): Use the new function.
+	* src/util.c (move_file): Allow FROM_NEEDS_REMOVAL to be NULL.
+
+	Add a type field to entries in the file id cache
+	* src/util.h (file_id_type): New enum.
+	* src/util.c (file_id): Add a file_id_type field.
+	(insert_file_id): Rename from insert_file(); specify a type when inserting a
+	file id.
+	(lookup_file_id): Rename from file_id_exists(); return a file id type.
+	(create_backup_copy, create_backup, move_file): Use insert_file_id() instead of
+	insert_file(), and lookup_file_id() instead of file_already_seen().
+	* src/patch.c (main): Use lookup_file_id() instead of file_already_seen().
+
+	Switch from the `old' gnu quoting style to the 'new' one
+	* src/common.h, src/patch.c, src/pch.c, src/util.c, src/util.h: Switch from the
+	`old' gnu quoting style to the 'new' one in messages and comments.
+
+2012-04-06  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Fix use-after-free bug in name_is_valid()
+	Reported by Steffen Sledz in
+	https://bugzilla.novell.com/show_bug.cgi?id=755136 via Jean Delvare.
+	Bug introduced in commit v2.6.1-115-ge0f7075; fixed with help from Jim
+	Meyering <meyering@redhat.com>.
+	* src/common.h (ARRAY_SIZE): New macro.
+	* src/pch.c (invalid_names): New global variable for remembering bad names.
+	(intuit_diff_type): Reset invalid_names for each new patch; the names from the
+	previous patch have already been freed.
+	(name_is_valid): Use invalid_names.  Make the code "safer" and avoid
+	duplication.
+
+	Require automake-1.11.2
+	* configure.ac (AM_INIT_AUTOMAKE): Require version 1.11.2 which introduced the
+	AM_PROG_AR macro, used since commit 297f9e7d.
+
+2012-02-25  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+2012-02-16  Jim Meyering  <meyering@redhat.com>
+
+	build: update bootstrap from gnulib and adapt
+	* bootstrap: Update from gnulib.
+	* bootstrap.conf (gnulib_tool_option_extras): Define.
+	* lib/Makefile.am: Initialize numerous automake variables so that
+	generated code in gnulib.mk may use += to append to them.
+	* configure.ac: Add AM_PROG_AR, to placate newer automake.
+
+2012-01-01  Jim Meyering  <meyering@redhat.com>
+
+	maint: enable the sc_space_tab syntax-check rule
+	* cfg.mk (local-checks-to-skip): Remove sc_space_tab,
+	thus enabling this syntax-check rule.
+	* tests/quoted-filenames: Use TAB-space, not space-TAB.
+
+	maint: enable the useless_cpp_parens syntax-check rule
+	* cfg.mk (local-checks-to-skip): Remove sc_useless_cpp_parens,
+	thus enabling this syntax-check rule.
+	* src/patch.c: Remove unneeded parentheses.
+
+	maint: update all copyright year number ranges
+	Run "make update-copyright".
+
+2011-12-14  Jim Meyering  <meyering@redhat.com>
+
+	build: update to latest gnulib and adapt
+	Mark functions as pure of const, per recommendations enabled by
+	new gcc -W options.  Apply _GL_ATTRIBUTE_PURE and _GL_ATTRIBUTE_CONST.
+	* src/common.h: Apply new function attributes.
+	* src/pch.c: Likewise.
+	* src/pch.h: Likewise.
+	* src/util.c: Likewise.
+	* src/util.h: Likewise.
+	* configure.ac: Use -Wno-format-nonliteral.
+	* m4/.gitignore: Update.
+	* gnulib: Update to latest.
+	* cfg.mk: Exempt src/util.c from two tests, to avoid new
+	"make syntax-check" failures.
+
+2011-12-09  Andreas Gruenbacher  <agruen@linbit.com>
+
+	Timestamp not set when creating files with --set-time or --set-utc
+	* src/util.h (enum file_attributes): Add FA_XATTRS flag for extended
+	attributes.
+	* src/patch.c (main): Use set_file_attributes() even when the infile doesn't
+	exist: it may still set the file time (FA_TIMES).  Omit all other FA_ flags if
+	infile doesn't exist.  Otherwise, add FA_XATTRS as well.
+	* src/util.c (set_file_attributes): Only copy extended attributes if FA_XATTRS
+	is set.  Avoid using st where it may be undefined.
+	* tests/preserve-mode-and-timestamp: Add file create test.
+
+2011-10-12  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
+	tests: specify test runner in LOG_COMPILER, not in TEST_ENVIRONMENT
+	* tests/Makefile.am (TESTS_ENVIRONMENT): Don't use $(SHELL) here
+	to ensure the test scripts are run through it; instead, ...
+	(LOG_COMPILER): ... use it here.
+
+2011-10-11  Jim Meyering  <meyering@redhat.com>
+
+	give a diagnostic rather than a failed assertion for a mangled patch
+	* src/pch.c (another_hunk): Rather than asserting(C), issue the
+	"replacement text or line numbers mangled ..." diagnostic when !C.
+	* tests/mangled-numbers-abort: New test for the above.
+	* tests/Makefile.am (TESTS): Add it.
+	* NEWS: Mention it.
+	Reported by Gabriel Vlasiu via Tim Waugh.
+	See also http://bugzilla.redhat.com/738959
+
+2011-08-11  Jim Meyering  <meyering@redhat.com>
+
+	build: use largefile module and update to latest gnulib
+	* configure.ac: Remove AC_SYS_LARGEFILE, subsumed by ...
+	* bootstrap.conf (gnulib_modules): ...this.  Use largefile module.
+	* gnulib: Update to latest.
+	This is useful to Mac OS X 10.5 users if/when configure
+	is generated using autoconf prior to v2.68-80-gdb2f2e0.
+
+	build: include .version in tarball to avoid distcheck failure
+	* Makefile.am (EXTRA_DIST): Append .version, to avoid "make distcheck"
+	failure when run from an unpacked tarball.
+	Reported by Iain Nicol.
+
+2011-08-11  Andreas Gruenbacher  <agruen@linbit.com>
+
+	README: Describe where to go from a "git clone"
+	* README: Refer users to README-hacking after a "git clone".
+
+2011-05-25  Jim Meyering  <meyering@redhat.com>
+
+	don't call fdopen with a negative FD upon dup failure
+	* src/patch.c (open_outfile): If dup fails, don't clobber its
+	errno value by calling fdopen with -1.
+
+	plug a leak in inp.c's plan_a
+	* src/inp.c (plan_a): Don't leak "buffer" upon early return.
+
+	emit one more diagnostic with the required "program_name: " prefix
+	* src/util.c: Include "error.h".
+	(ask): Use error, not perror.  The latter would not have included
+	the usual "program name: " prefix.
+
+	remove side effect from assert
+	* src/util.c (parse_c_string): Don't increment "s" in assert.
+
+	explicitly ignore close return value to placate static analyzers
+	* src/util.c: Include "ignore-value.h".
+	(ask): Use ignore_value to tell tools that yes, we really do
+	mean to ignore any close failure on this error path.
+	* bootstrap.conf (gnulib_modules): Add ignore-value.
+
+	plug a leak in fetchname
+	* src/util.c (fetchname): Don't leak "timestr" when returning early.
+
+2011-05-25  Andreas Gruenbacher  <agruen@linbit.com>
+
+	avoid a used-uninitialized error in fetchname
+	* src/util.c (fetchname): Avoid a used-uninitialized error.
+	Before, when "*t == '\n'", stamp.tv_nsec would have been
+	used undefined.  The fix is to set that member rather than
+	stamp.tv_sec, which is already set to the desired value.
+	This was reported by coverity.
+
+2011-05-25  Jim Meyering  <meyering@redhat.com>
+
+	plug a leak in bestmatch
+	* src/bestmatch.h (bestmatch): Don't leak V when returning early.
+
+2011-03-27  Jim Meyering  <meyering@redhat.com>
+
+	maint: ignore more build artifacts
+
+	build: don't turn off -Wmissing-declarations
+	* configure.ac (WERROR_CFLAGS): Don't turn off -Wmissing-declarations
+	and admit that it's not worth fixing the few warnings triggered
+	by -Wmissing-format-attribute.
+
+	build: don't turn off -Wmissing-prototypes
+	* configure.ac (WERROR_CFLAGS): Don't turn off -Wmissing-prototypes.
+	* src/pch.c (skip_hex_digits): Declare static.
+	* src/bestmatch.h (bestmatch): Likewise.
+
+	maint: remove now-unneeded macro definitions
+	* bootstrap.conf (gnulib_modules): Include gnulib's signal module,
+	so that signal.h guarantees definition of certain macros.
+	* src/util.c (SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK): Remove definition.
+	Now, gnulib guarantees that these are defined.
+	* src/common.h (SIZE_MAX): Likewise.
+	* cfg.mk (local-checks-to-skip): Enable the
+	sc_prohibit_always-defined_macros check, now that it passes.
+
+	maint: use gnulib's progname module
+	* src/patch.c (main): Call set_program_name rather than
+	initializing program_name explicitly.
+	* src/common.h: Include progname.h rather than declaring the extern,
+	program_name.
+	* bootstrap.conf (gnulib_modules): Add progname.
+	* cfg.mk (local-checks-to-skip): Remove sc_program_name,
+	thus enabling this test.
+
+	maint: update bootstrap and gnulib submodule
+	* bootstrap: Update from gnulib.
+	* cfg.mk (local-checks-to-skip): Remove (thus, enable)
+	sc_copyright_check, now that the gnulib submodule is up to date.
+
+	maint: update copyright date year ranges to include 2011
+	* bootstrap.conf (gnulib_modules): Add update-copyright.
+	Run "make update-copyright".
+
+	build: avoid three gcc warnings
+	* src/patch.c (mangled_patch): Add "noreturn" attribute.
+	* src/pch.h (pch_timestamp): Remove ignored "const" attribute.
+	* src/version.c (XTERN): Remove unused #undef and #define.
+
+	tests: temporarily disable failing syntax-check rules
+	* cfg.mk (local-checks-to-skip): Define, to skip all of the
+	currently-failing syntax-check rules.  We'll reenable them
+	one by one, as problems are addressed.
+
+2011-03-26  Jim Meyering  <meyering@redhat.com>
+
+	build: accept new configure-time option --enable-gcc-warnings
+	* configure.ac: Enable many options.
+	* bootstrap.conf (gnulib_modules): Add manywarnings.
+	* src/Makefile.am (AM_CFLAGS): Use $(WARN_CFLAGS) and $(WERROR_CFLAGS).
+
+	maint: avoid non-portable use of test -a
+	With these changes, "make sc_prohibit_test_minus_ao" almost passes.
+	Uses of "test -o" remain.
+	Note: unchecked uses of test -ot/-nt also remain.
+	* tests/empty-files: Use "test C1 && test C2", not "test C1 -a C2"
+	* tests/merge: Likewise.
+	* tests/symlinks: Likewise.
+	* tests/test-lib.sh: Likewise.
+
+	maint: allow the sc_prohibit_empty_lines_at_EOF test to pass
+	* tests/test-lib.sh: Remove empty line at end of file.
+
+	maint: remove trailing blanks
+	* bootstrap.conf: Remove trailing blanks.
+	* tests/reject-format: Define a dummy, empty variable, and use it in
+	here-doc to protect required trailing blanks from accidental removal.
+	* tests/no-newline-triggers-assert: Likewise.
+	* tests/preserve-c-function-names: Likewise.
+	* tests/create-delete: Likewise.
+	* tests/global-reject-files: Complete a sentence that ended in a space.
+
+	maint: add some m4 quoting
+	* m4/setmode.m4 (AC_FUNC_SETMODE_DOS): Use proper M4 quoting.
+
+	maint: arrange for the sc_require_config_h_first test to pass
+	* cfg.mk: New file, to configure maint.mk.
+	* Makefile.am (EXTRA_DIST): Add, so the new file is distributed.
+	(config_h_header): Define, to make the sc_require_config_h_first
+	syntax-check test pass.
+	* pc/chdirsaf.c: Include <config.h>.
+
+	maint: use gnulib's maintainer-makefile module
+	* bootstrap.conf (gnulib_modules): Add maintainer-makefile.
+
+2011-03-21  Jim Meyering  <meyering@redhat.com>
+
+	doc: update README-hacking
+	* README-hacking: Update from coreutils, including mention of
+	how to use vc-dwim to git-commit efficiently and safely using
+	a non-VC'd ChangeLog file.
+
+	build: update gnulib submodule to latest
+
+2011-03-17  Jim Meyering  <meyering@redhat.com>
+
+	do not version-control ChangeLog; instead, generate it from git log
+	With this change, all ChangeLog entries going forward are generated
+	into a file named ChangeLog in each distribution tarball.
+	ChangeLog entries prior to today's date are in ChangeLog-2011.
+	* Makefile.am (gen-ChangeLog): New rule.
+	(dist-hook): Depend on it.
+	(EXTRA_DIST): Add ChangeLog-2011.
+	* ChangeLog-2011: Renamed from ChangeLog
+	* ChangeLog: Remove file.
+	* .gitignore: Ignore ChangeLog.
+	* bootstrap.conf: Ensure that ChangeLog exists.
+	(gnulib_modules): Add gitlog-to-changelog.

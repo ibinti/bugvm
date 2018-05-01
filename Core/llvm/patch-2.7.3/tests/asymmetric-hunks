@@ -1,0 +1,81 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+# Starts at a line <= 1 and prefix context < suffix context: start of
+# file until hunk has become symmetric.
+
+cat > a.diff <<EOF
+--- a
++++ a
+@@ -1,3 +1,4 @@
+ 2
++2a
+ 3
+ 4
+EOF
+
+seq 1 5 > a
+
+check 'patch < a.diff' <<EOF
+patching file a
+Hunk #1 succeeded at 2 with fuzz 1 (offset 1 line).
+EOF
+
+seq 2 5 > a
+
+check 'patch < a.diff' <<EOF
+patching file a
+EOF
+
+# ==============================================================
+
+# Starts at a line > 1: anywhere in the file
+
+cat > a.diff <<EOF
+--- a
++++ a
+@@ -2,3 +2,4 @@
+ 2
++2a
+ 3
+ 4
+EOF
+
+seq 1 5 > a
+
+check 'patch < a.diff' <<EOF
+patching file a
+EOF
+
+# ==============================================================
+
+# Prefix context > suffix context: end of file until hunk has
+# become symmetric.
+
+cat > a.diff <<EOF
+--- a
++++ a
+@@ -2,3 +2,4 @@
+ 2
+ 3
++3a
+ 4
+EOF
+
+seq 1 5 > a
+
+check 'patch < a.diff' <<EOF
+patching file a
+Hunk #1 succeeded at 2 with fuzz 1.
+EOF

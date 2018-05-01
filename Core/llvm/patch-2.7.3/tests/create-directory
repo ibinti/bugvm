@@ -1,0 +1,43 @@
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+# Check whether patch correctly creates directories before creating
+# new files.
+
+cat > f.diff <<EOF
+--- /dev/null
++++ b/newfile
+@@ -0,0 +1,2 @@
++one
++two
+EOF
+
+check 'patch -p0 < f.diff' <<EOF
+patching file b/newfile
+EOF
+
+# ==============================================================
+# Make sure it doesn't create files or directories in the target
+#  location in --dry-run mode
+mkdir d
+cat > f.diff <<EOF
+--- /dev/null
++++ d/e/f
+@@ -0,0 +1 @@
++f
+EOF
+
+chmod u-w d
+check 'patch -p0 --dry-run < f.diff' <<EOF
+checking file d/e/f
+EOF
+chmod u+w d

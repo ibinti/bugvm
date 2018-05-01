@@ -1,0 +1,39 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Don't recognize hunks before a filename has been specified/seen
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > f.diff <<EOF
+--- a
++++ b
+@@ -1 +1 @@
+-one
++two
+--- c
++++ d
+@@ -1 +1 @@
+-two
++three
+EOF
+
+echo one > x
+
+check 'patch x < f.diff' <<EOF
+patching file x
+patching file x
+EOF
+
+check 'cat x' <<EOF
+three
+EOF

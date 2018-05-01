@@ -1,0 +1,205 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# LF vs. CRLF line endings
+
+. $srcdir/test-lib.sh
+
+require_gnu_diff
+require_sed
+use_local_patch
+use_tmpdir
+
+lf2crlf() {
+    while read l; do echo -e "$l\r"; done
+}
+
+echo 1 > a
+echo 1b > b
+
+diff a b | lf2crlf > ab.diff
+echo 1 > c
+check 'patch c < ab.diff' <<EOF
+(Stripping trailing CRs from patch; use --binary to disable.)
+patching file c
+EOF
+
+diff -c a b | lf2crlf > ab.diff
+echo 1 > c
+check 'patch c < ab.diff' <<EOF
+(Stripping trailing CRs from patch; use --binary to disable.)
+patching file c
+EOF
+
+diff -u a b | lf2crlf > ab.diff
+echo 1 > c
+check 'patch c < ab.diff' <<EOF
+(Stripping trailing CRs from patch; use --binary to disable.)
+patching file c
+EOF
+
+if ! have_ed ; then
+    echo "The ed utility is not available; skipping ed related tests"
+else
+    diff -e a b > ab.ed | lf2crlf > ab.ed
+    echo 1 > c
+    ncheck 'patch c < ab.ed'
+fi
+
+# ==============================================================
+
+echo 1 | lf2crlf > a
+echo 1b | lf2crlf > b
+
+diff a b > ab.diff
+cp a c
+check 'patch c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# --------------------------------------------------------------
+
+diff -u a b > ab.diff
+cp a c
+check 'patch c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# --------------------------------------------------------------
+
+diff -c a b > ab.diff
+cp a c
+check 'patch c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# --------------------------------------------------------------
+
+if ! have_ed ; then
+    echo "The ed utility is not available; skipping ed related tests"
+else
+    diff -e a b > ab.diff
+    cp a c
+    ncheck 'patch c < ab.diff'
+fi
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# ==============================================================
+
+echo 1 > a
+echo 1b > b
+
+diff a b | lf2crlf > ab.diff
+cp a c
+
+check 'patch --binary c < ab.diff || echo status: $?' <<EOF
+patching file c
+Hunk #1 FAILED at 1 (different line endings).
+1 out of 1 hunk FAILED -- saving rejects to file c.rej
+status: 1
+EOF
+
+check 'patch c < ab.diff' <<EOF
+(Stripping trailing CRs from patch; use --binary to disable.)
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b$
+EOF
+
+lf2crlf < a > c
+check 'patch --binary c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# --------------------------------------------------------------
+
+diff -u a b | lf2crlf > ab.diff
+cp a c
+check 'patch c < ab.diff' <<EOF
+(Stripping trailing CRs from patch; use --binary to disable.)
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b$
+EOF
+
+lf2crlf < a > c
+check 'patch --binary c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# --------------------------------------------------------------
+
+diff -c a b | lf2crlf > ab.diff
+cp a c
+check 'patch c < ab.diff' <<EOF
+(Stripping trailing CRs from patch; use --binary to disable.)
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b$
+EOF
+
+lf2crlf < a > c
+check 'patch --binary c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+1b^M$
+EOF
+
+# --------------------------------------------------------------
+
+# NOTE: ed does not fix up CRLF mangled input, so mangled ed-style
+# patches will break.  (We could fix up things in patch and pipe
+# the result to ed, but this is not what we do so far.)
+
+# ==============================================================
+
+# Line endings of @@ lines are not used for guessing if a patch needs CR
+# stripping: if the -p / --show-c-function option of GNU diff is used, these
+# lines can have different line endings than the rest of the patch.
+
+echo 1 > a
+echo 2 > b
+diff -u a b | sed -e 's,@@$,@@ context\r,' > ab.diff
+
+echo 1 > c
+check 'patch c < ab.diff' <<EOF
+patching file c
+EOF
+
+check 'cat -ve c' <<EOF
+2$
+EOF

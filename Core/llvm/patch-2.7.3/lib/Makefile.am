@@ -1,0 +1,14 @@
+## Process this file with automake to produce Makefile.in.
+
+AM_CFLAGS =
+AM_CPPFLAGS =
+BUILT_SOURCES =
+CLEANFILES =
+EXTRA_DIST =
+MAINTAINERCLEANFILES =
+MOSTLYCLEANDIRS =
+MOSTLYCLEANFILES =
+SUFFIXES =
+noinst_LIBRARIES =
+
+include gnulib.mk

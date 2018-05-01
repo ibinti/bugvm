@@ -1,0 +1,62 @@
+This is GNU patch, which applies diff files to original files.
+
+This version of patch has many changes made by the Free Software Foundation.
+They add support for:
+ * handling arbitrary binary data and large files
+ * the unified context diff format that GNU diff can produce
+ * merging into files instead of creating reject files
+ * making GNU Emacs-style backup files
+ * improved interaction with RCS and SCCS
+ * the GNU conventions for option parsing and configuring and compilation.
+ * better POSIX compliance
+They also fix some bugs.
+
+If you obtained this file as part of a "git clone", then see the
+README-hacking file.  If this file came to you as part of a tar archive,
+then see the file INSTALL for compilation and installation instructions.
+
+See the file NEWS for a list of major changes in the current release.
+A more detailed descripiton of all changes can be found in the file ChangeLog
+in tar archives, and with "git log" which shows the version control history.
+
+Tutorial-style documentation for patch is included in the GNU
+Diffutils package; get GNU Diffutils 2.8 or later for up-to-date
+documentation for patch.
+
+Use `configure --disable-largefile' to disable large file support;
+this is reportedly necessary on Red Hat GNU/Linux 6.0 to avoid a C library bug.
+For MS-DOS using DJGPP tools, see the file pc/djgpp/README.
+For other systems, copy config.hin to config.h and change
+#undef statements in it to #define as appropriate for your system,
+and copy Makefile.in to Makefile and set the variables that are
+enclosed in @ signs as appropriate for your system.
+
+Please send bug reports for this version of patch to
+<bug-patch@gnu.org>.
+
+The Free Software Foundation is distributing this version of patch
+independently because as of this writing, Larry Wall has not released a
+new version of patch since mid-1988.  We have heard that he has been
+too busy working on other things, like Perl.  He has graciously agreed
+to let GNU `patch' be distributed under the terms of the GNU General
+Public License.
+
+------
+
+Copyright (C) 1984, 1985, 1986, 1987, 1988 Larry Wall
+
+Copyright (C) 1989-1993, 1997, 1999, 2002, 2009, 2011-2012 Free Software
+Foundation, Inc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.

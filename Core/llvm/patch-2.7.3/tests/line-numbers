@@ -1,0 +1,65 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+require_sed
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+# Line number counting and reporting regression test
+
+cat > a.diff <<EOF
+--- a
++++ b
+@@ -1 +1 @@
+-1
++1b
+@@ -3 +3,2 @@
+-4
++4b
++4b
+@@ -6 +0 @@
+-6
++6b
+EOF
+
+seq 1 7 > a
+check 'patch -f --verbose a < a.diff | grep ^Hunk' <<EOF
+Hunk #1 succeeded at 1.
+Hunk #2 succeeded at 4 (offset 1 line).
+Hunk #3 succeeded at 7.
+EOF
+
+check 'cat a' <<EOF
+1b
+2
+3
+4b
+4b
+5
+6b
+7
+EOF
+
+seq 1 7 | sed -e '4d' > a
+check 'patch -f --verbose a < a.diff | grep ^Hunk' <<EOF
+Hunk #1 succeeded at 1.
+Hunk #2 FAILED at 3.
+Hunk #3 succeeded at 5 (offset -1 lines).
+EOF
+
+check 'cat a' <<EOF
+1b
+2
+3
+5
+6b
+7
+EOF

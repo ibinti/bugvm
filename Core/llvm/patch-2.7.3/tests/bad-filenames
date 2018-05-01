@@ -1,0 +1,151 @@
+# Copyright (C) 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+use_local_patch
+use_tmpdir
+
+# ================================================================
+
+emit_patch()
+{
+cat <<EOF
+--- /dev/null
++++ $1
+@@ -0,0 +1 @@
++x
+EOF
+}
+
+# Ensure that patch rejects an output file name that is absolute
+# or that contains a ".." component.
+
+check 'emit_patch ../z | patch -f -p1 --dry-run || echo status: $?' <<EOF
+checking file z
+EOF
+
+check 'emit_patch /absolute/path | patch -f -p0 --dry-run || echo status: $?' <<EOF
+Ignoring potentially dangerous file name /absolute/path
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- /dev/null
+|+++ /absolute/path
+--------------------------
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+status: 1
+EOF
+
+for dir in "$TMPDIR" "$TMP" "$TEMP" "/tmp"; do
+    if test -n "$dir"; then
+	filename=$dir/patch-$$-$RANDOM
+	break
+    fi
+done
+
+check 'emit_patch $filename | (cd / && patch -f -p0 --dry-run) || echo status: $?' <<EOF
+checking file $filename
+EOF
+
+check 'emit_patch a/../z | patch -f -p0 --dry-run || echo status: $?' <<EOF
+Ignoring potentially dangerous file name a/../z
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- /dev/null
+|+++ a/../z
+--------------------------
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+status: 1
+EOF
+
+check 'emit_patch a/../z | patch -f -p1 --dry-run || echo status: $?' <<EOF
+Ignoring potentially dangerous file name ../z
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- /dev/null
+|+++ a/../z
+--------------------------
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+status: 1
+EOF
+
+check 'emit_patch ../z | patch -f -p0 --dry-run || echo status: $?' <<EOF
+Ignoring potentially dangerous file name ../z
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- /dev/null
+|+++ ../z
+--------------------------
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+status: 1
+EOF
+
+cat > d.diff <<EOF
+--- f
++++ ../g
+@@ -1 +1 @@
+-1
++1
+EOF
+
+check 'patch -f -p0 --dry-run < d.diff || echo status: $?' <<EOF
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- f
+|+++ ../g
+--------------------------
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+status: 1
+EOF
+
+echo 1 > f
+check 'patch -f -p0 --dry-run < d.diff || echo status: $?' <<EOF
+checking file f
+EOF
+
+echo 1 > g
+check 'patch -f -p1 --dry-run < d.diff || echo status: $?' <<EOF
+checking file g
+EOF
+
+mkdir d
+cd d
+cat > d.diff <<EOF
+--- ../h
++++ ../h
+@@ -0,0 +1 @@
++x
+EOF
+
+touch ../h
+check 'patch -f -p0 < d.diff || echo status: $?' <<EOF
+Ignoring potentially dangerous file name ../h
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- ../h
+|+++ ../h
+--------------------------
+No file to patch.  Skipping patch.
+1 out of 1 hunk ignored
+status: 1
+EOF
