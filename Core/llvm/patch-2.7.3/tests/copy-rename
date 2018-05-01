@@ -1,0 +1,130 @@
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# git diffs: copy and rename tests
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+# Normal copy and rename patches
+
+echo old > f
+
+cat > copy.diff <<EOF
+diff --git a/f b/g
+copy from f
+copy to g
+index 3367afd..3e75765 100644
+--- a/f
++++ b/g
+@@ -1 +1 @@
+-old
++new
+EOF
+
+check 'patch -p1 < copy.diff || echo "Status: $?"' <<EOF
+patching file g (copied from f)
+EOF
+
+check 'cat f' <<EOF
+old
+EOF
+
+check 'cat g' <<EOF
+new
+EOF
+
+cat > rename.diff <<EOF
+diff --git a/f b/h
+rename from f
+rename to h
+index 3367afd..3e75765 100644
+--- a/f
++++ b/h
+@@ -1 +1 @@
+-old
++new
+EOF
+
+check 'patch -p1 < rename.diff || echo "Status: $?"' <<EOF
+patching file h (renamed from f)
+EOF
+
+ncheck 'test ! -e f'
+
+check 'cat h' <<EOF
+new
+EOF
+
+# --------------------------------------------------------------
+# Patches with no hunks
+
+echo old > f
+rm -f g h
+
+cat > copy.diff <<EOF
+diff --git a/f a/g
+copy from f
+copy to g
+EOF
+
+check 'patch -p1 < copy.diff || echo "Status: $?"' <<EOF
+patching file g (copied from f)
+EOF
+
+check 'cat f' <<EOF
+old
+EOF
+
+check 'cat g' <<EOF
+old
+EOF
+
+cat > rename.diff <<EOF
+diff --git a/f a/h
+rename from f
+rename to h
+EOF
+
+check 'patch -p1 < rename.diff || echo "Status: $?"' <<EOF
+patching file h (renamed from f)
+EOF
+
+ncheck 'test ! -e f'
+
+check 'cat h' <<EOF
+old
+EOF
+
+# --------------------------------------------------------------
+# Backup file tests
+
+echo old > f
+rm -f g h
+
+check 'patch -p1 --backup < copy.diff || echo "Status: $?"' <<EOF
+patching file g (copied from f)
+EOF
+
+ncheck 'test ! -e f.orig'
+
+ncheck 'cat g.orig'
+
+rm -f f.orig g.orig
+
+check 'patch -p1 --backup < rename.diff || echo "Status: $?"' <<EOF
+patching file h (renamed from f)
+EOF
+
+check 'cat f.orig' <<EOF
+old
+EOF
+
+ncheck 'cat h.orig'

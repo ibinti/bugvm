@@ -1,0 +1,346 @@
+* When a file isn't being deleted because the file contents don't match the
+  patch, the resulting message is now "Not deleting file ... as content
+  differs from patch" instead of "File ... is not empty after patch; not
+  deleting".
+* Function names in hunks (from diff -p) are now preserved in reject files.
+* With git-style patches, symlinks that point outside the working directory
+  will no longer be created (CVE-2015-1196).
+
+Changes in version 2.7.1:
+
+* Two critical bug fixes in the "diff --git" format support.
+* Clarify the message printed when a patch is expected to empty out and delete
+  a file, but the file does not become empty.
+* Various improvements to messages when applying a patch to a file of different
+  type (regular file vs. symlink), when there are line ending differences (LF
+  vs. CRLF), and when in --dry-run mode.
+* When in the root directory, allow file names that are absolute or that
+  contain a component of "..".
+* New --follow-symlinks option to allow to treat symlinks as files: this was
+  patch's behavior before version 2.7.
+* Ignore when extended attributes cannot be preserved because they are
+  unsupported or because permission to set them is denied.
+* License clarifications in NEWS and README.
+* Portability bug fixes.
+
+Changes in version 2.7:
+
+* Patch no longer gets a failed assertion for certain mangled patches.
+* Ignore destination file names that are absolute or that contain a component
+  of "..".  This addresses CVE-2010-4651.
+* Support for most features of the "diff --git" format, including renames and
+  copies, permission changes, and symlink diffs.  Binary diffs are not
+  supported yet; patch will complain and skip them.
+* Support for double-quoted filenames: when a filename starts with a double
+  quote, it is interpreted as a C string literal.  The escape sequences \\, \",
+  \a, \b, \f, \n, \r, \t, \v, and \ooo (a three-digit octal number between 0
+  and 255) are recognized.
+* Refuse to apply a normal patch to a symlink.  (Previous versions of patch
+  were replacing the symlink with a regular file.)
+* When trying to modify a read-only file, warn about the potential problem
+  by default.  The --read-only command line option allows to change this
+  behavior.
+* Files to be deleted are deleted once the entire input has been processed, not
+  immediately.  This fixes a bug with numbered backup files.
+* When a timestamp specifies a time zone, honor that instead of assuming the
+  local time zone (--set-date) or Universal Coordinated Time (--set-utc).
+* Support for nanosecond precision timestamps.
+* Many portability and bug fixes.
+
+Changes in version 2.6.1:
+
+* Support for diff3(1) style merges which show the old, original, and new lines
+  of a conflict has been added (--merge=diff3).  The default still is the
+  merge(1) format (--merge or --merge=merge).
+* Bug and portability fixes.
+
+Changes in version 2.6:
+
+* A regression test suite has been added ("make check").
+* A --merge option has been added which will merge a patch file into
+  the original files similar to merge(1).  See the patch(1) manual page for
+  documentation.
+* Unless a filename has been specified on the command line, look only
+  for filenames in the patch until one has been found.  This prevents
+  patch from tripping over garbage that isn't a patch.  When conforming
+  to POSIX, this behavior is turned off and patch will ask for a
+  filename if none is found.
+* All reject files have file name headers, which allows them to be used as
+  regular patches.
+* When a patch file modifies the same file more than once, patch makes
+  sure it backs up the original version of the file rather than any
+  intermediary versions.
+* In the above situation, if there are rejects in more than one of those
+  patches, they all go into the same reject file.
+* When the file to be patched is specified on the command line, all patches
+  are applied to that file. (Previously, the first patch was applied to the
+  file specified on the command line, and the names of additional files to
+  patch were taken from header lines in the patch file.)
+* The -r option now works correctly even if there are rejects in more than
+  one file.  Use the - argument to discard rejects.
+* Rejected hunks come out in unified diff format if the input patch was of
+  that format, otherwise in ordinary context diff form.  Use the
+  --reject-format option to enforce either "context" or "unified" format.
+  Timestamps and the "diff -p" (--show-c-function) output are preserved.
+  Changed lines in context format reject files are correctly indicated
+  with '!' markers as the format defines.  Added and removed lines are
+  still marked with '+' and '-', respectively.
+* The file permissions of reject files are no longer set to match the files
+  they modify.  Instead, they retain the default permissions.  This is
+  consistent with reject files produced with the -r option.
+* The --binary option disables the heuristic for stripping CRs from
+  line endings in patches.  This allows to preserve CRs even in mangled
+  patches, or in patches generated on non-POSIX systems and without the
+  --binary option.
+* Backup files for nonexisting files are now created with default
+  permissions rather than with mode 0: backup files with mode 0 were
+  causing problems with applications which do not expect unreadable
+  files.
+* The -B, -Y, and -z options (--prefix, --basename-prefix, --suffix) now
+  imply the simple version control mode, and can be combined.
+* Patch rejects more malformed normal format commands and checks for trailing
+  garbage.  It now recognizes ed commands without addresses.
+* Change the default value of PATCH_GET to 0.  (Previously, the default was 0
+  under POSIXLY_CORRECT and negative otherwise; this is causing problems
+  particularly with Perforce.)
+* Handle missing timestamps better.
+* Various bug fixes.
+* Switch to GNU General Public License version 3.
+
+Changes in versions 2.5.8 and 2.5.9: bug fixes only.
+
+Changes in version 2.5.7:
+
+* patch -D now outputs preprocessor lines without comments, as required
+  by POSIX 1003.1-2001.
+
+Changes in version 2.5.6:
+
+* File names in context patches may now contain spaces, so long
+  as the context patch headers use a tab to separate the file name
+  from the time stamp.
+* Perforce is now supported.
+* Patch lines beginning with "#" are comments and are ignored.
+
+Changes in version 2.5.5:
+
+* The bug reporting address is now <bug-patch@gnu.org>.
+
+Changes in version 2.5.4:
+
+* A security hole has been closed.
+  It involved race conditions with temporary files.
+
+* The default quoting style is 'shell', which causes `patch' to quote
+  file names with funny characters like `$'.  This prevents their
+  misinterpretation if you cut them from its output and paste them into
+  the shell.
+
+* `patch' now works correctly with large files on Large File Summit
+  hosts like Solaris 2.6.
+
+* `patch' now ignores trailing carriage returns in lines of context diffs
+  if the context diff headers end in carriage return.
+
+* `patch' now ignores context diff header file names that have fewer slashes
+   than the count specified by the -p or --strip option.
+
+* New options:
+  --posix
+  --quoting-style=WORD
+
+* New environment variables:
+  QUOTING_STYLE
+
+* `patch' now supports ClearCase version management.
+
+Changes in version 2.5:
+
+* Version control is now independent of whether backups are made.
+  The -V or --version-control option and the VERSION_CONTROL and
+  PATCH_VERSION_CONTROL environment variables no longer affect whether
+  backups are made; they affect only the names of the backup files.
+
+* When asking the user whether to reverse a patch,
+  the default answer is now `no' instead of `yes'.
+
+* `patch' can now recognize context diffs that have been encapsulated
+  by prepending "- " to lines beginning with "-" (as per Internet RFC 934).
+
+* `patch' now reports an error if the input contains garbage and no patches.
+
+Changes in version 2.4:
+
+* New options:
+  -Z or --set-utc sets times of patched files, assuming diff uses UTC (GMT).
+  -T or --set-time is similar, assuming local time (not recommended).
+  --backup-if-mismatch makes a backup if the patch does not match exactly
+  --no-backup-if-mismatch makes a backup only if otherwise requested
+
+* The default is now --backup-if-mismatch unless POSIXLY_CORRECT is set.
+
+* The -B or --prefix, -Y or --basename-prefix, and -z or --suffix options
+  no longer affect whether backups are made (as they did in patch 2.2 and 2.3);
+  they now merely specify the file names used when simple backups are made.
+
+* When patching a nonexistent file and making backups, an empty backup file
+  is now made (just as with traditional patch); but the backup file is
+  unreadable, as a way of indicating that it represents a nonexistent file.
+
+* `patch' now matches against empty and nonexistent files more generously.
+  A patch against an empty file applies to a nonexistent file, and vice versa.
+
+* -g or --get and PATCH_GET now have a numeric value that specifies
+  whether `patch' is getting files.
+  If the value is positive, working files are gotten from RCS or SCCS files;
+  if zero, `patch' ignores RCS and SCCS and working files are not gotten;
+  and if negative, `patch' asks the user whether to get each file.
+  The default is normally negative, but it is zero if POSIXLY_CORRECT is set.
+
+* The -G or --no-get option introduced in GNU patch 2.3 has been removed;
+  use -g0 instead.
+
+* The method used to intuit names of files to be patched is changed again:
+  `Index:' lines are normally ignored for context diffs,
+  and RCS and SCCS files are normally looked for when files do not exist.
+  The complete new method is described in the man page.
+
+* By default, `patch' is now more verbose when patches do not match exactly.
+
+* The manual page has a new COMPATIBILITY ISSUES section.
+
+Changes in version 2.3:
+
+* Unless the POSIXLY_CORRECT environment variable is set:
+
+  - `patch' now distinguishes more accurately between empty and
+    nonexistent files if the input is a context diff.
+    A file is assumed to not exist if its context diff header
+    suggests that it is empty, and if the header timestamp
+    looks like it might be equivalent to 1970-01-01 00:00:00 UTC.
+  - Files that ``become nonexistent'' after patching are now removed.
+    When a file is removed, any empty ancestor directories are also removed.
+
+* Files are now automatically gotten from RCS and SCCS
+  if the -g or --get option is specified.
+  (The -G or --no-get option, also introduced in 2.3, was withdrawn in 2.4.)
+
+* If the PATCH_VERSION_CONTROL environment variable is set,
+  it overrides the VERSION_CONTROL environment variable.
+
+* The method used to intuit names of files to be patched is changed.
+  (It was further revised in 2.4; see above.)
+
+* The new --binary option makes `patch' read and write files in binary mode.
+  This option has no effect on POSIX-compliant hosts;
+  it is useful only in on operating systems like DOS
+  that distinguish between text and binary I/O.
+
+* The environment variables TMP and TEMP are consulted for the name of
+  the temporary directory if TMPDIR is not set.
+
+* A port to MS-DOS and MS-Windows is available; see the `pc' directory.
+
+* Backup file names are no longer ever computed by uppercasing characters,
+  since this isn't portable to systems with case-insensitive file names.
+
+Changes in version 2.2:
+
+* Arbitrary limits removed (e.g. line length, file name length).
+
+* On POSIX.1-compliant hosts, you can now patch binary files using the output
+  of GNU `diff -a'.
+
+* New options:
+  --dry-run
+  --help
+  --verbose
+  -i FILE or --input=FILE
+  -Y PREF or --basename-prefix=PREF
+
+* patch is now quieter by default; use --verbose for the old chatty behavior.
+
+* Patch now complies better with POSIX.2 if your host complies with POSIX.1.
+
+  Therefore:
+  - By default, no backups are made.
+    (But this was changed again in patch 2.4; see above.)
+  - The simple backup file name for F defaults to F.orig
+    regardless of whether the file system supports long file names,
+    and F~ is used only if F.orig is too long for that particular file.
+  - Similarly for the reject file names F.rej and F#.
+
+  Also:
+  - The pseudo-option `+' has been withdrawn.
+  - -b is equivalent to --version-control=simple;
+    `-z SUFF' has the meaning that `-b SUFF' used to.
+  - Names of files to be patched are taken first from *** line and then from
+    --- line of context diffs; then from Index: line; /dev/tty is
+    consulted if none of the above files exist.  However, if the patch
+    appears to create a file, the file does not have to exist: instead,
+    the first name with the longest existing directory prefix is taken.
+    (These rules were changed again in patch 2.3 and 2.4; see above.)
+  - Exit status 0 means success, 1 means hunks were rejected, 2 means trouble.
+  - `-l' ignores changes only in spaces and tabs, not in other white space.
+  - If no `-p' option is given, `-pINFINITY' is assumed, instead of trying
+    to guess the proper value.
+  - `-p' now requires an operand; use `-p 0' to get the effect of the old plain
+    `-p' option.
+  - `-p' treats two or more adjacent slashes as if it were one slash.
+  - The TERM signal is caught.
+  - New option `-i F' reads patch from F instead of stdin.
+
+* The `patch' options and build procedure conform to current GNU standards.
+  For example, the `--version' option now outputs copyright information.
+
+* When the patch is creating a file, but a nonempty file of that name already
+  exists, `patch' now asks for confirmation before patching.
+
+* RCS is used only if the version control method is `existing'
+  and there is already an RCS file.  Similarly for SCCS.
+  (But this was changed again in patch 2.3 and 2.4; see above.)
+
+* Copyright notices have been clarified.  Every file in this version of `patch'
+  can be distributed under the GNU General Public License.  See README for
+  details.
+
+Changes in version 2.1:
+
+* A few more portability bugs have been fixed.  The version number has
+  been changed from 2.0.12g11 to 2.1, because the name
+  `patch-2.0.12g10' was too long for traditional Unix file systems.
+
+Versions 2.0.12g9 through 2.0.12g11 fix various portability bugs.
+
+Changes in version 2.0.12g8:
+
+* Start of the 12g series, with a GNU-style configure script and
+  long-named options.
+* Added the -t --batch option, similar to -f.
+* Improved detection of files that are locked under RCS or SCCS.
+* Reinstate the -E option to remove output files that are empty after
+  being patched.
+* Print the system error message when system calls fail.
+* Fixed various bugs and portability problems.
+
+
+
+Copyright (C) 1992-1993, 1997-2003, 2006, 2009, 2011-2012 Free Software
+Foundation, Inc.
+
+This file is part of GNU Patch.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+This program is distributed in the hope that they will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; see the file COPYING.  If not, write to
+the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+Boston, MA 02110-1301, USA.

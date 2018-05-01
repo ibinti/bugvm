@@ -1,0 +1,33 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Don't recognize hunks before a filename has been specified/seen
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+# Forbidden characters in Windows filenames:
+#   \ / : * ? " < > |
+
+cat > d.diff <<EOF
+--- "\\t \\040"
++++ "\\t \\040"
+@@ -1 +1 @@
+-one
++two
+EOF
+
+ncheck 'echo one > "	  "'
+ncheck 'patch -s -p0 < d.diff'
+
+check 'cat "	  "' <<EOF
+two
+EOF

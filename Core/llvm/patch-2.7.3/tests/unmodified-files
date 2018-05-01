@@ -1,0 +1,59 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+# Bug #25969: Patch replaces unmodified files
+#
+# When a patch doesn't actually modify a file (i.e., only rejects),
+# the file is still replaced.
+
+cat > a.diff <<EOF
+--- a
++++ a
+@@ -1 +1 @@
+-one
++two
+EOF
+
+echo three > a
+ln a a.first
+
+check 'patch -b -B backup/ a < a.diff || echo "Status: $?"' <<EOF
+patching file a
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file a.rej
+Status: 1
+EOF
+
+ncheck 'test a -ef a.first'
+
+check 'cat backup/a' <<EOF
+three
+EOF
+
+# ==============================================================
+
+# When applying an empty patch to a file with -o, copy the input file.
+
+cat > a.diff <<EOF
+EOF
+
+echo three > a
+
+check 'patch -o b a < a.diff' <<EOF
+patching file b (read from a)
+EOF
+
+check 'cat b' <<EOF
+three
+EOF

@@ -1,0 +1,166 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Test the --reject-format=FORMAT option
+
+. $srcdir/test-lib.sh
+
+require_cat
+require_sed
+require_gnu_diff
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > f.orig <<EOF
+a() {
+2
+3
+
+5
+6
+}
+EOF
+
+sed -e 's/5/5a/' f.orig > f
+diff -p -c -L f.orig -L f f.orig f > f.diff
+
+check 'patch -f -F0 --no-backup-if-mismatch --dry-run f < f.diff || echo "Status: $?"' <<EOF
+checking file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED
+Status: 1
+EOF
+
+check 'patch -f -F0 --no-backup-if-mismatch f < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+preserve_trailing_blank=
+
+check 'cat f.rej' <<EOF
+*** f.orig
+--- f
+*************** a() {
+*** 2,7 ****
+  2
+  3
+  $preserve_trailing_blank
+! 5
+  6
+  }
+--- 2,7 ----
+  2
+  3
+  $preserve_trailing_blank
+! 5a
+  6
+  }
+EOF
+
+# --------------------------------------------------------------
+
+( echo "Index: f"; diff -p -u -L f.orig -L f f.orig f ) > f.diff
+check 'patch -f -F0 --no-backup-if-mismatch f < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+check 'cat f.rej' <<EOF
+Index: f
+--- f.orig
++++ f
+@@ -2,6 +2,6 @@ a() {
+ 2
+ 3
+ $preserve_trailing_blank
+-5
++5a
+ 6
+ }
+EOF
+
+# --------------------------------------------------------------
+
+diff -p -c -L f.orig -L f f.orig f > f.diff
+check 'patch -f -F0 --no-backup-if-mismatch --reject-format=unified f < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+check 'cat f.rej' <<EOF
+--- f.orig
++++ f
+@@ -2,6 +2,6 @@ a() {
+ 2
+ 3
+ $preserve_trailing_blank
+-5
++5a
+ 6
+ }
+EOF
+
+# --------------------------------------------------------------
+
+( echo "Index: f"; diff -p -u -L f.orig -L f f.orig f ) > f.diff
+check 'patch -f -F0 --no-backup-if-mismatch --reject-format=context f < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+check 'cat f.rej' <<EOF
+Index: f
+*** f.orig
+--- f
+*************** a() {
+*** 2,7 ****
+  2
+  3
+  $preserve_trailing_blank
+! 5
+  6
+  }
+--- 2,7 ----
+  2
+  3
+  $preserve_trailing_blank
+! 5a
+  6
+  }
+EOF
+
+# ==============================================================
+
+echo one > a
+echo two > b
+diff -u -L "a	label of a" -L "b	label of b" a b > ab.diff
+mv b a
+
+check 'patch -f < ab.diff || echo "Status: $?"' <<EOF
+patching file a
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file a.rej
+Status: 1
+EOF
+
+check 'cat a.rej' <<EOF
+--- a	label of a
++++ b	label of b
+@@ -1 +1 @@
+-one
++two
+EOF

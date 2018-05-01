@@ -1,0 +1,43 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+# IEEE Std 1003.1-2008 requires that with -o outfile, multiple patches
+# for a single file shall be applied to the intermediate versions of the
+# file created by any previous patches, and shall result in multiple,
+# concatenated versions of the file being written to outfile.
+
+cat > a.diff <<EOF
+--- a
++++ a
+@@ -1 +1 @@
+-one
++two
+--- a
++++ a
+@@ -1 +1 @@
+-two
++three
+EOF
+
+echo one > a
+
+check 'patch -o a.new a < a.diff' <<EOF
+patching file a.new (read from a)
+patching file a.new (read from a)
+EOF
+
+check 'cat a.new' <<EOF
+two
+three
+EOF

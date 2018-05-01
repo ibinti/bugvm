@@ -1,0 +1,87 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# More than one reject to the same file.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > ab.diff <<EOF
+--- a
++++ a
+@@ -1 +1 @@
+-one
++two
+--- b
++++ b
+@@ -1 +1 @@
+-three
++four
+EOF
+
+echo one > a
+echo three > b
+
+check 'patch -p0 < ab.diff' <<EOF
+patching file a
+patching file b
+EOF
+
+# ==============================================================
+
+check 'patch -p0 -f < ab.diff || echo "Status: $?"' <<EOF
+patching file a
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file a.rej
+patching file b
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file b.rej
+Status: 1
+EOF
+
+check 'cat a.rej' <<EOF
+--- a
++++ a
+@@ -1 +1 @@
+-one
++two
+EOF
+
+check 'cat b.rej' <<EOF
+--- b
++++ b
+@@ -1 +1 @@
+-three
++four
+EOF
+
+check 'patch -p0 -f -r ab.rej < ab.diff || echo "Status: $?"' <<EOF
+patching file a
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file ab.rej
+patching file b
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file ab.rej
+Status: 1
+EOF
+
+check 'cat ab.rej' <<EOF
+--- a
++++ a
+@@ -1 +1 @@
+-one
++two
+--- b
++++ b
+@@ -1 +1 @@
+-three
++four
+EOF

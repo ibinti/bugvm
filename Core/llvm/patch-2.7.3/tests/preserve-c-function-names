@@ -1,0 +1,57 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Preserve the "diff -p" output in reject files
+
+. $srcdir/test-lib.sh
+
+require_cat
+require_gnu_diff
+use_local_patch
+use_tmpdir
+
+cat > a <<EOF
+int foo()
+  {
+    /* waste a line */
+
+    return 1;
+  }
+EOF
+
+cat > b <<EOF
+int foo()
+  {
+    /* waste a line */
+
+    return 2;
+  }
+EOF
+
+preserve_trailing_blank=
+
+diff -p -c -L a -L b a b > ab.diff
+touch c
+check 'patch c < ab.diff || cat c.rej' <<EOF
+patching file c
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file c.rej
+*** a
+--- b
+*************** int foo()
+*** 2,6 ****
+    {
+      /* waste a line */
+  $preserve_trailing_blank
+!     return 1;
+    }
+--- 2,6 ----
+    {
+      /* waste a line */
+  $preserve_trailing_blank
+!     return 2;
+    }
+EOF

@@ -1,0 +1,64 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+echo one > f
+
+cat > f.diff <<EOF
+--- f.orig
++++ f
+@@ -2 +2 @@
+-two
++three
+--- f.orig
++++ f
+@@ -2 +2 @@
+-three
++four
+--- f.orig
++++ f
+@@ -2 +2 @@
+-four
++five
+EOF
+
+check 'patch -p0 < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+patching file f
+Hunk #1 FAILED at 2.
+1 out of 1 hunk FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+check 'cat f.rej' <<EOF
+--- f.orig
++++ f
+@@ -2 +2 @@
+-two
++three
+--- f.orig
++++ f
+@@ -2 +2 @@
+-three
++four
+--- f.orig
++++ f
+@@ -2 +2 @@
+-four
++five
+EOF

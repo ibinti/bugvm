@@ -1,0 +1,128 @@
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+echo zero > f
+
+cat > concatenated.diff <<EOF
+diff --git a/f b/f
+index 26af6a8..5626abf 100644
+--- a/f
++++ b/f
+@@ -1 +1 @@
+-zero
++one
+diff --git a/f b/f
+deleted file mode 100644
+index 5626abf..0000000
+--- a/f
++++ /dev/null
+@@ -1 +0,0 @@
+-one
+diff --git a/f b/f
+new file mode 100644
+index 0000000..f719efd
+--- /dev/null
++++ b/f
+@@ -0,0 +1 @@
++two
+diff --git a/f b/f
+index f719efd..2bdf67a 100644
+--- a/f
++++ b/f
+@@ -1 +1 @@
+-two
++three
+EOF
+
+check 'patch -p1 < concatenated.diff || echo "Status: $?"' <<EOF
+patching file f
+patching file f
+patching file f
+patching file f
+EOF
+
+check 'cat f' <<EOF
+three
+EOF
+
+seq 3 > f
+
+cat > concat2.diff <<EOF
+diff --git a/f b/f
+index 01e79c3..0d0b976 100644
+--- a/f
++++ b/f
+@@ -1,3 +1,4 @@
+ 1
+ 2
+ 3
++b
+diff --git a/f b/f
+index 0d0b976..6b2348d 100644
+--- a/f
++++ b/f
+@@ -1,3 +1,4 @@
++a
+ 1
+ 2
+ 3
+EOF
+
+check 'patch -p1 < concat2.diff || echo "Status: $?"' <<EOF
+patching file f
+patching file f
+EOF
+
+check 'cat f' <<EOF
+a
+1
+2
+3
+b
+EOF
+
+seq 3 > f
+
+cat > concat3.diff <<EOF
+diff --git a/f b/f
+index 01e79c3..0d0b976 100644
+--- a/f
++++ b/f
+@@ -1,3 +1,4 @@
+ 1
+ 2
+ 3
++b
+diff a/f b/f
+--- a/f
++++ b/f
+@@ -1,3 +1,4 @@
++a
+ 1
+ 2
+ 3
+EOF
+
+check 'patch -p1 < concat3.diff || echo "Status: $?"' <<EOF
+patching file f
+patching file f
+EOF
+
+check 'cat f' <<EOF
+a
+1
+2
+3
+b
+EOF

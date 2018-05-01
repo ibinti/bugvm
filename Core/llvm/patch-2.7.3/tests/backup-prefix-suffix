@@ -1,0 +1,147 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > ab.diff <<EOF
+--- a/f
++++ b/f
+@@ -1 +1 @@
+-one
++two
+EOF
+
+echo one > f
+check 'patch -b -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f.orig' <<EOF
+one
+EOF
+
+echo one > f
+check 'patch -b -B prefix. -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat prefix.f' <<EOF
+one
+EOF
+
+echo one > f
+check 'patch -b -z .suffix -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f.suffix' <<EOF
+one
+EOF
+
+echo one > f
+check 'patch -b -B prefix. -z .suffix -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat prefix.f.suffix' <<EOF
+one
+EOF
+
+export PATCH_VERSION_CONTROL=existing
+export SIMPLE_BACKUP_SUFFIX=.bak
+echo one > f
+check 'patch -b -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f.bak' <<EOF
+one
+EOF
+
+touch f.~1~
+echo one > f
+check 'patch -b -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f.~2~' <<EOF
+one
+EOF
+
+export PATCH_VERSION_CONTROL=numbered
+echo one > f
+check 'patch -b -p1 < ab.diff' <<EOF
+patching file f
+EOF
+
+check 'cat f.~3~' <<EOF
+one
+EOF
+
+unset PATCH_VERSION_CONTROL SIMPLE_BACKUP_SUFFIX
+
+# ==============================================================
+
+cat > ab.diff <<EOF
+--- a/d/f
++++ b/d/f
+@@ -1 +1 @@
+-one
++two
+EOF
+
+mkdir d
+
+echo one > d/f
+check 'patch -b -p1 < ab.diff' <<EOF
+patching file d/f
+EOF
+
+check 'cat d/f.orig' <<EOF
+one
+EOF
+
+echo one > d/f
+check 'patch -b -B orig/ -p1 < ab.diff' <<EOF
+patching file d/f
+EOF
+
+check 'cat orig/d/f' <<EOF
+one
+EOF
+
+echo one > d/f
+check 'patch -b -B orig/ -z .orig -p1 < ab.diff' <<EOF
+patching file d/f
+EOF
+
+check 'cat orig/d/f.orig' <<EOF
+one
+EOF
+
+echo one > d/f
+check 'patch -b -Y .orig/ -p1 < ab.diff' <<EOF
+patching file d/f
+EOF
+
+check 'cat d/.orig/f' <<EOF
+one
+EOF
+
+echo one > d/f
+check 'patch -b -Y .orig/ -z .orig -p1 < ab.diff' <<EOF
+patching file d/f
+EOF
+
+check 'cat d/.orig/f.orig' <<EOF
+one
+EOF

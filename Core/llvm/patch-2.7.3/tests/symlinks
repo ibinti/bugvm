@@ -1,0 +1,240 @@
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Symlink related tests
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > create.diff <<EOF
+--- /dev/null
++++ l
+@@ -0,0 +1 @@
++one
+EOF
+
+rm -f f l
+echo one > f
+ncheck 'ln -s f l'
+
+check 'patch < create.diff || echo "Status: $?"' <<EOF
+File l is not a regular file -- refusing to patch
+1 out of 1 hunk ignored -- saving rejects to file l.rej
+Status: 1
+EOF
+
+check 'cat f' <<EOF
+one
+EOF
+
+# --------------------------------------------------------------
+
+rm -f f l
+echo one > f
+ncheck 'ln -s f l'
+
+cat > modify.diff <<EOF
+--- l
++++ l
+@@ -1 +1 @@
+-one
++two
+EOF
+
+check 'patch < modify.diff || echo "Status: $?"' <<EOF
+File l is not a regular file -- refusing to patch
+1 out of 1 hunk ignored -- saving rejects to file l.rej
+Status: 1
+EOF
+
+check 'patch --follow-symlinks < modify.diff || echo "Status: $?"' <<EOF
+patching file l
+EOF
+
+# --------------------------------------------------------------
+
+rm -f f l
+echo one > f
+ncheck 'ln -s f l'
+
+cat > delete.diff <<EOF
+--- l
++++ /dev/null
+@@ -1 +0,0 @@
+-one
+EOF
+
+check 'patch < delete.diff || echo "Status: $?"' <<EOF
+File l is not a regular file -- refusing to patch
+1 out of 1 hunk ignored -- saving rejects to file l.rej
+Status: 1
+EOF
+
+# --------------------------------------------------------------
+
+cat > create-symlink.diff <<EOF
+diff --git a/symlink b/symlink
+new file mode 120000
+index 0000000..12a8d8a
+--- /dev/null
++++ b/symlink
+@@ -0,0 +1 @@
++target1
+\ No newline at end of file
+EOF
+
+check 'patch -p1 < create-symlink.diff || echo "Status: $?"' <<EOF
+patching symbolic link symlink
+EOF
+
+check 'echo a > target1 && cat symlink' <<EOF
+a
+EOF
+check 'echo b > target1 && cat symlink' <<EOF
+b
+EOF
+rm -f target1
+
+cat > modify-symlink.diff <<EOF
+diff --git a/symlink b/symlink
+index 12a8d8a..3b7781e 120000
+--- a/symlink
++++ b/symlink
+@@ -1 +1 @@
+-target1
+\ No newline at end of file
++target2
+\ No newline at end of file
+EOF
+
+check 'patch -p1 < modify-symlink.diff || echo "Status: $?"' <<EOF
+patching symbolic link symlink
+EOF
+
+check 'echo a > target2 && cat symlink' <<EOF
+a
+EOF
+check 'echo b > target2 && cat symlink' <<EOF
+b
+EOF
+rm -f target2
+
+cat > delete-symlink.diff <<EOF
+diff --git a/symlink b/symlink
+deleted file mode 120000
+index 3b7781e..0000000
+--- a/symlink
++++ /dev/null
+@@ -1 +0,0 @@
+-target2
+\ No newline at end of file
+EOF
+
+check 'patch -p1 < delete-symlink.diff || echo "Status: $?"' <<EOF
+patching symbolic link symlink
+EOF
+
+ncheck 'test ! -L symlink'
+
+# --------------------------------------------------------------
+
+# Patch should not create symlinks which point outside the working directory.
+
+# We cannot even ensure that symlinks with ".." components are safe: we cannot
+# guarantee that they won't end up higher up in the working tree than we think;
+# the path to the symlink may follow symlinks itself.
+#
+#cat > symlink-target.diff <<EOF
+#diff --git a/dir/foo b/dir/foo
+#new file mode 120000
+#index 0000000..cad2309
+#--- /dev/null
+#+++ b/dir/foo
+#@@ -0,0 +1 @@
+#+../foo
+#\ No newline at end of file
+#EOF
+#
+#check 'patch -p1 < symlink-target.diff || echo "Status: $?"' <<EOF
+#patching symbolic link dir/foo
+#EOF
+
+cat > bad-symlink-target1.diff <<EOF
+diff --git a/bar b/bar
+new file mode 120000
+index 0000000..cad2309
+--- /dev/null
++++ b/bar
+@@ -0,0 +1 @@
++/bar
+\ No newline at end of file
+EOF
+
+check 'patch -p1 < bad-symlink-target1.diff || echo "Status: $?"' <<EOF
+patching symbolic link bar
+symbolic link target '/bar' is invalid
+Status: 2
+EOF
+
+cat > bad-symlink-target2.diff <<EOF
+diff --git a/baz b/baz
+new file mode 120000
+index 0000000..cad2309
+--- /dev/null
++++ b/baz
+@@ -0,0 +1 @@
++../baz
+\ No newline at end of file
+EOF
+
+check 'patch -p1 < bad-symlink-target2.diff || echo "Status: $?"' <<EOF
+patching symbolic link baz
+symbolic link target '../baz' is invalid
+Status: 2
+EOF
+
+# --------------------------------------------------------------
+
+# The backup file of a new symlink is an empty regular file.
+
+check 'patch -p1 --backup < create-symlink.diff || echo "Status: $?"' <<EOF
+patching symbolic link symlink
+EOF
+
+ncheck 'test -f symlink.orig && test ! -s symlink.orig'
+
+# The backup file of a modified symlink is the old symlink.
+
+check 'patch -p1 --backup < modify-symlink.diff || echo "Status: $?"' <<EOF
+patching symbolic link symlink
+EOF
+
+check 'echo a > symlink.orig && cat target1' <<EOF
+a
+EOF
+check 'echo b > symlink.orig && cat target1' <<EOF
+b
+EOF
+rm -f target1
+
+# The backup file of a deleted symlink is the old symlink.
+
+check 'patch -p1 --backup < delete-symlink.diff || echo "Status: $?"' <<EOF
+patching symbolic link symlink
+EOF
+
+check 'echo a > symlink.orig && cat target2' <<EOF
+a
+EOF
+check 'echo b > symlink.orig && cat target2' <<EOF
+b
+EOF
+rm -f target2

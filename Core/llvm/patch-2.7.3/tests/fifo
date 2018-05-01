@@ -1,0 +1,42 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+# Don't recognize hunks before a filename has been specified/seen
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+cat > f.diff <<EOF
+--- /dev/null
++++ f
+@@ -0,0 +1 @@
++f
+EOF
+
+check 'patch --dry-run < f.diff' <<EOF
+checking file f
+EOF
+
+check 'patch --dry-run -i f.diff' <<EOF
+checking file f
+EOF
+
+mkfifo fifo
+
+cat f.diff > fifo &
+check 'patch --dry-run < fifo' <<EOF
+checking file f
+EOF
+
+cat f.diff > fifo &
+check 'patch --dry-run -i fifo' <<EOF
+checking file f
+EOF

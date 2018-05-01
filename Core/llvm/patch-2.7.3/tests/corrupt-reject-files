@@ -1,0 +1,68 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+# Regression test for an off-by-one error:
+#
+# Date: Sun, 26 Aug 2007 13:50:45 +0200
+# From: Jim Meyering <jim@meyering.net>
+#
+# The problem arises when the input is a context diff and the second
+# byte on a line of context is not a space or tab.
+# Patch then happily gobbles/ignores that bogus byte and outputs
+# the rest of the line with an additional (NUL) byte at the end.
+
+seq 1 7 > a
+
+cat > ab.diff <<EOF
+*** a
+--- b
+***************
+*** 1,7 ****
+  1
+  2
+  3
+- X
+  5
+  6
+ 7 yyy
+--- 1,6 ----
+EOF
+
+check 'patch a < ab.diff || echo "Status: $?"' <<EOF
+patching file a
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED -- saving rejects to file a.rej
+Status: 1
+EOF
+
+check 'cat -ve a.rej' <<EOF
+*** a$
+--- b$
+***************$
+*** 1,7 ****$
+  1$
+  2$
+  3$
+- X$
+  5$
+  6$
+  7 yyy$
+--- 1,6 ----$
+  1$
+  2$
+  3$
+  5$
+  6$
+  7 yyy$
+EOF

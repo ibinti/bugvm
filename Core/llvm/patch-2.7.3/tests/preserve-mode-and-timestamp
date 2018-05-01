@@ -1,0 +1,121 @@
+# Copyright (C) 2009, 2011-2012 Free Software Foundation, Inc.
+#
+# Copying and distribution of this file, with or without modification,
+# in any medium, are permitted without royalty provided the copyright
+# notice and this notice are preserved.
+
+. $srcdir/test-lib.sh
+
+require_cat
+require_sed
+use_local_patch
+use_tmpdir
+
+# ==============================================================
+
+timestamp1="2009-03-13 00:00:00"
+timestamp2="2009-03-14 00:00:00"
+cat > f.diff <<EOF
+--- a/f	$timestamp1
++++ b/f	$timestamp2
+@@ -1 +1 @@
+-one
++two
+@@ -2 +2 @@
+-three
++four
+EOF
+
+cat > f <<EOF
+one
+three
+EOF
+
+# touch -d "$timestamp1" f
+# Some non-GNU versions of touch don't support the -d option
+sed_expr='s,\(....\)-\(..\)-\(..\) \(..\):\(..\):\(..\),\1\2\3\4\5.\6,'
+timestamp1_touch=`echo "$timestamp1" | sed -e "$sed_expr"`
+TZ=UTC touch -t $timestamp1_touch f
+
+chmod 644 f
+
+touch f.orig
+chmod 600 f.orig
+
+check 'patch -p1 --backup --set-utc < f.diff' <<EOF
+patching file f
+EOF
+
+#check 'date -u "+%Y-%m-%d %H:%M:%S %z" -r f'
+#$timestamp2
+#EOF
+# Some non-GNU versions of date can't show a file's timestamp
+timestamp2_touch=`echo "$timestamp2" | sed -e "$sed_expr"`
+TZ=UTC touch -t $timestamp2_touch f.compare
+ncheck 'test ! \( f -ot f.compare -o f -nt f.compare \) || echo "timstamp differs"'
+
+# POSIX allows a byte like '+' or '.' in position 11 to indicate the
+# presence of extended permissions like ACLs.
+
+check 'ls -l f.orig | sed "s,\(..........\).*,\1,"' <<EOF
+-rw-r--r--
+EOF
+
+# ==============================================================
+
+cat > f <<EOF
+one
+five
+EOF
+
+umask 022
+
+check 'patch -p1 --backup --set-utc < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #2 FAILED at 2.
+Not setting time of file f (time mismatch)
+1 out of 2 hunks FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+check 'ls -l f.rej | sed "s,\(..........\).*,\1,"' <<EOF
+-rw-r--r--
+EOF
+
+# ==============================================================
+
+cat > f <<EOF
+one
+five
+EOF
+
+umask 027
+
+check 'patch -p1 --backup --set-utc < f.diff || echo "Status: $?"' <<EOF
+patching file f
+Hunk #2 FAILED at 2.
+Not setting time of file f (time mismatch)
+1 out of 2 hunks FAILED -- saving rejects to file f.rej
+Status: 1
+EOF
+
+check 'ls -l f.rej | sed "s,\(..........\).*,\1,"' <<EOF
+-rw-r-----
+EOF
+
+# ==============================================================
+
+cat > f.diff <<EOF
+--- /dev/null
++++ b/f	$timestamp2
+@@ -0,0 +1 @@
++one
+EOF
+
+rm -f f
+
+check 'patch -p1 --backup --set-utc < f.diff' <<EOF
+patching file f
+EOF
+
+ncheck 'test ! \( f -ot f.compare -o f -nt f.compare \) || echo "timstamp differs"'
