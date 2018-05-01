@@ -82,6 +82,7 @@ Darwin)
 Linux)
   CC=$(which gcc)
   CXX=$(which g++)
+  bash -c "tar xvf patch-2.7.3.tar.gz"
   bash -c "cd patch-2.7.3; ./configure; make install; cd .."
   ;;
 Windows)
