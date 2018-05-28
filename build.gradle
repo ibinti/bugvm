@@ -1,7 +1,7 @@
 buildscript {
     ext {
         bugvm_version = "1.2.10-SNAPSHOT"
-        kotlin_version = "1.2.40"
+        kotlin_version = "1.2.41"
     }
     repositories {
         mavenCentral()
