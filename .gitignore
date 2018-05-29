@@ -12,6 +12,6 @@ build
 local.properties
 
 # Shared Libraries
-*.a
-*.so
-*.dylib
+#*.a
+#*.so
+#*.dylib
