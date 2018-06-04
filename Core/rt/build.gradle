@@ -48,9 +48,9 @@ modifyPom {
         url "https://bugvm.com"
 
         scm {
-            url "https://github.com/bugvm/bugvm"
-            connection "scm:git:git://github.com/bugvm/bugvm.git"
-            developerConnection "scm:git:ssh://github.com:bugvm/bugvm.git"
+            url "https://github.com/ibinti/bugvm"
+            connection "scm:git:git://github.com/ibinti/bugvm.git"
+            developerConnection "scm:git:ssh://github.com:ibinti/bugvm.git"
         }
 
         developers {
