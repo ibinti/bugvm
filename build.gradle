@@ -164,9 +164,9 @@ modifyPom {
             developer {
                 id "bugvm"
                 name "We are the BugVM"
-                email "bug@bugvm.com"
-                organization "BugVM"
-                organizationUrl "https://bugvm.com"
+                email "bugvm@ibinti.com"
+                organization "ibinti"
+                organizationUrl "https://ibinti.com"
             }
         }
     }
