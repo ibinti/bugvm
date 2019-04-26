@@ -725,7 +725,7 @@ public class IOSTarget extends AbstractTarget {
                     new NSString("UIInterfaceOrientationLandscapeRight"),
                     new NSString("UIInterfaceOrientationPortraitUpsideDown")
                     ));
-            dict.put("UIRequiredDeviceCapabilities", new NSArray(new NSString("armv7")));
+            dict.put("UIRequiredDeviceCapabilities", new NSArray(new NSString("arm64")));
         }
 
         dict.put("DTPlatformName", sdk.getPlatformName());
@@ -742,7 +742,7 @@ public class IOSTarget extends AbstractTarget {
 
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
-            dict.put("MinimumOSVersion", "7.0");
+            dict.put("MinimumOSVersion", "9.0");
         }
 
         customizeInfoPList(dict);

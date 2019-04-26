@@ -1,7 +1,7 @@
 # The minimum Mac OS X version needed by apps built by BugVM
 set(MACOSX_MIN_VERSION 10.7)
 # The minimum iOS version needed by apps built by BugVM
-set(IOS_MIN_VERSION 7.0)
+set(IOS_MIN_VERSION 12.0)
 
 cmake_minimum_required(VERSION 2.8.8)
 project(build)
@@ -240,11 +240,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "debug")
   set(EXTGC_PARAMS "${EXTGC_PARAMS} --enable-gc-debug=yes")
 endif()
 if (IOS)
-  if(64_BIT)
-    set(EXT_HOST --host=aarch64-apple-darwin7)
-  else()
-    set(EXT_HOST --host=arm-apple-darwin7)
-  endif()
+    set(EXT_HOST --host=aarch64-apple-darwin14)
+    set ( CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${IOS_MIN_VERSION}" )
 endif()
 ExternalProject_Add(libatomic_ops 
   GIT_REPOSITORY git://github.com/ibinti/bugvm-libatomic_ops.git

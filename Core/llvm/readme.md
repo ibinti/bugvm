@@ -1,6 +1,6 @@
 # LLVM
 
-Ubuntu 16.04:
+Ubuntu 18.04:
 
 ### Install GNU Patch 2.7.3
 
