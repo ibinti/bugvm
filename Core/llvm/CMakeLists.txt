@@ -1,5 +1,5 @@
 # The minimum Mac OS X version needed by BugVM
-set(MACOSX_MIN_VERSION 10.7)
+set(MACOSX_MIN_VERSION 10.9)
 
 cmake_minimum_required(VERSION 2.8.8)
 
@@ -102,7 +102,7 @@ ExternalProject_Add(extllvm
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS}")
 if(MACOSX)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -fno-rtti -std=c++11 -stdlib=libc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -fno-rtti -std=libc++")
 elseif(LINUX AND X86_64)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} -fno-rtti -std=c++11")
 endif()
