@@ -6,14 +6,14 @@
 * soot
 * bin
 
-macOS 10.12
+macOS 10.13
 
 ```
 Xcode 8 and its buildtools
 JDK 8
 ```
 
-Ubuntu 16.04:
+Ubuntu 18.04:
 
 ```
 apt install git

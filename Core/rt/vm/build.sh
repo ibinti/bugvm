@@ -48,7 +48,7 @@ if [ $(uname) = 'Darwin' ]; then
   if xcrun --sdk macosx --show-sdk-version &> /dev/null; then
     MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
   else
-    MACOSX_SDK_VERSION=10.7
+    MACOSX_SDK_VERSION=10.13
   fi
   if xcrun --sdk iphoneos --show-sdk-version &> /dev/null; then
     IOS_SDK_VERSION=$(xcrun --sdk iphoneos --show-sdk-version)
@@ -74,12 +74,7 @@ if [ "x$TARGETS" = 'x' ]; then
   OS=$(uname)
   case $OS in
   Darwin)
-    if [ $MACOSX_SDK_VERSION = 10.7 ] ; then
-      TARGETS="ios-thumbv7 ios-x86 macosx-x86_64"
-    else
-      TARGETS="ios-arm64 ios-x86_64"
-      #TARGETS="ios-thumbv7 ios-arm64 ios-x86_64 ios-x86 macosx-x86_64"
-    fi
+    TARGETS="ios-arm64 ios-x86_64 macosx-x86_64"
     ;;
   Linux)
     TARGETS="linux-x86_64"
@@ -95,7 +90,7 @@ if [ "x$BUILDS" = 'x' ]; then
   #BUILDS="debug release"
 fi
 
-# Validate targets #linux-(x86_64|x86)
+# Validate targets #linux-(x86_64)
 for T in $TARGETS; do
   if ! [[ $T =~ (macosx-(x86_64))|(ios-(x86_64|arm64))|(linux-(x86_64)) ]] ; then
     echo "Unsupported target: $T"

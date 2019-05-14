@@ -66,7 +66,7 @@ Darwin)
   if xcrun --sdk macosx --show-sdk-version &> /dev/null; then
     MACOSX_SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
   else
-    MACOSX_SDK_VERSION=10.7
+    MACOSX_SDK_VERSION=10.13
   fi
   if xcrun -f clang &> /dev/null; then
     CC=$(xcrun -f clang)

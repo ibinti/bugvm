@@ -1,5 +1,5 @@
 # The minimum Mac OS X version needed by apps built by BugVM
-set(MACOSX_MIN_VERSION 10.7)
+set(MACOSX_MIN_VERSION 10.13)
 # The minimum iOS version needed by apps built by BugVM
 set(IOS_MIN_VERSION 12.0)
 

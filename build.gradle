@@ -156,7 +156,7 @@ modifyPom {
                 distribution "repo"
             }
         }
-        url "https://bugvm.com"
+        url "https://ibinti.com/bugvm"
 
         scm {
             url "https://github.com/ibinti/bugvm"
@@ -167,9 +167,9 @@ modifyPom {
         developers {
             developer {
                 id "bugvm"
-                name "We are the BugVM"
+                name "bugvm"
                 email "bugvm@ibinti.com"
-                organization "ibinti"
+                organization "ibinti.com"
                 organizationUrl "https://ibinti.com"
             }
         }
