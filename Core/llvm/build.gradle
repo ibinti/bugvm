@@ -3,9 +3,9 @@ apply plugin: "signing"
 apply plugin: "com.bmuschko.nexus"
 
 archivesBaseName = "bugvm-llvm"
-description = """BugVM LLVM Bindings"""
+description = """bugvm llvm bindings"""
 
-task nativeLib(type:Exec) {
+task native_lib(type:Exec) {
 
     commandLine "bash", "-c", ". build.sh"
 
@@ -29,7 +29,7 @@ modifyPom {
         description project.description
         licenses {
             license {
-                name "GNU General Public License, version 2"
+                name "gnu general public license, version 2"
                 url "https://www.gnu.org/licenses/gpl-2.0.html"
                 distribution "repo"
             }

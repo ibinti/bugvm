@@ -1,4 +1,4 @@
-BugVM compiler
+bugvm compiler
 Copyright (C) 2012-2014 RoboVM AB
 For license information see the LICENSE.txt file which accompanies this
 NOTICE.txt file.
@@ -6,7 +6,7 @@ NOTICE.txt file.
 Third party libraries
 ---------------------
 
-The BugVM compiler includes the com.dd.plist library. This library is
+The bugvm compiler includes the com.dd.plist library. This library is
 copyright 2011, Daniel Dreibrodt and released under the MIT license.
 https://code.google.com/p/plist/
 
@@ -16,48 +16,48 @@ into the public domain. Both authors disclaim copyright to the source code.
 http://code.google.com/p/smhasher/
 https://github.com/yonik/java_util
 
-The BugVM compiler uses Soot which is copyright Sable Research Group and
+The bugvm compiler uses Soot which is copyright Sable Research Group and
 various contributors. Please see http://www.sable.mcgill.ca/soot/credits for a
 full list of contributors. LGPL 2.1 license. http://www.sable.mcgill.ca/soot/
 
-The BugVM compiler includes Apache Commons IO which is copyright 2001-2008, the
+The bugvm compiler includes Apache Commons IO which is copyright 2001-2008, the
 Apache Software Foundation and released under the Apache License 2.0.
 http://commons.apache.org/io/
 
-The BugVM compiler includes Apache Commons Exec which is copyright 2005-2009,
+The bugvm compiler includes Apache Commons Exec which is copyright 2005-2009,
 The Apache Software Foundation and released under the Apache License 2.0.
 http://commons.apache.org/exec/
 
-The BugVM compiler includes code from the Apache Camel project which is
+The bugvm compiler includes code from the Apache Camel project which is
 copyright The Apache Software Foundation and released under the Apache License 
 2.0. http://camel.apache.org/
 
-The BugVM compiler includes code from the Spring Framework project which is
+The bugvm compiler includes code from the Spring Framework project which is
 copyright 2002-2013 by several authors and released under the Apache License
 2.0. http://www.springsource.org/spring-framework
 
-The BugVM compiler includes the JSON.simple JSON library which is copyright
+The bugvm compiler includes the JSON.simple JSON library which is copyright
 2009, Fang Yidong and Chris Nokleberg and released under the Apache License 2.0.
 http://code.google.com/p/json-simple
 
-The BugVM compiler includes the ASM Java bytecode manipulation framework which
+The bugvm compiler includes the ASM Java bytecode manipulation framework which
 is copyright 2000-2011 INRIA, France Telecom and released under the 3-clause BSD
 license.
 http://asm.ow2.org/
 
-The BugVM compiler uses the ZeroTurnaround ZIP Library which is copyright 2012,
+The bugvm compiler uses the ZeroTurnaround ZIP Library which is copyright 2012,
 ZeroTurnaround LLC and released under the Apache License 2.0.
 https://github.com/zeroturnaround/zt-zip
 
-The BugVM compiler includes the Simple XML serialization framework which is
+The bugvm compiler includes the Simple XML serialization framework which is
 copyright Niall Gallagher and released under the Apache License 2.0.
 http://simple.sourceforge.net
 
-The BugVM compiler includes the Bouncy Castle Crypto APIs for Java which is
+The bugvm compiler includes the Bouncy Castle Crypto APIs for Java which is
 copyright 2000 - 2013, The Legion of the Bouncy Castle Inc. and released under 
 the MIT license.
 http://www.bouncycastle.org
 
-The BugVM compiler uses the libarchive library. This library is copyright
+The bugvm compiler uses the libarchive library. This library is copyright
 2003-2009 Tim Kientzle and released under the 2-clause BSD license.
 http://www.libarchive.org

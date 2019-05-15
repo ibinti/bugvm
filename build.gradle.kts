@@ -68,15 +68,15 @@ task jars {
 }
 
 task rt {
-    dependsOn ":Core:rt:nativeLib"
+    dependsOn ":core:rt:native_lib"
 }
 
 task rt_clean {
-    dependsOn ":Core:rt:nativeLibClean"
+    dependsOn ":core:rt:native_lib_clean"
 }
 
 task llvm {
-    dependsOn ":Core:llvm:nativeLib"
+    dependsOn ":core:llvm:native_lib"
 }
 
 task all  {
@@ -86,12 +86,12 @@ task all  {
 }
 
 archivesBaseName = "bugvm-dist"
-description = "BugVM Dist Package (tgz)"
+description = "bugvm dist package (tgz)"
 
 dependencies {
-    compile project(":Core:compiler")
-    compile project(":Binding:apple")
-    compile project(":Core:rt")
+    compile project(":core:compiler")
+    compile project(":binding:apple")
+    compile project(":core:rt")
 }
 
 task tgzTask(type: Tar) {
@@ -104,38 +104,38 @@ task tgzTask(type: Tar) {
     }
 
     into("bugvm-${version}/lib") {
-        from  "Core/compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
-        from("Core/rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
-        from("Binding/apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
+        from  "core/compiler/build/libs/bugvm-compiler-${version}.jar" rename { String fileName -> fileName.replace("bugvm-compiler-${version}.jar", "bugvm-compiler.jar") }
+        from("core/rt/build/libs/bugvm-rt-${version}.jar") rename { String fileName -> fileName.replace("bugvm-rt-${version}.jar", "bugvm-rt.jar") }
+        from("binding/apple/build/libs/bugvm-apple-${version}.jar") rename { String fileName -> fileName.replace("bugvm-apple-${version}.jar", "bugvm-apple.jar") }
     }
 
     into ("bugvm-${version}/lib/vm") {
-        from ("Core/rt/vm/binaries")
+        from ("core/rt/vm/binaries")
     }
 
     into ("bugvm-${version}/modules/licenses/apple") {
-        from ("Binding/apple/NOTICE.txt")
-        from ("Binding/apple/LICENSE.txt")
+        from ("binding/apple/NOTICE.txt")
+        from ("binding/apple/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/llvm") {
-        from ("Core/llvm/NOTICE.txt")
-        from ("Core/llvm/LICENSE.txt")
+        from ("core/llvm/NOTICE.txt")
+        from ("core/llvm/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/rt") {
-        from ("Core/rt/NOTICE.txt")
-        from ("Core/rt/LICENSE.txt")
+        from ("core/rt/NOTICE.txt")
+        from ("core/rt/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/compiler") {
-        from ("Core/compiler/NOTICE.txt")
-        from ("Core/compiler/LICENSE.txt")
+        from ("core/compiler/NOTICE.txt")
+        from ("core/compiler/LICENSE.txt")
     }
 
     into ("bugvm-${version}/modules/licenses/vm") {
-        from ("Core/vm/NOTICE.txt")
-        from ("Core/vm/LICENSE.txt")
+        from ("core/vm/NOTICE.txt")
+        from ("core/vm/LICENSE.txt")
     }
 
     outputs.upToDateWhen { false }
@@ -151,7 +151,7 @@ modifyPom {
         description project.description
         licenses {
             license {
-                name "GNU General Public License, version 2"
+                name "gnu general public license, version 2"
                 url "https://www.gnu.org/licenses/gpl-2.0.html"
                 distribution "repo"
             }
@@ -175,12 +175,6 @@ modifyPom {
         }
     }
 }
-
-/* task listJars {
-    doLast {
-        configurations.runtime.each { File file -> println file.name }
-    }
-}* /
 
 /* gradle upgrade instructions
 

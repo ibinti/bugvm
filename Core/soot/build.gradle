@@ -3,7 +3,7 @@ apply plugin: "signing"
 apply plugin: "com.bmuschko.nexus"
 
 archivesBaseName = "bugvm-soot"
-description = """BugVM Soot"""
+description = """bugvm soot"""
 
 sourceSets {
     main {
@@ -26,12 +26,12 @@ modifyPom {
         description project.description
         licenses {
             license {
-                name "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
+                name "gnu lesser general public license version 2.1"
                 url "https://www.gnu.org/licenses/lgpl-2.1.html"
                 distribution "repo"
             }
         }
-        url "https://bugvm.com"
+        url "https://ibinti.com/bugvm"
         scm {
             url "https://github.com/ibinti/bugvm"
             connection "scm:git:git://github.com/ibinti/bugvm.git"
@@ -40,10 +40,10 @@ modifyPom {
         developers {
             developer {
                 id "bugvm"
-                name "We are the BugVM"
-                email "bug@bugvm.com"
-                organization "BugVM"
-                organizationUrl "https://bugvm.com"
+                name "bugvm"
+                email "bugvm@ibinti.com"
+                organization "ibinti.com"
+                organizationUrl "https://ibinti.com"
             }
         }
     }

@@ -1,0 +1,1 @@
+include( "core:soot", "core:rt", "core:llvm", "core:compiler", "binding:ios", "binding:macos", "binding:apple", "plugin:gradle")

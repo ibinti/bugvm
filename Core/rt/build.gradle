@@ -4,7 +4,7 @@ apply plugin: "com.bmuschko.nexus"
 apply plugin: "com.github.johnrengelman.shadow"
 
 archivesBaseName = "bugvm-rt"
-description = """BugVM Runtime Library"""
+description = """bugvm runtime library"""
 
 dependencies {
     compile fileTree(include: ["*.jar"], dir: "lib")
@@ -23,12 +23,12 @@ shadowJar {
     exclude "META-INF/maven/"
 }
 
-task nativeLib(type:Exec) {
+task native_lib(type:Exec) {
     workingDir "vm"
     commandLine "bash", "-c", ". build.sh"
 }
 
-task nativeLibClean(type:Exec) {
+task native_lib_clean(type:Exec) {
     workingDir "vm"
     commandLine "bash", "-c", ". build.sh --clean"
 }
@@ -39,7 +39,7 @@ modifyPom {
         description project.description
         licenses {
             license {
-                name "The Apache Software License, Version 2.0"
+                name "the apache software license, version 2.0"
                 url "http://www.apache.org/licenses/LICENSE-2.0.txt"
                 distribution "repo"
             }

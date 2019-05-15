@@ -1,13 +1,13 @@
-# BugVM is a kind of JVM bytecode compiler.
+# bugvm is a kind of jvm bytecode compiler.
 
-BugVM compiles bytecode to binary code with a self-contained JVM.
-
-
-### Sample Project
-
-[iOS App](https://github.com/ibinti/bugvm-ios)
+bugvm compiles bytecode to binary code with a self-contained jvm.
 
 
-### Licenses
+### sample project
 
-BugVM depends on various open source projects. Refer to the respective source code for its license. Apache, GNU, MIT, BSD are noticeable licenses.
+[iso app](https://github.com/ibinti/bugvm-ios)
+
+
+### licenses
+
+bugvm depends on various open source projects. Refer to the respective source code for its license. apache, gnu, mit, bsd are noticeable licenses.
