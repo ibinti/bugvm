@@ -176,11 +176,11 @@ modifyPom {
     }
 }
 
-task listJars {
+/* task listJars {
     doLast {
         configurations.runtime.each { File file -> println file.name }
     }
-}
+}* /
 
 /* gradle upgrade instructions
 
