@@ -71,7 +71,7 @@ task rt {
     dependsOn ":Core:rt:nativeLib"
 }
 
-task rtClean {
+task rt_clean {
     dependsOn ":Core:rt:nativeLibClean"
 }
 
@@ -80,9 +80,9 @@ task llvm {
 }
 
 task all  {
-    dependsOn jars, rt, llvm
+    dependsOn jars, rt_clean, llvm
     jars.mustRunAfter llvm
-    llvm.mustRunAfter rt
+    llvm.mustRunAfter rt_clean
 }
 
 archivesBaseName = "bugvm-dist"

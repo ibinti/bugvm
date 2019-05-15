@@ -10,13 +10,11 @@ Options:
   --build=[release|debug] Specifies the build type. If not set both release
                           and debug versions of the libraries will be built.
   --target=...            Specifies the target(s) to build for. Supported 
-                          targets are macosx-x86_64, ios-x86_64,
-                          ios-x86, ios-thumbv7, ios-arm64, linux-x86_64.
+                          targets are macosx-x86_64, ios-x86_64, ios-arm64, linux-x86_64.
                           Enclose multiple targets in quotes and
                           separate with spaces or specify --target multiple
                           times. If not set the current host OS determines the
-                          targets. macosx-x86_64, ios-x86_64,
-                          ios-x86, ios-thumbv7 and ios-arm64 on MacOSX and
+                          targets. macosx-x86_64, ios-x86_64, and ios-arm64 on MacOSX and
                           linux-x86_64 on Linux.
   --verbose               Enable verbose output during the build.
   --clean                 Cleans the build dir before starting the build.

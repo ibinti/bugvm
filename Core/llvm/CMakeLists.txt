@@ -1,5 +1,5 @@
 # The minimum Mac OS X version needed by BugVM
-set(MACOSX_MIN_VERSION 10.9)
+set(MACOSX_MIN_VERSION 10.13)
 
 cmake_minimum_required(VERSION 2.8.8)
 
@@ -45,9 +45,7 @@ find_package(JNI REQUIRED)
 message (STATUS "JNI_INCLUDE_DIRS=${JNI_INCLUDE_DIRS}")
 message (STATUS "JNI_LIBRARIES=${JNI_LIBRARIES}")
 
-if (ARCH STREQUAL "x86")
-  set(X86 YES)
-elseif (ARCH STREQUAL "x86_64")
+if (ARCH STREQUAL "x86_64")
   set(X86_64 YES)
 endif()
 
@@ -55,15 +53,9 @@ set(C_CXX_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-s
 if(MACOSX AND X86_64)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch x86_64 -mmacosx-version-min=${MACOSX_MIN_VERSION}")
   set(LD_FLAGS "${LD_FLAGS} -arch x86_64 -mmacosx-version-min=${MACOSX_MIN_VERSION}")
-elseif(LINUX AND X86)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32")
-  set(LD_FLAGS "${LD_FLAGS} -m32")
 elseif(LINUX AND X86_64)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m64")
   set(LD_FLAGS "${LD_FLAGS} -m64")
-elseif(WINDOWS AND X86)
-  set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32")
-  set(LD_FLAGS "${LD_FLAGS} -m32")
 elseif(WINDOWS AND X86_64)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m64")
   set(LD_FLAGS "${LD_FLAGS} -m64")
