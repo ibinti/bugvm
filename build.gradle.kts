@@ -1,65 +1,64 @@
+val kotlin_version = "1.3.31"
+val bugvm_version = "1.3.31-SNAPSHOT"
+
 buildscript {
-    ext {
-        bugvm_version = "1.3.0-SNAPSHOT"
-        kotlin_version = "1.3.31"
-    }
     repositories {
+        mavenLocal()
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
         mavenCentral()
         jcenter()
     }
-
     dependencies {
         classpath("com.bmuschko:gradle-nexus-plugin:2.3.1")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.7.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath(kotlin("gradle-plugin", version = "1.3.31"))
         classpath("com.github.jengelman.gradle.plugins:shadow:4.0.2")
     }
 }
 
-allprojects {
+group = "com.bugvm"
+version = bugvm_version
 
-    group = "com.bugvm"
-    version = bugvm_version
-
-    apply plugin: "kotlin"
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
-
-    compileTestKotlin {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
-
-    javadoc {
-        exclude "**"
-    }
-
-    repositories {
-        mavenLocal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        mavenCentral()
-    }
-
-    dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    }
-
+plugins {
+    kotlin("jvm")  version "1.3.31"
+}
+    
+repositories {
+    mavenLocal()
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
+    mavenCentral()
+    jcenter()
 }
 
+dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+
+    compile project(":core:compiler")
+    compile project(":binding:apple")
+    compile project(":core:rt")
+}
+
+/* gradle upgrade instructions
+note: "com.github.jengelman.gradle.plugins:shadow:4.0.2" requires gradle 4.*
+gradle upgrade hold until this issue resolves
+*/
+tasks.withType<Wrapper> {
+  gradleVersion = "4.7"
+  distributionType = Wrapper.DistributionType.ALL
+}
+
+defaultTasks("install")
+
+archivesBaseName = "bugvm-dist"
+description = "bugvm dist package (tgz)"
+
+/*
+######################################################################
+ */
 apply plugin: "maven"
 apply plugin: "signing"
 apply plugin: "com.bmuschko.nexus"
 apply plugin: "io.codearte.nexus-staging"
-
-defaultTasks "install"
 
 task jars {
     dependsOn install, build, clean
@@ -83,15 +82,6 @@ task all  {
     dependsOn jars, rt_clean, llvm
     jars.mustRunAfter llvm
     llvm.mustRunAfter rt_clean
-}
-
-archivesBaseName = "bugvm-dist"
-description = "bugvm dist package (tgz)"
-
-dependencies {
-    compile project(":core:compiler")
-    compile project(":binding:apple")
-    compile project(":core:rt")
 }
 
 task tgzTask(type: Tar) {
@@ -175,12 +165,3 @@ modifyPom {
         }
     }
 }
-
-/* gradle upgrade instructions
-
-./gradlew wrapper --gradle-version 5.4.1 --distribution-type all
-
-note: "com.github.jengelman.gradle.plugins:shadow:4.0.2" requires gradle 4.*
-gradle upgrade hold until this issue resolves
-
-*/
