@@ -10,4 +10,4 @@ BugVM compiles bytecode to binary code with a self-contained JVM.
 
 ### Licenses
 
-BugVM depends on various open source projects. Refer to the respective source code for its license. Apache, GNU, MIT, BSD are noticeable licenses.
+BugVM depends on various open source projects. Refer to the respective source code for its license. Apache, GNU, MIT, BSD are notable licenses.
